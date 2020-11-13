@@ -1,7 +1,59 @@
 {
   "version": 1,
-  "projects": {},
+  "projects": {
+    "lucifer-api": {
+      "root": "apps/lucifer-api",
+      "sourceRoot": "apps/lucifer-api/src",
+      "projectType": "application",
+      "prefix": "lucifer-api",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "options": {
+            "outputPath": "dist/apps/lucifer-api",
+            "main": "apps/lucifer-api/src/main.ts",
+            "tsConfig": "apps/lucifer-api/tsconfig.app.json",
+            "assets": ["apps/lucifer-api/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/lucifer-api/src/environments/environment.ts",
+                  "with": "apps/lucifer-api/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "lucifer-api:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/lucifer-api/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/lucifer-api/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    }
+  },
   "cli": {
-    "defaultCollection": "@nrwl/workspace"
-  }
+    "defaultCollection": "@nrwl/nest"
+  },
+  "defaultProject": "lucifer-api"
 }
