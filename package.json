@@ -29,13 +29,17 @@
   "dependencies": {
     "@nestjs/common": "^7.0.0",
     "@nestjs/core": "^7.0.0",
+    "@nestjs/passport": "^7.0.0",
     "@nestjs/platform-express": "^7.0.0",
     "class-transformer": "^0.3.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "helmet": "^4.2.0",
     "joi": "^17.3.0",
+    "jwks-rsa": "^1.11.0",
     "morgan": "^1.10.0",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~6.5.5"
   },

@@ -2,6 +2,7 @@ import { Logger } from '@nestjs/common';
 import dotenv from 'dotenv';
 
 import { envSchema } from 'env.schema';
+import joi from 'joi';
 
 // Load config
 dotenv.config();
@@ -22,7 +23,12 @@ if (error) {
 
 // Environment
 export const env = {
+  // Basic
   PORT:       value.PORT as number,
   PRODUCTION: value.NODE_ENV === 'production',
   TESTS:      value.NODE_ENV === 'test',
+
+  // Auth0
+  AUTH0_DOMAIN: value.AUTH0_DOMAIN as string,
+  AUTH0_AUDIENCE: value.AUTH0_AUDIENCE as string,
 }
