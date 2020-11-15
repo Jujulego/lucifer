@@ -34,6 +34,6 @@ jobs:
       - name: Install dependencies
         run: yarn ci
       
-      - uses: mansagroup/nrwl-nx-action@v1
+      - uses: MansaGroup/nrwl-nx-action@v1.0.1
         with:
           targets: lint,test
