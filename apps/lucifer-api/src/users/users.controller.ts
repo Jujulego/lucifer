@@ -3,7 +3,8 @@ import { AuthGuard } from '@nestjs/passport';
 
 import { AllowIf, ScopeGuard, Scopes } from 'src/auth/scope.guard';
 
-import { UpdateUser, User } from './user.model';
+import { User } from './user.model';
+import { UpdateUser } from './user.schema';
 import { UsersService } from './users.service';
 
 // Controller
@@ -24,7 +25,7 @@ export class UsersController {
 
   @Get('/:id')
   @Scopes('read:users')
-  @AllowIf(({ params }, token) => params.id === token.sub)
+  @AllowIf((req, token) => req.params.id === token.sub)
   async get(@Param('id') id: string): Promise<User> {
     return await this.users.get(id);
   }

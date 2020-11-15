@@ -1,7 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ManagementClient, User as Auth0User } from 'auth0';
+import { plainToClass } from 'class-transformer';
 
-import { User, UpdateUser } from './user.model';
+import { User } from './user.model';
+import { UpdateUser } from './user.schema';
 
 // Service
 @Injectable()
@@ -33,7 +35,7 @@ export class UsersService {
     if ('last_login'  in ath) usr.lastLogin  = ath.last_login;
     if ('blocked'     in ath) usr.blocked    = ath.blocked;
 
-    return usr;
+    return plainToClass(User, usr);
   }
 
   // Methods

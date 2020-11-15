@@ -1,5 +1,8 @@
+import { Type } from 'class-transformer';
+
 // Model
-export interface User {
+export class User {
+  // Attributes
   id:         string;
   email:      string;
   name:       string;
@@ -8,15 +11,11 @@ export interface User {
   username?:  string;
   givenName?: string;
   familyName?: string;
-  createdAt?: string;
-  updatedAt?: string;
   picture?:   string;
   lastIp?:    string;
   lastLogin?: string;
   blocked?:   boolean;
-}
 
-export interface UpdateUser {
-  email?: string;
-  name?:  string;
+  @Type(() => Date) createdAt?: string;
+  @Type(() => Date) updatedAt?: string;
 }
