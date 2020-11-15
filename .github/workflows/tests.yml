@@ -32,7 +32,7 @@ jobs:
           restore-keys: ${{ runner.os }}-yarn-
       
       - name: Install dependencies
-        run: yarn ci
+        run: yarn install --pure-lockfile
       
       - uses: MansaGroup/nrwl-nx-action@v1.0.1
         with:
