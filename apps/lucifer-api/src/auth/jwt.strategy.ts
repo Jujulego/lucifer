@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt';
-import jwks from 'jwks-rsa';
+import * as jwks from 'jwks-rsa';
 
-import { env } from 'env';
+import { env } from 'src/env';
 
 import { User } from './user.model';
 

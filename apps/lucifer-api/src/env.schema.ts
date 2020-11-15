@@ -1,4 +1,4 @@
-import joi from 'joi';
+import * as joi from 'joi';
 
 // Schema
 export const envSchema = joi.object({

@@ -1,8 +1,7 @@
 import { Logger } from '@nestjs/common';
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 
-import { envSchema } from 'env.schema';
-import joi from 'joi';
+import { envSchema } from './env.schema';
 
 // Load config
 dotenv.config();
