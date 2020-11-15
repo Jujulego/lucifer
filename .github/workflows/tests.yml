@@ -1,0 +1,39 @@
+name: Tests
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    
+    container:
+      image: node:14
+    
+    env:
+      AUTH0_DOMAIN: 'test.com'
+      AUTH0_AUDIENCE: 'test'
+      AUTH0_CLIENT_ID: 'test'
+      AUTH0_CLIENT_SECRET: 'test'
+
+    steps:
+      - uses: actions/checkout@v2
+     
+      - name: Setup
+        id: setup
+        run: echo "::set-output name=yarn-cache::$(yarn cache dir)"
+
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.setup.outputs.yarn-cache }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-yarn-
+      
+      - name: Install dependencies
+        run: yarn ci
+      
+      - uses: mansagroup/nrwl-nx-action@v1
+        with:
+          targets: lint,test
