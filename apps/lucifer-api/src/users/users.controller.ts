@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Put, UseFilters, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 import { AllowIf, ScopeGuard, Scopes } from 'src/auth/scope.guard';
@@ -6,10 +6,12 @@ import { AllowIf, ScopeGuard, Scopes } from 'src/auth/scope.guard';
 import { User } from './user.model';
 import { UpdateUser } from './user.schema';
 import { UsersService } from './users.service';
+import { Auth0ErrorFilter } from './auth0-error.filter';
 
 // Controller
 @Controller('/users')
 @UseGuards(AuthGuard('jwt'), ScopeGuard)
+@UseFilters(Auth0ErrorFilter)
 export class UsersController {
   // Constructor
   constructor(
