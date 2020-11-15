@@ -34,6 +34,8 @@ jobs:
       - name: Install dependencies
         run: yarn install --pure-lockfile
       
-      - uses: MansaGroup/nrwl-nx-action@v1.0.1
-        with:
-          targets: lint,test
+      - name: Lint affected
+        run: nx affected:lint
+      
+      - name: Tests affected
+        run: nx affected:test
