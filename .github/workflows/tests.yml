@@ -35,7 +35,7 @@ jobs:
         run: yarn install --pure-lockfile
       
       - name: Lint affected
-        run: yarn run affected:lint
+        run: yarn run lint
       
       - name: Tests affected
-        run: yarn run affected:test
+        run: yarn run test
