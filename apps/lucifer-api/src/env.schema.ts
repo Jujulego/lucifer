@@ -9,4 +9,6 @@ export const envSchema = joi.object({
   // Auth0
   AUTH0_DOMAIN: joi.string().required(),
   AUTH0_AUDIENCE: joi.string().required(),
+  AUTH0_CLIENT_ID: joi.string().required(),
+  AUTH0_CLIENT_SECRET: joi.string().required(),
 });
