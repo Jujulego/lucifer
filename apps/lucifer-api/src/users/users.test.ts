@@ -6,6 +6,8 @@ import { ManagementClientMock } from 'mocks/management-client.mock';
 
 import { UsersModule } from './users.module';
 import { UsersService } from './users.service';
+import { UpdateUser } from './user.schema';
+import { plainToClass } from 'class-transformer';
 
 // Load services
 let app: TestingModule;
@@ -35,12 +37,12 @@ afterEach(() => {
 // Tests suites
 describe('UsersService.get', () => {
   const user = {
-    user_id:  'tests|users-auth0-10',
-    email:    'test10@users.auth0',
+    user_id:  'tests|users-auth0-11',
+    email:    'test11@users.auth0',
     emailVerified: false,
     name:     'Test',
     nickname: 'test',
-    picture:  'https://auth0.users.com/test10'
+    picture:  'https://auth0.users.com/test11'
   };
 
   // Tests
@@ -67,13 +69,13 @@ describe('UsersService.get', () => {
   it('should throw if user is undefined', async () => {
     // Mock
     jest.spyOn(mgmtClient, 'getUser')
-      .mockImplementation(async () => null);
+      .mockImplementation(async () => undefined);
 
     // Call
     await expect(service.get(user.user_id))
       .rejects.toEqual(new NotFoundException(`User ${user.user_id} not found`));
   });
-})
+});
 
 describe('UsersService.list', () => {
   const users = [
@@ -111,16 +113,51 @@ describe('UsersService.list', () => {
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith({ sort: 'user_id:1' });
   });
+});
 
-  it('should throw if auth0 throws', async () => {
+describe('UsersService.update', () => {
+  const user = {
+    user_id:  'tests|users-auth0-31',
+    email:    'test31@users.auth0',
+    emailVerified: false,
+    name:     'Test',
+    nickname: 'test',
+    picture:  'https://auth0.users.com/test31'
+  };
+
+  const update = plainToClass(UpdateUser, {
+    name: 'Test #31',
+    email: 'test31@gmail.com',
+  });
+
+  // Tests
+  it('should return updated user', async () => {
     // Mock
-    const error = new Error();
-
-    jest.spyOn(mgmtClient, 'getUsers')
-      .mockImplementation(async () => { throw error; });
+    const spy = jest.spyOn(mgmtClient, 'updateUser')
+      .mockImplementation(async (params, data) => ({ ...user, ...data }));
 
     // Call
-    await expect(service.list())
-      .rejects.toBe(error);
+    await expect(service.update(user.user_id, update))
+      .resolves.toEqual({
+        id:       user.user_id,
+        email:    update.email,
+        name:     update.name,
+        nickname: user.nickname,
+        picture:  user.picture
+      });
+
+    // Check call
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith({ id: user.user_id }, { name: update.name, email: update.email });
+  });
+
+  it('should throw if user is undefined', async () => {
+    // Mock
+    jest.spyOn(mgmtClient, 'updateUser')
+      .mockImplementation(async () => undefined);
+
+    // Call
+    await expect(service.update(user.user_id, update))
+      .rejects.toEqual(new NotFoundException(`User ${user.user_id} not found`));
   });
 });
