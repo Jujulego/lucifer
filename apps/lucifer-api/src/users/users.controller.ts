@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Put, UseFilters, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Put, UseFilters, UseGuards, ValidationPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 import { AllowIf, ScopeGuard, Scopes } from 'src/auth/scope.guard';
@@ -35,7 +35,7 @@ export class UsersController {
   @Put('/:id')
   @Scopes('read:users')
   @AllowIf((req, token) => req.params.id === token.sub)
-  async update(@Param('id') id: string, @Body() update: UpdateUser): Promise<User> {
+  async update(@Param('id') id: string, @Body(ValidationPipe) update: UpdateUser): Promise<User> {
     return await this.users.update(id, update);
   }
 }

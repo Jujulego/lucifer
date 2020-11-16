@@ -5,5 +5,5 @@
     "module": "commonjs",
     "types": ["jest", "node"]
   },
-  "include": ["tests", "**/*.test.ts", "**/*.d.ts"]
+  "include": ["mocks", "tests", "**/*.test.ts", "**/*.d.ts"]
 }

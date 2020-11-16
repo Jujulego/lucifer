@@ -6,6 +6,6 @@
     "emitDecoratorMetadata": true,
     "target": "es2015"
   },
-  "exclude": ["tests", "**/*.test.ts"],
+  "exclude": ["mocks", "tests", "**/*.test.ts"],
   "include": ["**/*.ts"]
 }
