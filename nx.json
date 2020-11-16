@@ -28,6 +28,13 @@
   "projects": {
     "lucifer-api": {
       "tags": []
+    },
+    "lucifer-front": {
+      "tags": []
+    },
+    "lucifer-front-e2e": {
+      "tags": [],
+      "implicitDependencies": ["lucifer-front"]
     }
   }
 }
