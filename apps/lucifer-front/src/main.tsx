@@ -1,11 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './app/app';
+import { CookiesProvider } from 'react-cookie';
+import { StylesProvider } from '@material-ui/core';
 
-ReactDOM.render(
+import App from './app/App';
+
+// Application
+ReactDOM.render((
   <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+    <StylesProvider injectFirst>
+      <CookiesProvider>
+        <App />
+      </CookiesProvider>
+    </StylesProvider>
+  </React.StrictMode>
+), document.getElementById('root'));
