@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render correctly 1`] = `
+<WithStyles(ForwardRef(DialogTitle))
+  classes={
+    Object {
+      "root": "makeStyles-root-1",
+    }
+  }
+  disableTypography={true}
+>
+  <WithStyles(ForwardRef(Typography))
+    classes={
+      Object {
+        "root": "makeStyles-title-2",
+      }
+    }
+    component="h2"
+    variant="h6"
+  >
+    Title
+  </WithStyles(ForwardRef(Typography))>
+  <WithStyles(ForwardRef(IconButton))
+    classes={
+      Object {
+        "root": "makeStyles-closeButton-3",
+      }
+    }
+    edge="end"
+    onClick={[Function]}
+  >
+    <CloseIcon />
+  </WithStyles(ForwardRef(IconButton))>
+</WithStyles(ForwardRef(DialogTitle))>
+`;
