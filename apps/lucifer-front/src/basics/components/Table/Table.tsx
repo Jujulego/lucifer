@@ -7,9 +7,9 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Filter, toPredicate } from 'src/utils/filter';
-import { OrderByField } from 'src/utils/sort';
-import { StyledProps } from 'src/utils/style';
+import { Filter, toPredicate } from '../../../utils/filter';
+import { OrderByField } from '../../../utils/sort';
+import { StyledProps } from '../../../utils/style';
 
 import { Document } from '../../models/document';
 import { Order, Ordering, Paginator, SelectState, TableContext } from '../../table.context';

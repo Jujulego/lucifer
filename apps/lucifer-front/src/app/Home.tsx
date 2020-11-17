@@ -3,11 +3,11 @@ import React from 'react';
 import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { useAuth } from 'src/auth/auth.context';
-import { useAuthToken, usePermissions } from 'src/auth/auth.hooks';
+import { useAuth } from '../auth/auth.context';
+import { useAuthToken, usePermissions } from '../auth/auth.hooks';
 
-import { CopyButton, LabelledText } from 'src/basics/components';
-import PermissionChip from 'src/users/components/PermissionChip';
+import { CopyButton, LabelledText } from '../basics/components';
+import PermissionChip from '../users/components/PermissionChip';
 
 // Styles
 const useStyles = makeStyles(({ spacing }) => ({

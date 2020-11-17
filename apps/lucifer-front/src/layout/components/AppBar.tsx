@@ -15,8 +15,8 @@ import HomeIcon from '@material-ui/icons/Home';
 import MenuIcon from '@material-ui/icons/Menu';
 import PeopleIcon from '@material-ui/icons/People';
 
-import AccountMenu from 'src/auth/components/AccountMenu';
-import ScopeGate from 'src/auth/components/ScopeGate';
+import AccountMenu from '../../auth/components/AccountMenu';
+import ScopeGate from '../../auth/components/ScopeGate';
 
 import ThemeButton from './ThemeButton';
 

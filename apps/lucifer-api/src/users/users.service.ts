@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ManagementClient, User as Auth0User } from 'auth0';
 import { plainToClass } from 'class-transformer';
 
-import { User } from './user.model';
+import { User } from '@lucifer/types';
 import { UpdateUser } from './user.schema';
 
 // Service

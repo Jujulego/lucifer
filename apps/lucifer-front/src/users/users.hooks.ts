@@ -1,15 +1,16 @@
 import { useCallback } from 'react';
 
-import useAPI from 'src/basics/api.hooks';
+import useAPI from '../basics/api.hooks';
 
-import { UpdateUser, User } from './models/user';
+import { IUser } from '@lucifer/types';
+import { UpdateUser } from './models/user';
 
 // Namespace
 export const useUsersAPI = {
-  all: () => useAPI.get<User[]>('/api/users'),
+  all: () => useAPI.get<IUser[]>('/api/users'),
 
-  get: (id: string) => useAPI.get<User>(`/api/users/${id}`),
-  put: (id: string) => useAPI.put<UpdateUser, User>(`/api/users/${id}`)
+  get: (id: string) => useAPI.get<IUser>(`/api/users/${id}`),
+  put: (id: string) => useAPI.put<UpdateUser, IUser>(`/api/users/${id}`)
 };
 
 // Hooks

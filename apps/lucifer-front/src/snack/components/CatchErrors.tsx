@@ -1,7 +1,7 @@
 import React, { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import axios, { AxiosResponse } from 'axios';
 
-import { ErrorsContext, ErrorState } from 'src/snack/errors.context';
+import { ErrorsContext, ErrorState } from '../../snack/errors.context';
 
 // Types
 export interface ErrorsProps {

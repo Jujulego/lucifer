@@ -11,7 +11,7 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import CheckIcon from '@material-ui/icons/Check';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 
-import { StyledProps } from 'src/utils/style';
+import { StyledProps } from '../../utils/style';
 
 // Types
 export type CopyFabClassKey = FabClassKey | 'succeed';

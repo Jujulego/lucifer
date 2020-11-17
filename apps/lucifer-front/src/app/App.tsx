@@ -1,19 +1,19 @@
 import React, { FC, useMemo } from 'react';
 import { Route, Router, Switch } from 'react-router';
 
-import { CssBaseline, Typography } from '@material-ui/core';
+import { CssBaseline } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 
-import history from 'src/app.history';
-import createTheme from 'src/app.theme';
-import authConfig from 'src/configs/auth';
+import history from '../app.history';
+import createTheme from '../app.theme';
+import authConfig from '../configs/auth';
 
-import { Cache } from 'src/basics/components';
-import AuthGate from 'src/auth/components/AuthGate';
-import AutoLogin from 'src/auth/components/AutoLogin';
-import useDarkTheme from 'src/layout/theme.hooks';
-import CatchErrors from 'src/snack/components/CatchErrors';
-import AppBar from 'src/layout/components/AppBar';
+import { Cache } from '../basics/components';
+import AuthGate from '../auth/components/AuthGate';
+import AutoLogin from '../auth/components/AutoLogin';
+import useDarkTheme from '../layout/theme.hooks';
+import CatchErrors from '../snack/components/CatchErrors';
+import AppBar from '../layout/components/AppBar';
 import UserRouter from '../users/components/UserRouter';
 import Home from './Home';
 

@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Param, Put, UseFilters, UseGuards, ValidationPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-import { AllowIf, ScopeGuard, Scopes } from 'src/auth/scope.guard';
+import { AllowIf, ScopeGuard, Scopes } from '../auth/scope.guard';
 
-import { User } from './user.model';
+import { User } from '@lucifer/types';
 import { UpdateUser } from './user.schema';
 import { UsersService } from './users.service';
 import { Auth0ErrorFilter } from './auth0-error.filter';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, useRouteMatch } from 'react-router';
 
-import ScopedRoute from 'src/auth/components/ScopedRoute';
+import ScopedRoute from '../../auth/components/ScopedRoute';
 
 import UserPage from './UserPage';
 import UserTable from './UserTable';

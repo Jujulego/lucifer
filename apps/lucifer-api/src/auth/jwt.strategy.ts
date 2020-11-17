@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt';
 import * as jwks from 'jwks-rsa';
 
-import { env } from 'src/env';
+import { env } from '../env';
 
 import { User } from './user.model';
 

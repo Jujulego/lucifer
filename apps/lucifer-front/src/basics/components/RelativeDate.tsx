@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import moment from 'moment';
 
-import useInterval from 'src/utils/hooks/useInterval';
+import useInterval from '../../utils/hooks/useInterval';
 
 // Types
 type Mode = "from" | "to";

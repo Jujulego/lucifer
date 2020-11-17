@@ -1,7 +1,7 @@
 import { GetTokenSilentlyOptions } from '@auth0/auth0-spa-js';
 import { useState, useEffect } from 'react';
 
-import useAPI from 'src/basics/api.hooks';
+import useAPI from '../basics/api.hooks';
 
 import { AuthUser } from './models/user';
 import { useAuth } from './auth.context';

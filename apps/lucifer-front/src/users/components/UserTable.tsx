@@ -14,9 +14,9 @@ import {
   TableRow,
   TableSortCell,
   TableToolbar
-} from 'src/basics/components';
+} from '../../basics/components';
 
-import { User } from '../models/user';
+import { IUser } from '@lucifer/types';
 import { useUsers } from '../users.hooks';
 
 // Styles
@@ -52,13 +52,13 @@ const UserTable = () => {
       <Table documents={users} toolbar={toolbar}>
         <TableHead>
           <TableRow>
-            <TableSortCell<User> field="name">Nom</TableSortCell>
-            <TableSortCell<User> field="email">Email</TableSortCell>
-            <TableSortCell<User> field="lastLogin">Dernière connexion</TableSortCell>
+            <TableSortCell<IUser> field="name">Nom</TableSortCell>
+            <TableSortCell<IUser> field="email">Email</TableSortCell>
+            <TableSortCell<IUser> field="lastLogin">Dernière connexion</TableSortCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          { (usr: User) => (
+          { (usr: IUser) => (
             <TableRow key={usr.id} doc={usr}>
               <TableCell>
                 <Link component={RouterLink} to={`${url}/${usr.id}`}>

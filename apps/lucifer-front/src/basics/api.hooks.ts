@@ -1,8 +1,8 @@
 import axios, { AxiosRequestConfig, AxiosResponse, CancelTokenSource } from 'axios';
 import { useCallback, useDebugValue, useEffect, useState } from 'react';
 
-import useChanged from 'src/utils/hooks/useChanged';
-import { Updator } from 'src/utils/types';
+import useChanged from '../utils/hooks/useChanged';
+import { Updator } from '../utils/types';
 
 import { useCache } from './cache.context';
 

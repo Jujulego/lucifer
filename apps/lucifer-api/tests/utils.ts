@@ -1,7 +1,7 @@
 import * as jwt from 'jsonwebtoken';
 
-import { env } from 'src/env';
-import { JWT_KEY } from 'src/auth/jwt.strategy';
+import { env } from '../src/env';
+import { JWT_KEY } from '../src/auth/jwt.strategy';
 
 // Utils
 export async function generateToken(user: string, permissions?: string[]): Promise<string> {

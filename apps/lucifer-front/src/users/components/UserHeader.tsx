@@ -4,10 +4,10 @@ import { Avatar, Grid, Typography } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { initials } from 'src/utils/string';
-import { RefreshButton } from 'src/basics/components';
+import { IUser } from '@lucifer/types';
 
-import { User } from '../models/user';
+import { initials } from '../../utils/string';
+import { RefreshButton } from '../../basics/components';
 
 // Styles
 const useStyles = makeStyles(({ breakpoints, spacing }) => ({
@@ -39,7 +39,7 @@ const useStyles = makeStyles(({ breakpoints, spacing }) => ({
 
 // Types
 export interface UserHeaderProps {
-  user?: User;
+  user?: IUser;
   loading: boolean;
   actions?: ReactNode;
   onReload: () => void;

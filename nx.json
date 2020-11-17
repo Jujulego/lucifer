@@ -35,6 +35,9 @@
     "lucifer-front-e2e": {
       "tags": [],
       "implicitDependencies": ["lucifer-front"]
+    },
+    "types": {
+      "tags": []
     }
   }
 }

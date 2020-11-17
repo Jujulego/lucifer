@@ -6,7 +6,7 @@ import { OverrideProps } from '@material-ui/core/OverridableComponent';
 import { Badge } from '@material-ui/core';
 import { FilterList as FilterIcon } from '@material-ui/icons';
 
-import { Filter } from 'src/utils/filter';
+import { Filter } from '../../../utils/filter';
 
 import { useTable } from '../../table.context';
 import TableAction, { TableActionClassKey, TableActionTypeMap } from './TableAction';

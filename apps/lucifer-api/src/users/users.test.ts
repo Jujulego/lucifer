@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
 import { ManagementClient } from 'auth0';
+import { plainToClass } from 'class-transformer';
 
-import { ManagementClientMock } from 'mocks/management-client.mock';
+import { ManagementClientMock } from '../../mocks/management-client.mock';
 
 import { UsersModule } from './users.module';
 import { UsersService } from './users.service';
 import { UpdateUser } from './user.schema';
-import { plainToClass } from 'class-transformer';
 
 // Load services
 let app: TestingModule;

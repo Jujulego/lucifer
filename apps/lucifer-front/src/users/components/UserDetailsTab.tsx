@@ -6,10 +6,12 @@ import { CircularProgress, Fab, Grid, TextField, Tooltip, Typography, Zoom } fro
 import { Check as CheckIcon, Save as SaveIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { LabelledText, RelativeDate } from 'src/basics/components'
-import { useNeedScope, usePermissions } from 'src/auth/auth.hooks';
+import { IUser } from '@lucifer/types';
 
-import { UpdateUser, User } from '../models/user';
+import { LabelledText, RelativeDate } from '../../basics/components'
+import { useNeedScope, usePermissions } from '../../auth/auth.hooks';
+
+import { UpdateUser } from '../models/user';
 import PermissionChip from './PermissionChip';
 
 // Styles
@@ -57,7 +59,7 @@ const GridItem = ({ children }: GridProps) => (
 
 // Types
 export interface UserDetailsProps {
-  user?: User;
+  user?: IUser;
   show?: boolean;
   onUpdate: (update: UpdateUser) => void;
 }

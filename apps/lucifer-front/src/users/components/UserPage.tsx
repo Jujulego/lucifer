@@ -1,11 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams, useRouteMatch } from 'react-router';
 import { Link as RouterLink } from 'react-router-dom';
 
-import { Fade, Paper, Tab, Tabs } from '@material-ui/core';
-import { Add as AddIcon } from '@material-ui/icons';
-
-import { ToolbarAction } from 'src/basics/components';
+import { Paper, Tab, Tabs } from '@material-ui/core';
 
 import { useUser } from '../users.hooks';
 import UserDetailsTab from './UserDetailsTab';

@@ -2,9 +2,9 @@ import { Test } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import supertest from 'supertest';
 
-import { AppModule } from 'src/app.module';
+import { AppModule } from '../../src/app.module';
 
-import { generateToken } from 'tests/utils';
+import { generateToken } from '../utils';
 
 // Server setup
 let app: INestApplication;

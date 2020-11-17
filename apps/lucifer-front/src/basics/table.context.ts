@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
 
-import { Filter } from 'src/utils/filter';
-import { OrderByField } from 'src/utils/sort';
+import { Filter } from '../utils/filter';
+import { OrderByField } from '../utils/sort';
 
 import { Document } from './models/document';
 
