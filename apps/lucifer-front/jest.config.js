@@ -1,6 +1,7 @@
 module.exports = {
   displayName: 'lucifer-front',
   preset: '../../jest.preset.js',
+  setupFilesAfterEnv: ['<rootDir>/setup-tests.js'],
   transform: {
     '^(?!.*\\.(js|jsx|ts|tsx|css|json)$)': '@nrwl/react/plugins/jest',
     '^.+\\.[tj]sx?$': [
@@ -10,4 +11,7 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/apps/lucifer-front',
+  snapshotSerializers: [
+    "enzyme-to-json/serializer"
+  ]
 };

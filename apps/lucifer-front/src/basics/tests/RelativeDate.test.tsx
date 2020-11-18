@@ -7,7 +7,7 @@ import useInterval from '../../utils/hooks/useInterval';
 import RelativeDate from '../components/RelativeDate';
 
 // Mocks
-jest.mock('utils/hooks/useInterval');
+jest.mock('../../utils/hooks/useInterval');
 
 // Setup
 let shallow: ReturnType<typeof createShallow>;

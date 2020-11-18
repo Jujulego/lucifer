@@ -30,11 +30,10 @@ export class User {
   username?:  string;
   givenName?: string;
   familyName?: string;
+  createdAt?: string;
+  updatedAt?: string;
   picture?:   string;
   lastIp?:    string;
   lastLogin?: string;
   blocked?:   boolean;
-
-  @Type(() => Date) createdAt?: Date;
-  @Type(() => Date) updatedAt?: Date;
 }
