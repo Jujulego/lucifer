@@ -1,5 +1,3 @@
-import { Type } from 'class-transformer';
-
 // Interface
 export interface IUser {
   // Attributes
@@ -20,7 +18,7 @@ export interface IUser {
 }
 
 // Model
-export class User {
+export class User implements IUser {
   // Attributes
   id:         string;
   email:      string;
