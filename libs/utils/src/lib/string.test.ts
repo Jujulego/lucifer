@@ -1,4 +1,4 @@
-import { initials } from '../utils/string';
+import { initials } from './string';
 
 // Tests
 describe('initials', () => {

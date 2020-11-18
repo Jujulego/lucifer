@@ -5,8 +5,8 @@ import { Skeleton } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { IUser } from '@lucifer/types';
+import { initials } from '@lucifer/utils';
 
-import { initials } from '../../utils/string';
 import { RefreshButton } from '../../basics/components';
 
 // Styles

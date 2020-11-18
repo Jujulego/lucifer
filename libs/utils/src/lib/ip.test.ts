@@ -1,4 +1,4 @@
-import { ip2int } from '../utils/ip';
+import { ip2int } from './ip';
 
 // Test ip convert
 test('ip2int', () => {

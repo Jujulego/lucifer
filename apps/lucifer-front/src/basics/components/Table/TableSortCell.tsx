@@ -5,7 +5,7 @@ import {
   TableCellProps
 } from '@material-ui/core';
 
-import { OrderByField } from '../../../utils/sort';
+import { OrderByField } from '@lucifer/utils';
 
 import { Document } from '../../models/document';
 import { useTable } from '../../table.context';

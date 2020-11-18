@@ -6,6 +6,8 @@ import { Link, Paper, TableCell, TableContainer, TableHead, Tooltip } from '@mat
 import { Check as CheckIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 
+import { IUser } from '@lucifer/types';
+
 import {
   RefreshButton,
   RelativeDate,
@@ -16,7 +18,6 @@ import {
   TableToolbar
 } from '../../basics/components';
 
-import { IUser } from '@lucifer/types';
 import { useUsers } from '../users.hooks';
 
 // Styles

@@ -1,7 +1,6 @@
 import { createContext, useContext } from 'react';
 
-import { Filter } from '../utils/filter';
-import { OrderByField } from '../utils/sort';
+import { Filter, OrderByField } from '@lucifer/utils';
 
 import { Document } from './models/document';
 

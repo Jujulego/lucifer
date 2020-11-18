@@ -17,7 +17,8 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "@lucifer/types": ["libs/types/src/index.ts"]
+      "@lucifer/types": ["libs/types/src/index.ts"],
+      "@lucifer/utils": ["libs/utils/src/index.ts"]
     },
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,

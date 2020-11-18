@@ -5,7 +5,7 @@ import {
   TableBodyProps as MuiTableBodyProps
 } from '@material-ui/core';
 
-import { asc, Comparator, desc, OrderByField, stableSort } from '../../../utils/sort';
+import { asc, Comparator, desc, OrderByField, stableSort } from '@lucifer/utils';
 
 import { Document } from '../../models/document';
 import { Order, useTable } from '../../table.context';

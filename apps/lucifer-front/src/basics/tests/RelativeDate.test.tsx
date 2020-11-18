@@ -2,7 +2,7 @@ import React from 'react';
 import { createShallow } from '@material-ui/core/test-utils';
 import moment from 'moment';
 
-import useInterval from 'utils/hooks/useInterval';
+import useInterval from '../../utils/hooks/useInterval';
 
 import RelativeDate from '../components/RelativeDate';
 
