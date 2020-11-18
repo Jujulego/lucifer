@@ -8,10 +8,10 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 
 import { Filter, OrderByField, toPredicate } from '@lucifer/utils';
-import { StyledProps } from '../../../utils/style';
+import { StyledProps } from '@lucifer/react/utils';
 
-import { Document } from '../../models/document';
-import { Order, Ordering, Paginator, SelectState, TableContext } from '../../table.context';
+import { Document } from './document';
+import { Order, Ordering, Paginator, SelectState, TableContext } from './table.context';
 
 // Styles
 const useStyles = makeStyles({

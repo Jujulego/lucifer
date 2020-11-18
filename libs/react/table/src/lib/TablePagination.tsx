@@ -8,7 +8,7 @@ import {
 import { TablePaginationBaseProps } from '@material-ui/core/TablePagination/TablePagination';
 import { OverrideProps } from '@material-ui/core/OverridableComponent';
 
-import { useTable } from '../../table.context';
+import { useTable } from './table.context';
 
 // Types
 type DefinedProps = 'count' | 'rowsPerPage' | 'page' | 'onChangePage' | 'onChangeRowsPerPage';

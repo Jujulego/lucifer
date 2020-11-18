@@ -41,6 +41,15 @@
     },
     "utils": {
       "tags": []
+    },
+    "react-table": {
+      "tags": []
+    },
+    "react-utils": {
+      "tags": []
+    },
+    "react-basics": {
+      "tags": []
     }
   }
 }

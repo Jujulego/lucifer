@@ -7,8 +7,8 @@ import {
   TableRowProps as MuiTableRowProps
 } from '@material-ui/core';
 
-import { Document } from '../../models/document';
-import { useTable } from '../../table.context';
+import { Document } from './document';
+import { useTable } from './table.context';
 
 // Types
 export interface TableRowProps extends Omit<MuiTableRowProps, 'selected' | 'onClick'> {

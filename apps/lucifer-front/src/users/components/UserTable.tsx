@@ -7,17 +7,9 @@ import { Check as CheckIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { IUser } from '@lucifer/types';
+import { Table, TableBody, TableRow, TableSortCell, TableToolbar } from '@lucifer/react/table';
 
-import {
-  RefreshButton,
-  RelativeDate,
-  Table,
-  TableBody,
-  TableRow,
-  TableSortCell,
-  TableToolbar
-} from '../../basics/components';
-
+import { RefreshButton, RelativeDate } from '../../basics/components';
 import { useUsers } from '../users.hooks';
 
 // Styles

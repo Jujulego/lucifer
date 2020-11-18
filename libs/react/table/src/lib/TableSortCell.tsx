@@ -7,8 +7,8 @@ import {
 
 import { OrderByField } from '@lucifer/utils';
 
-import { Document } from '../../models/document';
-import { useTable } from '../../table.context';
+import { Document } from './document';
+import { useTable } from './table.context';
 
 // Types
 export interface TableSortCellProps<T extends Document> extends Omit<TableCellProps, 'sortDirection'> {

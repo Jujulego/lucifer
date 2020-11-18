@@ -2,7 +2,7 @@ import { createContext, useContext } from 'react';
 
 import { Filter, OrderByField } from '@lucifer/utils';
 
-import { Document } from './models/document';
+import { Document } from './document';
 
 // Types
 export type SelectState = {

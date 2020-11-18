@@ -18,7 +18,10 @@
     "baseUrl": ".",
     "paths": {
       "@lucifer/types": ["libs/types/src/index.ts"],
-      "@lucifer/utils": ["libs/utils/src/index.ts"]
+      "@lucifer/utils": ["libs/utils/src/index.ts"],
+      "@lucifer/react/table": ["libs/react/table/src/index.ts"],
+      "@lucifer/react/utils": ["libs/react/utils/src/index.ts"],
+      "@lucifer/react/basics": ["libs/react/basics/src/index.ts"]
     },
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,

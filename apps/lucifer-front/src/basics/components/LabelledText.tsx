@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { StyledProps } from '../../utils/style';
+import { StyledProps } from '@lucifer/react/utils';
 
 // Styles
 const useStyles = makeStyles({

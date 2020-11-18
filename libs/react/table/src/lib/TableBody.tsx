@@ -7,8 +7,8 @@ import {
 
 import { asc, Comparator, desc, OrderByField, stableSort } from '@lucifer/utils';
 
-import { Document } from '../../models/document';
-import { Order, useTable } from '../../table.context';
+import { Document } from './document';
+import { Order, useTable } from './table.context';
 
 // Types
 export interface TableBodyProps<T extends Document> extends Omit<MuiTableBodyProps, 'classes'> {

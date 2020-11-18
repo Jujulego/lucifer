@@ -3,10 +3,9 @@ import React, { ElementType, MouseEvent } from 'react';
 import { ExtendButtonBase, ExtendButtonBaseTypeMap } from '@material-ui/core';
 import { OverrideProps } from '@material-ui/core/OverridableComponent';
 
-import { Document } from '../../models/document';
-import { useTable } from '../../table.context';
-
-import ToolbarAction, { ToolbarActionTypeMap, ToolbarActionClassKey } from '../ToolbarAction';
+import { ToolbarAction, ToolbarActionTypeMap, ToolbarActionClassKey } from '@lucifer/react/basics';
+import { Document } from './document';
+import { useTable } from './table.context';
 
 // Types
 type When = "always" | "some" | "nothing"; // selected

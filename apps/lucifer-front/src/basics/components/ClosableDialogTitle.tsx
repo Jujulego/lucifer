@@ -7,7 +7,7 @@ import {
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 
-import { StyledProps } from '../../utils/style';
+import { StyledProps } from '@lucifer/react/utils';
 
 // Types
 export type ClosableDialogTitleClassKey = 'root' | 'title' | 'closeButton'

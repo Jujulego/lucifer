@@ -8,7 +8,7 @@ import { FilterList as FilterIcon } from '@material-ui/icons';
 
 import { Filter } from '@lucifer/utils';
 
-import { useTable } from '../../table.context';
+import { useTable } from './table.context';
 import TableAction, { TableActionClassKey, TableActionTypeMap } from './TableAction';
 
 // Types
