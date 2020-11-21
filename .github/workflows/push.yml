@@ -4,9 +4,6 @@ on:
   push:
     branches: [ master ]
 
-  pull_request:
-    branches: [ master ]
-
 env:
   NX_BRANCH: ${{ github.event.number }}
   NX_RUN_GROUP: ${{ github.run_id }}
@@ -41,7 +38,7 @@ jobs:
         run: yarn install --pure-lockfile
 
       - name: Lint
-        run: yarn run lint --scan
+        run: yarn run nx run-many --all --target=lint --scan
 
       - name: Tests
         run: yarn run nx run-many --all --target=test --scan
