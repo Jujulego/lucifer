@@ -22,7 +22,8 @@
       "@lucifer/react/table": ["libs/react/table/src/index.ts"],
       "@lucifer/react/utils": ["libs/react/utils/src/index.ts"],
       "@lucifer/react/basics": ["libs/react/basics/src/index.ts"],
-      "@lucifer/react/api": ["libs/react/api/src/index.ts"]
+      "@lucifer/react/api": ["libs/react/api/src/index.ts"],
+      "@lucifer/react/fields": ["libs/react/fields/src/index.ts"]
     },
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,

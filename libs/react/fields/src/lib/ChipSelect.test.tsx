@@ -1,7 +1,7 @@
 import React from 'react';
 import { createShallow, createMount } from '@material-ui/core/test-utils';
 
-import ChipSelect from '../../components/Fields/ChipSelect';
+import ChipSelect from './ChipSelect';
 
 // Setup
 let mount: ReturnType<typeof createMount>;

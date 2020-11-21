@@ -8,5 +8,6 @@ module.exports = {
     '<rootDir>/libs/react/utils',
     '<rootDir>/libs/react/basics',
     '<rootDir>/libs/react/api',
+    '<rootDir>/libs/react/fields',
   ],
 };

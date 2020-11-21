@@ -53,6 +53,9 @@
     },
     "react-api": {
       "tags": []
+    },
+    "react-fields": {
+      "tags": []
     }
   }
 }
