@@ -2,12 +2,12 @@ import React from 'react';
 import { createShallow } from '@material-ui/core/test-utils';
 import moment from 'moment';
 
-import useInterval from '../../../utils/src/lib/hooks/useInterval';
+import { useInterval } from '@lucifer/react/utils';
 
 import RelativeDate from './RelativeDate';
 
 // Mocks
-jest.mock('../../utils/hooks/useInterval');
+jest.mock('@lucifer/react/utils');
 
 // Setup
 let shallow: ReturnType<typeof createShallow>;
@@ -31,7 +31,7 @@ describe('to mode', () => {
     );
 
     // Checks
-    expect(wrapper.text()).toBe('il y a un jour');
+    expect(wrapper.text()).toBe('a day ago');
   });
 
   it('should render without prefix', () => {
@@ -41,7 +41,7 @@ describe('to mode', () => {
     );
 
     // Checks
-    expect(wrapper.text()).toBe('un jour');
+    expect(wrapper.text()).toBe('a day');
   });
 });
 
@@ -53,7 +53,7 @@ describe('from mode', () => {
     );
 
     // Checks
-    expect(wrapper.text()).toBe('dans un jour');
+    expect(wrapper.text()).toBe('in a day');
   });
 
   it('should render without prefix', () => {
@@ -63,7 +63,7 @@ describe('from mode', () => {
     );
 
     // Checks
-    expect(wrapper.text()).toBe('un jour');
+    expect(wrapper.text()).toBe('a day');
   });
 });
 

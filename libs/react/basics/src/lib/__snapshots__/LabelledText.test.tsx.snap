@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render correctly 1`] = `
+<div
+  className="makeStyles-root-1"
+>
+  <WithStyles(ForwardRef(Typography))
+    className="makeStyles-label-2"
+    variant="caption"
+  >
+    label
+  </WithStyles(ForwardRef(Typography))>
+  <div
+    className="makeStyles-content-3"
+  >
+    Content
+  </div>
+</div>
+`;
+
+exports[`should render with adornment 1`] = `
+<div
+  className="makeStyles-root-1"
+>
+  <WithStyles(ForwardRef(Typography))
+    className="makeStyles-label-2"
+    variant="caption"
+  >
+    label
+  </WithStyles(ForwardRef(Typography))>
+  <div
+    className="makeStyles-content-3 makeStyles-endAdorned-4"
+  >
+    Content
+  </div>
+  <CheckIcon />
+</div>
+`;
