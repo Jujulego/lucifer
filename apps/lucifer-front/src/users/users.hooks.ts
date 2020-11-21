@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 
-import useAPI from '../basics/api.hooks';
-
 import { IUser } from '@lucifer/types';
+import { useAPI } from '@lucifer/react/api';
+
 import { UpdateUser } from './models/user';
 
 // Namespace

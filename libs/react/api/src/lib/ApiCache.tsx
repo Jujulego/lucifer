@@ -1,18 +1,18 @@
 import React, { ReactNode, useCallback, useState } from 'react';
 
-import { CacheContext, CacheState } from '../cache.context';
+import { CacheContext, CacheState } from './cache.context';
 
 // Types
 interface State {
   [id: string]: CacheState
 }
 
-export interface CacheProps {
+export interface ApiCacheProps {
   children?: ReactNode
 }
 
 // Component
-const Cache = (props: CacheProps) => {
+const ApiCache = (props: ApiCacheProps) => {
   const { children } = props;
 
   // State
@@ -33,4 +33,4 @@ const Cache = (props: CacheProps) => {
   );
 };
 
-export default Cache;
+export default ApiCache;

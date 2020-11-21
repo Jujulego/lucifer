@@ -2,9 +2,9 @@ import axios, { AxiosRequestConfig, AxiosResponse, CancelTokenSource } from 'axi
 import { useCallback, useDebugValue, useEffect, useState } from 'react';
 
 import { useChanged } from '@lucifer/react/utils';
-import { Updator } from '../utils/types';
 
 import { useCache } from './cache.context';
+import { Updator } from './types';
 
 // Types
 export type APIState<R> = { data?: R, loading: boolean };

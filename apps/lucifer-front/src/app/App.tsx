@@ -4,11 +4,12 @@ import { Route, Router, Switch } from 'react-router';
 import { CssBaseline } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 
+import { ApiCache } from '@lucifer/react/api';
+
 import history from '../app.history';
 import createTheme from '../app.theme';
 import authConfig from '../configs/auth';
 
-import { Cache } from '../basics/components';
 import AuthGate from '../auth/components/AuthGate';
 import AutoLogin from '../auth/components/AutoLogin';
 import useDarkTheme from '../layout/theme.hooks';
@@ -37,14 +38,14 @@ const App: FC = () => {
             onRedirectCallback={state => history.push(state?.targetUrl || window.location.pathname)}
           >
             <AutoLogin />
-            <Cache>
+            <ApiCache>
               <AppBar>
                 <Switch>
                   <Route path='/users' component={UserRouter} />
                   <Route component={Home} />
                 </Switch>
               </AppBar>
-            </Cache>
+            </ApiCache>
           </AuthGate>
         </Router>
       </CatchErrors>
