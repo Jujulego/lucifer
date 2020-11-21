@@ -2,9 +2,9 @@ import React from 'react';
 import { createShallow } from '@material-ui/core/test-utils';
 import moment from 'moment';
 
-import useInterval from '../../../../../libs/react/utils/src/lib/hooks/useInterval';
+import useInterval from '../../../utils/src/lib/hooks/useInterval';
 
-import RelativeDate from '../components/RelativeDate';
+import RelativeDate from './RelativeDate';
 
 // Mocks
 jest.mock('../../utils/hooks/useInterval');

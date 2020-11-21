@@ -3,10 +3,11 @@ import React from 'react';
 import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
+import { CopyButton, LabelledText } from '@lucifer/react/basics';
+
 import { useAuth } from '../auth/auth.context';
 import { useAuthToken, usePermissions } from '../auth/auth.hooks';
 
-import { CopyButton, LabelledText } from '../basics/components';
 import PermissionChip from '../users/components/PermissionChip';
 
 // Styles

@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 
 import { Button, Dialog, DialogActions, DialogProps } from '@material-ui/core';
 
-import { ConfirmState } from '../confirm.hooks';
+import { ConfirmState } from './confirm.hooks';
 
 // Types
 export type ConfirmDialogProps<T> = Omit<DialogProps, 'open' | 'onClose'> & {

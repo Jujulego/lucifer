@@ -6,9 +6,9 @@ import { CircularProgress, Fab, Grid, TextField, Tooltip, Typography, Zoom } fro
 import { Check as CheckIcon, Save as SaveIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 
+import { LabelledText, RelativeDate } from '@lucifer/react/basics'
 import { IUser } from '@lucifer/types';
 
-import { LabelledText, RelativeDate } from '../../basics/components'
 import { useNeedScope, usePermissions } from '../../auth/auth.hooks';
 
 import { UpdateUser } from '../models/user';

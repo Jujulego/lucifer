@@ -3,10 +3,7 @@ import copy from 'copy-to-clipboard';
 import clsx from 'clsx';
 import { pick } from 'lodash';
 
-import {
-  Fade,
-  Fab, FabProps, FabClassKey
-} from '@material-ui/core';
+import { Fab, FabProps, FabClassKey, Fade } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import CheckIcon from '@material-ui/icons/Check';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
