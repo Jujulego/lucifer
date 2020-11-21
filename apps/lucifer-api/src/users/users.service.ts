@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
 import { ManagementClient, User as Auth0User } from 'auth0';
 import { plainToClass } from 'class-transformer';
 
@@ -8,18 +8,27 @@ import { UpdateUser } from './user.schema';
 // Service
 @Injectable()
 export class UsersService {
+  // Attributes
+  private readonly logger = new Logger(UsersService.name);
+
   // Constructor
   constructor(
     private auth0: ManagementClient
   ) {}
 
-  // Statics
-  private static format(ath: Auth0User): User {
+  // Methods
+  private format(ath: Auth0User): User {
     // Mandatory fields
+    const { user_id, name, email } = ath;
+
+    if (!user_id || !name || !email) {
+      this.logger.error(`Missing user_id, name or email in user ! (id: ${user_id}, name: ${name}, email: ${email})`);
+      throw new InternalServerErrorException();
+    }
+
     const usr: User = {
-      id:    ath.user_id!,
-      name:  ath.name!,
-      email: ath.email!,
+      id: user_id,
+      name, email,
     };
 
     // Optional fields
@@ -38,7 +47,6 @@ export class UsersService {
     return plainToClass(User, usr);
   }
 
-  // Methods
   async get(id: string): Promise<User> {
     const user = await this.auth0.getUser({ id });
 
@@ -47,13 +55,13 @@ export class UsersService {
       throw new NotFoundException(`User ${id} not found`);
     }
 
-    return UsersService.format(user);
+    return this.format(user);
   }
 
   async list(): Promise<User[]> {
     const users = await this.auth0.getUsers({ sort: 'user_id:1' });
 
-    return users.map(usr => UsersService.format(usr));
+    return users.map(usr => this.format(usr));
   }
 
   async update(id: string, update: UpdateUser): Promise<User> {
@@ -67,6 +75,6 @@ export class UsersService {
       throw new NotFoundException(`User ${id} not found`);
     }
 
-    return UsersService.format(user);
+    return this.format(user);
   }
 }

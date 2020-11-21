@@ -45,7 +45,7 @@ export function useConfirm<T>(init: T): ConfirmReturn<T> {
         onConfirm: () => handleClose(true)
       });
     });
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return { state, confirm };
 }
