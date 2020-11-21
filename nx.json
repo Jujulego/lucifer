@@ -19,7 +19,12 @@
       "runner": "@nrwl/nx-cloud",
       "options": {
         "accessToken": "MmQxMmRiYzAtZjkyMC00YWEzLThjNGItZTFhZmQwOTM4NDBlfHJlYWQtd3JpdGU=",
-        "cacheableOperations": ["build", "test", "lint", "e2e"],
+        "cacheableOperations": [
+          "build",
+          "test",
+          "lint",
+          "e2e"
+        ],
         "canTrackAnalytics": false,
         "showUsageWarnings": true
       }
@@ -34,7 +39,9 @@
     },
     "lucifer-front-e2e": {
       "tags": [],
-      "implicitDependencies": ["lucifer-front"]
+      "implicitDependencies": [
+        "lucifer-front"
+      ]
     },
     "types": {
       "tags": []

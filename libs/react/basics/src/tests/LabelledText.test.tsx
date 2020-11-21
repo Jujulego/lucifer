@@ -3,7 +3,7 @@ import React from 'react';
 import { createShallow } from '@material-ui/core/test-utils';
 import { Check as CheckIcon } from '@material-ui/icons';
 
-import LabelledText from './LabelledText';
+import LabelledText from '../lib/LabelledText';
 
 // Setup
 let shallow: ReturnType<typeof createShallow>;

@@ -33,7 +33,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/lucifer-api/**/*.ts"]
+            "lintFilePatterns": [
+              "apps/lucifer-api/**/*.ts"
+            ]
           }
         },
         "test": {
@@ -63,7 +65,9 @@
               "apps/lucifer-front/src/favicon.ico",
               "apps/lucifer-front/src/assets"
             ],
-            "styles": ["apps/lucifer-front/src/styles.scss"],
+            "styles": [
+              "apps/lucifer-front/src/styles.scss"
+            ],
             "scripts": [],
             "webpackConfig": "@nrwl/react/plugins/webpack"
           },
@@ -107,7 +111,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/lucifer-front/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": [
+              "apps/lucifer-front/**/*.{ts,tsx,js,jsx}"
+            ]
           }
         },
         "test": {
@@ -140,7 +146,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/lucifer-front-e2e/**/*.{js,ts}"]
+            "lintFilePatterns": [
+              "apps/lucifer-front-e2e/**/*.{js,ts}"
+            ]
           }
         }
       }
@@ -154,7 +162,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/types/**/*.ts"]
+            "lintFilePatterns": [
+              "libs/types/**/*.ts"
+            ]
           }
         },
         "test": {
@@ -175,7 +185,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/utils/**/*.ts"]
+            "lintFilePatterns": [
+              "libs/utils/**/*.ts"
+            ]
           }
         },
         "test": {
@@ -196,7 +208,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/react/table/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": [
+              "libs/react/table/**/*.{ts,tsx,js,jsx}"
+            ]
           }
         },
         "test": {
@@ -217,7 +231,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/react/utils/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": [
+              "libs/react/utils/**/*.{ts,tsx,js,jsx}"
+            ]
           }
         },
         "test": {
@@ -238,7 +254,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/react/basics/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": [
+              "libs/react/basics/**/*.{ts,tsx,js,jsx}"
+            ]
           }
         },
         "test": {
@@ -246,6 +264,36 @@
           "options": {
             "jestConfig": "libs/react/basics/jest.config.js",
             "passWithNoTests": true
+          }
+        },
+        "storybook": {
+          "builder": "@nrwl/storybook:storybook",
+          "options": {
+            "uiFramework": "@storybook/react",
+            "port": 4400,
+            "config": {
+              "configFolder": "libs/react/basics/.storybook"
+            }
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
+        },
+        "build-storybook": {
+          "builder": "@nrwl/storybook:build",
+          "options": {
+            "uiFramework": "@storybook/react",
+            "outputPath": "dist/storybook/react-basics",
+            "config": {
+              "configFolder": "libs/react/basics/.storybook"
+            }
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
           }
         }
       }
@@ -259,7 +307,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/react/api/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": [
+              "libs/react/api/**/*.{ts,tsx,js,jsx}"
+            ]
           }
         },
         "test": {
@@ -280,7 +330,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/react/fields/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": [
+              "libs/react/fields/**/*.{ts,tsx,js,jsx}"
+            ]
           }
         },
         "test": {

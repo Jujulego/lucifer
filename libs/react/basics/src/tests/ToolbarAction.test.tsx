@@ -1,7 +1,7 @@
 import React from 'react';
 import { createShallow, createMount } from '@material-ui/core/test-utils';
 
-import ToolbarAction from './ToolbarAction';
+import ToolbarAction from '../lib/ToolbarAction';
 
 // Setup
 let mount: ReturnType<typeof createMount>;

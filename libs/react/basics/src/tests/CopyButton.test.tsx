@@ -3,7 +3,7 @@ import copy from 'copy-to-clipboard';
 import { act } from 'react-dom/test-utils';
 import { createShallow, createMount } from '@material-ui/core/test-utils';
 
-import CopyButton from './CopyButton';
+import CopyButton from '../lib/CopyButton';
 
 // Mocks
 jest.mock('copy-to-clipboard');

@@ -1,55 +1,42 @@
 import React from 'react';
-import copy from 'copy-to-clipboard';
-import { act } from 'react-dom/test-utils';
 import { createShallow, createMount } from '@material-ui/core/test-utils';
 
-import CopyFab from './CopyFab';
-
-// Mocks
-jest.mock('copy-to-clipboard');
+import ClosableDialogTitle from '../lib/ClosableDialogTitle';
 
 // Setup
 let mount: ReturnType<typeof createMount>;
 let shallow: ReturnType<typeof createShallow>;
 
 beforeAll(() => {
-  jest.useFakeTimers();
-
   mount = createMount();
   shallow = createShallow();
 });
 
 afterAll(() => {
-  jest.restoreAllMocks();
-
   mount.cleanUp();
-});
-
-beforeEach(() => {
-  (copy as jest.Mock).mockReset();
 });
 
 // Tests
 it('should render correctly', () => {
   // Render
   const wrapper = shallow(
-    <CopyFab text="test" />
+    <ClosableDialogTitle>
+      Title
+    </ClosableDialogTitle>
   );
 
   // Check elements
   expect(wrapper).toMatchSnapshot();
 });
 
-it('should copy on click', () => {
+it('should react to button click', () => {
   const spy = jest.fn();
-  (copy as jest.Mock).mockImplementation(() => true);
 
   // Render
   const wrapper = mount(
-    <CopyFab
-      text='test' format='text/plain'
-      onCopied={spy}
-    />
+    <ClosableDialogTitle onClose={spy}>
+      Title
+    </ClosableDialogTitle>
   );
 
   // Get button
@@ -57,13 +44,7 @@ it('should copy on click', () => {
   expect(button).toHaveLength(1);
 
   // Test event
-  act(() => {
-    button.simulate('click');
-    jest.runAllTimers();
-  });
-
-  expect(copy).toHaveBeenCalledTimes(1);
-  expect(copy).toHaveBeenCalledWith('test', { format: 'text/plain' });
+  button.simulate('click');
 
   expect(spy).toHaveBeenCalledTimes(1);
 });

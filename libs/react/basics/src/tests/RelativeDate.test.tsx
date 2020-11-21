@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import { useInterval } from '@lucifer/react/utils';
 
-import RelativeDate from './RelativeDate';
+import RelativeDate from '../lib/RelativeDate';
 
 // Mocks
 jest.mock('@lucifer/react/utils');
