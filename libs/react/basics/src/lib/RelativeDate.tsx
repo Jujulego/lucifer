@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import moment from 'moment';
 
 import { useInterval } from '@lucifer/react/utils';
@@ -13,7 +13,7 @@ export interface RelativeDateProps {
 }
 
 // Component
-const RelativeDate = (props: RelativeDateProps) => {
+const RelativeDate: FC<RelativeDateProps> = (props) => {
   // Props
   const {
     date: input,
@@ -27,7 +27,7 @@ const RelativeDate = (props: RelativeDateProps) => {
   useInterval(1, 'minute');
 
   // Render
-  return (
+  return ( // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
       { mode === "to" ? date.toNow(withoutPrefix) : date.fromNow(withoutPrefix) }
     </>

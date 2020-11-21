@@ -8,6 +8,7 @@ import { FilterList as FilterIcon } from '@material-ui/icons';
 
 import { Filter } from '@lucifer/utils';
 
+import { Document } from './document';
 import { useTable } from './table.context';
 import TableAction, { TableActionClassKey, TableActionTypeMap } from './TableAction';
 
@@ -18,10 +19,10 @@ export interface TableFilterDialogProps {
 }
 
 export type TableFilterActionTypeMap<
-  P = {},
+  P = unknown,
   D extends ElementType = 'button'
 > = ExtendButtonBaseTypeMap<{
-  props: P & Omit<TableActionTypeMap<any, P, D>['props'], 'tooltip'> & {
+  props: P & Omit<TableActionTypeMap<Document, P, D>['props'], 'tooltip'> & {
     tooltip?: string;
     dialog?: ComponentType<TableFilterDialogProps>;
   };
@@ -31,12 +32,12 @@ export type TableFilterActionTypeMap<
 
 export type TableFilterActionProps<
   D extends ElementType = TableFilterActionTypeMap['defaultComponent'],
-  P = {}
+  P = unknown
 > = OverrideProps<TableFilterActionTypeMap<P, D>, D>;
 
 // Utils
-const removeEmptyFields = (filter: Filter<any>) => (key: keyof Filter<any>): boolean => {
-  const value = filter[key as string | number];
+const removeEmptyFields = (filter: Filter<Record<string | number, unknown>>) => (key: string | number): boolean => {
+  const value = filter[key];
   if (Array.isArray(value)) return value.length !== 0;
 
   return !!value;

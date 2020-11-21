@@ -35,7 +35,7 @@ const ClosableDialogTitle = (props: ClosableDialogTitleProps) => {
   // Props
   const {
     children,
-    onClose = () => {}
+    onClose
   } = props;
 
   // Render

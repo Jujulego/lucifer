@@ -12,7 +12,7 @@ import { OverrideProps } from '@material-ui/core/OverridableComponent';
 // Types
 export type ToolbarActionClassKey = Exclude<IconButtonClassKey, 'colorPrimary' | 'colorSecondary'>;
 export type ToolbarActionTypeMap<
-  P = {},
+  P = unknown,
   D extends ElementType = 'button'
 > = ExtendButtonBaseTypeMap<{
   props: P & Omit<IconButtonTypeMap<P, D>['props'], 'color'> & {
@@ -25,7 +25,7 @@ export type ToolbarActionTypeMap<
 
 export type ToolbarActionProps<
   D extends ElementType = ToolbarActionTypeMap['defaultComponent'],
-  P = {}
+  P = unknown
 > = OverrideProps<ToolbarActionTypeMap<P, D>, D>;
 
 // Component

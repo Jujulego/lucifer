@@ -22,9 +22,9 @@ const authDefaults: AuthContextProps = {
   user: null,
 
   getToken: async () => '',
-  loginWithPopup: async () => {},
-  loginWithRedirect: async () => {},
-  logout: async () => {},
+  loginWithPopup: async () => console.warn('Trying to use uninitialized AuthContext !'),
+  loginWithRedirect: async () => console.warn('Trying to use uninitialized AuthContext !'),
+  logout: async () => console.warn('Trying to use uninitialized AuthContext !'),
 };
 
 // Context

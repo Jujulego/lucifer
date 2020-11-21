@@ -19,8 +19,8 @@ export function useConfirm<T>(init: T): ConfirmReturn<T> {
   const [state, setState] = useState<ConfirmState<T>>({
     open: false,
     data: init,
-    onCancel: () => {},
-    onConfirm: () => {}
+    onCancel: () => null,
+    onConfirm: () => null
   });
 
   // Callbacks
@@ -31,8 +31,8 @@ export function useConfirm<T>(init: T): ConfirmReturn<T> {
         setState(old => ({
           ...old,
           open: false,
-          onCancel: () => {},
-          onConfirm: () => {}
+          onCancel: () => null,
+          onConfirm: () => null
         }));
 
         resolve(result);

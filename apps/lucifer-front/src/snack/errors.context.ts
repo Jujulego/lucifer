@@ -4,21 +4,21 @@ import { createContext } from 'react';
 export interface ErrorState {
   id: number;
   date: Date;
-  error: any;
+  error: unknown;
   seen: boolean;
 }
 
 export interface ErrorsContextProps {
   errors: ErrorState[];
-  addError: (error: any) => void;
+  addError: (error: unknown) => void;
   seenError: (id: number) => void;
 }
 
 // Defaults
 const errorsDefaults: ErrorsContextProps = {
   errors: [],
-  addError: () => {},
-  seenError: () => {}
+  addError: () => console.warn('Trying to use uninitialized ErrorsContext'),
+  seenError: () => console.warn('Trying to use uninitialized ErrorsContext')
 };
 
 // Context

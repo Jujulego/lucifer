@@ -7,29 +7,30 @@ import { useCache } from './cache.context';
 import { Updator } from './types';
 
 // Types
+export type APIParams = Record<string, unknown>;
 export type APIState<R> = { data?: R, loading: boolean };
 export type APIPromise<R> = Promise<R> & { cancel: () => void };
 
 export type APIGetRequestConfig = Omit<AxiosRequestConfig, 'cancelToken'> & { load?: boolean };
-export type APIGetRequestGenerator<P extends Record<string, unknown>, R> = (source: CancelTokenSource) => Promise<AxiosResponse<R>>;
+export type APIGetRequestGenerator<R> = (source: CancelTokenSource) => Promise<AxiosResponse<R>>;
 export type APIGetReturn<R> = APIState<R> & {
   update: (data: R | Updator<R>) => void;
   reload: () => void;
 }
 
-export type APIDeleteRequestGenerator<P extends Record<string, unknown>, R> = (source: CancelTokenSource, url?: string, params?: P) => Promise<AxiosResponse<R>>;
-export type APIDeleteReturn<P extends Record<string, unknown>, R> = APIState<R> & {
+export type APIDeleteRequestGenerator<P extends APIParams, R> = (source: CancelTokenSource, url?: string, params?: P) => Promise<AxiosResponse<R>>;
+export type APIDeleteReturn<P extends APIParams, R> = APIState<R> & {
   send: ((params?: P) => APIPromise<R>) & ((url: string, params?: P) => APIPromise<R>)
 }
 
 export type APIPostRequestConfig = Omit<AxiosRequestConfig, 'cancelToken'>;
-export type APIPostRequestGenerator<D, P extends Record<string, unknown>, R> = (data: D, source: CancelTokenSource, url?: string, params?: P) => Promise<AxiosResponse<R>>;
-export type APIPostReturn<D, P extends Record<string, unknown>, R> = APIState<R> & {
-  send: (data: D, params?: P) => APIPromise<R>,
+export type APIPostRequestGenerator<B, P extends APIParams, R> = (body: B, source: CancelTokenSource, url?: string, params?: P) => Promise<AxiosResponse<R>>;
+export type APIPostReturn<B, P extends APIParams, R> = APIState<R> & {
+  send: (data: B, params?: P) => APIPromise<R>,
 }
 
 // Base hooks
-function useGetRequest<R, P extends Record<string, unknown> = Record<string, unknown>>(generator: APIGetRequestGenerator<P, R>, cacheId: string, load = true): APIGetReturn<R> {
+function useGetRequest<R>(generator: APIGetRequestGenerator<R>, cacheId: string, load = true): APIGetReturn<R> {
   // Cache
   const { data, setCache } = useCache<R>(cacheId);
 
@@ -75,12 +76,12 @@ function useGetRequest<R, P extends Record<string, unknown> = Record<string, unk
       const updator: Updator<R> = (typeof data === "function") ? data as Updator<R> : (() => data);
 
       setState(old => ({ ...old, data: updator(old.data) }))
-    }, [setState]),
+    }, [setState]), // eslint-disable-line react-hooks/exhaustive-deps
     reload: useCallback(() => setReload(old => old + 1), [setReload])
   };
 }
 
-function useDeleteRequest<R = any, P extends Record<string, unknown> = Record<string, unknown>>(generator: APIDeleteRequestGenerator<P, R>): APIDeleteReturn<P, R> {
+function useDeleteRequest<R, P extends APIParams>(generator: APIDeleteRequestGenerator<P, R>): APIDeleteReturn<P, R> {
   // State
   const [state, setState] = useState<APIState<R>>({ loading: false });
 
@@ -104,42 +105,42 @@ function useDeleteRequest<R = any, P extends Record<string, unknown> = Record<st
     const source = axios.CancelToken.source();
 
     // Make request
-    const promise: any = generator(source, url, params)
+    const promise = generator(source, url, params)
       .then((res): R => {
         setState({ data: res.data, loading: false });
         return res.data;
-      });
+      }) as APIPromise<R>;
 
     promise.cancel = () => source.cancel();
-    return promise as APIPromise<R>;
-  }, [generator]);
+    return promise;
+  }, [generator]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return {
     ...state, send
   };
 }
 
-function usePostRequest<D, R = any, P extends Record<string, unknown> = Record<string, unknown>>(generator: APIPostRequestGenerator<D, P, R>): APIPostReturn<D, P, R> {
+function usePostRequest<B, R, P extends APIParams>(generator: APIPostRequestGenerator<B, P, R>): APIPostReturn<B, P, R> {
   // State
   const [state, setState] = useState<APIState<R>>({ loading: false });
 
   // Callback
-  const send = useCallback((data: D) => {
+  const send = useCallback((body: B) => {
     setState(old => ({ ...old, loading: true }));
 
     // Create cancel token
     const source = axios.CancelToken.source();
 
     // Make request
-    const promise: any = generator(data, source)
+    const promise = generator(body, source)
       .then((res): R => {
         setState({ data: res.data, loading: false });
         return res.data;
-      });
+      }) as APIPromise<R>;
 
     promise.cancel = () => source.cancel();
-    return promise as APIPromise<R>;
-  }, [generator]);
+    return promise;
+  }, [generator]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return {
     ...state, send
@@ -147,7 +148,7 @@ function usePostRequest<D, R = any, P extends Record<string, unknown> = Record<s
 }
 
 // API Hooks
-export function useAPIGet<R, P extends Record<string, unknown> = Record<string, unknown>> (url: string, params?: P, config: APIGetRequestConfig = {}): APIGetReturn<R> {
+export function useAPIGet<R, P extends APIParams = APIParams> (url: string, params?: P, config: APIGetRequestConfig = {}): APIGetReturn<R> {
   useDebugValue(url);
   const { load, ...rconfig } = config;
 
@@ -160,7 +161,7 @@ export function useAPIGet<R, P extends Record<string, unknown> = Record<string, 
   return useGetRequest(generator, `api-get:${url}`, config.load);
 }
 
-export function useAPIHead<R, P extends Record<string, unknown> = Record<string, unknown>> (url: string, params?: P, config: APIGetRequestConfig = {}): APIGetReturn<R> {
+export function useAPIHead<R, P extends APIParams = APIParams> (url: string, params?: P, config: APIGetRequestConfig = {}): APIGetReturn<R> {
   useDebugValue(url);
   const { load, ...rconfig } = config;
 
@@ -173,7 +174,7 @@ export function useAPIHead<R, P extends Record<string, unknown> = Record<string,
   return useGetRequest(generator, `api-head:${url}`, config?.load);
 }
 
-export function useAPIOptions<R, P extends Record<string, unknown> = Record<string, unknown>> (url: string, params?: P, config: APIGetRequestConfig = {}): APIGetReturn<R> {
+export function useAPIOptions<R, P extends APIParams = APIParams> (url: string, params?: P, config: APIGetRequestConfig = {}): APIGetReturn<R> {
   useDebugValue(url);
   const { load, ...rconfig } = config;
 
@@ -186,49 +187,49 @@ export function useAPIOptions<R, P extends Record<string, unknown> = Record<stri
   return useGetRequest(generator, `api-options:${url}`, config?.load);
 }
 
-export function useAPIDelete<R = any, P extends Record<string, unknown> = Record<string, unknown>> (url: string, params?: P, config?: APIPostRequestConfig): APIDeleteReturn<P, R> {
+export function useAPIDelete<R = unknown, P extends APIParams = APIParams> (url: string, params?: P, config?: APIPostRequestConfig): APIDeleteReturn<P, R> {
   useDebugValue(url);
 
   // Callbacks
   const generator = useCallback((source: CancelTokenSource, _url?: string, _params?: P) =>
       axios.delete<R>(_url || url, { ...config, params: { ...params, ..._params }, cancelToken: source.token }),
-    [url, params, config]
+    [url, params, config] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   return useDeleteRequest(generator);
 }
 
-export function useAPIPost<D, R = any, P extends Record<string, unknown> = Record<string, unknown>> (url: string, params?: P, config?: APIPostRequestConfig): APIPostReturn<D, P, R> {
+export function useAPIPost<B, R = unknown, P extends APIParams = APIParams> (url: string, params?: P, config?: APIPostRequestConfig): APIPostReturn<B, P, R> {
   useDebugValue(url);
 
   // Callbacks
-  const generator = useCallback((data: D, source: CancelTokenSource, _url?: string, _params?: P) =>
-    axios.post<R>(_url || url, data, { ...config, params: { ...params, ..._params }, cancelToken: source.token }),
-    [url, params, config]
+  const generator = useCallback((body: B, source: CancelTokenSource, _url?: string, _params?: P) =>
+    axios.post<R>(_url || url, body, { ...config, params: { ...params, ..._params }, cancelToken: source.token }),
+    [url, params, config] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   return usePostRequest(generator);
 }
 
-export function useAPIPut<D, R = any, P extends Record<string, unknown> = Record<string, unknown>> (url: string, params?: P, config?: APIPostRequestConfig): APIPostReturn<D, P, R> {
+export function useAPIPut<B, R = unknown, P extends APIParams = APIParams> (url: string, params?: P, config?: APIPostRequestConfig): APIPostReturn<B, P, R> {
   useDebugValue(url);
 
   // Callbacks
-  const generator = useCallback((data: D, source: CancelTokenSource, _url?: string, _params?: P) =>
-    axios.put<R>(_url || url, data, { ...config, params: { ...params, ..._params }, cancelToken: source.token }),
-    [url, params, config]
+  const generator = useCallback((body: B, source: CancelTokenSource, _url?: string, _params?: P) =>
+    axios.put<R>(_url || url, body, { ...config, params: { ...params, ..._params }, cancelToken: source.token }),
+    [url, params, config] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   return usePostRequest(generator);
 }
 
-export function useAPIPatch<D, R = any, P extends Record<string, unknown> = Record<string, unknown>> (url: string, params?: P, config?: APIPostRequestConfig): APIPostReturn<D, P, R> {
+export function useAPIPatch<B, R = unknown, P extends APIParams = APIParams> (url: string, params?: P, config?: APIPostRequestConfig): APIPostReturn<B, P, R> {
   useDebugValue(url);
 
   // Callbacks
-  const generator = useCallback((data: D, source: CancelTokenSource, _url?: string, _params?: P) =>
-    axios.patch<R>(_url || url, data, { ...config, params: { ...params, ..._params }, cancelToken: source.token }),
-    [url, params, config]
+  const generator = useCallback((body: B, source: CancelTokenSource, _url?: string, _params?: P) =>
+    axios.patch<R>(_url || url, body, { ...config, params: { ...params, ..._params }, cancelToken: source.token }),
+    [url, params, config] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   return usePostRequest(generator);

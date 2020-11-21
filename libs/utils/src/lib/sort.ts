@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 // Types
 export type FieldGetter<T> = ((obj: T) => any);
 export type OrderByField<T> = (T extends Record<string, unknown> ? keyof T : any) | FieldGetter<T>;

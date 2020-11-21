@@ -13,7 +13,7 @@ import { AuthContext } from '../auth.context';
 // Types
 export interface AuthGateProps extends Auth0ClientOptions {
   children: ReactNode;
-  onRedirectCallback?: (state: any) => void;
+  onRedirectCallback?: (state: unknown) => void;
 }
 
 // Component

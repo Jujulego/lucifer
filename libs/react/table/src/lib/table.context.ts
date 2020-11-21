@@ -41,7 +41,7 @@ export interface TableContextProps<T extends Document> {
 }
 
 // Defaults
-const tableDefaults: TableContextProps<any> = {
+const tableDefaults: TableContextProps<any> = { // eslint-disable-line @typescript-eslint/no-explicit-any
   blacklist: [],
   documents: [],
   filter: {}, filtered: [],
@@ -51,17 +51,17 @@ const tableDefaults: TableContextProps<any> = {
   selectableCount: 0, selectedCount: 0,
   selected: {},
 
-  onSelect: () => {},
-  onSelectAll: () => {},
-  onFilter: () => {},
-  onOrderBy: () => {},
-  onPaginate: () => {}
+  onSelect: () => console.warn('Trying to use uninitialized TableContext !'),
+  onSelectAll: () => console.warn('Trying to use uninitialized TableContext !'),
+  onFilter: () => console.warn('Trying to use uninitialized TableContext !'),
+  onOrderBy: () => console.warn('Trying to use uninitialized TableContext !'),
+  onPaginate: () => console.warn('Trying to use uninitialized TableContext !')
 }
 
 // Context
 export const TableContext = createContext(tableDefaults);
 
 // Hook
-export function useTable<T extends Document = any>(): TableContextProps<T> {
+export function useTable<T extends Document = Document>(): TableContextProps<T> {
   return useContext(TableContext);
 }

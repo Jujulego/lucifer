@@ -1,5 +1,5 @@
 export * from './lib/colors';
-export * from './lib/style';
+export * from './lib/material';
 
 export { default as useChanged } from './lib/hooks/useChanged';
 export * from './lib/hooks/useChanged';

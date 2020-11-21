@@ -1,4 +1,4 @@
-import React, { MouseEvent, useEffect, useState } from 'react';
+import React, { FC, MouseEvent, useEffect, useState } from 'react';
 import copy from 'copy-to-clipboard';
 
 import {
@@ -19,7 +19,7 @@ export interface CopyButtonProps extends IconButtonProps {
 }
 
 // Component
-const CopyButton = (props: CopyButtonProps) => {
+const CopyButton: FC<CopyButtonProps> = (props: CopyButtonProps) => {
   // Props
   const {
     text, format = "text/plain",

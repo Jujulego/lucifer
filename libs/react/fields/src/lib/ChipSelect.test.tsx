@@ -23,7 +23,7 @@ it('should render correctly', () => {
     <ChipSelect
       label="Test" helperText="Lorem ipsum dolor"
       value={['Test #2']} options={['Test #1', 'Test #2', 'Test #3']}
-      onChange={() => {}}
+      onChange={() => null}
     />
   );
 

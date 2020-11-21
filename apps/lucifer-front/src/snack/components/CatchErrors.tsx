@@ -1,7 +1,7 @@
 import React, { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import axios, { AxiosResponse } from 'axios';
 
-import { ErrorsContext, ErrorState } from '../../snack/errors.context';
+import { ErrorsContext, ErrorState } from '../errors.context';
 
 // Types
 export interface ErrorsProps {
@@ -19,7 +19,7 @@ const CatchErrors = (props: ErrorsProps) => {
   const id = useRef(0);
 
   // Handlers
-  const addError = useCallback((error: any) => {
+  const addError = useCallback((error: unknown) => {
     setErrors(old => [...old, { id: ++(id.current), error, date: new Date(), seen: false }]);
   }, [setErrors]);
 

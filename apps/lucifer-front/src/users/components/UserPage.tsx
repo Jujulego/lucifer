@@ -17,7 +17,7 @@ interface LinkTabProps {
 const LinkTab = (props: LinkTabProps) => {
   const { value } = props;
   const { url } = useRouteMatch();
-  const { page } = useParams<any>();
+  const { page } = useParams<UserParams>();
 
   return (
     <Tab {...props}
@@ -48,7 +48,7 @@ const UserPage = () => {
           user={user} loading={loading}
           onReload={reload}
         />
-        <Tabs variant="fullWidth" value={page} onChange={() => {}}>
+        <Tabs variant="fullWidth" value={page} onChange={() => null}>
           <LinkTab value="details" label="Détails" />
         </Tabs>
       </Paper>

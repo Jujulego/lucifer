@@ -5,7 +5,7 @@ import { AuthUser } from '../models/user';
 import ScopeGate from './ScopeGate';
 
 // Types
-export type AllowRouteCallback = (user: AuthUser | null, params?: any) => boolean;
+export type AllowRouteCallback = (user: AuthUser | null, params?: unknown) => boolean;
 
 export type ScopedRouteProps = Omit<RouteProps, 'render' | 'component' | 'children'> & {
   scope: string;

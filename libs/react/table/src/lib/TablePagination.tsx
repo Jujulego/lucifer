@@ -24,7 +24,7 @@ export interface TablePaginationTypeMap<P, D extends ElementType> {
 
 export type TablePaginationProps<
   D extends ElementType = ComponentType<TablePaginationBaseProps>,
-  P = {}
+  P = unknown
 > = OverrideProps<TablePaginationTypeMap<P, D>, D>;
 
 // Constants

@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from 'react';
+import React, { FC, ReactNode, useEffect } from 'react';
 
 import { AllowCallback, useNeedScope } from '../auth.hooks';
 
@@ -7,11 +7,10 @@ export interface ScopeGateProps {
   scope: string;
   allow?: AllowCallback;
   onForbidden?: () => void;
-  children: ReactNode;
 }
 
 // Components
-const ScopeGate = (props: ScopeGateProps) => {
+const ScopeGate: FC<ScopeGateProps> = (props) => {
   const {
     scope, allow,
     onForbidden,
@@ -29,7 +28,7 @@ const ScopeGate = (props: ScopeGateProps) => {
   // Render
   if (!allowed) return null;
 
-  return <>{ children }</>;
+  return <>{ children }</>; // eslint-disable-line react/jsx-no-useless-fragment
 };
 
 export default ScopeGate;

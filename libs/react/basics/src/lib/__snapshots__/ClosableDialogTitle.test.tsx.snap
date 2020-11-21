@@ -27,7 +27,6 @@ exports[`should render correctly 1`] = `
       }
     }
     edge="end"
-    onClick={[Function]}
   >
     <CloseIcon />
   </WithStyles(ForwardRef(IconButton))>

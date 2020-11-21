@@ -4,7 +4,7 @@ import { CacheContext, CacheState } from './cache.context';
 
 // Types
 interface State {
-  [id: string]: CacheState
+  [id: string]: CacheState<unknown>
 }
 
 export interface ApiCacheProps {

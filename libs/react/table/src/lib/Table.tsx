@@ -63,12 +63,12 @@ const Table = <T extends Document> (props: TableProps<T>) => {
 
   const blacklistCount = useMemo(
     () => filtered.reduce((count, doc: T) => (blacklist.indexOf(doc.id) === -1) ? count : count + 1, 0),
-    [blacklist, filtered]
+    [blacklist, filtered] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   const selectedCount = useMemo(
     () => filtered.reduce((count, doc: T) => selected[doc.id] ? count + 1 : count, 0),
-    [selected, filtered]
+    [selected, filtered] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   const selectedAll = selectedCount >= (filtered.length - blacklistCount);
@@ -84,7 +84,7 @@ const Table = <T extends Document> (props: TableProps<T>) => {
 
       return { field, order };
     });
-  }, [setOrdering]);
+  }, [setOrdering]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onSelect = useCallback((id: number | string) => setSelected(old => ({ ...old, [id]: !old[id] })), [setSelected]);
   const onSelectAll = useCallback(() => {

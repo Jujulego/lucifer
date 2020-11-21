@@ -33,7 +33,7 @@ const EditPasswordField = (props: EditPasswordFieldProps) => {
   // Props
   const {
     editable: pEditable,
-    onChangeEditable = () => {},
+    onChangeEditable = () => null,
 
     disabled, required, value,
     InputProps = {},
