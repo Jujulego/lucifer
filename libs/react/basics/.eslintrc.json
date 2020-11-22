@@ -7,8 +7,8 @@
     "!**/*",
     "setup-tests.js",
     ".storybook/*.js",
-    ".storybook/*.jsx",
     ".storybook/*.ts",
+    ".storybook/*.jsx",
     ".storybook/*.tsx"
   ]
 }

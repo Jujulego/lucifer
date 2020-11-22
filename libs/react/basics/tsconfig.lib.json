@@ -13,8 +13,8 @@
   "exclude": [
     "**/*.test.ts",
     "**/*.test.tsx",
-    "**/*.stories.ts",
     "**/*.stories.js",
+    "**/*.stories.ts",
     "**/*.stories.jsx",
     "**/*.stories.tsx"
   ],
