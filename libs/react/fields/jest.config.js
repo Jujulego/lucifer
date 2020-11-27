@@ -10,4 +10,7 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../../coverage/libs/react/fields',
+  snapshotSerializers: [
+    "enzyme-to-json/serializer"
+  ]
 };

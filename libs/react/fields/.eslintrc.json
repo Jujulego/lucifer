@@ -1,7 +1,14 @@
 {
-  "extends": ["plugin:@nrwl/nx/react", "../../../.eslintrc.json"],
+  "extends": [
+    "plugin:@nrwl/nx/react",
+    "../../../.eslintrc.json"
+  ],
   "ignorePatterns": [
     "!**/*",
-    "setup-tests.js"
+    "setup-tests.js",
+    ".storybook/*.js",
+    ".storybook/*.ts",
+    ".storybook/*.jsx",
+    ".storybook/*.tsx"
   ]
 }
