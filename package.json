@@ -51,6 +51,7 @@
     "morgan": "^1.10.0",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
+    "pg": "^8.5.1",
     "react": "^16.14.0",
     "react-cookie": "^4.0.3",
     "react-dom": "^16.14.0",
@@ -59,7 +60,8 @@
     "react-router-dom": "^5.2.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~6.5.5",
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.0",
+    "typeorm": "^0.2.29"
   },
   "devDependencies": {
     "@babel/core": "7.9.6",

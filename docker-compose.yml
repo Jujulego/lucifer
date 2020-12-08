@@ -1,0 +1,20 @@
+version: '3'
+
+networks:
+  back:
+
+services:
+  postgres:
+    image: postgres:12-alpine
+    restart: unless-stopped
+    volumes:
+      - ./db/data:/var/lib/postgresql/data
+    networks:
+      back:
+        aliases:
+          - postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
