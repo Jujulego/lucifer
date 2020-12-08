@@ -46,8 +46,7 @@
           }
         },
         "migrate": {
-          "builder": "./tools:migrate",
-          "options": {}
+          "builder": "./tools:migrate"
         }
       }
     },

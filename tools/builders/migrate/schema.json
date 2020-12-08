@@ -1,5 +1,11 @@
 {
   "$schema": "http://json-schema.org/schema",
   "type": "object",
-  "properties": {}
+  "properties": {
+    "database": {
+      "type": "string",
+      "description": "Database to migrate for project.",
+      "default": "default"
+    }
+  }
 }

@@ -33,6 +33,7 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+ormconfig.json
 /db/data
 
 # System Files
