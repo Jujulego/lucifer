@@ -1,0 +1,9 @@
+{
+  "builders": {
+    "migrate": {
+      "implementation": "./migrate/migrate",
+      "schema": "./migrate/schema.json",
+      "description": "Runs typeorm's migrations."
+    }
+  }
+}
