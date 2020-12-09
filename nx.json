@@ -40,7 +40,8 @@
     "lucifer-front-e2e": {
       "tags": [],
       "implicitDependencies": [
-        "lucifer-front"
+        "lucifer-front",
+        "lucifer-api"
       ]
     },
     "types": {
