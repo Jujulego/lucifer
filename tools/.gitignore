@@ -1,1 +1,2 @@
-builders/**/*.js
+**/*.js
+**/*.js.map

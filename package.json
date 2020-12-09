@@ -6,6 +6,7 @@
     "nx": "nx",
     "start": "nx serve",
     "build": "nx build",
+    "build:tools": "tsc -p tools/tsconfig.tools.json",
     "test": "nx test",
     "lint": "nx workspace-lint && nx lint",
     "e2e": "nx e2e",
@@ -23,7 +24,9 @@
     "update": "nx migrate latest",
     "workspace-schematic": "nx workspace-schematic",
     "dep-graph": "nx dep-graph",
-    "help": "nx help"
+    "help": "nx help",
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
+    "migration:generate": "yarn run typeorm migration:generate"
   },
   "private": true,
   "dependencies": {
@@ -64,8 +67,6 @@
     "typeorm": "^0.2.29"
   },
   "devDependencies": {
-    "@angular-devkit/architect": "^0.1100.3",
-    "@angular-devkit/core": "^11.0.3",
     "@babel/core": "7.9.6",
     "@babel/preset-env": "7.9.6",
     "@babel/preset-react": "7.9.4",
