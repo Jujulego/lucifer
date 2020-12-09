@@ -46,7 +46,7 @@
           }
         },
         "migrate": {
-          "builder": "./tools:migrate"
+          "builder": ".:migrate"
         }
       }
     },
