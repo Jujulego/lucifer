@@ -45,8 +45,8 @@
             "passWithNoTests": true
           }
         },
-        "migrate": {
-          "builder": ".:migrate"
+        "db-migrate": {
+          "builder": ".:db-migrate"
         }
       }
     },
