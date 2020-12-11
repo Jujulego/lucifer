@@ -55,6 +55,8 @@ jobs:
           sed -i "s/\"username\": [0-9]*/\"username\": \"$TYPEORM_USERNAME\"/g" ormconfig.json
           sed -i "s/\"password\": [0-9]*/\"password\": \"$TYPEORM_PASSWORD\"/g" ormconfig.json
 
+          cat ormconfig.json
+
       - uses: actions/cache@v1
         with:
           path: ${{ steps.setup.outputs.yarn-cache }}
