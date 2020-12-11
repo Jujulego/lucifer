@@ -3,6 +3,7 @@ import { NotFoundException } from '@nestjs/common';
 import { ManagementClient } from 'auth0';
 import { plainToClass } from 'class-transformer';
 
+import { DatabaseModule } from '../database.module';
 import { ManagementClientMock } from '../../mocks/management-client.mock';
 
 import { UsersModule } from './users.module';
@@ -16,7 +17,7 @@ let mgmtClient: ManagementClientMock;
 
 beforeAll(async () => {
   app = await Test.createTestingModule({
-    imports: [UsersModule]
+    imports: [UsersModule, DatabaseModule]
   })
     .overrideProvider(ManagementClient).useClass(ManagementClientMock)
     .compile();

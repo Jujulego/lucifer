@@ -28,7 +28,7 @@ exports[`should render correctly 1`] = `
     }
     edge="end"
   >
-    <CloseIcon />
+    <Memo([object Object]) />
   </WithStyles(ForwardRef(IconButton))>
 </WithStyles(ForwardRef(DialogTitle))>
 `;
