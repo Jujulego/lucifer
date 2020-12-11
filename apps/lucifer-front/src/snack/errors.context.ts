@@ -4,13 +4,13 @@ import { createContext } from 'react';
 export interface ErrorState {
   id: number;
   date: Date;
-  error: unknown;
+  error: any;
   seen: boolean;
 }
 
 export interface ErrorsContextProps {
   errors: ErrorState[];
-  addError: (error: unknown) => void;
+  addError: (error: any) => void;
   seenError: (id: number) => void;
 }
 

@@ -13,7 +13,7 @@ import { AuthContext } from '../auth.context';
 // Types
 export interface AuthGateProps extends Auth0ClientOptions {
   children: ReactNode;
-  onRedirectCallback?: (state: unknown) => void;
+  onRedirectCallback?: (state: any) => void;
 }
 
 // Component
@@ -49,9 +49,11 @@ const AuthGate = (props: AuthGateProps) => {
         // Load state
         const logged = await client.isAuthenticated();
         if (logged) {
-          const user = await client.getUser();
+          const user = await client.getUser<AuthUser>();
 
-          setUser({ ...user, id: user.sub });
+          if (user) {
+            setUser({ ...user, id: user.sub });
+          }
         }
 
         setLogged(logged);
@@ -94,10 +96,12 @@ const AuthGate = (props: AuthGateProps) => {
 
       // Update state
       if (await auth0.isAuthenticated()) {
-        const user = await auth0.getUser();
+        const user = await auth0.getUser<AuthUser>();
 
-        setLogged(true);
-        setUser({ ...user, id: user.sub });
+        if (user) {
+          setLogged(true);
+          setUser({ ...user, id: user.sub });
+        }
       } else {
         setLogged(false);
         setUser(null);

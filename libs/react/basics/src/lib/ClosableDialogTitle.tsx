@@ -17,7 +17,7 @@ export type ClosableDialogTitleProps = StyledProps<ClosableDialogTitleClassKey> 
 }
 
 // Styles
-const useStyles = makeStyles<Theme, ClosableDialogTitleClassKey>({
+const useStyles = makeStyles<Theme, ClosableDialogTitleProps, ClosableDialogTitleClassKey>({
   root: {
     display: 'flex',
   },
