@@ -14,5 +14,5 @@ export default createBuilder(async (options: Options, ctx: BuilderContext) => {
   ctx.reportStatus('migrating')
   ctx.logger.info(`Migrating database ${options.database}`);
 
-  return await spawnTypeorm(ctx, 'migration:run');
+  return await spawnTypeorm(ctx, 'migration:run', '-c', options.database);
 });
