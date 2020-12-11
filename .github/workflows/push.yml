@@ -55,7 +55,7 @@ jobs:
           sed -i "s/\"username\": \".*\"/\"username\": \"$TYPEORM_USERNAME\"/g" ormconfig.json
           sed -i "s/\"password\": \".*\"/\"password\": \"$TYPEORM_PASSWORD\"/g" ormconfig.json
 
-      - uses: actions/cache@v1
+      - uses: actions/cache@v2
         with:
           path: ${{ steps.setup.outputs.yarn-cache }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -91,7 +91,7 @@ jobs:
           # Configure yarn cache
           echo "::set-output name=yarn-cache::$(yarn cache dir)"
 
-      - uses: actions/cache@v1
+      - uses: actions/cache@v2
         with:
           path: ${{ steps.setup.outputs.yarn-cache }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
