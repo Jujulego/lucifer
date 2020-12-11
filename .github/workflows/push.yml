@@ -35,6 +35,11 @@ jobs:
       AUTH0_CLIENT_ID: 'test'
       AUTH0_CLIENT_SECRET: 'test'
 
+      TYPEORM_HOST: 'postgres'
+      TYPEORM_PORT: 5432
+      TYPEORM_USERNAME: 'root'
+      TYPEORM_PASSWORD: 'root'
+
     steps:
       - uses: actions/checkout@v2
 
