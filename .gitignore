@@ -34,7 +34,7 @@ yarn-error.log
 testem.log
 /typings
 ormconfig.json
-/db/data
+/db/data/*
 
 # System Files
 .DS_Store

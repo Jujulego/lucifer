@@ -7,6 +7,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     TypeOrmModule.forRoot({
       autoLoadEntities: true,
     })
+  ],
+  exports: [
+    TypeOrmModule
   ]
 })
 export class DatabaseModule {}

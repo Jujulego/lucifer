@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "type": "object",
+  "properties": {
+    "database": {
+      "type": "string",
+      "description": "Database of the project.",
+      "default": "default"
+    },
+    "name": {
+      "alias": "n",
+      "type": "string",
+      "description": "Migration name."
+    }
+  },
+  "required": ["name"]
+}

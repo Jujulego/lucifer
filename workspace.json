@@ -47,6 +47,9 @@
         },
         "db-migrate": {
           "builder": ".:db-migrate"
+        },
+        "gen-migration": {
+          "builder": ".:gen-migration"
         }
       }
     },

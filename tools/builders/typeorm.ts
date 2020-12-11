@@ -2,7 +2,7 @@ import { BuilderContext, BuilderOutput } from '@angular-devkit/architect';
 import { spawn } from 'child_process';
 
 // Type
-export type TypeormCommand = 'migration:run';
+export type TypeormCommand = 'migration:run' | 'migration:generate';
 
 // Constants
 const TSNODE_ARGS = ['-P', 'tools/tsconfig.tools.json', '-r', 'tsconfig-paths/register'];
