@@ -52,8 +52,8 @@ jobs:
           # Configure typeorm
           sed -i "s/\"host\": \".*\"/\"host\": \"$TYPEORM_HOST\"/g" ormconfig.json
           sed -i "s/\"port\": [0-9]*/\"port\": $TYPEORM_PORT/g" ormconfig.json
-          sed -i "s/\"username\": [0-9]*/\"username\": $TYPEORM_USERNAME/g" ormconfig.json
-          sed -i "s/\"password\": [0-9]*/\"password\": $TYPEORM_PASSWORD/g" ormconfig.json
+          sed -i "s/\"username\": [0-9]*/\"username\": \"$TYPEORM_USERNAME\"/g" ormconfig.json
+          sed -i "s/\"password\": [0-9]*/\"password\": \"$TYPEORM_PASSWORD\"/g" ormconfig.json
 
       - uses: actions/cache@v1
         with:
