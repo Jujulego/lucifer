@@ -15,6 +15,18 @@ jobs:
     container:
       image: node:14
 
+    services:
+      postgres:
+        image: postgres:12-alpine
+        env:
+          POSTGRES_USER: 'root'
+          POSTGRES_PASSWORD: 'root'
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     env:
       AUTH0_DOMAIN: 'test.com'
       AUTH0_AUDIENCE: 'test'
@@ -39,6 +51,9 @@ jobs:
 
       - name: Lint
         run: yarn run nx run-many --all --target=lint --scan
+
+      - name: Migrate
+        run: yarn run nx run-many --all --target=db-migrate --scan
 
       - name: Tests
         run: yarn run nx run-many --all --target=test --scan
