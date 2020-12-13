@@ -1,0 +1,76 @@
+name: Tests
+
+on:
+  pull_request:
+    branches: [ master ]
+
+env:
+  NX_BRANCH: ${{ github.event.number }}
+  NX_RUN_GROUP: ${{ github.run_id }}
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    container:
+      image: node:14
+
+    services:
+      postgres:
+        image: postgres:12-alpine
+        env:
+          POSTGRES_USER: 'root'
+          POSTGRES_PASSWORD: 'root'
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    env:
+      AUTH0_DOMAIN: 'test.com'
+      AUTH0_AUDIENCE: 'test'
+      AUTH0_CLIENT_ID: 'test'
+      AUTH0_CLIENT_SECRET: 'test'
+
+      TYPEORM_HOST: 'postgres'
+      TYPEORM_PORT: 5432
+      TYPEORM_USERNAME: 'root'
+      TYPEORM_PASSWORD: 'root'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup
+        id: setup
+        run: |
+          # Configure yarn cache
+          echo "::set-output name=yarn-cache::$(yarn cache dir)"
+
+          # Configure typeorm
+          sed -i "s/\"host\": \".*\"/\"host\": \"$TYPEORM_HOST\"/g" ormconfig.json
+          sed -i "s/\"port\": [0-9]*/\"port\": $TYPEORM_PORT/g" ormconfig.json
+          sed -i "s/\"username\": \".*\"/\"username\": \"$TYPEORM_USERNAME\"/g" ormconfig.json
+          sed -i "s/\"password\": \".*\"/\"password\": \"$TYPEORM_PASSWORD\"/g" ormconfig.json
+
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.setup.outputs.yarn-cache }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: |
+          yarn install --pure-lockfile
+          yarn run build:tools
+
+      - name: Lint
+        run: yarn run affected:lint --scan
+
+      - name: Migrate
+        run: yarn run nx run-many --all --target=db-migrate --scan
+
+      - name: Tests
+        run: yarn run affected:test --scan
