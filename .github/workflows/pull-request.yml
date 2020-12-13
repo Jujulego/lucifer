@@ -42,6 +42,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Setup
         id: setup
@@ -54,6 +56,9 @@ jobs:
           sed -i "s/\"port\": [0-9]*/\"port\": $TYPEORM_PORT/g" ormconfig.json
           sed -i "s/\"username\": \".*\"/\"username\": \"$TYPEORM_USERNAME\"/g" ormconfig.json
           sed -i "s/\"password\": \".*\"/\"password\": \"$TYPEORM_PASSWORD\"/g" ormconfig.json
+
+          # Fetch master for nx affected:*
+          git fetch --no-tags --prune --depth=5 origin master
 
       - uses: actions/cache@v2
         with:
