@@ -63,8 +63,8 @@ jobs:
           sed -i "s/\"username\": \".*\"/\"username\": \"$TYPEORM_USERNAME\"/g" ormconfig.json
           sed -i "s/\"password\": \".*\"/\"password\": \"$TYPEORM_PASSWORD\"/g" ormconfig.json
 
-          # Fetch master for nx affected:*
-          # git fetch --no-tags --prune --depth=5 origin master
+          # Fetch base branch for nx affected:*
+          git fetch --no-tags --prune origin ${{ github.base_ref }}
 
       - uses: actions/cache@v2
         with:
