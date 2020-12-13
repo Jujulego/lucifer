@@ -12,10 +12,6 @@ jobs:
   tests:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [14.x]
-
     services:
       postgres:
         image: postgres:12-alpine
@@ -36,7 +32,7 @@ jobs:
       AUTH0_CLIENT_ID: 'test'
       AUTH0_CLIENT_SECRET: 'test'
 
-      TYPEORM_HOST: 'postgres'
+      TYPEORM_HOST: 'localhost'
       TYPEORM_PORT: 5432
       TYPEORM_USERNAME: 'root'
       TYPEORM_PASSWORD: 'root'
@@ -47,10 +43,10 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 14.x
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 14.x
 
       - name: Setup
         id: setup
