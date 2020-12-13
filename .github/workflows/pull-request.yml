@@ -78,10 +78,10 @@ jobs:
           yarn run build:tools
 
       - name: Lint
-        run: yarn run affected:lint --scan --base="origin/${{ github.base_ref }}"
+        run: yarn run affected:lint --scan --base=${{ github.base_ref }}
 
       - name: Migrate
         run: yarn run nx run-many --all --target=db-migrate --scan
 
       - name: Tests
-        run: yarn run affected:test --scan --base="origin/${{ github.base_ref }}"
+        run: yarn run affected:test --scan --base=${{ github.base_ref }}
