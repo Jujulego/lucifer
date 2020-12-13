@@ -43,8 +43,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-#        with:
-#          fetch-depth: 2
+        with:
+          fetch-depth: 0
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
@@ -64,7 +64,7 @@ jobs:
           sed -i "s/\"password\": \".*\"/\"password\": \"$TYPEORM_PASSWORD\"/g" ormconfig.json
 
           # Fetch base branch for nx affected:*
-          git fetch --no-tags --prune origin ${{ github.base_ref }}
+          git fetch --no-tags --prune --depth=5 origin ${{ github.base_ref }}
 
       - uses: actions/cache@v2
         with:
