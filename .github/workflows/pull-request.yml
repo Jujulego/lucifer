@@ -12,8 +12,9 @@ jobs:
   tests:
     runs-on: ubuntu-latest
 
-    container:
-      image: node:14
+    strategy:
+      matrix:
+        node-version: [14.x]
 
     services:
       postgres:
@@ -42,8 +43,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+#        with:
+#          fetch-depth: 0
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
         with:
-          fetch-depth: 0
+          node-version: ${{ matrix.node-version }}
 
       - name: Setup
         id: setup
@@ -58,7 +64,7 @@ jobs:
           sed -i "s/\"password\": \".*\"/\"password\": \"$TYPEORM_PASSWORD\"/g" ormconfig.json
 
           # Fetch master for nx affected:*
-          git fetch --no-tags --prune --depth=5 origin master
+          # git fetch --no-tags --prune --depth=5 origin master
 
       - uses: actions/cache@v2
         with:
