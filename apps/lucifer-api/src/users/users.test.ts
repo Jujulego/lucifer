@@ -4,6 +4,7 @@ import { ManagementClient } from 'auth0';
 import { plainToClass } from 'class-transformer';
 
 import { DatabaseModule } from '../database.module';
+import { MachinesModule } from '../machines/machines.module';
 import { ManagementClientMock } from '../../mocks/management-client.mock';
 
 import { UsersModule } from './users.module';
@@ -17,7 +18,11 @@ let mgmtClient: ManagementClientMock;
 
 beforeAll(async () => {
   app = await Test.createTestingModule({
-    imports: [UsersModule, DatabaseModule]
+    imports: [
+      DatabaseModule,
+      MachinesModule,
+      UsersModule,
+    ]
   })
     .overrideProvider(ManagementClient).useClass(ManagementClientMock)
     .compile();
