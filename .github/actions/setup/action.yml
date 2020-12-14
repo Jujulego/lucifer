@@ -34,8 +34,8 @@ runs:
 
     # Configure typeorm
     - run: |
-        sed -i "s/\"host\": \".*\"/\"host\": \"$INPUT_DB_HOST\"/g" ormconfig.json
-        sed -i "s/\"port\": [0-9]*/\"port\": $INPUT_DB_PORT/g" ormconfig.json
-        sed -i "s/\"username\": \".*\"/\"username\": \"$INPUT_DB_USERNAME\"/g" ormconfig.json
-        sed -i "s/\"password\": \".*\"/\"password\": \"$INPUT_DB_PASSWORD\"/g" ormconfig.json
+        sed -i "s/\"host\": \".*\"/\"host\": \"$INPUT_DB-HOST\"/g" ormconfig.json
+        sed -i "s/\"port\": [0-9]*/\"port\": $INPUT_DB-PORT/g" ormconfig.json
+        sed -i "s/\"username\": \".*\"/\"username\": \"$INPUT_DB-USERNAME\"/g" ormconfig.json
+        sed -i "s/\"password\": \".*\"/\"password\": \"$INPUT_DB-PASSWORD\"/g" ormconfig.json
       shell: bash
