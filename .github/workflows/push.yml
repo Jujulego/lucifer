@@ -38,8 +38,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: ./.github/actions/setup.yml
+      - name: 'Setup'
         id: setup
+        uses: ./.github/actions/setup
         with:
           db-host: 'postgres'
           db-port: 5432
