@@ -33,7 +33,7 @@ export class UsersController {
   }
 
   @Put('/:id')
-  @Scopes('read:users')
+  @Scopes('update:users')
   @AllowIf((req, token) => req.params.id === token.sub)
   async update(@Param('id') id: string, @Body(ValidationPipe) update: UpdateUser): Promise<User> {
     return await this.users.update(id, update);
