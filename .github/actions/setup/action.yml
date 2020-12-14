@@ -2,19 +2,19 @@ name: 'Setup'
 description: 'Setup project for CI'
 
 inputs:
-  db-host:
+  db_host:
     description: 'Database host'
     required: true
 
-  db-port:
+  db_port:
     description: 'Database port'
     required: true
 
-  db-username:
+  db_username:
     description: 'Database username'
     required: true
 
-  db-password:
+  db_password:
     description: 'Database password'
     required: true
 
@@ -34,9 +34,9 @@ runs:
 
     # Configure typeorm
     - run: |
-        sed -i "s/\"host\": \".*\"/\"host\": \"$INPUT_DBHOST\"/g" ormconfig.json
-        sed -i "s/\"port\": [0-9]*/\"port\": $INPUT_DBPORT/g" ormconfig.json
-        sed -i "s/\"username\": \".*\"/\"username\": \"$INPUT_DBUSERNAME\"/g" ormconfig.json
-        sed -i "s/\"password\": \".*\"/\"password\": \"$INPUT_DBPASSWORD\"/g" ormconfig.json
+        sed -i "s/\"host\": \".*\"/\"host\": \"$INPUT_DB_HOST\"/g" ormconfig.json
+        sed -i "s/\"port\": [0-9]*/\"port\": $INPUT_DB_PORT/g" ormconfig.json
+        sed -i "s/\"username\": \".*\"/\"username\": \"$INPUT_DB_USERNAME\"/g" ormconfig.json
+        sed -i "s/\"password\": \".*\"/\"password\": \"$INPUT_DB_PASSWORD\"/g" ormconfig.json
         cat ormconfig.json
       shell: bash
