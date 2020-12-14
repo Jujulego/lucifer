@@ -150,8 +150,7 @@ describe('UsersService.update', () => {
         email:    update.email,
         name:     update.name,
         nickname: user.nickname,
-        picture:  user.picture,
-        machines: []
+        picture:  user.picture
       });
 
     // Check call

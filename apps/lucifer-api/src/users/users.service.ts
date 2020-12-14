@@ -110,7 +110,6 @@ export class UsersService {
     const [aths, lcus] = await Promise.all([
       this.auth0.getUsers({ sort: 'user_id:1' }),
       this.repository.find({
-        relations: ['machines'],
         order: { id: 'ASC' }
       })
     ]);
