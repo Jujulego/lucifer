@@ -10,7 +10,6 @@
 
 # terraform
 /.terraform
-*.lock.hcl
 
 # IDEs and editors
 /.idea
@@ -38,7 +37,6 @@ yarn-error.log
 testem.log
 /typings
 /db/data
-.secrets
 
 # System Files
 .DS_Store

@@ -1,13 +1,11 @@
 terraform {
-  backend "pg" {
+  backend "pg" {}
+
+  required_providers {
+    heroku = {
+      source = "heroku/heroku"
+    }
   }
 }
 
-provider "heroku" {
-  version = "~> 2.5.0"
-}
-
-variable "env" {
-  description = "Deploy environment"
-}
-
+provider "heroku" {}
