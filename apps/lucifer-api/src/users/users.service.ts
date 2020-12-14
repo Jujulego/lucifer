@@ -1,9 +1,13 @@
 import { Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { ManagementClient, User as Auth0User } from 'auth0';
 import { plainToClass } from 'class-transformer';
+import { Repository } from 'typeorm';
 
-import { User } from '@lucifer/types';
+import { IUser, User } from '@lucifer/types';
+
 import { UpdateUser } from './user.schema';
+import { LocalUser } from './local-user.entity';
 
 // Service
 @Injectable()
@@ -13,11 +17,12 @@ export class UsersService {
 
   // Constructor
   constructor(
-    private auth0: ManagementClient
+    private auth0: ManagementClient,
+    @InjectRepository(LocalUser) private repository: Repository<LocalUser>
   ) {}
 
   // Methods
-  private format(ath: Auth0User): User {
+  private format(ath: Auth0User, lcu?: LocalUser): User {
     // Mandatory fields
     const { user_id, name, email } = ath;
 
@@ -26,9 +31,10 @@ export class UsersService {
       throw new InternalServerErrorException();
     }
 
-    const usr: User = {
+    const usr: IUser = {
       id: user_id,
       name, email,
+      machines: lcu?.machines ?? [],
     };
 
     // Optional fields
@@ -47,21 +53,69 @@ export class UsersService {
     return plainToClass(User, usr);
   }
 
+  private formatAll(aths: Auth0User[], lcus: LocalUser[]): User[] {
+    // Simple cases
+    if (aths.length === 0) return [];
+    if (lcus.length === 0) return aths.map(ath => this.format(ath));
+
+    // Build users
+    const results: User[] = [];
+    let j = 0;
+
+    for (let i = 0; i < aths.length; ++i) {
+      const ath = aths[i];
+      let added = false;
+
+      // Search in locals
+      while (j < lcus.length) {
+        const lcu = lcus[j];
+
+        if (lcu.id > ath.user_id!) break;
+        if (lcu.id === ath.user_id) {
+          added = true;
+          results.push(this.format(ath, lcu));
+
+          break;
+        }
+
+        ++j;
+      }
+
+      if (!added) {
+        results.push(this.format(ath));
+      }
+    }
+
+    return results;
+  }
+
   async get(id: string): Promise<User> {
-    const user = await this.auth0.getUser({ id });
+    const [ath, lcu] = await Promise.all([
+      this.auth0.getUser({ id }),
+      this.repository.findOne({
+        relations: ['machines'],
+        where: { id }
+      }),
+    ]);
 
     // Throw if not found
-    if (!user) {
+    if (!ath) {
       throw new NotFoundException(`User ${id} not found`);
     }
 
-    return this.format(user);
+    return this.format(ath, lcu);
   }
 
   async list(): Promise<User[]> {
-    const users = await this.auth0.getUsers({ sort: 'user_id:1' });
+    const [aths, lcus] = await Promise.all([
+      this.auth0.getUsers({ sort: 'user_id:1' }),
+      this.repository.find({
+        relations: ['machines'],
+        order: { id: 'ASC' }
+      })
+    ]);
 
-    return users.map(usr => this.format(usr));
+    return this.formatAll(aths, lcus);
   }
 
   async update(id: string, update: UpdateUser): Promise<User> {

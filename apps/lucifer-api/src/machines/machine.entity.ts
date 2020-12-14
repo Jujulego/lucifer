@@ -1,9 +1,11 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+
+import { IMachine } from '@lucifer/types';
 
 import { LocalUser } from '../users/local-user.entity';
 
 @Entity()
-export class Machine {
+export class Machine implements IMachine {
   // Columns
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -11,6 +13,11 @@ export class Machine {
   @Column('varchar', { length: 50 })
   shortName: string;
 
+  @Column('varchar')
+  ownerId: string;
+
+  // Relations
   @ManyToOne(() => LocalUser, usr => usr.machines, { nullable: false })
-  owner: LocalUser;
+  @JoinColumn({ name: 'ownerId' })
+  owner: Promise<LocalUser>;
 }

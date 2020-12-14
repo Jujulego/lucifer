@@ -64,7 +64,8 @@ describe('UsersService.get', () => {
         email:    user.email,
         name:     user.name,
         nickname: user.nickname,
-        picture:  user.picture
+        picture:  user.picture,
+        machines: []
       });
 
     // Check call
@@ -149,7 +150,8 @@ describe('UsersService.update', () => {
         email:    update.email,
         name:     update.name,
         nickname: user.nickname,
-        picture:  user.picture
+        picture:  user.picture,
+        machines: []
       });
 
     // Check call
