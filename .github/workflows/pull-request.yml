@@ -59,6 +59,7 @@ jobs:
           sed -i "s/\"port\": [0-9]*/\"port\": $TYPEORM_PORT/g" ormconfig.json
           sed -i "s/\"username\": \".*\"/\"username\": \"$TYPEORM_USERNAME\"/g" ormconfig.json
           sed -i "s/\"password\": \".*\"/\"password\": \"$TYPEORM_PASSWORD\"/g" ormconfig.json
+          cat ormconfig.json
 
           # Fetch base branch for nx affected:*
           git fetch --no-tags --prune --depth=5 origin ${{ github.base_ref }}
