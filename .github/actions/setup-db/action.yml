@@ -18,25 +18,14 @@ inputs:
     description: 'Database password'
     required: true
 
-outputs:
-  yarn-cache:
-    description: 'Yarn cache folder'
-    value: ${{ steps.cache.outputs.yarn-cache }}
-
 runs:
   using: composite
 
   steps:
-    # Configure yarn cache
-    - run: echo "::set-output name=yarn-cache::$(yarn cache dir)"
-      id: cache
-      shell: bash
-
     # Configure typeorm
     - run: |
         sed -i "s/\"host\": \".*\"/\"host\": \"${{ inputs.db-host }}\"/g" ormconfig.json
         sed -i "s/\"port\": [0-9]*/\"port\": ${{ inputs.db-port }}/g" ormconfig.json
         sed -i "s/\"username\": \".*\"/\"username\": \"${{ inputs.db-username }}\"/g" ormconfig.json
         sed -i "s/\"password\": \".*\"/\"password\": \"${{ inputs.db-password }}\"/g" ormconfig.json
-        cat ormconfig.json
       shell: bash
