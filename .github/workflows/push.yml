@@ -1,4 +1,4 @@
-name: Tests
+name: Push
 
 on:
   push:
@@ -35,25 +35,16 @@ jobs:
       AUTH0_CLIENT_ID: 'test'
       AUTH0_CLIENT_SECRET: 'test'
 
-      TYPEORM_HOST: 'postgres'
-      TYPEORM_PORT: 5432
-      TYPEORM_USERNAME: 'root'
-      TYPEORM_PASSWORD: 'root'
-
     steps:
       - uses: actions/checkout@v2
 
-      - name: Setup
+      - uses: ./.github/actions/setup.yml
         id: setup
-        run: |
-          # Configure yarn cache
-          echo "::set-output name=yarn-cache::$(yarn cache dir)"
-
-          # Configure typeorm
-          sed -i "s/\"host\": \".*\"/\"host\": \"$TYPEORM_HOST\"/g" ormconfig.json
-          sed -i "s/\"port\": [0-9]*/\"port\": $TYPEORM_PORT/g" ormconfig.json
-          sed -i "s/\"username\": \".*\"/\"username\": \"$TYPEORM_USERNAME\"/g" ormconfig.json
-          sed -i "s/\"password\": \".*\"/\"password\": \"$TYPEORM_PASSWORD\"/g" ormconfig.json
+        with:
+          db-host: 'postgres'
+          db-port: 5432
+          db-username: 'root'
+          db-password: 'root'
 
       - uses: actions/cache@v2
         with:

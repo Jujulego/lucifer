@@ -1,0 +1,41 @@
+name: 'Setup'
+description: 'Setup project for CI'
+
+inputs:
+  db-host:
+    description: 'Database host'
+    required: true
+
+  db-port:
+    description: 'Database port'
+    required: true
+
+  db-username:
+    description: 'Database username'
+    required: true
+
+  db-password:
+    description: 'Database password'
+    required: true
+
+outputs:
+  yarn-cache:
+    description: 'Yarn cache folder'
+    value: ${{ steps.cache.outputs.yarn-cache }}
+
+runs:
+  using: composite
+
+  steps:
+    # Configure yarn cache
+    - run: echo "::set-output name=yarn-cache::$(yarn cache dir)"
+      id: cache
+      shell: bash
+
+    # Configure typeorm
+    - run: |
+        sed -i "s/\"host\": \".*\"/\"host\": \"$INPUT_DB_HOST\"/g" ormconfig.json
+        sed -i "s/\"port\": [0-9]*/\"port\": $INPUT_DB_PORT/g" ormconfig.json
+        sed -i "s/\"username\": \".*\"/\"username\": \"$INPUT_DB_USERNAME\"/g" ormconfig.json
+        sed -i "s/\"password\": \".*\"/\"password\": \"$INPUT_DB_PASSWORD\"/g" ormconfig.json
+      shell: bash
