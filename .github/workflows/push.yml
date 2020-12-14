@@ -42,10 +42,10 @@ jobs:
         id: setup
         uses: ./.github/actions/setup
         with:
-          db_host: 'postgres'
-          db_port: 5432
-          db_username: 'root'
-          db_password: 'root'
+          db-host: 'postgres'
+          db-port: 5432
+          db-username: 'root'
+          db-password: 'root'
 
       - uses: actions/cache@v2
         with:
