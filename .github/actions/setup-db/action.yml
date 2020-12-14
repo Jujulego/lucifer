@@ -1,0 +1,31 @@
+name: 'Setup'
+description: 'Setup project for CI'
+
+inputs:
+  db-host:
+    description: 'Database host'
+    required: true
+
+  db-port:
+    description: 'Database port'
+    required: true
+
+  db-username:
+    description: 'Database username'
+    required: true
+
+  db-password:
+    description: 'Database password'
+    required: true
+
+runs:
+  using: composite
+
+  steps:
+    # Configure typeorm
+    - run: |
+        sed -i "s/\"host\": \".*\"/\"host\": \"${{ inputs.db-host }}\"/g" ormconfig.json
+        sed -i "s/\"port\": [0-9]*/\"port\": ${{ inputs.db-port }}/g" ormconfig.json
+        sed -i "s/\"username\": \".*\"/\"username\": \"${{ inputs.db-username }}\"/g" ormconfig.json
+        sed -i "s/\"password\": \".*\"/\"password\": \"${{ inputs.db-password }}\"/g" ormconfig.json
+      shell: bash
