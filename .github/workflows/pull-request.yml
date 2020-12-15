@@ -116,7 +116,7 @@ jobs:
               "#### Terraform Plan 📖`${{ steps.plan.outcome }}`\n" +
               "<details>\n" +
               "  <summary>Show Plan</summary>\n" +
-              "  ```terraform\n" +
+              "  ```\n" +
               `    ${process.env.PLAN_OUTPUT}\n` +
               "  ```\n" +
               "</details>\n" +
