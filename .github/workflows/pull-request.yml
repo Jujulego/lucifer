@@ -92,14 +92,18 @@ jobs:
 
       - name: Terraform Format
         id: fmt
-        run: terraform fmt -check res
+        run: terraform fmt -check res && exit 1
+        continue-on-error: true
 
       - name: Terraform Init
         id: init
+        if: steps.fmt.outcome == 'success'
         run: terraform init res
+        continue-on-error: true
 
       - name: Terraform Plan
         id: plan
+        if: steps.init.outcome == 'success'
         run: terraform plan -no-color res
         continue-on-error: true
 
