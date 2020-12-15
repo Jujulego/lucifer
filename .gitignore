@@ -8,6 +8,9 @@
 # dependencies
 /node_modules
 
+# terraform
+/.terraform
+
 # IDEs and editors
 /.idea
 .project
@@ -33,7 +36,7 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
-/db/data/*
+/db/data
 
 # System Files
 .DS_Store

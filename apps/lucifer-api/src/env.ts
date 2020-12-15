@@ -23,13 +23,14 @@ if (error) {
 // Environment
 export const env = {
   // Basic
-  PORT:       value.PORT as number,
-  PRODUCTION: value.NODE_ENV === 'production',
-  TESTS:      value.NODE_ENV === 'test',
+  DATABASE_URL: value.DATABASE_URL as string,
+  PORT:         value.PORT as number,
+  PRODUCTION:   value.NODE_ENV === 'production',
+  TESTS:        value.NODE_ENV === 'test',
 
   // Auth0
-  AUTH0_DOMAIN: value.AUTH0_DOMAIN as string,
-  AUTH0_AUDIENCE: value.AUTH0_AUDIENCE as string,
-  AUTH0_CLIENT_ID: value.AUTH0_CLIENT_ID as string,
+  AUTH0_DOMAIN:        value.AUTH0_DOMAIN as string,
+  AUTH0_AUDIENCE:      value.AUTH0_AUDIENCE as string,
+  AUTH0_CLIENT_ID:     value.AUTH0_CLIENT_ID as string,
   AUTH0_CLIENT_SECRET: value.AUTH0_CLIENT_SECRET as string,
 }
