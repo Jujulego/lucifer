@@ -92,7 +92,7 @@ jobs:
 
       - name: Terraform Format
         id: fmt
-        run: terraform fmt -check res && exit 1
+        run: terraform fmt -check res
         continue-on-error: true
 
       - name: Terraform Init
