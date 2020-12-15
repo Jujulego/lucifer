@@ -110,15 +110,23 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const output =
-              "#### Terraform Format and Style 🖌`${{ steps.fmt.outcome }}`\n" +
-              "#### Terraform Initialization ⚙️`${{ steps.init.outcome }}`\n" +
-              "#### Terraform Plan 📖`${{ steps.plan.outcome }}`\n" +
-              "<details>\n" +
-              "  <summary>Show Plan</summary>\n" +
-              `  <pre><code class="language-terraform">${process.env.PLAN_OUTPUT}</code></pre>\n` +
-              "</details>\n" +
-              "*Pusher: @${{ github.actor }}, Action: `${{ github.event_name }}`*";
+            const output = ```
+            | Steps                         | Status                     |
+            | ----------------------------- | -------------------------- |
+            | 🖌 Terraform Format and Style | \`${{ steps.fmt.outcome }}\` |
+            | ⚙️ Terraform Initialization   | \`${{ steps.init.outcome }}\` |
+            | 📖 Terraform Plan             | \`${{ steps.plan.outcome }}\` |
+
+            <details><summary>Show Plan</summary>\n" +
+
+            \`\`\`terraform\n"
+            \`${process.env.PLAN_OUTPUT}\n\` +
+            \`\`\`
+
+            </details>
+
+            *Pusher: @${{ github.actor }}, Action: `${{ github.event_name }}`*"
+            ```;
 
             github.issues.createComment({
               issue_number: context.issue.number,
