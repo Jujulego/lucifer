@@ -110,7 +110,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const output = ```
+            const output = `
             | Steps                         | Status                     |
             | ----------------------------- | -------------------------- |
             | 🖌 Terraform Format and Style | \`${{ steps.fmt.outcome }}\` |
@@ -125,8 +125,7 @@ jobs:
 
             </details>
 
-            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*"
-            ```;
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
 
             github.issues.createComment({
               issue_number: context.issue.number,
