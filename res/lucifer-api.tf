@@ -1,5 +1,5 @@
 resource "heroku_app" "lucifer-api" {
-  name = "lucifer-api"
+  name   = "lucifer-api"
   region = "eu"
 
   config_vars = {
@@ -9,4 +9,9 @@ resource "heroku_app" "lucifer-api" {
   buildpacks = [
     "heroku/nodejs"
   ]
+}
+
+resource "heroku_addon" "lucifer-api" {
+  app  = heroku_app.lucifer-api.name
+  plan = "heroku-postgresql:hobby-basic"
 }
