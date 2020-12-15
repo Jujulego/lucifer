@@ -105,6 +105,8 @@ jobs:
 
       - name: Update Pull Request
         uses: actions/github-script@v3
+        env:
+          PLAN_OUTPUT: "${{ steps.plan.outputs.stdout }}"
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -115,7 +117,7 @@ jobs:
               "<details>\n" +
               "  <summary>Show Plan</summary>\n" +
               "  ```terraform\n" +
-              "    ${{ steps.plan.outputs.stdout }}\n" +
+              `    ${process.env.PLAN_OUTPUT}\n` +
               "  ```\n" +
               "</details>\n" +
               "*Pusher: @${{ github.actor }}, Action: `${{ github.event_name }}`*";
