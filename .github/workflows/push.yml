@@ -122,3 +122,6 @@ jobs:
 
       - name: Terraform Init
         run: terraform init res
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve res
