@@ -120,7 +120,7 @@ jobs:
             <details><summary>Show Plan</summary>\n" +
 
             \`\`\`terraform\n"
-            \`${process.env.PLAN_OUTPUT}\n\` +
+            ${process.env.PLAN_OUTPUT}
             \`\`\`
 
             </details>
