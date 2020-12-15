@@ -116,9 +116,7 @@ jobs:
               "#### Terraform Plan 📖`${{ steps.plan.outcome }}`\n" +
               "<details>\n" +
               "  <summary>Show Plan</summary>\n" +
-              "  ```\n" +
-              `    ${process.env.PLAN_OUTPUT}\n` +
-              "  ```\n" +
+              `  <pre><code class="language-terraform">${process.env.PLAN_OUTPUT}</code></pre>\n` +
               "</details>\n" +
               "*Pusher: @${{ github.actor }}, Action: `${{ github.event_name }}`*";
 
