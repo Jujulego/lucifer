@@ -14,7 +14,9 @@
             "outputPath": "dist/apps/lucifer-api",
             "main": "apps/lucifer-api/src/main.ts",
             "tsConfig": "apps/lucifer-api/tsconfig.app.json",
-            "assets": []
+            "assets": [
+              "apps/lucifer-api/src/Procfile"
+            ]
           },
           "configurations": {
             "production": {
