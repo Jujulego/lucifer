@@ -40,11 +40,11 @@ jobs:
         with:
           node-version: 14.x
 
-      - name: 'Setup Cache'
+      - name: Setup Cache
         id: setup-cache
         run: echo "::set-output name=yarn-cache::$(yarn cache dir)"
 
-      - name: 'Setup Database'
+      - name: Setup Database
         uses: ./.github/actions/setup-db
         with:
           db-host: 'localhost'
@@ -84,7 +84,7 @@ jobs:
         with:
           node-version: 14.x
 
-      - name: 'Setup Cache'
+      - name: Setup Cache
         id: setup-cache
         run: echo "::set-output name=yarn-cache::$(yarn cache dir)"
 
@@ -105,3 +105,20 @@ jobs:
         with:
           name: production-build
           path: dist
+
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Terraform Format
+        run: terraform fmt -check res
+
+      - name: Terraform Init
+        run: terraform init res

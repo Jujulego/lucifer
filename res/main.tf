@@ -1,5 +1,11 @@
 terraform {
-  backend "pg" {}
+  backend "remote" {
+    organization = "jujulego"
+
+    workspaces {
+      name = "lucifer"
+    }
+  }
 
   required_providers {
     heroku = {
@@ -8,4 +14,5 @@ terraform {
   }
 }
 
-provider "heroku" {}
+provider "heroku" {
+}
