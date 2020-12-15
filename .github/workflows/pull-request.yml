@@ -138,6 +138,6 @@ jobs:
               body: output
             });
 
-      - name: Terraform Plan Status
-        if: steps.plan.outcome == 'failure'
+      - name: Terraform Status
+        if: steps.plan.outcome != 'success'
         run: exit 1
