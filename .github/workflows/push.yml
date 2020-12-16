@@ -143,11 +143,6 @@ jobs:
         with:
           node-version: 14.x
 
-      - name: Setup Heroku
-        run: heroku login
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-
       - name: Setup Cache
         id: setup-cache
         run: echo "::set-output name=yarn-cache::$(yarn cache dir)"

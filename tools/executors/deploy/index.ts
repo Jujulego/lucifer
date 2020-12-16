@@ -7,8 +7,8 @@ import { spawn } from '../utils';
 
 // Options
 interface Options extends json.JsonObject {
-  app: string;
   buildPath: string;
+  herokuRepo: string;
 }
 
 // Executor
@@ -29,7 +29,7 @@ export default createBuilder(async (options: Options, ctx: BuilderContext) => {
     await fse.ensureDir(tmpDir);
 
     if (!await fse.pathExists(repoDir)) {
-      await spawn('heroku', ['git:clone', '-a', options.app], { cwd: path.dirname(repoDir) });
+      await spawn('git', ['clone', options.herokuRepo], { cwd: path.dirname(repoDir) });
     } else {
       try {
         await spawn('git', ['pull'], { cwd: repoDir });

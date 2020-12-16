@@ -2,13 +2,13 @@
   "$schema": "http://json-schema.org/schema",
   "type": "object",
   "properties": {
-    "app": {
-      "type": "string",
-      "description": "Heroku app."
-    },
     "buildPath": {
       "type": "string",
       "description": "Path containing built code to deploy."
+    },
+    "herokuRepo": {
+      "type": "string",
+      "description": "Heroku app."
     }
   }
 }
