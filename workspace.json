@@ -56,8 +56,8 @@
         "deploy": {
           "builder": ".:deploy",
           "options": {
-            "app": "https://git.heroku.com/lucifer-api.git",
-            "buildPath": "dist/apps/lucifer-api"
+            "buildPath": "dist/apps/lucifer-api",
+            "herokuRepo": "https://git.heroku.com/lucifer-api.git"
           }
         },
         "db-migrate": {
