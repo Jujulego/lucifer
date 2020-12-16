@@ -36,7 +36,7 @@ export default createBuilder(async (options: Options, ctx: BuilderContext) => {
     await spawn('git', ['clone', options.herokuRepo, project], { cwd: tmpDir });
 
     // Checkout and pull
-    const branches = await spawn('git', ['branch', '--list', '-a', `origin/${branch}`], { cwd: repoDir, stdio: '' });
+    const branches = await spawn('git', ['branch', '--list', '-a', `origin/${branch}`], { cwd: repoDir, stdio: 'pipe' });
 
     if (branches.length === 0) {
       await spawn('git', ['checkout', '--orphan', branch], { cwd: repoDir });
