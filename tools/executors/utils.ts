@@ -8,43 +8,40 @@ const TSNODE_ARGS = ['-P', 'tools/tsconfig.tools.json', '-r', 'tsconfig-paths/re
 const TYPEORM_CLI = './node_modules/typeorm/cli.js';
 
 // Utils
-export async function spawn(cmd: string, args: string[], options: cp.SpawnOptions = {}): Promise<boolean> {
+export async function spawn(cmd: string, args: string[], options: cp.SpawnOptions = {}) {
   // Defaults
   options.shell = options.shell ?? true;
   options.stdio = options.stdio ?? 'inherit';
 
   // Spawn command
-  try {
-    console.debug(cmd, args, options);
-    const child = cp.spawn(cmd, args, options);
+  console.debug('>', cmd, args.join(' '));
+  const child = cp.spawn(cmd, args, options);
 
-    return new Promise<boolean>((resolve, reject) => {
-      child.stdout?.on('data', (data) => {
-        console.info(data);
-      });
+  return new Promise<string[]>((resolve, reject) => {
+    const emitted: string[] = [];
 
-      child.stderr?.on('data', (data) => {
-        console.error(data);
-      });
-
-      child.on('close', (code) => {
-        if (code === 0) {
-          resolve(true);
-        } else {
-          reject();
-        }
-      });
+    child.stdout?.on('data', (data) => {
+      console.info(data.toString());
+      emitted.push(data.toString());
     });
-  } catch (error) {
-    console.error(error);
-    return false;
-  }
+
+    child.stderr?.on('data', (data) => {
+      console.error(data.toString());
+    });
+
+    child.on('close', (code) => {
+      if (code === 0) {
+        resolve(emitted);
+      } else {
+        reject();
+      }
+    });
+  });
 }
 
 export async function spawnTypeorm(cmd: TypeormCommand, ...args: string[]) {
-  const success = await spawn('ts-node', [...TSNODE_ARGS, TYPEORM_CLI, cmd, ...args], {
+  return await spawn('ts-node', [...TSNODE_ARGS, TYPEORM_CLI, cmd, ...args], {
     shell: true,
     stdio: 'inherit'
   });
-  return { success };
 }

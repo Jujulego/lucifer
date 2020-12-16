@@ -9,5 +9,11 @@ interface Options {
 // Builder
 export default async function GenMigration(options: Options) {
   // Migrate database
-  return await spawnTypeorm('migration:generate', '-c', options.database, '-n', options.name);
+  try {
+    await spawnTypeorm('migration:generate', '-c', options.database, '-n', options.name);
+    return { success: true };
+  } catch (error) {
+    console.error(error);
+    return { success: false };
+  }
 }

@@ -16,24 +16,34 @@ export default createBuilder(async (options: Options, ctx: BuilderContext) => {
   try {
     // Setup
     if (!ctx.target) {
-      ctx.logger.error("Missing target !");
+      console.error("Missing target !");
       return { success: false };
     }
 
     // Get current project
     const { project } = ctx.target;
+    const branch = `heroku/${project}`;
     const tmpDir = path.join(ctx.workspaceRoot, 'tmp', 'heroku');
     const repoDir = path.join(tmpDir, project);
 
     // Clone app
     await fse.ensureDir(tmpDir);
 
-    if (!await fse.pathExists(repoDir)) {
-      await spawn('git', ['clone', options.herokuRepo], { cwd: path.dirname(repoDir) });
+    if (await fse.pathExists(repoDir)) {
+      await fse.remove(repoDir);
+    }
+
+    await spawn('git', ['clone', options.herokuRepo, project], { cwd: tmpDir });
+
+    // Checkout and pull
+    const branches = await spawn('git', ['branch', '--list', '-a', `origin/${branch}`], { cwd: repoDir, stdio: '' });
+
+    if (branches.length === 0) {
+      await spawn('git', ['checkout', '--orphan', branch], { cwd: repoDir });
+      await spawn('git', ['reset', '--hard'], { cwd: repoDir });
     } else {
-      try {
-        await spawn('git', ['pull'], { cwd: repoDir });
-      } catch (err) {}
+      await spawn('git', ['checkout', '-t', `origin/${branch}`], { cwd: repoDir });
+      await spawn('git', ['pull'], { cwd: repoDir });
     }
 
     // Copy build scripts
@@ -45,12 +55,12 @@ export default createBuilder(async (options: Options, ctx: BuilderContext) => {
     // Commit
     await spawn('git', ['add', '.'], { cwd: repoDir });
     await spawn('git', ['commit', '-m', 'Deployed'], { cwd: repoDir });
-    await spawn('git', ['push'], { cwd: repoDir });
+    await spawn('git', ['push', '--set-upstream', 'origin', branch], { cwd: repoDir });
 
     return { success: true };
 
   } catch (error) {
-    ctx.logger.error(error);
+    console.error(error);
     return { success: false };
   }
 });
