@@ -15,9 +15,10 @@ export async function spawn(cmd: string, args: string[], options: cp.SpawnOption
 
   // Spawn command
   try {
+    console.debug(cmd, args, options);
     const child = cp.spawn(cmd, args, options);
 
-    return new Promise<boolean>((resolve) => {
+    return new Promise<boolean>((resolve, reject) => {
       child.stdout?.on('data', (data) => {
         console.info(data);
       });
@@ -27,7 +28,11 @@ export async function spawn(cmd: string, args: string[], options: cp.SpawnOption
       });
 
       child.on('close', (code) => {
-        resolve( code === 0);
+        if (code === 0) {
+          resolve(true);
+        } else {
+          reject();
+        }
       });
     });
   } catch (error) {

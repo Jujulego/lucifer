@@ -54,7 +54,11 @@
           ]
         },
         "deploy": {
-          "builder": ".:deploy"
+          "builder": ".:deploy",
+          "options": {
+            "app": "lucifer-api",
+            "buildPath": "dist/apps/lucifer-api"
+          }
         },
         "db-migrate": {
           "builder": ".:db-migrate"

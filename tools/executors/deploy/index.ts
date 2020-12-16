@@ -1,11 +1,14 @@
 import { BuilderContext, createBuilder } from '@angular-devkit/architect';
 import { json } from '@angular-devkit/core';
-import simpleGit from 'simple-git';
+import fse from 'fs-extra';
+import path from 'path';
+import mkdirp from 'mkdirp';
 
 import { spawn } from '../utils';
 
 // Options
 interface Options extends json.JsonObject {
+  app: string;
   buildPath: string;
 }
 
@@ -14,8 +17,6 @@ interface Options extends json.JsonObject {
 export default createBuilder(async (options: Options, ctx: BuilderContext) => {
   try {
     // Setup
-    const git = simpleGit(ctx.workspaceRoot);
-
     if (!ctx.target) {
       ctx.logger.error("Missing target !");
       return { success: false };
@@ -23,36 +24,21 @@ export default createBuilder(async (options: Options, ctx: BuilderContext) => {
 
     // Get current project
     const { project } = ctx.target;
-    const remote = `heroku-${project}`;
-    const branch = `heroku/${project}`;
+    const cloneDir = path.join(ctx.workspaceRoot, 'tmp', 'heroku', project);
 
-    // Create remote
-    const hasRemote = (await git.getRemotes()).some(rmt => rmt.name === remote);
+    // Clone app
+    await mkdirp(cloneDir);
+    //await spawn('heroku', ['git:clone', '-a', options.app], { cwd: path.dirname(cloneDir) });
 
-    if (!hasRemote) {
-      ctx.logger.info(`Creating remote ${remote} ...`);
+    // Copy build scripts
+    await fse.copy(options.buildPath, cloneDir, { overwrite: true, recursive: true });
+    // TODO: remove postinstall script
+    await fse.copy(path.join(ctx.workspaceRoot, 'package.json'), path.join(cloneDir, 'package.json'), { overwrite: true });
 
-      if (!await spawn('heroku', ['git:remote', '-a', project, '-r', remote])) {
-        ctx.logger.error("Failed to add heroku remote !");
-        return { success: false };
-      }
-    }
-
-    // Fetch branch or create branch
-    await spawn('git', ['fetch', '-u', remote, `master:${branch}`]);
-
-    const hasBranch = (await git.branchLocal()).all.includes(branch);
-    if (!hasBranch) {
-      if (!await spawn('git', ['checkout', '--orphan', branch])) {
-        ctx.logger.error("Failed to checkout branch !");
-        return { success: false };
-      }
-    } else {
-      if (!await spawn('git', ['checkout', branch])) {
-        ctx.logger.error("Failed to checkout branch !");
-        return { success: false };
-      }
-    }
+    // Commit
+    await spawn('git', ['add', '.'], { cwd: cloneDir });
+    await spawn('git', ['commit', '-m', 'Deployed'], { cwd: cloneDir });
+    await spawn('git', ['push'], { cwd: cloneDir });
 
     return { success: true };
 
