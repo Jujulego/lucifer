@@ -138,4 +138,25 @@ jobs:
         with:
           name: production-build
 
-      - run: find dist | sed "s/[^/]*\/\([^/]*\)$/|- \1/" | sed "s/[^/]*\//   /g"
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+
+      - name: Setup Cache
+        id: setup-cache
+        run: echo "::set-output name=yarn-cache::$(yarn cache dir)"
+
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.setup-cache.outputs.yarn-cache }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: |
+          yarn install --pure-lockfile
+          yarn run build:tools
+
+      - name: Deploy
+        run: yarn run nx run-many --all --target=deploy --scan

@@ -1,4 +1,4 @@
-import { spawnTypeorm } from '../typeorm';
+import { spawnTypeorm } from '../utils';
 
 // Options
 interface Options {
