@@ -3,7 +3,7 @@ resource "heroku_app" "lucifer-api" {
   region = "eu"
 
   config_vars = {
-    CI = "true"
+    CI              = "true"
     YARN_PRODUCTION = "true"
   }
 
