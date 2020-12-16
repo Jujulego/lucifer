@@ -10,6 +10,7 @@ interface Options extends json.JsonObject {
 }
 
 // Executor
+// https://github.com/s0/git-publish-subdir-action/blob/develop/action/src/index.ts
 export default createBuilder(async (options: Options, ctx: BuilderContext) => {
   try {
     // Setup
@@ -37,19 +38,18 @@ export default createBuilder(async (options: Options, ctx: BuilderContext) => {
       }
     }
 
-    // Create local branch
-    const hasBranch = !!((await git.branchLocal()).branches[branch]);
+    // Fetch branch or create branch
+    await spawn('git', ['fetch', '-u', remote, `master:${branch}`]);
 
+    const hasBranch = (await git.branchLocal()).all.includes(branch);
     if (!hasBranch) {
-      ctx.logger.info(`Creating branch ${branch} ...`);
-
-      if (!await spawn('git', ['--work-tree', options.buildPath, 'checkout', '--orphan', branch])) {
-        ctx.logger.error("Failed to create branch !");
+      if (!await spawn('git', ['checkout', '--orphan', branch])) {
+        ctx.logger.error("Failed to checkout branch !");
         return { success: false };
       }
-
-      if (!await spawn('git', ['--work-tree', options.buildPath, 'add', '--all'])) {
-        ctx.logger.error("Failed to create branch !");
+    } else {
+      if (!await spawn('git', ['checkout', branch])) {
+        ctx.logger.error("Failed to checkout branch !");
         return { success: false };
       }
     }
