@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "private": true,
-  "builders": "./tools/builders/builders.json",
+  "builders": "./tools/executors/executors.json",
   "engines": {
     "node": "14.x"
   },
