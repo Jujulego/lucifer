@@ -23,6 +23,7 @@ export default createBuilder(async (options: Options, ctx: BuilderContext) => {
     // Get current project
     const { project } = ctx.target;
     const remote = `heroku-${project}`;
+    const branch = `heroku/${project}`;
 
     // Create remote
     const hasRemote = (await git.getRemotes()).some(rmt => rmt.name === remote);
@@ -32,6 +33,23 @@ export default createBuilder(async (options: Options, ctx: BuilderContext) => {
 
       if (!await spawn('heroku', ['git:remote', '-a', project, '-r', remote])) {
         ctx.logger.error("Failed to add heroku remote !");
+        return { success: false };
+      }
+    }
+
+    // Create local branch
+    const hasBranch = !!((await git.branchLocal()).branches[branch]);
+
+    if (!hasBranch) {
+      ctx.logger.info(`Creating branch ${branch} ...`);
+
+      if (!await spawn('git', ['--work-tree', options.buildPath, 'checkout', '--orphan', branch])) {
+        ctx.logger.error("Failed to create branch !");
+        return { success: false };
+      }
+
+      if (!await spawn('git', ['--work-tree', options.buildPath, 'add', '--all'])) {
+        ctx.logger.error("Failed to create branch !");
         return { success: false };
       }
     }
