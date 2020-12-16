@@ -1,5 +1,10 @@
 {
   "builders": {
+    "deploy": {
+      "implementation": "./deploy",
+      "schema": "./deploy/schema.json",
+      "description": "Deploys project to heroku."
+    },
     "db-migrate": {
       "implementation": "./db-migrate",
       "schema": "./db-migrate/schema.json",

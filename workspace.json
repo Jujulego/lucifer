@@ -53,6 +53,9 @@
             "coverage/apps/lucifer-api"
           ]
         },
+        "deploy": {
+          "builder": ".:deploy"
+        },
         "db-migrate": {
           "builder": ".:db-migrate"
         },
@@ -423,7 +426,7 @@
     }
   },
   "cli": {
-    "defaultCollection": "@nrwl/nest"
+    "defaultCollection": "@nrwl/workspace"
   },
   "defaultProject": "lucifer-api",
   "schematics": {

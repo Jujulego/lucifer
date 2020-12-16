@@ -6,7 +6,7 @@ interface Options {
 }
 
 // Builder
-export default async function(options: Options) {
+export default async function DbMigrate(options: Options) {
   // Migrate database
   console.info(`Migrating database ${options.database}`);
 
