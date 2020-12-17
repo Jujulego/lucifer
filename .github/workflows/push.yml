@@ -137,6 +137,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: production-build
+          path: dist
 
       - name: Use Node.js 14.x
         uses: actions/setup-node@v1
