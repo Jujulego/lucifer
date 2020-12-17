@@ -43,7 +43,7 @@ export default createBuilder(async (options: Options, ctx: BuilderContext) => {
       await spawn('git', ['reset', '--hard'], { cwd: repoDir });
     } else {
       await spawn('git', ['checkout', '-t', `origin/${branch}`], { cwd: repoDir });
-      await spawn('git', ['pull'], { cwd: repoDir });
+      await spawn('git', ['pull', '--ff-only'], { cwd: repoDir });
     }
 
     // Copy build scripts
