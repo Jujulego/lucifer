@@ -25,6 +25,7 @@ export default createBuilder(async (options: Options, ctx: BuilderContext) => {
     const branch = `heroku/${project}`;
     const tmpDir = path.join(ctx.workspaceRoot, 'tmp', 'heroku');
     const repoDir = path.join(tmpDir, project);
+    const buildDir = path.join(ctx.workspaceRoot, options.buildPath);
 
     // Clone app
     await fse.ensureDir(tmpDir);
@@ -47,7 +48,7 @@ export default createBuilder(async (options: Options, ctx: BuilderContext) => {
     }
 
     // Copy build scripts
-    await fse.copy(options.buildPath, repoDir, { overwrite: true, recursive: true });
+    await fse.copy(buildDir, repoDir, { overwrite: true, recursive: true });
     // TODO: remove postinstall script
     await fse.copy(path.join(ctx.workspaceRoot, 'package.json'), path.join(repoDir, 'package.json'), { overwrite: true });
     await fse.copy(path.join(ctx.workspaceRoot, 'yarn.lock'), path.join(repoDir, 'yarn.lock'), { overwrite: true });
@@ -55,7 +56,7 @@ export default createBuilder(async (options: Options, ctx: BuilderContext) => {
     // Commit
     await spawn('git', ['add', '.'], { cwd: repoDir });
     await spawn('git', ['commit', '-m', 'Deployed'], { cwd: repoDir });
-    await spawn('git', ['push', '--set-upstream', 'origin', branch], { cwd: repoDir });
+    await spawn('git', ['push', 'origin', branch], { cwd: repoDir });
 
     return { success: true };
 
