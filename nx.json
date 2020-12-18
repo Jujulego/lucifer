@@ -23,8 +23,7 @@
           "build",
           "test",
           "lint",
-          "e2e",
-          "deploy"
+          "e2e"
         ],
         "canTrackAnalytics": false,
         "showUsageWarnings": true
