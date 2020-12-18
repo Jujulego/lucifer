@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "type": "object",
+  "properties": {
+    "buildPath": {
+      "type": "string",
+      "description": "Path containing built code to deploy."
+    },
+    "repository": {
+      "type": "string",
+      "description": "Target repository."
+    },
+    "build": {
+      "type": "string",
+      "description": "Heroku build command",
+      "default": ""
+    }
+  },
+  "required": ["buildPath", "repository"]
+}

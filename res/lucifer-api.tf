@@ -13,7 +13,7 @@ resource "heroku_app" "lucifer-api" {
 
 resource "heroku_addon" "lucifer-api" {
   app  = heroku_app.lucifer-api.name
-  plan = "heroku-postgresql:hobby-basic"
+  plan = "heroku-postgresql:hobby-dev"
 }
 
 output "lucifer-api-git-url" {
