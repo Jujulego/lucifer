@@ -166,6 +166,5 @@ jobs:
 
       - name: Deploy
         env:
-          ACTIONS_RUNNER_DEBUG: true
           REPOSITORY_URL: "https://${{ github.actor }}:${{ github.token }}@github.com/${{ github.repository }}.git"
         run: yarn run nx run-many --all --target=deploy --scan --repository=$REPOSITORY_URL
