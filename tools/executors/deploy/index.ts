@@ -55,7 +55,7 @@ export default createBuilder(async (options: Options, ctx: BuilderContext) => {
     const pkg = await fse.readJson(path.join(ctx.workspaceRoot, 'package.json'));
     delete pkg.scripts.postinstall;
 
-    await fse.writeJson(path.join(repoDir, 'package.json'), pkg);
+    await fse.writeFile(path.join(repoDir, 'package.json'), JSON.stringify(pkg, null, 2));
 
     // Commit
     await spawn('git', ['add', '.'], { cwd: repoDir });
