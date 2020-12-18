@@ -167,4 +167,4 @@ jobs:
       - name: Deploy
         env:
           REPOSITORY_URL: "https://${{ github.actor }}:${{ github.token }}@github.com/${{ github.repository }}.git"
-        run: yarn run nx run-many --all --target=deploy --scan --repository=$REPOSITORY_URL
+        run: yarn run nx run-many --all --target=deploy --repository=$REPOSITORY_URL
