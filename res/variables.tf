@@ -1,4 +1,4 @@
 variable "auth0-client-secret" {
-  type = string
+  type      = string
   sensitive = true
 }
