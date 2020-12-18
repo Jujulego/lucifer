@@ -60,7 +60,7 @@ export default createBuilder(async (options: Options, ctx: BuilderContext) => {
     // Commit
     await spawn('git', ['add', '.'], { cwd: repoDir });
     const rev = await spawn('git', ['rev-parse', '--short', 'HEAD'], { stdio: 'pipe' });
-    await spawn('git', ['commit', '-m', `Deployed ${rev}`], { cwd: repoDir });
+    await spawn('git', ['commit', '-m', `"Deployed ${rev}"`], { cwd: repoDir });
     await spawn('git', ['push', 'origin', branch], { cwd: repoDir });
 
     // Cleanup
