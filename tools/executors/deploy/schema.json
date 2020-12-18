@@ -6,9 +6,9 @@
       "type": "string",
       "description": "Path containing built code to deploy."
     },
-    "herokuRepo": {
+    "repository": {
       "type": "string",
-      "description": "Heroku app."
+      "description": "Target repository."
     }
   }
 }
