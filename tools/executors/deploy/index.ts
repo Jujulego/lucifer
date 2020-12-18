@@ -3,6 +3,7 @@ import { json } from '@angular-devkit/core';
 import fse from 'fs-extra';
 import path from 'path';
 
+import { logger } from '../logger';
 import { spawn } from '../utils';
 
 // Options
@@ -13,13 +14,13 @@ interface Options extends json.JsonObject {
 
 // Executor
 export default createBuilder(async (options: Options, ctx: BuilderContext) => {
-  try {
-    // Setup
-    if (!ctx.target) {
-      console.error("Missing target !");
-      return { success: false };
-    }
+  // Setup
+  if (!ctx.target) {
+    logger.error("Missing target !");
+    return { success: false };
+  }
 
+  try {
     // Get current project
     const { project } = ctx.target;
     const branch = `heroku/${project}`;
@@ -57,6 +58,9 @@ export default createBuilder(async (options: Options, ctx: BuilderContext) => {
     await spawn('git', ['add', '.'], { cwd: repoDir });
     await spawn('git', ['commit', '-m', 'Deployed'], { cwd: repoDir });
     await spawn('git', ['push', 'origin', branch], { cwd: repoDir });
+
+    // Cleanup
+    await fse.remove(repoDir);
 
     return { success: true };
 

@@ -1,3 +1,4 @@
+import { logger } from '../logger';
 import { spawnTypeorm } from '../utils';
 
 // Options
@@ -13,7 +14,7 @@ export default async function GenMigration(options: Options) {
     await spawnTypeorm('migration:generate', '-c', options.database, '-n', options.name);
     return { success: true };
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return { success: false };
   }
 }

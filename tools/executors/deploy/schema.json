@@ -10,5 +10,6 @@
       "type": "string",
       "description": "Target repository."
     }
-  }
+  },
+  "required": ["buildPath", "repository"]
 }

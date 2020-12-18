@@ -1,5 +1,7 @@
 import * as cp from 'child_process';
 
+import { logger } from './logger';
+
 // Type
 export type TypeormCommand = 'migration:run' | 'migration:generate';
 
@@ -14,19 +16,19 @@ export async function spawn(cmd: string, args: string[], options: cp.SpawnOption
   options.stdio = options.stdio ?? 'inherit';
 
   // Spawn command
-  console.debug('>', cmd, args.join(' '));
+  logger.debug(cmd, args.join(' '));
   const child = cp.spawn(cmd, args, options);
 
   return new Promise<string[]>((resolve, reject) => {
     const emitted: string[] = [];
 
     child.stdout?.on('data', (data) => {
-      console.info(data.toString());
+      logger.info(data.toString());
       emitted.push(data.toString());
     });
 
     child.stderr?.on('data', (data) => {
-      console.error(data.toString());
+      logger.error(data.toString());
     });
 
     child.on('close', (code) => {
