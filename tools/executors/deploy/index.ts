@@ -50,13 +50,17 @@ export default createBuilder(async (options: Options, ctx: BuilderContext) => {
 
     // Copy build scripts
     await fse.copy(buildDir, repoDir, { overwrite: true, recursive: true });
-    // TODO: remove postinstall script
-    await fse.copy(path.join(ctx.workspaceRoot, 'package.json'), path.join(repoDir, 'package.json'), { overwrite: true });
     await fse.copy(path.join(ctx.workspaceRoot, 'yarn.lock'), path.join(repoDir, 'yarn.lock'), { overwrite: true });
+
+    const pkg = await fse.readJson(path.join(ctx.workspaceRoot, 'package.json'));
+    delete pkg.scripts.postinstall;
+
+    await fse.writeJson(path.join(repoDir, 'package.json'), pkg);
 
     // Commit
     await spawn('git', ['add', '.'], { cwd: repoDir });
-    await spawn('git', ['commit', '-m', 'Deployed'], { cwd: repoDir });
+    const rev = await spawn('git', ['rev-parse', '--short', 'HEAD'], { stdio: 'pipe' });
+    await spawn('git', ['commit', '-m', `Deployed ${rev}`], { cwd: repoDir });
     await spawn('git', ['push', 'origin', branch], { cwd: repoDir });
 
     // Cleanup

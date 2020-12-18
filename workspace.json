@@ -56,7 +56,8 @@
         "deploy": {
           "builder": ".:deploy",
           "options": {
-            "buildPath": "dist/apps/lucifer-api"
+            "buildPath": "dist/apps/lucifer-api",
+            "repository": "https://github.com/Jujulego/lucifer.git"
           }
         },
         "db-migrate": {

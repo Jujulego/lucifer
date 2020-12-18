@@ -32,8 +32,6 @@
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "migration:generate": "yarn run typeorm migration:generate",
     "postinstall": "is-ci || husky install",
-    "prepublishOnly": "pinst --disable",
-    "postpublish": "pinst --enable",
     "workspace-generator": "nx workspace-generator"
   },
   "dependencies": {
