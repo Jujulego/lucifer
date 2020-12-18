@@ -9,6 +9,11 @@
     "repository": {
       "type": "string",
       "description": "Target repository."
+    },
+    "build": {
+      "type": "string",
+      "description": "Heroku build command",
+      "default": ""
     }
   },
   "required": ["buildPath", "repository"]

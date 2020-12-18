@@ -10,6 +10,7 @@ import { spawn } from '../utils';
 interface Options extends json.JsonObject {
   buildPath: string;
   repository: string;
+  build: string;
 }
 
 // Executor
@@ -53,15 +54,22 @@ export default createBuilder(async (options: Options, ctx: BuilderContext) => {
     await fse.copy(path.join(ctx.workspaceRoot, 'yarn.lock'), path.join(repoDir, 'yarn.lock'), { overwrite: true });
 
     const pkg = await fse.readJson(path.join(ctx.workspaceRoot, 'package.json'));
+    pkg.scripts.build = options.build;
     delete pkg.scripts.postinstall;
 
     await fse.writeFile(path.join(repoDir, 'package.json'), JSON.stringify(pkg, null, 2));
 
     // Commit
     await spawn('git', ['add', '.'], { cwd: repoDir });
-    const rev = await spawn('git', ['rev-parse', '--short', 'HEAD'], { stdio: 'pipe' });
-    await spawn('git', ['commit', '-m', `"Deployed ${rev}"`], { cwd: repoDir });
-    await spawn('git', ['push', 'origin', branch], { cwd: repoDir });
+
+    try {
+      await spawn('git', ['diff', '--exit-code'], { cwd: repoDir });
+      logger.info('No difference: skipping commit');
+    } catch (err) {
+      const rev = await spawn('git', ['rev-parse', '--short', 'HEAD'], { stdio: 'pipe' });
+      await spawn('git', ['commit', '-m', `"Deployed ${rev}"`], { cwd: repoDir });
+      await spawn('git', ['push', 'origin', branch], { cwd: repoDir });
+    }
 
     // Cleanup
     await fse.remove(repoDir);

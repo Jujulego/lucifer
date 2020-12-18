@@ -29,10 +29,10 @@
     "update": "nx migrate latest",
     "dep-graph": "nx dep-graph",
     "help": "nx help",
+    "workspace-generator": "nx workspace-generator",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "migration:generate": "yarn run typeorm migration:generate",
-    "postinstall": "is-ci || husky install",
-    "workspace-generator": "nx workspace-generator"
+    "postinstall": "is-ci || husky install"
   },
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.13.3",
