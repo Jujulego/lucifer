@@ -60,19 +60,19 @@ export default createBuilder(async (options: Options, ctx: BuilderContext) => {
     await fse.writeFile(path.join(repoDir, 'package.json'), JSON.stringify(pkg, null, 2));
 
     // Commit
-    await spawn('git', ['add', '.'], { cwd: repoDir });
-
     try {
       await spawn('git', ['diff', '--quiet', '--exit-code'], { cwd: repoDir });
       logger.info('No difference: skipping commit');
     } catch (err) {
+      await spawn('git', ['add', '.'], { cwd: repoDir });
+
       const rev = await spawn('git', ['rev-parse', '--short', 'HEAD'], { stdio: 'pipe' });
       await spawn('git', ['commit', '-m', `"Deployed ${rev}"`], { cwd: repoDir });
       await spawn('git', ['push', 'origin', branch], { cwd: repoDir });
     }
 
     // Cleanup
-    await fse.remove(repoDir);
+    // await fse.remove(repoDir);
 
     return { success: true };
 
