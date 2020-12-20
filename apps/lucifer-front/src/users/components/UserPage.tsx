@@ -7,6 +7,7 @@ import { Paper, Tab, Tabs } from '@material-ui/core';
 import { useUser } from '../users.hooks';
 import UserDetailsTab from './UserDetailsTab';
 import UserHeader from './UserHeader';
+import MachineTable from '../../machines/components/MachineTable';
 
 // Utils
 interface LinkTabProps {
@@ -50,12 +51,16 @@ const UserPage = () => {
         />
         <Tabs variant="fullWidth" value={page} onChange={() => null}>
           <LinkTab value="details" label="Détails" />
+          <LinkTab value="machines" label="Machines" />
         </Tabs>
       </Paper>
       <UserDetailsTab
         user={user} show={page === 'details'}
         onUpdate={put}
       />
+      { (user && page === 'machines') && (
+        <MachineTable userId={user.id} />
+      ) }
     </>
   );
 };
