@@ -86,7 +86,7 @@ const UserDetailsTab = (props: UserDetailsProps) => {
         email: user.email
       });
     }
-  }, [reset, user]);
+  }, [reset, user, show]);
 
   // Render
   const styles = useStyles();
