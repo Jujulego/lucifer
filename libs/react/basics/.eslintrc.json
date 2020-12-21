@@ -5,10 +5,6 @@
   ],
   "ignorePatterns": [
     "!**/*",
-    "setup-tests.js",
-    ".storybook/*.js",
-    ".storybook/*.ts",
-    ".storybook/*.jsx",
-    ".storybook/*.tsx"
+    ".storybook/*"
   ]
 }
