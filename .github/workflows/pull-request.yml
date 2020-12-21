@@ -32,8 +32,6 @@ jobs:
       AUTH0_CLIENT_ID: 'test'
       AUTH0_CLIENT_SECRET: 'test'
 
-      DATABASE_URL: 'postgresql://root:root@localhost:5432'
-
     steps:
       - uses: actions/checkout@v2
         with:
@@ -48,6 +46,14 @@ jobs:
       - name: 'Setup Cache'
         id: setup-cache
         run: echo "::set-output name=yarn-cache::$(yarn cache dir)"
+
+      - name: 'Setup Database'
+        uses: ./.github/actions/setup-db
+        with:
+          db-host: 'localhost'
+          db-port: 5432
+          db-username: 'root'
+          db-password: 'root'
 
       - name: 'Setup Nx'
         id: setup
