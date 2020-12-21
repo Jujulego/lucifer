@@ -4,10 +4,34 @@ const path = require('path');
 
 (async () => {
   try {
-    const workspace = await fse.readJson('workspace.json');
-    console.log(workspace);
+    // Load inputs
+    const config = {
+      host:     core.getInput('db-host'),
+      port:     core.getInput('db-port'),
+      username: core.getInput('db-username'),
+      passport: core.getInput('db-passport'),
+    };
 
-    core.setFailed('!');
+    // Load workspace
+    const workspace = await fse.readJson('workspace.json');
+
+    // Search for ormconfig files
+    await Promise.all(Object.values(workspace.projects).map(async ({ root }) => {
+      const ormPath = path.join(root, 'ormconfig.json');
+
+      if (await fse.exists(ormPath)) {
+        // Change values
+        const orm = await fse.readJson(ormPath);
+        orm.host     = config.host;
+        orm.port     = config.port;
+        orm.username = config.username;
+        orm.passport = config.passport;
+
+        await fse.writeJson(ormPath, orm, { spaces: 2 });
+
+        console.log(`updated ${ormPath} with`, orm)
+      }
+    }));
   } catch (error) {
     core.setFailed(error.message);
   }

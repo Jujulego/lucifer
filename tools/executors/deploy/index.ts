@@ -57,7 +57,7 @@ export default createBuilder(async (options: Options, ctx: BuilderContext) => {
     pkg.scripts.build = options.build;
     delete pkg.scripts.postinstall;
 
-    await fse.writeFile(path.join(repoDir, 'package.json'), JSON.stringify(pkg, null, 2));
+    await fse.writeJson(path.join(repoDir, 'package.json'), pkg, { spaces: 2 });
 
     // Commit
     try {
