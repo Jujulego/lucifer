@@ -5,6 +5,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "@actions/core": "^1.2.6"
+    "@actions/core": "^1.2.6",
+    "fs-extra": "^9.0.1"
   }
 }
