@@ -5,11 +5,18 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 
 import { env } from './env';
+import { migrate } from './db/migrate';
 import { AppModule } from './app.module';
 
 // Bootstrap
 (async function() {
   const app = await NestFactory.create(AppModule);
+
+  // Commands
+  switch (process.argv[2]) {
+    case 'migrate':
+      return await migrate(app);
+  }
 
   // Setup server
   const globalPrefix = 'api';
