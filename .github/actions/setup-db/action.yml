@@ -1,5 +1,5 @@
-name: 'Setup'
-description: 'Setup project for CI'
+name: 'Setup Database'
+description: 'Setup typeorm for CI'
 
 inputs:
   db-host:
@@ -19,13 +19,5 @@ inputs:
     required: true
 
 runs:
-  using: composite
-
-  steps:
-    # Configure typeorm
-    - run: |
-        sed -i "s/\"host\": \".*\"/\"host\": \"${{ inputs.db-host }}\"/g" ormconfig.json
-        sed -i "s/\"port\": [0-9]*/\"port\": ${{ inputs.db-port }}/g" ormconfig.json
-        sed -i "s/\"username\": \".*\"/\"username\": \"${{ inputs.db-username }}\"/g" ormconfig.json
-        sed -i "s/\"password\": \".*\"/\"password\": \"${{ inputs.db-password }}\"/g" ormconfig.json
-      shell: bash
+  using: node12
+  main: index.js

@@ -1,0 +1,10 @@
+{
+  "name": "setup-db",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@actions/core": "^1.2.6"
+  }
+}
