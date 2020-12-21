@@ -3,6 +3,7 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConnectionOptionsReader } from 'typeorm';
 import path from 'path';
 
+import { MIGRATIONS } from './db/migrations';
 import { env } from './env';
 
 // Module
@@ -27,7 +28,7 @@ import { env } from './env';
           ...options,
           autoLoadEntities: true,
           entities: [],
-          migrations: [],
+          migrations: MIGRATIONS,
         };
       }
     })

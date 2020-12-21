@@ -29,7 +29,7 @@ const path = require('path');
 
         await fse.writeJson(ormPath, orm, { spaces: 2 });
 
-        console.log(`updated ${ormPath} with`, orm)
+        console.log(`::debug::updated ${ormPath}`);
       }
     }));
   } catch (error) {
