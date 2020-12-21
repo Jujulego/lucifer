@@ -4,7 +4,7 @@ const path = require('path');
 
 (async () => {
   try {
-    const workspace = fse.readJson('workspace.json');
+    const workspace = await fse.readJson('workspace.json');
     console.log(workspace);
 
     core.setFailed('!');
