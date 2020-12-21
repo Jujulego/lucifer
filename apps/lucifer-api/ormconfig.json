@@ -8,12 +8,13 @@
   "logging": false,
 
   "entities": [
-    "apps/**/*.entity.ts",
-    "libs/**/*.entity.ts"
+    "src/**/*.entity.ts"
   ],
-  "migrations": ["db/migrations/*.ts"],
+  "migrations": [
+    "src/db/migrations/*.ts"
+  ],
 
   "cli": {
-    "migrationsDir": "db/migrations"
+    "migrationsDir": "src/db/migrations"
   }
 }
