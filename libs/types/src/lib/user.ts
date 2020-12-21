@@ -23,6 +23,11 @@ export interface IUser {
   machines: IMachine[];
 }
 
+export interface IUpdateUser {
+  name?:  string;
+  email?: string;
+}
+
 // Model
 export class User implements IUser {
   // Attributes
