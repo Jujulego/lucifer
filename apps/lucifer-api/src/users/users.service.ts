@@ -89,6 +89,25 @@ export class UsersService {
     return results;
   }
 
+  async getLocal(id: string): Promise<LocalUser> {
+    // Check if user exists
+    const ath = await this.auth0.getUser({ id });
+
+    if (!ath) {
+      throw new NotFoundException(`User ${id} does not exist`);
+    }
+
+    // Get or create local user
+    let lcu = await this.repository.findOne({ id });
+
+    if (!lcu) {
+      lcu = this.repository.create({ id });
+      await this.repository.save(lcu);
+    }
+
+    return lcu;
+  }
+
   async get(id: string): Promise<User> {
     const [ath, lcu] = await Promise.all([
       this.auth0.getUser({ id }),

@@ -1,9 +1,13 @@
-// Interface
+// Interfaces
 export interface IMachine {
   // Attributes
   id:        string;
   shortName: string;
   ownerId:   string;
+}
+
+export interface ICreateMachine {
+  shortName: string;
 }
 
 // Model
