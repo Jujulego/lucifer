@@ -140,6 +140,10 @@
             },
             "e2e": {
               "buildTarget": "lucifer-front:build:e2e"
+            },
+            "e2e-ci": {
+              "buildTarget": "lucifer-front:build:e2e",
+              "watch": false
             }
           }
         },
@@ -176,8 +180,8 @@
             "devServerTarget": "lucifer-front:serve:e2e"
           },
           "configurations": {
-            "production": {
-              "devServerTarget": "lucifer-front:serve:production"
+            "ci": {
+              "devServerTarget": "lucifer-front:serve:e2e-ci"
             }
           }
         },
