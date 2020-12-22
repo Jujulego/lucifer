@@ -11,7 +11,7 @@
     "src/**/*.entity.ts"
   ],
   "migrations": [
-    "src/db/migrations/index.ts"
+    "src/db/migrations/*.ts"
   ],
 
   "cli": {
