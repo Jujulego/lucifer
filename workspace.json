@@ -181,7 +181,9 @@
           },
           "configurations": {
             "ci": {
-              "devServerTarget": "lucifer-front:serve:e2e-ci"
+              "devServerTarget": "lucifer-front:serve:e2e-ci",
+              "watch": false,
+              "headless": true
             }
           }
         },
