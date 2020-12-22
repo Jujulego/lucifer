@@ -6,7 +6,7 @@ import { ICreateMachine, IMachine } from '@lucifer/types';
 // Namespace
 export const useMachinesAPI = {
   all: (ownerId: string) => useAPI.get<IMachine[]>(`/api/${ownerId}/machines`),
-  create: (ownerId: string) => useAPI.post<ICreateMachine, IMachine>(`/api/${ownerId}`),
+  create: (ownerId: string) => useAPI.post<ICreateMachine, IMachine>(`/api/${ownerId}/machines`),
 
   get: (ownerId: string, id: string) => useAPI.get<IMachine[]>(`/api/${ownerId}/machines/${id}`),
 }

@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConnectionOptionsReader } from 'typeorm';
-import path from 'path';
 
 import { MIGRATIONS } from './db/migrations';
 import { env } from './env';
@@ -18,7 +17,7 @@ import { env } from './env';
 
         if (!env.DATABASE_URL) {
           const reader = new ConnectionOptionsReader({
-            root: path.join(__dirname, '..'),
+            root: __dirname.replace(/\\dist/, ''),
           });
 
           options = await reader.get('default');

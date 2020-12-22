@@ -19,7 +19,7 @@ export class MachinesController {
   // Endpoints
   @Post('/')
   async create(
-    @Param('userId') ownerId: string,
+    @Param('ownerId') ownerId: string,
     @Body(ValidationPipe) data: CreateMachine
   ): Promise<Machine> {
     return await this.machines.create(ownerId, data)
