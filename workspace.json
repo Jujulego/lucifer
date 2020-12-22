@@ -114,6 +114,14 @@
                   "maximumError": "5mb"
                 }
               ]
+            },
+            "e2e": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/lucifer-front/src/environments/environment.ts",
+                  "with": "apps/lucifer-front/src/environments/environment.e2e.ts"
+                }
+              ]
             }
           },
           "outputs": [
@@ -129,6 +137,9 @@
           "configurations": {
             "production": {
               "buildTarget": "lucifer-front:build:production"
+            },
+            "e2e": {
+              "buildTarget": "lucifer-front:build:e2e"
             }
           }
         },
@@ -162,7 +173,7 @@
           "options": {
             "cypressConfig": "apps/lucifer-front-e2e/cypress.json",
             "tsConfig": "apps/lucifer-front-e2e/tsconfig.e2e.json",
-            "devServerTarget": "lucifer-front:serve"
+            "devServerTarget": "lucifer-front:serve:e2e"
           },
           "configurations": {
             "production": {

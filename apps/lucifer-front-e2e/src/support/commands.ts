@@ -1,33 +1,70 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
+import jwt from 'jsonwebtoken';
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
-declare namespace Cypress {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  interface Chainable<Subject> {
-    login(email: string, password: string): void;
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Cypress {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    interface Chainable<Subject = any> {
+      login(): void;
+    }
   }
 }
-//
-// -- This is a parent command --
-Cypress.Commands.add('login', (email, password) => {
-  console.log('Custom command example: Login', email, password);
+// Commands
+Cypress.Commands.add('login', () => {
+  // Credentials
+  const username = Cypress.env('username');
+  const password = Cypress.env('password');
+
+  // Get a token
+  cy.log(`Logging as ${username}`);
+
+  cy.request({
+    method: 'POST',
+    url: `https://${Cypress.env('Auth0Domain')}/oauth/token`,
+    body: {
+      grant_type: 'password',
+      username, password,
+      scope: 'openid profile email',
+      audience: Cypress.env('Auth0Audience'),
+      client_id: Cypress.env('Auth0ClientId'),
+      client_secret: Cypress.env('Auth0ClientSecret'),
+    }
+  })
+    .then((res) => {
+      const { access_token, expires_in, id_token } = res.body;
+
+      // Intercept Auth0 request and return our token
+      cy.server();
+      cy.route({
+        method: 'POST',
+        url: 'oauth/token',
+        response: {
+          access_token,
+          expires_in,
+          id_token,
+          token_type: 'Bearer'
+        }
+      });
+
+      return cy.window()
+        .then((w) => {
+          w.localStorage.setItem(
+            `@@auth0spajs@@::${Cypress.env('Auth0ClientId')}::${Cypress.env('Auth0Audience')}::openid profile email`,
+            JSON.stringify({
+              body: {
+                access_token, id_token,
+                scope: 'openid profile email',
+                expires_in,
+                token_type: 'Bearer',
+                decodedToken: {
+                  claims: jwt.decode(id_token),
+                  user: jwt.decode(access_token),
+                },
+                client_id: Cypress.env('Auth0ClientId'),
+                audience: Cypress.env('Auth0Audience'),
+              }
+            })
+          );
+        });
+    });
 });
-//
-// -- This is a child command --
-// Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
