@@ -1,2 +1,2 @@
-cypress.env.json
+.env
 debug.log

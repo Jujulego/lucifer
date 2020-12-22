@@ -79,6 +79,11 @@ jobs:
       - name: Tests
         run: yarn run affected:test --scan --base=origin/${{ github.base_ref }}
 
+      - name: E2E Tests
+        run: yarn run affected:e2e --scan --base=origin/${{ github.base_ref }} --headless
+        env:
+          CYPRESS_Auth0ClientSecret: ${{ secrets.CYPRESS_AUTH0CLIENTSECRET }}
+
   terraform:
     runs-on: ubuntu-latest
 
