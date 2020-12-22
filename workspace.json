@@ -140,10 +140,6 @@
             },
             "e2e": {
               "buildTarget": "lucifer-front:build:e2e"
-            },
-            "e2e-ci": {
-              "buildTarget": "lucifer-front:build:e2e",
-              "watch": false
             }
           }
         },
@@ -178,13 +174,6 @@
             "cypressConfig": "apps/lucifer-front-e2e/cypress.json",
             "tsConfig": "apps/lucifer-front-e2e/tsconfig.e2e.json",
             "devServerTarget": "lucifer-front:serve:e2e"
-          },
-          "configurations": {
-            "ci": {
-              "devServerTarget": "lucifer-front:serve:e2e-ci",
-              "watch": false,
-              "headless": true
-            }
           }
         },
         "lint": {
