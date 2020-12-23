@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0
 
       - name: Use Node.js 14.x
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2.1.4
         with:
           node-version: 14.x
 
@@ -74,7 +74,7 @@ jobs:
           fetch-depth: 0
 
       - name: Use Node.js 14.x
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2.1.4
         with:
           node-version: 14.x
 
@@ -142,7 +142,7 @@ jobs:
 #          fetch-depth: 0
 #
 #      - name: Use Node.js 14.x
-#        uses: actions/setup-node@v1
+#        uses: actions/setup-node@v2.1.4
 #        with:
 #          node-version: 14.x
 #
