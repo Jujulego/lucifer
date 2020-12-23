@@ -1,13 +1,11 @@
-import * as cp from 'child_process';
+import cp from 'child_process';
+import path from 'path';
 
 import { logger } from './logger';
+import { BuilderContext } from '@angular-devkit/architect';
 
 // Type
 export type TypeormCommand = 'migration:run' | 'migration:generate';
-
-// Constants
-const TSNODE_ARGS = ['-P', 'tools/tsconfig.tools.json', '-r', 'tsconfig-paths/register'];
-const TYPEORM_CLI = './node_modules/typeorm/cli.js';
 
 // Utils
 export async function spawn(cmd: string, args: string[], options: cp.SpawnOptions = {}) {
@@ -41,8 +39,13 @@ export async function spawn(cmd: string, args: string[], options: cp.SpawnOption
   });
 }
 
-export async function spawnTypeorm(cmd: TypeormCommand, ...args: string[]) {
-  return await spawn('ts-node', [...TSNODE_ARGS, TYPEORM_CLI, cmd, ...args], {
+export async function spawnTypeorm(ctx: BuilderContext, cmd: TypeormCommand, args: string[], options: cp.SpawnOptions = {}) {
+  // Setup
+  const tsnodeArgs = ['-P', path.join(ctx.workspaceRoot, 'tools/tsconfig.tools.json'), '-r', 'tsconfig-paths/register'];
+  const typeormCli = path.join(ctx.workspaceRoot, 'node_modules/typeorm/cli.js');
+
+  return await spawn('ts-node', [...tsnodeArgs, typeormCli, cmd, ...args], {
+    ...options,
     shell: true,
     stdio: 'inherit'
   });

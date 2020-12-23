@@ -1,16 +1,14 @@
 import { useCallback } from 'react';
 
-import { IUser } from '@lucifer/types';
+import { IUpdateUser, IUser } from '@lucifer/types';
 import { useAPI } from '@lucifer/react/api';
-
-import { UpdateUser } from './models/user';
 
 // Namespace
 export const useUsersAPI = {
   all: () => useAPI.get<IUser[]>('/api/users'),
 
   get: (id: string) => useAPI.get<IUser>(`/api/users/${id}`),
-  put: (id: string) => useAPI.put<UpdateUser, IUser>(`/api/users/${id}`)
+  put: (id: string) => useAPI.put<IUpdateUser, IUser>(`/api/users/${id}`)
 };
 
 // Hooks
@@ -30,7 +28,7 @@ export function useUser(id: string) {
   return {
     user, loading,
     reload, update,
-    put: useCallback(async (data: UpdateUser) => {
+    put: useCallback(async (data: IUpdateUser) => {
       const result = await put(data);
       update(result);
 

@@ -8,11 +8,9 @@ import App from './app/App';
 
 // Application
 ReactDOM.render((
-  <React.StrictMode>
-    <StylesProvider injectFirst>
-      <CookiesProvider>
-        <App />
-      </CookiesProvider>
-    </StylesProvider>
-  </React.StrictMode>
+  <StylesProvider injectFirst>
+    <CookiesProvider>
+      <App />
+    </CookiesProvider>
+  </StylesProvider>
 ), document.getElementById('root'));

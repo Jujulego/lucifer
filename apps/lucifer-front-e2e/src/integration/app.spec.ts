@@ -1,13 +1,12 @@
 import { getGreeting } from '../support/app.po';
 
-describe('lucifer-front', () => {
-  beforeEach(() => cy.visit('/'));
+describe('home', () => {
+  before(() => {
+    cy.login();
+    cy.visit('/');
+  })
 
-  it('should display welcome message', () => {
-    // Custom command example, see `../support/commands.ts` file
-    cy.login('my-email@something.com', 'myPassword');
-
-    // Function helper example, see `../support/app.po.ts` file
-    getGreeting().contains('Welcome to lucifer-front!');
+  it('should be successfully logged in', () => {
+    getGreeting().contains('Bonjour !');
   });
 });

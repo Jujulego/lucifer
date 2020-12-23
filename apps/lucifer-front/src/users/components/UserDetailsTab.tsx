@@ -7,11 +7,10 @@ import { Check as CheckIcon, Save as SaveIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { LabelledText, RelativeDate } from '@lucifer/react/basics'
-import { IUser } from '@lucifer/types';
+import { IUpdateUser, IUser } from '@lucifer/types';
 
 import { useNeedScope, usePermissions } from '../../auth/auth.hooks';
 
-import { UpdateUser } from '../models/user';
 import PermissionChip from './PermissionChip';
 
 // Styles
@@ -61,7 +60,7 @@ const GridItem = ({ children }: GridProps) => (
 export interface UserDetailsProps {
   user?: IUser;
   show?: boolean;
-  onUpdate: (update: UpdateUser) => void;
+  onUpdate: (update: IUpdateUser) => void;
 }
 
 // Component
@@ -76,7 +75,7 @@ const UserDetailsTab = (props: UserDetailsProps) => {
   const { permissions = [] } = usePermissions();
 
   // Form
-  const { errors, register, reset, handleSubmit, formState } = useForm<UpdateUser>();
+  const { errors, register, reset, handleSubmit, formState } = useForm<IUpdateUser>();
 
   // Effects
   useEffect(() => {
@@ -86,7 +85,7 @@ const UserDetailsTab = (props: UserDetailsProps) => {
         email: user.email
       });
     }
-  }, [reset, user]);
+  }, [reset, user, show]);
 
   // Render
   const styles = useStyles();
