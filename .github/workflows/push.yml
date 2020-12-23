@@ -9,36 +9,8 @@ env:
   NX_RUN_GROUP: ${{ github.run_id }}
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Use Node.js 14.x
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14.x
-
-      - name: Setup Cache
-        id: setup-cache
-        run: echo "::set-output name=yarn-cache::$(yarn cache dir)"
-
-      - uses: actions/cache@v2
-        with:
-          path: ${{ steps.setup-cache.outputs.yarn-cache }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: ${{ runner.os }}-yarn-
-
-      - name: Install dependencies
-        run: yarn install --pure-lockfile
-
-      - name: Lint
-        run: yarn run nx run-many --all --target=lint --scan
-
   tests:
     runs-on: ubuntu-latest
-    needs: lint
 
     services:
       postgres:
@@ -91,6 +63,9 @@ jobs:
           yarn install --pure-lockfile
           yarn run build:tools
 
+      - name: Lint
+        run: yarn run nx run-many --all --target=lint --scan
+
       - name: Migrate
         run: yarn run nx run-many --all --target=db-migrate --scan
 
@@ -99,7 +74,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    needs: lint
+    needs: tests
 
     steps:
       - uses: actions/checkout@v2
@@ -190,6 +165,6 @@ jobs:
           yarn run build:tools
 
       - name: Deploy
+        run: yarn run nx run-many --all --target=deploy --repository=$REPOSITORY_URL
         env:
           REPOSITORY_URL: "https://${{ github.actor }}:${{ github.token }}@github.com/${{ github.repository }}.git"
-        run: yarn run nx run-many --all --target=deploy --repository=$REPOSITORY_URL
