@@ -128,7 +128,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: [test, build, terraform]
+    needs: [tests, build, terraform]
 
     steps:
       - uses: actions/checkout@v2
