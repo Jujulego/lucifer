@@ -173,7 +173,7 @@
           "options": {
             "cypressConfig": "apps/lucifer-front-e2e/cypress.json",
             "tsConfig": "apps/lucifer-front-e2e/tsconfig.e2e.json",
-            "devServerTarget": "lucifer-front:serve"
+            "devServerTarget": "lucifer-front:serve:e2e"
           }
         },
         "lint": {
