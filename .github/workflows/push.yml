@@ -170,7 +170,7 @@ jobs:
       - name: Prepare
         id: prep
         run: |
-          DOCKER_IMAGE=myorg/myrepository
+          DOCKER_IMAGE=${{ github.repository }}/lucifer-api
           VERSION=edge
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             VERSION=${GITHUB_REF#refs/tags/}
