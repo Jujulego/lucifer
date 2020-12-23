@@ -18,7 +18,6 @@ import { env } from './env';
 
         if (!env.DATABASE_URL) {
           let root = __dirname;
-          console.log(root);
           if (root.endsWith('src')) {
             root = path.dirname(__dirname);
           } else {
