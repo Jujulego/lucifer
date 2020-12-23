@@ -179,7 +179,7 @@ jobs:
       - name: E2E Tests
         run: |
           echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
-          yarn run lucifer-api:serve &
+          yarn start lucifer-api &
           API_PID=$!;
           yarn run affected:e2e --scan --base=origin/${{ github.base_ref }} --headless
           kill $API_PID
