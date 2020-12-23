@@ -185,7 +185,7 @@ jobs:
 #          kill $API_PID
 #        env:
 #          DATABASE_URL: "postgres://root:root@localhost:5432"
-#          CYPRESS_Auth0ClientSecret: ${{ secrets.CYPRESS_AUTH0CLIENTSECRET }}
+#          CYPRESS_Auth0ClientSecret: ${{ secrets.AUTH0_CLIENT_SECRET }}
 #
 #      - name: Archive cypress results
 #        uses: actions/upload-artifact@v2

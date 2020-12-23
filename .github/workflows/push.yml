@@ -9,8 +9,36 @@ env:
   NX_RUN_GROUP: ${{ github.run_id }}
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+
+      - name: Setup Cache
+        id: setup-cache
+        run: echo "::set-output name=yarn-cache::$(yarn cache dir)"
+
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.setup-cache.outputs.yarn-cache }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: yarn install --pure-lockfile
+
+      - name: Lint
+        run: yarn run nx run-many --all --target=lint --scan
+
   tests:
     runs-on: ubuntu-latest
+    needs: lint
 
     services:
       postgres:
@@ -74,7 +102,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    needs: tests
+    needs: lint
 
     steps:
       - uses: actions/checkout@v2
@@ -168,3 +196,32 @@ jobs:
         run: yarn run nx run-many --all --target=deploy --repository=$REPOSITORY_URL
         env:
           REPOSITORY_URL: "https://${{ github.actor }}:${{ github.token }}@github.com/${{ github.repository }}.git"
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: [tests, build]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Download production artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: production-build
+          path: dist
+
+      - name: Build and Push
+        uses: docker/build-push-action@v1
+        with:
+          file: apps/lucifer-api/Dockerfile
+          context: .
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          repository: ${{ github.repository }}/lucifer-api
+          tag_with_ref: true
+          secrets: |
+            "AUTH0_DOMAIN=dev-lucifer.eu.auth0.com"
+            "AUTH0_AUDIENCE=https://lucifer-api.herokuapp.com/"
+            "AUTH0_CLIENT_ID=ktmzvUo29TuSbQ8p1AvLrZMPTYCPsH3Z"
+            "AUTH0_CLIENT_SECRET=${{ secrets.AUTH0_CLIENT_SECRET }}"

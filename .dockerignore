@@ -1,0 +1,9 @@
+node_modules
+.husky
+.storybook
+.terraform
+.idea
+.vscode
+db
+res
+tools
