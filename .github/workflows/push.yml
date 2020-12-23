@@ -203,6 +203,7 @@ jobs:
       - name: Build and Push
         uses: docker/build-push-action@v2
         with:
+          push: true
           file: apps/lucifer-api/Dockerfile
           context: .
           secrets: |
