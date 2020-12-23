@@ -101,7 +101,7 @@
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "11.1.2",
     "@testing-library/user-event": "^12.2.2",
-    "@types/auth0": "^2.20.9",
+    "@types/auth0": "^2.20.11",
     "@types/ci-info": "^2.0.0",
     "@types/cors": "^2.8.8",
     "@types/enzyme": "^3.10.8",

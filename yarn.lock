@@ -2910,10 +2910,10 @@
   resolved "https://registry.yarnpkg.com/@types/aria-query/-/aria-query-4.2.0.tgz#14264692a9d6e2fa4db3df5e56e94b5e25647ac0"
   integrity sha512-iIgQNzCm0v7QMhhe4Jjn9uRh+I6GoPmt03CbEtwx3ao8/EfoQcmgtqH4vQ5Db/lxiIGaWDv6nwvunuh0RyX0+A==
 
-"@types/auth0@^2.20.9":
-  version "2.20.10"
-  resolved "https://registry.yarnpkg.com/@types/auth0/-/auth0-2.20.10.tgz#5b03fcc0dda1fa7f8ef4a9070542f45974453b05"
-  integrity sha512-W8Jp/i+QEySUx1HFp127IFGFiuTO4n2PHuESRpCLnc8fcNtWwtF3Qc9kv3oP5VaC5d20svJvw77C1KnrhxaVbQ==
+"@types/auth0@^2.20.11":
+  version "2.20.11"
+  resolved "https://registry.yarnpkg.com/@types/auth0/-/auth0-2.20.11.tgz#cf02f5d1b8b9f57b9bab0e89024931bfdc0ac26c"
+  integrity sha512-6/EUKnLWHyfGQFjyakkayi7g6geHk49j8Pf2uLli1CQbUNpvn/eM7gpOcm3RPC4sc6kIiNcSFrggfm6pNEVDtQ==
 
 "@types/babel__core@^7.0.0", "@types/babel__core@^7.1.7":
   version "7.1.12"
