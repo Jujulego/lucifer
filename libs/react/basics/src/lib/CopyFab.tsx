@@ -1,4 +1,4 @@
-import React, { MouseEvent, useState, useEffect } from 'react';
+import React, { MouseEvent, useState, useEffect, FC } from 'react';
 import copy from 'copy-to-clipboard';
 import clsx from 'clsx';
 import { pick } from 'lodash';
@@ -12,10 +12,17 @@ import { StyledProps } from '@lucifer/react/utils';
 
 // Types
 export type CopyFabClassKey = FabClassKey | 'succeed';
-export type CopyFabProps = Omit<FabProps, 'classes' | 'children'> & StyledProps<CopyFabClassKey> & {
+export interface CopyFabProps extends Omit<FabProps, 'classes' | 'children'>, StyledProps<CopyFabClassKey> {
+  /** Content to be copied */
   text: string;
+
+  /**
+   * Mime type of content
+   * @default text/plain
+   */
   format?: string;
 
+  /** Copied callback, called after a successful copy */
   onCopied?: () => void;
 }
 
@@ -39,7 +46,7 @@ const useStyles = makeStyles(({ palette }: Theme) => ({
 }));
 
 // Component
-const CopyFab = (props: CopyFabProps) => {
+const CopyFab: FC<CopyFabProps> = (props) => {
   // Props
   const {
     text, classes,

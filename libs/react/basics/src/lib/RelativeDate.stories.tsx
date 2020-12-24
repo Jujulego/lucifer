@@ -10,18 +10,18 @@ export default {
   component: RelativeDate
 }
 
-export const from_now = () => (
+export const FromNow = () => (
   <RelativeDate
     mode="from"
-    date={date('date', moment().add(1, 'day').toDate())}
+    date={date('date', moment()["add"](1, 'day').toDate())}
     withoutPrefix={boolean('withoutPrefix', false)}
   />
 );
 
-export const to_now = () => (
+export const ToNow = () => (
   <RelativeDate
     mode="to"
-    date={date('date', moment().add(1, 'day').toDate())}
+    date={date('date', moment()["add"](1, 'day').toDate())}
     withoutPrefix={boolean('withoutPrefix', false)}
   />
 );
