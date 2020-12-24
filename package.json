@@ -131,7 +131,7 @@
     "eslint": "7.10.0",
     "eslint-config-prettier": "6.0.0",
     "eslint-plugin-cypress": "^2.10.3",
-    "husky": "^5.0.4",
+    "husky": "^5.0.6",
     "is-ci": "^2.0.0",
     "jest": "26.2.2",
     "jsonwebtoken": "^8.5.0",
