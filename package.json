@@ -68,7 +68,7 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "~6.5.5",
+    "rxjs": "~6.6.3",
     "tslib": "^2.0.0",
     "typeorm": "^0.2.29"
   },
@@ -141,7 +141,7 @@
     "ts-jest": "26.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~6.0.0",
-    "typescript": "~4.0.3",
+    "typescript": "~4.1.3",
     "url-loader": "^3.0.0",
     "webpack-bundle-analyzer": "^4.1.0"
   }
