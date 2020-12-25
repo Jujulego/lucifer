@@ -235,6 +235,9 @@ jobs:
 
       lucifer-api:
         image: ghcr.io/jujulego/lucifer/lucifer-api:master
+        credentials:
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.CR_PAT }}
         env:
           DATABASE_URL: 'postgres://root:root@postgres:5432'
         ports:
