@@ -91,7 +91,7 @@
     "@nrwl/storybook": "11.0.8",
     "@nrwl/web": "11.0.8",
     "@nrwl/workspace": "11.0.8",
-    "@storybook/addon-actions": "^6.0.21",
+    "@storybook/addon-actions": "^6.1.11",
     "@storybook/addon-knobs": "^6.0.21",
     "@storybook/addon-links": "^6.0.21",
     "@storybook/addons": "^6.0.21",
