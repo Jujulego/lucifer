@@ -274,7 +274,13 @@ jobs:
           echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
           yarn run nx run-many --all --target=e2e --scan
         env:
-          CYPRESS_Auth0ClientSecret: ${{ secrets.AUTH0_CLIENT_SECRET }}
+          CYPRESS_Auth0ClientSecret: ${{ secrets.E2E_AUTH0_CLIENT_SECRET }}
+
+      - name: Archive cypress results
+        uses: actions/upload-artifact@v2
+        with:
+          name: cypress-results
+          path: dist/cypress
 
   deploy:
     runs-on: ubuntu-latest
