@@ -133,6 +133,7 @@ jobs:
 
   terraform:
     runs-on: ubuntu-latest
+    needs: lint
 
     steps:
       - uses: actions/checkout@v2
@@ -233,7 +234,7 @@ jobs:
           - 5432:5432
 
       lucifer-api:
-        image: docker pull ghcr.io/jujulego/lucifer/lucifer-api:master
+        image: ghcr.io/jujulego/lucifer/lucifer-api:master
         env:
           DATABASE_URL: 'postgres://root:root@postgres:5432'
         ports:
@@ -274,7 +275,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: [build, tests, e2e-tests, terraform]
+    needs: [tests, e2e-tests, terraform] # build is already needed by e2e-tests
 
     steps:
       - uses: actions/checkout@v2
