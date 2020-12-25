@@ -131,27 +131,6 @@ jobs:
           name: production-build
           path: dist
 
-  terraform:
-    runs-on: ubuntu-latest
-    needs: lint
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-      - name: Terraform Format
-        run: terraform fmt -check res
-
-      - name: Terraform Init
-        run: terraform init res
-
-      - name: Terraform Apply
-        run: terraform apply -auto-approve res
-
   docker:
     runs-on: ubuntu-latest
     needs: build
@@ -209,15 +188,15 @@ jobs:
             "AUTH0_AUDIENCE=https://lucifer-api.herokuapp.com/"
             "AUTH0_CLIENT_ID=ktmzvUo29TuSbQ8p1AvLrZMPTYCPsH3Z"
             "AUTH0_CLIENT_SECRET=${{ secrets.AUTH0_CLIENT_SECRET }}"
-          tags: ${{ steps.prep.outputs.tags }}
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.html_url }}
             org.opencontainers.image.created=${{ steps.prep.outputs.created }}
             org.opencontainers.image.revision=${{ github.sha }}
+          tags:  ${{ steps.prep.outputs.tags }}
 
   e2e-tests:
     runs-on: ubuntu-latest
-    needs: docker
+    needs: [tests, docker]
 
     services:
       postgres:
@@ -282,9 +261,30 @@ jobs:
           name: cypress-results
           path: dist/cypress
 
+  terraform:
+    runs-on: ubuntu-latest
+    needs: e2e-tests
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Terraform Format
+        run: terraform fmt -check res
+
+      - name: Terraform Init
+        run: terraform init res
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve res
+
   deploy:
     runs-on: ubuntu-latest
-    needs: [tests, e2e-tests, terraform] # build is already needed by e2e-tests
+    needs: terraform
 
     steps:
       - uses: actions/checkout@v2
