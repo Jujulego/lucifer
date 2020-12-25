@@ -220,7 +220,7 @@ jobs:
         env:
           DATABASE_URL: 'postgres://root:root@postgres:5432'
         ports:
-          - 80:3333
+          - 3333:80
 
     steps:
       - uses: actions/checkout@v2
