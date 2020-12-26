@@ -18,7 +18,7 @@ const MachineTable: FC<MachineTableProps> = (props) => {
   // Render
   return (
     <TableContainer>
-      <Table documents={machines}>
+      <Table id="machines-table" documents={machines}>
         <TableHead>
           <TableRow>
             <TableSortCell<IMachine> field="shortName">Nom</TableSortCell>
