@@ -183,11 +183,11 @@ jobs:
           push: true
           file: apps/lucifer-api/Dockerfile
           context: .
-          secrets: |
-            "AUTH0_DOMAIN=dev-lucifer.eu.auth0.com"
-            "AUTH0_AUDIENCE=https://lucifer-api.herokuapp.com/"
-            "AUTH0_CLIENT_ID=ktmzvUo29TuSbQ8p1AvLrZMPTYCPsH3Z"
-            "AUTH0_CLIENT_SECRET=${{ secrets.AUTH0_CLIENT_SECRET }}"
+          build-args: |
+            "Auth0Domain=dev-lucifer.eu.auth0.com"
+            "Auth0Audience=https://lucifer-api.herokuapp.com/"
+            "Auth0ClientId=ktmzvUo29TuSbQ8p1AvLrZMPTYCPsH3Z"
+            "Auth0ClientSecret=${{ secrets.AUTH0_CLIENT_SECRET }}"
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.html_url }}
             org.opencontainers.image.created=${{ steps.prep.outputs.created }}
