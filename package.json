@@ -120,7 +120,7 @@
     "@types/supertest": "^2.0.10",
     "@types/webpack": "4.41.21",
     "@typescript-eslint/eslint-plugin": "4.3.0",
-    "@typescript-eslint/parser": "4.3.0",
+    "@typescript-eslint/parser": "4.11.0",
     "babel-jest": "26.6.3",
     "babel-loader": "8.1.0",
     "ci-info": "^2.0.0",
