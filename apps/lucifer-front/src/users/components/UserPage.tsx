@@ -12,11 +12,13 @@ import AddMachineDialog from '../../machines/components/AddMachineDialog';
 import { useMachines } from '../../machines/machine.hooks';
 import { ToolbarAction } from '@lucifer/react/basics';
 import { Add as AddIcon } from '@material-ui/icons';
+import { useNeedScope } from '../../auth/auth.hooks';
 
 // Utils
 interface LinkTabProps {
   value: string;
   label: string;
+  disabled?: boolean;
 }
 
 const LinkTab = (props: LinkTabProps) => {
@@ -45,6 +47,10 @@ const UserPage = () => {
   // State
   const [addingMachine, setAddingMachine] = useState(false);
 
+  // Auth
+  const canAddMachines = useNeedScope('create:machines', usr => usr?.id === id) ?? false;
+  const canReadMachines = useNeedScope('read:machines', usr => usr?.id === id) ?? false;
+
   // API
   const { user, loading, reload: reloadUser, put } = useUser(id);
   const { machines = [], reload: reloadMachines, create: createMachine } = useMachines(id);
@@ -63,7 +69,7 @@ const UserPage = () => {
           user={user} loading={loading}
           onReload={reload}
           actions={(
-            <Fade in={(page === 'machines')}>
+            <Fade in={(page === 'machines') && canAddMachines}>
               <ToolbarAction
                 tooltip="Créer une machine" disabled={loading}
                 onClick={() => setAddingMachine(true)}
@@ -75,7 +81,7 @@ const UserPage = () => {
         />
         <Tabs variant="fullWidth" value={page} onChange={() => null}>
           <LinkTab value="details" label="Détails" />
-          <LinkTab value="machines" label="Machines" />
+          <LinkTab value="machines" label="Machines" disabled={!canReadMachines} />
         </Tabs>
       </Paper>
       <UserDetailsTab
@@ -86,7 +92,7 @@ const UserPage = () => {
         <MachineTable machines={machines} />
       ) }
       <AddMachineDialog
-        open={addingMachine}
+        open={addingMachine && canAddMachines}
         onAdd={createMachine}
         onClose={() => setAddingMachine(false)}
       />
