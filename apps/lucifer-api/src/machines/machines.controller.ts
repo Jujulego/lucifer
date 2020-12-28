@@ -1,4 +1,16 @@
-import { Body, Controller, Get, Param, Post, Put, UseGuards, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseArrayPipe, ParseUUIDPipe,
+  Post,
+  Put,
+  Query,
+  UseGuards,
+  ValidationPipe
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 import { AllowIf, ScopeGuard, Scopes } from '../auth/scope.guard';
@@ -35,11 +47,20 @@ export class MachinesController {
     return await this.machines.list(ownerId);
   }
 
+  @Delete('/')
+  @Scopes('delete:machines')
+  async bulkDelete(
+    @Param('ownerId') ownerId: string,
+    @Query('id', ParseArrayPipe) ids: string[],
+  ): Promise<number | null> {
+    return await this.machines.delete(ownerId, ids);
+  }
+
   @Get('/:id')
   @Scopes('read:machines')
   async get(
     @Param('ownerId') ownerId: string,
-    @Param('id') id: string
+    @Param('id', ParseUUIDPipe) id: string
   ): Promise<Machine> {
     return await this.machines.get(ownerId, id);
   }
@@ -48,9 +69,18 @@ export class MachinesController {
   @Scopes('update:machines')
   async update(
     @Param('ownerId') ownerId: string,
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body(ValidationPipe) update: UpdateMachine,
   ): Promise<Machine> {
     return await this.machines.update(ownerId, id, update);
+  }
+
+  @Delete('/:id')
+  @Scopes('delete:machines')
+  async delete(
+    @Param('ownerId') ownerId: string,
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<number | null> {
+    return await this.machines.delete(ownerId, [id]);
   }
 }

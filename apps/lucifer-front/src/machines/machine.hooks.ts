@@ -7,6 +7,7 @@ import { ICreateMachine, IMachine, IUpdateMachine } from '@lucifer/types';
 export const useMachinesAPI = {
   all: (ownerId: string) => useAPI.get<IMachine[]>(`/api/${ownerId}/machines`),
   create: (ownerId: string) => useAPI.post<ICreateMachine, IMachine>(`/api/${ownerId}/machines`),
+  bulkDelete: (ownerId: string) => useAPI.delete<IMachine>(`/api/${ownerId}/machines`),
 
   get: (ownerId: string, id: string) => useAPI.get<IMachine>(`/api/${ownerId}/machines/${id}`),
   put: (ownerId: string, id: string) => useAPI.put<IUpdateMachine, IMachine>(`/api/${ownerId}/machines/${id}`),
@@ -16,6 +17,7 @@ export const useMachinesAPI = {
 export function useMachines(ownerId: string) {
   const { data: machines, loading, reload, update } = useMachinesAPI.all(ownerId);
   const { send: create } = useMachinesAPI.create(ownerId);
+  const { send: bulkDelete } = useMachinesAPI.bulkDelete(ownerId);
 
   return {
     machines, loading,
@@ -26,7 +28,13 @@ export function useMachines(ownerId: string) {
       update((machines = []) => [...machines, mch]);
 
       return mch;
-    }, [create, update])
+    }, [create, update]),
+    bulkDelete: useCallback(async (ids: string[]) => {
+      const affected = await bulkDelete({ ids });
+      update((machines = []) => machines.filter(mch => ids.includes(mch.id)));
+
+      return affected;
+    }, [bulkDelete, update])
   };
 }
 

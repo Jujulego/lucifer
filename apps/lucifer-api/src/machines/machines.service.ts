@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 
 import { UsersService } from '../users/users.service';
 
@@ -55,5 +55,10 @@ export class MachinesService {
     if (update.shortName) mch.shortName = update.shortName;
 
     return await this.repository.save(mch);
+  }
+
+  async delete(ownerId: string, ids: string[]): Promise<number | null> {
+    const { affected } = await this.repository.delete({ ownerId, id: In(ids) });
+    return affected ?? null;
   }
 }

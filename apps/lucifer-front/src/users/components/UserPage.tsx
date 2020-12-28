@@ -1,19 +1,15 @@
-import React, { useCallback, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useParams, useRouteMatch } from 'react-router';
 import { Link as RouterLink } from 'react-router-dom';
 
-import { Fade, Paper, Tab, Tabs } from '@material-ui/core';
+import { Paper, Tab, Tabs } from '@material-ui/core';
+
+import { useNeedScope } from '../../auth/auth.hooks';
+import MachineTable from '../../machines/components/MachineTable';
 
 import { useUser } from '../users.hooks';
 import UserDetailsTab from './UserDetailsTab';
 import UserHeader from './UserHeader';
-import MachineTable from '../../machines/components/MachineTable';
-import AddMachineDialog from '../../machines/components/AddMachineDialog';
-import { useMachines } from '../../machines/machine.hooks';
-import { ToolbarAction } from '@lucifer/react/basics';
-import { Add as AddIcon } from '@material-ui/icons';
-import { useNeedScope } from '../../auth/auth.hooks';
-import { IMachine } from '@lucifer/types';
 
 // Utils
 interface LinkTabProps {
@@ -45,26 +41,14 @@ const UserPage = () => {
   // Router
   const { id, page = 'details' } = useParams<UserParams>();
 
-  // State
-  const [addingMachine, setAddingMachine] = useState(false);
-
   // Auth
-  const canAddMachines = useNeedScope('create:machines', usr => usr?.id === id) ?? false;
   const canReadMachines = useNeedScope('read:machines', usr => usr?.id === id) ?? false;
 
   // API
-  const { user, loading, reload: reloadUser, put } = useUser(id);
-  const { machines = [], reload: reloadMachines, updateCache, create: createMachine } = useMachines(id);
+  const { user, loading, reload, put } = useUser(id);
 
-  // Callbacks
-  const reload = useCallback(() => {
-    reloadUser();
-    reloadMachines();
-  }, [reloadUser, reloadMachines]);
-
-  const addMachines = useCallback((mch: IMachine) => {
-    updateCache((machines = []) => machines.map(m => m.id === mch.id ? mch : m));
-  }, [updateCache]);
+  // Refs
+  const actionsContainer = useRef<HTMLSpanElement>(null);
 
   // Render
   return (
@@ -74,14 +58,7 @@ const UserPage = () => {
           user={user} loading={loading}
           onReload={reload}
           actions={(
-            <Fade in={(page === 'machines') && canAddMachines}>
-              <ToolbarAction
-                tooltip="Créer une machine" disabled={loading}
-                onClick={() => setAddingMachine(true)}
-              >
-                <AddIcon />
-              </ToolbarAction>
-            </Fade>
+            <span ref={actionsContainer} />
           )}
         />
         <Tabs variant="fullWidth" value={page} onChange={() => null}>
@@ -94,13 +71,11 @@ const UserPage = () => {
         onUpdate={put}
       />
       { (page === 'machines') && (
-        <MachineTable machines={machines} onSave={addMachines} />
+        <MachineTable
+          ownerId={id}
+          actionsContainer={actionsContainer.current}
+        />
       ) }
-      <AddMachineDialog
-        open={addingMachine && canAddMachines}
-        onAdd={createMachine}
-        onClose={() => setAddingMachine(false)}
-      />
     </>
   );
 };
