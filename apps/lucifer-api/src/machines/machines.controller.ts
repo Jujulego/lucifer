@@ -1,11 +1,11 @@
-import { Body, Controller, Get, Param, Post, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, UseGuards, ValidationPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 import { AllowIf, ScopeGuard, Scopes } from '../auth/scope.guard';
 
 import { Machine } from './machine.entity';
 import { MachinesService } from './machines.service';
-import { CreateMachine } from './machine.schema';
+import { CreateMachine, UpdateMachine } from './machine.schema';
 
 // Controller
 @Controller('/:ownerId/machines')
@@ -27,6 +27,14 @@ export class MachinesController {
     return await this.machines.create(ownerId, data)
   }
 
+  @Get('/')
+  @Scopes('read:machines')
+  async list(
+    @Param('ownerId') ownerId: string
+  ): Promise<Machine[]> {
+    return await this.machines.list(ownerId);
+  }
+
   @Get('/:id')
   @Scopes('read:machines')
   async get(
@@ -36,11 +44,13 @@ export class MachinesController {
     return await this.machines.get(ownerId, id);
   }
 
-  @Get('/')
-  @Scopes('read:machines')
-  async list(
-    @Param('ownerId') ownerId: string
-  ): Promise<Machine[]> {
-    return await this.machines.list(ownerId);
+  @Put('/:id')
+  @Scopes('update:machines')
+  async update(
+    @Param('ownerId') ownerId: string,
+    @Param('id') id: string,
+    @Body(ValidationPipe) update: UpdateMachine,
+  ): Promise<Machine> {
+    return await this.machines.update(ownerId, id, update);
   }
 }
