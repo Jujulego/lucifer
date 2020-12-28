@@ -24,7 +24,7 @@ export type APIDeleteReturn<P extends APIParams, R> = APIState<R> & {
 }
 
 export type APIPostRequestConfig = Omit<AxiosRequestConfig, 'cancelToken'>;
-export type APIPostRequestGenerator<B, P extends APIParams, R> = (body: B, source: CancelTokenSource, url?: string, params?: P) => Promise<AxiosResponse<R>>;
+export type APIPostRequestGenerator<B, P extends APIParams, R> = (body: B, source: CancelTokenSource, params?: P) => Promise<AxiosResponse<R>>;
 export type APIPostReturn<B, P extends APIParams, R> = APIState<R> & {
   send: (data: B, params?: P) => APIPromise<R>,
 }
@@ -125,14 +125,14 @@ function usePostRequest<B, R, P extends APIParams>(generator: APIPostRequestGene
   const [state, setState] = useState<APIState<R>>({ loading: false });
 
   // Callback
-  const send = useCallback((body: B) => {
+  const send = useCallback((body: B, params?: P) => {
     setState(old => ({ ...old, loading: true }));
 
     // Create cancel token
     const source = axios.CancelToken.source();
 
     // Make request
-    const promise = generator(body, source)
+    const promise = generator(body, source, params)
       .then((res): R => {
         setState({ data: res.data, loading: false });
         return res.data;
@@ -203,8 +203,8 @@ export function useAPIPost<B, R = unknown, P extends APIParams = APIParams> (url
   useDebugValue(url);
 
   // Callbacks
-  const generator = useCallback((body: B, source: CancelTokenSource, _url?: string, _params?: P) =>
-    axios.post<R>(_url || url, body, { ...config, params: { ...params, ..._params }, cancelToken: source.token }),
+  const generator = useCallback((body: B, source: CancelTokenSource, _params?: P) =>
+    axios.post<R>(url, body, { ...config, params: { ...params, ..._params }, cancelToken: source.token }),
     [url, params, config] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
@@ -215,8 +215,8 @@ export function useAPIPut<B, R = unknown, P extends APIParams = APIParams> (url:
   useDebugValue(url);
 
   // Callbacks
-  const generator = useCallback((body: B, source: CancelTokenSource, _url?: string, _params?: P) =>
-    axios.put<R>(_url || url, body, { ...config, params: { ...params, ..._params }, cancelToken: source.token }),
+  const generator = useCallback((body: B, source: CancelTokenSource, _params?: P) =>
+    axios.put<R>(url, body, { ...config, params: { ...params, ..._params }, cancelToken: source.token }),
     [url, params, config] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
@@ -227,8 +227,8 @@ export function useAPIPatch<B, R = unknown, P extends APIParams = APIParams> (ur
   useDebugValue(url);
 
   // Callbacks
-  const generator = useCallback((body: B, source: CancelTokenSource, _url?: string, _params?: P) =>
-    axios.patch<R>(_url || url, body, { ...config, params: { ...params, ..._params }, cancelToken: source.token }),
+  const generator = useCallback((body: B, source: CancelTokenSource, _params?: P) =>
+    axios.patch<R>(url, body, { ...config, params: { ...params, ..._params }, cancelToken: source.token }),
     [url, params, config] // eslint-disable-line react-hooks/exhaustive-deps
   );
 

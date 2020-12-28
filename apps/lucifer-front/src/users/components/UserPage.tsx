@@ -13,6 +13,7 @@ import { useMachines } from '../../machines/machine.hooks';
 import { ToolbarAction } from '@lucifer/react/basics';
 import { Add as AddIcon } from '@material-ui/icons';
 import { useNeedScope } from '../../auth/auth.hooks';
+import { IMachine } from '@lucifer/types';
 
 // Utils
 interface LinkTabProps {
@@ -53,13 +54,17 @@ const UserPage = () => {
 
   // API
   const { user, loading, reload: reloadUser, put } = useUser(id);
-  const { machines = [], reload: reloadMachines, create: createMachine } = useMachines(id);
+  const { machines = [], reload: reloadMachines, updateCache, create: createMachine } = useMachines(id);
 
   // Callbacks
   const reload = useCallback(() => {
     reloadUser();
     reloadMachines();
   }, [reloadUser, reloadMachines]);
+
+  const addMachines = useCallback((mch: IMachine) => {
+    updateCache((machines = []) => machines.map(m => m.id === mch.id ? mch : m));
+  }, [updateCache]);
 
   // Render
   return (
@@ -89,7 +94,7 @@ const UserPage = () => {
         onUpdate={put}
       />
       { (page === 'machines') && (
-        <MachineTable machines={machines} />
+        <MachineTable machines={machines} onSave={addMachines} />
       ) }
       <AddMachineDialog
         open={addingMachine && canAddMachines}
