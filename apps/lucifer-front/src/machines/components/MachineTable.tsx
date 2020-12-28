@@ -1,9 +1,18 @@
 import React, { FC, useCallback, useState } from 'react';
 
-import { IconButton, Portal, TableCell, TableContainer, TableHead, makeStyles, Fade } from '@material-ui/core';
+import {
+  IconButton,
+  Portal,
+  TableCell,
+  TableContainer,
+  TableHead,
+  makeStyles,
+  Fade,
+  Typography, DialogTitle, DialogContent, List, ListItem, ListItemText
+} from '@material-ui/core';
 import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from '@material-ui/icons';
 
-import { ToolbarAction } from '@lucifer/react/basics';
+import { ConfirmDialog, ToolbarAction, useConfirm } from '@lucifer/react/basics';
 import { Table, TableBody, TableRow, TableSortCell } from '@lucifer/react/table';
 import { IMachine } from '@lucifer/types';
 
@@ -21,7 +30,11 @@ export interface MachineTableProps {
 
 // Styles
 const useStyles = makeStyles({
-  noPadding: {
+  actions: {
+    padding: 0,
+    textAlign: 'right'
+  },
+  confirmContent: {
     padding: 0,
   }
 });
@@ -34,18 +47,28 @@ const MachineTable: FC<MachineTableProps> = (props) => {
   // State
   const [addingMachine, setAddingMachine] = useState(false);
   const [updateMachine, setUpdateMachine] = useState<IMachine | null>(null);
+  const { state: deleteState, confirm: confirmDelete } = useConfirm<IMachine[]>([]);
 
   // Auth
   const canCreate = useNeedScope('create:machines', usr => usr?.id === ownerId) ?? false;
+  const canUpdate = useNeedScope('update:machines', usr => usr?.id === ownerId) ?? false;
   const canDelete = useNeedScope('delete:machines', usr => usr?.id === ownerId) ?? false;
 
   // API
-  const { machines = [], create, updateCache } = useMachines(ownerId);
+  const { machines = [], create, updateCache, bulkDelete } = useMachines(ownerId);
 
   // Callbacks
   const handleSave = useCallback((mch: IMachine) => {
     updateCache((machines = []) => machines.map(m => m.id === mch.id ? mch : m));
   }, [updateCache]);
+
+  const handleDelete = useCallback(async (mchs: IMachine[]) => {
+    const ids = mchs.map(mch => mch.id);
+
+    await confirmDelete(mchs);
+    await bulkDelete(ids);
+    updateCache((machines = []) => machines.filter(mch => ids.includes(mch.id)));
+  }, [bulkDelete, confirmDelete, updateCache]);
 
   // Render
   const styles = useStyles();
@@ -74,9 +97,7 @@ const MachineTable: FC<MachineTableProps> = (props) => {
           <TableHead>
             <TableRow>
               <TableSortCell<IMachine> field="shortName">Nom</TableSortCell>
-              <TableCell>
-                Actions
-              </TableCell>
+              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
@@ -85,9 +106,12 @@ const MachineTable: FC<MachineTableProps> = (props) => {
                 <TableCell>
                   { mch.shortName }
                 </TableCell>
-                <TableCell className={styles.noPadding} onClick={event => event.stopPropagation()}>
-                  <IconButton onClick={() => setUpdateMachine(mch)}>
+                <TableCell className={styles.actions} onClick={event => event.stopPropagation()}>
+                  <IconButton disabled={!canUpdate} onClick={() => setUpdateMachine(mch)}>
                     <EditIcon />
+                  </IconButton>
+                  <IconButton disabled={!canDelete} onClick={() => handleDelete([mch])}>
+                    <DeleteIcon />
                   </IconButton>
                 </TableCell>
               </TableRow>
@@ -105,6 +129,22 @@ const MachineTable: FC<MachineTableProps> = (props) => {
         onSave={handleSave}
         onClose={() => setUpdateMachine(null)}
       />
+      <ConfirmDialog state={deleteState}>
+        { (mchs) => (
+          <>
+            <DialogTitle>Supprimer { mchs.length } machines ?</DialogTitle>
+            <DialogContent className={styles.confirmContent} dividers>
+              <List>
+                { mchs.map((mch) => (
+                  <ListItem key={mch.id}>
+                    <ListItemText primary={mch.shortName} secondary={mch.id} />
+                  </ListItem>
+                ))}
+              </List>
+            </DialogContent>
+          </>
+        ) }
+      </ConfirmDialog>
     </>
   );
 };

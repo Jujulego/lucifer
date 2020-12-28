@@ -30,7 +30,7 @@ export function useMachines(ownerId: string) {
       return mch;
     }, [create, update]),
     bulkDelete: useCallback(async (ids: string[]) => {
-      const affected = await bulkDelete({ ids });
+      const affected = await bulkDelete({ id: ids });
       update((machines = []) => machines.filter(mch => ids.includes(mch.id)));
 
       return affected;
