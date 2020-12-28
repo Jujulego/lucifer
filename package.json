@@ -79,7 +79,7 @@
     "@babel/preset-typescript": "7.9.0",
     "@nestjs/schematics": "^7.2.5",
     "@nestjs/testing": "^7.6.4",
-    "@nrwl/cli": "11.0.8",
+    "@nrwl/cli": "11.0.18",
     "@nrwl/cypress": "11.0.8",
     "@nrwl/devkit": "11.0.8",
     "@nrwl/eslint-plugin-nx": "11.0.8",
