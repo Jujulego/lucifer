@@ -99,7 +99,7 @@
     "@storybook/theming": "^6.0.21",
     "@svgr/webpack": "^5.4.0",
     "@testing-library/jest-dom": "^5.11.6",
-    "@testing-library/react": "11.1.2",
+    "@testing-library/react": "11.2.2",
     "@testing-library/user-event": "^12.2.2",
     "@types/auth0": "^2.20.12",
     "@types/ci-info": "^2.0.0",
