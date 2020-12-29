@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useRef, useState } from 'react';
 
 import {
   IconButton,
@@ -14,7 +14,7 @@ import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from '@materia
 
 import { ConfirmDialog, ToolbarAction, useConfirm } from '@lucifer/react/basics';
 import { Table, TableBody, TableRow, TableSortCell } from '@lucifer/react/table';
-import { IMachine } from '@lucifer/types';
+import { IMachine, Machine } from '@lucifer/types';
 
 import { useNeedScope } from '../../auth/auth.hooks';
 
@@ -48,6 +48,9 @@ const MachineTable: FC<MachineTableProps> = (props) => {
   const [addingMachine, setAddingMachine] = useState(false);
   const [updateMachine, setUpdateMachine] = useState<IMachine | null>(null);
   const { state: deleteState, confirm: confirmDelete } = useConfirm<IMachine[]>([]);
+
+  // Ref
+  const selection = useRef<Machine[]>([]);
 
   // Auth
   const canCreate = useNeedScope('create:machines', usr => usr?.id === ownerId) ?? false;
@@ -86,14 +89,15 @@ const MachineTable: FC<MachineTableProps> = (props) => {
         </Fade>
         <Fade in appear>
           <ToolbarAction
-            tooltip="Supprimer une machine" disabled
+            tooltip="Supprimer une machine" disabled={!canDelete}
+            onClick={() => handleDelete(selection.current)}
           >
             <DeleteIcon />
           </ToolbarAction>
         </Fade>
       </Portal>
       <TableContainer>
-        <Table id="machines-table" documents={machines}>
+        <Table id="machines-table" documents={machines} selectionRef={selection}>
           <TableHead>
             <TableRow>
               <TableSortCell<IMachine> field="shortName">Nom</TableSortCell>

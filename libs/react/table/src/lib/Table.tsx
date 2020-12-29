@@ -1,4 +1,12 @@
-import React, { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  MutableRefObject,
+  PropsWithChildren,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState
+} from 'react';
 
 import {
   Table as MuiTable,
@@ -31,15 +39,16 @@ export interface TableProps<T extends Document> extends MuiTableProps, StyledPro
   blacklist?: Array<number | string>,
   toolbar?: ReactNode,
   pagination?: ReactNode,
-  children?: ReactNode
+  selectionRef?: MutableRefObject<T[]>
 }
 
 // Component
-const Table = <T extends Document> (props: TableProps<T>) => {
+const Table = <T extends Document> (props: PropsWithChildren<TableProps<T>>) => {
   // Props
   const {
     documents, blacklist = [],
     toolbar, pagination, classes,
+    selectionRef,
     children,
     ...table
   } = props;
@@ -54,6 +63,12 @@ const Table = <T extends Document> (props: TableProps<T>) => {
   useEffect(() => {
     setSelected({});
   }, [documents]);
+
+  useEffect(() => {
+    if (selectionRef) {
+      selectionRef.current = documents.filter(doc => selected[doc.id]);
+    }
+  }, [selectionRef, selected, documents]);
 
   // Memos
   const filtered = useMemo(
