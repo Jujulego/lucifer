@@ -69,6 +69,24 @@ afterEach(async () => {
 });
 
 // Tests suites
+describe('MachinesService.create', function() {
+  // Tests
+  it('should create a new machine', async () => {
+    const machine = await service.create(owners[1].id, { shortName: 'Test #4' });
+
+    try {
+      expect(machine).toEqual({
+        id:        expect.any(String),
+        ownerId:   owners[1].id,
+        shortName: 'Test #4',
+      });
+    } finally {
+      const repo = database.getRepository(Machine);
+      await repo.delete(machine);
+    }
+  });
+});
+
 describe('MachinesService.get', () => {
   // Tests
   it('should return a machine', async () => {
