@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { useParams, useRouteMatch } from 'react-router';
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -10,6 +10,7 @@ import MachineTable from '../../machines/components/MachineTable';
 import { useUser } from '../users.hooks';
 import UserDetailsTab from './UserDetailsTab';
 import UserHeader from './UserHeader';
+import { RefreshButton } from '@lucifer/react/basics';
 
 // Utils
 interface LinkTabProps {
@@ -55,10 +56,13 @@ const UserPage = () => {
     <>
       <Paper square>
         <UserHeader
-          user={user} loading={loading}
-          onReload={reload}
+          user={user}
           actions={(
-            <span ref={actionsContainer} />
+            <span ref={actionsContainer}>
+              { (page === 'details') && (
+                <RefreshButton refreshing={loading} onClick={reload} />
+              ) }
+            </span>
           )}
         />
         <Tabs variant="fullWidth" value={page} onChange={() => null}>

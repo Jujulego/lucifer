@@ -8,11 +8,11 @@ import {
   TableHead,
   makeStyles,
   Fade,
-  Typography, DialogTitle, DialogContent, List, ListItem, ListItemText
+  DialogTitle, DialogContent, List, ListItem, ListItemText
 } from '@material-ui/core';
 import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from '@material-ui/icons';
 
-import { ConfirmDialog, ToolbarAction, useConfirm } from '@lucifer/react/basics';
+import { ConfirmDialog, RefreshButton, ToolbarAction, useConfirm } from '@lucifer/react/basics';
 import { Table, TableBody, TableRow, TableSortCell } from '@lucifer/react/table';
 import { IMachine, Machine } from '@lucifer/types';
 
@@ -58,7 +58,7 @@ const MachineTable: FC<MachineTableProps> = (props) => {
   const canDelete = useNeedScope('delete:machines', usr => usr?.id === ownerId) ?? false;
 
   // API
-  const { machines = [], create, updateCache, bulkDelete } = useMachines(ownerId);
+  const { machines = [], loading, reload, updateCache, create, bulkDelete } = useMachines(ownerId);
 
   // Callbacks
   const handleSave = useCallback((mch: IMachine) => {
@@ -68,9 +68,10 @@ const MachineTable: FC<MachineTableProps> = (props) => {
   const handleDelete = useCallback(async (mchs: IMachine[]) => {
     const ids = mchs.map(mch => mch.id);
 
-    await confirmDelete(mchs);
-    await bulkDelete(ids);
-    updateCache((machines = []) => machines.filter(mch => ids.includes(mch.id)));
+    if (await confirmDelete(mchs)) {
+      await bulkDelete(ids);
+      updateCache((machines = []) => machines.filter(mch => !ids.includes(mch.id)));
+    }
   }, [bulkDelete, confirmDelete, updateCache]);
 
   // Render
@@ -94,6 +95,9 @@ const MachineTable: FC<MachineTableProps> = (props) => {
           >
             <DeleteIcon />
           </ToolbarAction>
+        </Fade>
+        <Fade in appear>
+          <RefreshButton refreshing={loading} onClick={reload} />
         </Fade>
       </Portal>
       <TableContainer>
