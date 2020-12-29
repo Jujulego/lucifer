@@ -98,7 +98,6 @@ describe('MachinesService.list', () => {
       );
   });
 
-
   // Tests
   it('should empty array for unknown user', async () => {
     // Call

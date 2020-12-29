@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
 import { ManagementClient } from 'auth0';
 import { plainToClass } from 'class-transformer';
+import { Connection } from 'typeorm';
 
 import { DatabaseModule } from '../database.module';
 import { MachinesModule } from '../machines/machines.module';
@@ -10,10 +11,12 @@ import { ManagementClientMock } from '../../mocks/management-client.mock';
 import { UsersModule } from './users.module';
 import { UsersService } from './users.service';
 import { UpdateUser } from './user.schema';
+import { LocalUser } from './local-user.entity';
 
 // Load services
 let app: TestingModule;
 let service: UsersService;
+let database: Connection;
 let mgmtClient: ManagementClientMock;
 
 beforeAll(async () => {
@@ -28,6 +31,7 @@ beforeAll(async () => {
     .compile();
 
   service = app.get(UsersService);
+  database = app.get(Connection);
   mgmtClient = app.get(ManagementClient);
 });
 
@@ -41,6 +45,54 @@ afterEach(() => {
 });
 
 // Tests suites
+describe('UsersService.getLocal', () => {
+  // Test data
+  let lcu: LocalUser;
+
+  beforeEach(async () => {
+    const repo = database.getRepository(LocalUser);
+
+    lcu = await repo.save(
+      repo.create({ id: 'tests|users-01' })
+    );
+  });
+
+  afterEach(async () => {
+    const repo = database.getRepository(LocalUser);
+
+    await repo.delete(lcu.id);
+  });
+
+  // Tests
+  it('should return existing user', async () => {
+    await expect(service.getLocal(lcu.id))
+      .resolves.toEqual(lcu);
+  });
+
+  it('should create existing user in database', async () => {
+    const user = await service.getLocal('tests|users-02');
+
+    try {
+      expect(user).toEqual({
+        id: 'tests|users-02'
+      });
+    } finally {
+      const repo = database.getRepository(LocalUser);
+      await repo.delete(user.id);
+    }
+  });
+
+  it('should thrown if users does not exist', async () => {
+    // Mock
+    jest.spyOn(mgmtClient, 'getUser')
+      .mockImplementation(async () => undefined);
+
+    // Tests
+    await expect(service.getLocal('tests|users-02'))
+      .rejects.toEqual(new NotFoundException('User tests|users-02 not found'));
+  });
+});
+
 describe('UsersService.get', () => {
   const user = {
     user_id:  'tests|users-auth0-11',

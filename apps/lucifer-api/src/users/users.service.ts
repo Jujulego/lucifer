@@ -94,7 +94,7 @@ export class UsersService {
     const ath = await this.auth0.getUser({ id });
 
     if (!ath) {
-      throw new NotFoundException(`User ${id} does not exist`);
+      throw new NotFoundException(`User ${id} not found`);
     }
 
     // Get or create local user
