@@ -4,7 +4,6 @@ import { Avatar, Grid, Typography } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { RefreshButton } from '@lucifer/react/basics';
 import { initials } from '@lucifer/utils';
 import { IUser } from '@lucifer/types';
 
@@ -39,17 +38,14 @@ const useStyles = makeStyles(({ breakpoints, spacing }) => ({
 // Types
 export interface UserHeaderProps {
   user?: IUser;
-  loading: boolean;
   actions?: ReactNode;
-  onReload: () => void;
 }
 
 // Component
 const UserHeader = (props: UserHeaderProps) => {
   const {
-    user, loading,
+    user,
     actions,
-    onReload
   } = props;
 
   // Render
@@ -76,7 +72,6 @@ const UserHeader = (props: UserHeaderProps) => {
       </Grid>
       <Grid className={styles.actions} item xs="auto">
         { actions }
-        <RefreshButton refreshing={loading} onClick={onReload} />
       </Grid>
     </Grid>
   );

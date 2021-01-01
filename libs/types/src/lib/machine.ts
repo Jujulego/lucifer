@@ -10,6 +10,8 @@ export interface ICreateMachine {
   shortName: string;
 }
 
+export type IUpdateMachine = Partial<ICreateMachine>
+
 // Model
 export class Machine implements IMachine {
   // Attributes

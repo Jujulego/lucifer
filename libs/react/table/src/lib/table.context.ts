@@ -5,9 +5,10 @@ import { Filter, OrderByField } from '@lucifer/utils';
 import { Document } from './document';
 
 // Types
-export type SelectState = {
-  [id in number | string]: boolean;
-};
+export type SelectState = Set<number | string>;
+// export type SelectState = {
+//   [id in number | string]: boolean;
+// };
 
 export type Order = 'asc' | 'desc';
 export interface Ordering<T extends Document> {
@@ -49,7 +50,7 @@ const tableDefaults: TableContextProps<any> = { // eslint-disable-line @typescri
 
   selectedAll: false,
   selectableCount: 0, selectedCount: 0,
-  selected: {},
+  selected: new Set(),
 
   onSelect: () => console.warn('Trying to use uninitialized TableContext !'),
   onSelectAll: () => console.warn('Trying to use uninitialized TableContext !'),

@@ -30,10 +30,19 @@ export class ScopeGuard implements CanActivate {
   ) {}
 
   // Methods
+  private getMetadata<T>(ctx: ExecutionContext, key: symbol): T {
+    // On handler
+    const metadata = this.reflector.get<T>(key, ctx.getHandler());
+    if (metadata !== undefined) return metadata;
+
+    // On controller
+    return this.reflector.get<T>(key, ctx.getClass());
+  }
+
   canActivate(ctx: ExecutionContext): boolean {
     // Get metadata
-    const scopes = this.reflector.get<string[]>(METADATA_KEYS.scopes, ctx.getHandler());
-    const allow = this.reflector.get<AllowIfCallback>(METADATA_KEYS.allow, ctx.getHandler());
+    const scopes = this.getMetadata<string[]>(ctx, METADATA_KEYS.scopes);
+    const allow = this.getMetadata<AllowIfCallback>(ctx, METADATA_KEYS.allow);
 
     if (!scopes || scopes.length === 0) return true;
 
