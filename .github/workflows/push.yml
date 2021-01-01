@@ -100,9 +100,9 @@ jobs:
           path: node_modules
 
       - name: Install dependencies
-        run: |
+        run: yarn run build:tools
 #          yarn install --pure-lockfile
-          yarn run build:tools
+#          yarn run build:tools
 
       - name: Migrate
         run: yarn run nx run-many --all --target=db-migrate --scan
