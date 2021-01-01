@@ -1,27 +1,35 @@
 import React from 'react';
 import moment from 'moment';
-import { boolean, date } from '@storybook/addon-knobs';
+import { Meta, Story } from '@storybook/react';
 
-import RelativeDate from '../lib/RelativeDate';
+import RelativeDate, { RelativeDateProps } from '../lib/RelativeDate';
 
-// Stories
+// Config
 export default {
   title: 'Basics/RelativeDate',
-  component: RelativeDate
+  component: RelativeDate,
+  argTypes: {
+    date: {
+      control: { type: 'date' }
+    }
+  }
+} as Meta;
+
+// Stories
+const Template: Story<RelativeDateProps> = (args) => (
+  <RelativeDate {...args} />
+);
+
+export const FromNow = Template.bind({});
+FromNow.args = {
+  mode: 'from',
+  date: moment()["add"](1, 'day').toISOString(),
+  withoutPrefix: false
 }
 
-export const FromNow = () => (
-  <RelativeDate
-    mode="from"
-    date={date('date', moment()["add"](1, 'day').toDate())}
-    withoutPrefix={boolean('withoutPrefix', false)}
-  />
-);
-
-export const ToNow = () => (
-  <RelativeDate
-    mode="to"
-    date={date('date', moment()["add"](1, 'day').toDate())}
-    withoutPrefix={boolean('withoutPrefix', false)}
-  />
-);
+export const ToNow = Template.bind({});
+ToNow.args = {
+  mode: 'to',
+  date: moment()["add"](1, 'day').toISOString(),
+  withoutPrefix: false
+}
