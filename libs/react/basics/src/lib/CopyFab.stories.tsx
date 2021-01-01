@@ -3,6 +3,7 @@ import { Meta, Story } from '@storybook/react';
 
 import CopyFab, { CopyFabProps } from './CopyFab';
 
+// Config
 export default {
   title: 'Basics/CopyFab',
   component: CopyFab,

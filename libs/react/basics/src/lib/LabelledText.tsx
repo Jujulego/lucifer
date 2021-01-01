@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { FC, memo, ReactNode } from 'react';
 import clsx from 'clsx';
 
 import { Typography } from '@material-ui/core';
@@ -37,15 +37,27 @@ const useStyles = makeStyles({
 
 // Types
 export type LabelledTextClassKey = 'root' | 'label' | 'content' | 'endAdornment';
-export type LabelledTextProps = StyledProps<LabelledTextClassKey> & {
+export interface LabelledTextProps extends StyledProps<LabelledTextClassKey> {
+  /** Associated label */
   label: string;
-  zeroMinWidth?: boolean;
+
+  /** Allow to add an adornment at the end of the field like on inputs */
   endAdornment?: ReactNode;
-  children: ReactNode;
+
+  /**
+   * Related to the Grid's limitations
+   * @see https://material-ui.com/components/grid/#white-space-nowrap
+   * @default false
+   */
+  zeroMinWidth?: boolean;
 }
 
 // Component
-const LabelledText = React.memo((props: LabelledTextProps) => {
+/**
+ * Mimics appearance of TextField for simple text value
+ * @see https://material-ui.com/api/text-field/
+ */
+const LabelledText: FC<LabelledTextProps> = (props) => {
   const {
     label, endAdornment,
     zeroMinWidth = false,
@@ -64,6 +76,6 @@ const LabelledText = React.memo((props: LabelledTextProps) => {
       { endAdornment }
     </div>
   );
-});
+};
 
-export default LabelledText;
+export default memo(LabelledText);

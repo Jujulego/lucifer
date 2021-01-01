@@ -1,31 +1,35 @@
-import React from 'react';
-import { text } from '@storybook/addon-knobs';
+import React, { PropsWithChildren } from 'react';
+import { Meta, Story } from '@storybook/react';
 
 import { Check as CheckIcon } from '@material-ui/icons';
 
-import LabelledText from '../lib/LabelledText';
+import LabelledText, { LabelledTextProps } from '../lib/LabelledText';
 
-// Stories
+// Config
 export default {
   title: 'Basics/LabelledText',
-  component: LabelledText
+  component: LabelledText,
+  argTypes: {
+    endAdornment: {
+      control: { type: null }
+    }
+  }
+} as Meta;
+
+// Stories
+const Template: Story<PropsWithChildren<LabelledTextProps>> = (args) => (
+  <LabelledText {...args} />
+);
+
+export const Primary = Template.bind({});
+Primary.args = {
+  label: 'Label',
+  children: 'Content',
 };
 
-export const simple = () => (
-  <div style={{ width: 200 }}>
-    <LabelledText label={text('label', 'Label')}>
-      { text('content', 'Content') }
-    </LabelledText>
-  </div>
-);
-
-export const with_adornment = () => (
-  <div style={{ width: 200 }}>
-    <LabelledText
-      label={text('label', 'Label')}
-      endAdornment={<CheckIcon />}
-    >
-      { text('content', 'Content') }
-    </LabelledText>
-  </div>
-);
+export const WithAdornment = Template.bind({});
+WithAdornment.args = {
+  label: 'Label',
+  children: 'Content',
+  endAdornment: <CheckIcon />
+};
