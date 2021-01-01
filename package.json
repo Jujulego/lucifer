@@ -53,7 +53,7 @@
     "cors": "^2.8.5",
     "document-register-element": "1.14.10",
     "dotenv": "^8.2.0",
-    "helmet": "^4.2.0",
+    "helmet": "^4.3.1",
     "joi": "^17.3.0",
     "jwks-rsa": "^1.11.0",
     "lodash.isequal": "^4.5.0",
@@ -76,10 +76,10 @@
     "@babel/core": "7.9.6",
     "@babel/preset-env": "7.12.11",
     "@babel/preset-react": "7.9.4",
-    "@babel/preset-typescript": "7.9.0",
+    "@babel/preset-typescript": "7.12.7",
     "@nestjs/schematics": "^7.2.5",
     "@nestjs/testing": "^7.6.4",
-    "@nrwl/cli": "11.0.8",
+    "@nrwl/cli": "11.0.18",
     "@nrwl/cypress": "11.0.8",
     "@nrwl/devkit": "11.0.8",
     "@nrwl/eslint-plugin-nx": "11.0.8",
@@ -99,7 +99,7 @@
     "@storybook/theming": "^6.0.21",
     "@svgr/webpack": "^5.4.0",
     "@testing-library/jest-dom": "^5.11.6",
-    "@testing-library/react": "11.1.2",
+    "@testing-library/react": "11.2.2",
     "@testing-library/user-event": "^12.2.2",
     "@types/auth0": "^2.20.12",
     "@types/ci-info": "^2.0.0",
@@ -143,6 +143,6 @@
     "tslint": "~6.0.0",
     "typescript": "~4.1.3",
     "url-loader": "^3.0.0",
-    "webpack-bundle-analyzer": "^4.1.0"
+    "webpack-bundle-analyzer": "^4.3.0"
   }
 }
