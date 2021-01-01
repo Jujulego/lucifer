@@ -1,48 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { action } from '@storybook/addon-actions';
-import { boolean } from '@storybook/addon-knobs';
+import React from 'react';
+import { Meta, Story } from '@storybook/react';
 
-import RefreshButton from '../lib/RefreshButton';
+import RefreshButton, { RefreshButtonProps } from '../lib/RefreshButton';
 
-// Stories
+// Config
 export default {
   title: 'Basics/RefreshButton',
-  component: RefreshButton
-}
+  component: RefreshButton,
+  argTypes: {
+    action: { control: null },
+    children: { control: null },
+    onClick: { action: 'clicked' }
+  }
+} as Meta;
 
-export const Usable = () => {
-  // State
-  const [loading, setLoading] = useState(false);
+// Stories
+const Template: Story<RefreshButtonProps> = (args) => (
+  <RefreshButton {...args} />
+);
 
-  // Effect
-  useEffect(() => {
-    if (loading) {
-      const id = setTimeout(() => setLoading(false), 5000);
-      return () => clearTimeout(id);
-    }
-  }, [loading, setLoading]);
-
-  // Handlers
-  const handleClick = () => {
-    action('click')();
-    setLoading(true);
-  };
-
-  // Render
-  return (
-    <RefreshButton
-      refreshing={loading}
-      onClick={handleClick}
-    />
-  );
-};
-
-export const Playable = () => {
-  // Render
-  return (
-    <RefreshButton
-      refreshing={boolean('refreshing', false)}
-      onClick={action('click')}
-    />
-  );
+export const Primary = Template.bind({});
+Primary.args = {
+  refreshing: false,
 };
