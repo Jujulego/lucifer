@@ -37,7 +37,7 @@ const TableRow = (props: TableRowProps) => {
   const small = useMediaQuery(({ breakpoints }: Theme) => breakpoints.down('sm'));
 
   const selectable = doc ? ctx.blacklist.indexOf(doc.id) === -1 : true;
-  const selected = doc ? (ctx.selected[doc.id] || false) : ctx.selectedAll;
+  const selected = doc ? (ctx.selected.has(doc.id) || false) : ctx.selectedAll;
   const indeterminate = !doc && ctx.selectedCount > 0 && !ctx.selectedAll;
 
   return (

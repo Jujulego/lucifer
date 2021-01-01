@@ -27,7 +27,7 @@ export function useUser(id: string) {
 
   return {
     user, loading,
-    reload, update,
+    reload, updateCache: update,
     put: useCallback(async (data: IUpdateUser) => {
       const result = await put(data);
       update(result);

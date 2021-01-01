@@ -12,6 +12,7 @@ import { IUpdateUser, IUser } from '@lucifer/types';
 import { useNeedScope, usePermissions } from '../../auth/auth.hooks';
 
 import PermissionChip from './PermissionChip';
+import { useAuth } from '../../auth/auth.context';
 
 // Styles
 const useStyles = makeStyles(({ breakpoints, spacing }) => ({
@@ -27,6 +28,7 @@ const useStyles = makeStyles(({ breakpoints, spacing }) => ({
   },
   chips: {
     marginRight: spacing(1),
+    marginBottom: spacing(1),
 
     '&:last-child': {
       marginRight: 0
@@ -71,6 +73,7 @@ const UserDetailsTab = (props: UserDetailsProps) => {
   } = props;
 
   // Auth
+  const { user: me } = useAuth();
   const canUpdate = useNeedScope('update:users', usr => usr?.id === user?.id);
   const { permissions = [] } = usePermissions();
 
@@ -147,11 +150,13 @@ const UserDetailsTab = (props: UserDetailsProps) => {
           </GridLine>
           <GridLine>
             <GridItem>
-              <LabelledText label="Permissions">
-                { permissions.map(perm => (
-                  <PermissionChip key={perm} className={styles.chips} permission={perm} />
-                )) }
-              </LabelledText>
+              { (me?.id === user.id) && (
+                <LabelledText label="Permissions">
+                  { permissions.map(perm => (
+                    <PermissionChip key={perm} className={styles.chips} permission={perm} />
+                  )) }
+                </LabelledText>
+              ) }
             </GridItem>
           </GridLine>
         </Grid>

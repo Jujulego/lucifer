@@ -1,4 +1,12 @@
-import React, { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  MutableRefObject,
+  PropsWithChildren,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState
+} from 'react';
 
 import {
   Table as MuiTable,
@@ -31,15 +39,16 @@ export interface TableProps<T extends Document> extends MuiTableProps, StyledPro
   blacklist?: Array<number | string>,
   toolbar?: ReactNode,
   pagination?: ReactNode,
-  children?: ReactNode
+  selectionRef?: MutableRefObject<T[]>
 }
 
 // Component
-const Table = <T extends Document> (props: TableProps<T>) => {
+const Table = <T extends Document> (props: PropsWithChildren<TableProps<T>>) => {
   // Props
   const {
     documents, blacklist = [],
     toolbar, pagination, classes,
+    selectionRef,
     children,
     ...table
   } = props;
@@ -47,13 +56,19 @@ const Table = <T extends Document> (props: TableProps<T>) => {
   // State
   const [filter,    setFilter]    = useState<Filter<T>>({});
   const [ordering,  setOrdering]  = useState<Ordering<T>>({ order: 'asc' });
-  const [selected,  setSelected]  = useState<SelectState>({});
+  const [selected,  setSelected]  = useState<SelectState>(new Set());
   const [paginator, setPaginator] = useState<Paginator>();
 
   // Effects
   useEffect(() => {
-    setSelected({});
+    setSelected(new Set());
   }, [documents]);
+
+  useEffect(() => {
+    if (selectionRef) {
+      selectionRef.current = documents.filter(doc => selected.has(doc.id));
+    }
+  }, [selectionRef, selected, documents]);
 
   // Memos
   const filtered = useMemo(
@@ -67,7 +82,7 @@ const Table = <T extends Document> (props: TableProps<T>) => {
   );
 
   const selectedCount = useMemo(
-    () => filtered.reduce((count, doc: T) => selected[doc.id] ? count + 1 : count, 0),
+    () => filtered.reduce((count, doc: T) => selected.has(doc.id) ? count + 1 : count, 0),
     [selected, filtered] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
@@ -86,18 +101,29 @@ const Table = <T extends Document> (props: TableProps<T>) => {
     });
   }, [setOrdering]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const onSelect = useCallback((id: number | string) => setSelected(old => ({ ...old, [id]: !old[id] })), [setSelected]);
+  const onSelect = useCallback((id: number | string) => setSelected(old => {
+    const set = new Set(old);
+
+    if (set.has(id)) {
+      set.delete(id);
+    } else {
+      set.add(id);
+    }
+
+    return set;
+  }), [setSelected]);
+
   const onSelectAll = useCallback(() => {
     if (selectedAll) {
-      setSelected({});
+      setSelected(new Set());
     } else {
       setSelected(filtered.reduce<SelectState>((acc, doc) => {
         if (blacklist.indexOf(doc.id) === -1) {
-          acc[doc.id] = true;
+          acc.add(doc.id);
         }
 
         return acc;
-      }, {}));
+      }, new Set()));
     }
   }, [blacklist, filtered, selectedAll]);
 

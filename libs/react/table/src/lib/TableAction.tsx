@@ -48,7 +48,7 @@ const TableAction: ExtendMatButton<TableActionTypeMap<never>>
   const handleClick = onActivate ?
     ((event: MouseEvent<HTMLButtonElement>) => {
       // Get selected components
-      const docs = filtered.filter(doc => selected[doc.id]);
+      const docs = filtered.filter(doc => selected.has(doc.id));
 
       // Events !
       if (onClick) onClick(event);

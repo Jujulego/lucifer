@@ -1,22 +1,23 @@
-import React, { useCallback, useState } from 'react';
+import React, { useRef } from 'react';
 import { useParams, useRouteMatch } from 'react-router';
 import { Link as RouterLink } from 'react-router-dom';
 
-import { Fade, Paper, Tab, Tabs } from '@material-ui/core';
+import { Fade, Paper, Tab, Tabs, makeStyles } from '@material-ui/core';
+
+import { RefreshButton } from '@lucifer/react/basics';
+
+import { useNeedScope } from '../../auth/auth.hooks';
+import MachineTable from '../../machines/components/MachineTable';
 
 import { useUser } from '../users.hooks';
 import UserDetailsTab from './UserDetailsTab';
 import UserHeader from './UserHeader';
-import MachineTable from '../../machines/components/MachineTable';
-import AddMachineDialog from '../../machines/components/AddMachineDialog';
-import { useMachines } from '../../machines/machine.hooks';
-import { ToolbarAction } from '@lucifer/react/basics';
-import { Add as AddIcon } from '@material-ui/icons';
 
 // Utils
 interface LinkTabProps {
   value: string;
   label: string;
+  disabled?: boolean;
 }
 
 const LinkTab = (props: LinkTabProps) => {
@@ -32,63 +33,68 @@ const LinkTab = (props: LinkTabProps) => {
   );
 };
 
-// Component
+// Types
 interface UserParams {
   id: string;
   page: string;
 }
 
+// Styles
+const useStyles = makeStyles({
+  toolbar: {
+    display: 'grid',
+    justifyItems: 'end',
+
+    '& > *': {
+      gridArea: '1 / 1 / 2 / 2',
+    }
+  }
+});
+
+// Component
 const UserPage = () => {
   // Router
   const { id, page = 'details' } = useParams<UserParams>();
 
-  // State
-  const [addingMachine, setAddingMachine] = useState(false);
+  // Auth
+  const canReadMachines = useNeedScope('read:machines', usr => usr?.id === id) ?? false;
 
   // API
-  const { user, loading, reload: reloadUser, put } = useUser(id);
-  const { machines = [], reload: reloadMachines, create: createMachine } = useMachines(id);
+  const { user, loading, reload, put } = useUser(id);
 
-  // Callbacks
-  const reload = useCallback(() => {
-    reloadUser();
-    reloadMachines();
-  }, [reloadUser, reloadMachines]);
+  // Refs
+  const actionsContainer = useRef<HTMLDivElement>(null);
 
   // Render
+  const styles = useStyles();
+
   return (
     <>
       <Paper square>
         <UserHeader
-          user={user} loading={loading}
-          onReload={reload}
+          user={user}
           actions={(
-            <Fade in={(page === 'machines')}>
-              <ToolbarAction
-                tooltip="Créer une machine" disabled={loading}
-                onClick={() => setAddingMachine(true)}
-              >
-                <AddIcon />
-              </ToolbarAction>
-            </Fade>
+            <div className={styles.toolbar} ref={actionsContainer}>
+              <span>
+                <Fade in={page === 'details'}>
+                  <RefreshButton refreshing={loading} onClick={reload} />
+                </Fade>
+              </span>
+            </div>
           )}
         />
         <Tabs variant="fullWidth" value={page} onChange={() => null}>
           <LinkTab value="details" label="Détails" />
-          <LinkTab value="machines" label="Machines" />
+          <LinkTab value="machines" label="Machines" disabled={!canReadMachines} />
         </Tabs>
       </Paper>
       <UserDetailsTab
         user={user} show={page === 'details'}
         onUpdate={put}
       />
-      { (page === 'machines') && (
-        <MachineTable machines={machines} />
-      ) }
-      <AddMachineDialog
-        open={addingMachine}
-        onAdd={createMachine}
-        onClose={() => setAddingMachine(false)}
+      <MachineTable
+        ownerId={id} show={page === 'machines'}
+        actionsContainer={actionsContainer.current}
       />
     </>
   );

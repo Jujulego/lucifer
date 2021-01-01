@@ -11,7 +11,7 @@ export type ConfirmDialogProps<T> = Omit<DialogProps, 'open' | 'onClose'> & {
 }
 
 // Component
-const ConfirmDialog = <T extends never = never> (props: ConfirmDialogProps<T>) => {
+const ConfirmDialog = <T extends unknown> (props: ConfirmDialogProps<T>) => {
   const {
     state,
     children,

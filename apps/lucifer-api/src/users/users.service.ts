@@ -94,7 +94,7 @@ export class UsersService {
     const ath = await this.auth0.getUser({ id });
 
     if (!ath) {
-      throw new NotFoundException(`User ${id} does not exist`);
+      throw new NotFoundException(`User ${id} not found`);
     }
 
     // Get or create local user
@@ -137,16 +137,22 @@ export class UsersService {
   }
 
   async update(id: string, update: UpdateUser): Promise<User> {
-    const user = await this.auth0.updateUser({ id }, {
-      name: update.name,
-      email: update.email
-    });
+    const [ath, lcu] = await Promise.all([
+      this.auth0.updateUser({ id }, {
+        name: update.name,
+        email: update.email
+      }),
+      this.repository.findOne({
+        relations: ['machines'],
+        where: { id }
+      })
+    ]);
 
     // Throw if not found
-    if (!user) {
+    if (!ath) {
       throw new NotFoundException(`User ${id} not found`);
     }
 
-    return this.format(user);
+    return this.format(ath, lcu);
   }
 }
