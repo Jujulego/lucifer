@@ -1,33 +1,61 @@
-import React, { ChangeEvent, useState } from 'react';
-import { action } from '@storybook/addon-actions';
-import { boolean, text } from '@storybook/addon-knobs';
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import { Meta, Story } from '@storybook/react';
 
-import EditPasswordField from './EditPasswordField';
+import EditPasswordField, { EditPasswordFieldProps } from './EditPasswordField';
+
+// Config
+export default {
+  title: 'Fields/EditPasswordField',
+  component: EditPasswordField,
+  argTypes: {
+    onChange: { action: 'onChange' },
+    onChangeEditable: { action: 'onChangeEditable' }
+  }
+} as Meta;
 
 // Stories
-export default {
-  title: 'Basics/Fields/EditPasswordField',
-  component: EditPasswordField
-}
+const Template: Story<EditPasswordFieldProps> = (args) => {
+  const { onChange } = args;
 
-export function Story() {
-  const [value, setValue] = useState<string[]>([]);
+  // State
+  const [value, setValue] = useState<string>("");
 
-  const handleChange = (event: ChangeEvent<{ value: unknown }>, ...args: any[]) => {
-    action('change')(event, ...args);
-    setValue(event.target.value as string[]);
+  // Effects
+  useEffect(() => {
+    setValue(args.value as string);
+  }, [args.value]);
+
+  // Callbacks
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (onChange) {
+      onChange(event);
+    }
+
+    setValue(event.target.value);
   }
 
+  // Render
   return (
     <div style={{ minWidth: 200 }}>
       <EditPasswordField
-        label={text('label', 'Password')}
+        {...args}
         value={value}
         onChange={handleChange}
-
-        editable={boolean('editable', false)}
-        onChangeEditable={action('changeEditable')}
       />
     </div>
   );
+};
+
+export const Editable = Template.bind({});
+Editable.args = {
+  label: 'Password',
+  editable: true,
+  value: 'Password'
+}
+
+export const NotEditable = Template.bind({});
+NotEditable.args = {
+  label: 'Password',
+  editable: false,
+  value: 'Password'
 }
