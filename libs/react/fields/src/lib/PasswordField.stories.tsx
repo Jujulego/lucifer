@@ -2,7 +2,7 @@ import React, { ChangeEvent, useState } from 'react';
 import { action } from '@storybook/addon-actions';
 import { text } from '@storybook/addon-knobs';
 
-import PasswordField from '../lib/PasswordField';
+import PasswordField from './PasswordField';
 
 // Stories
 export default {

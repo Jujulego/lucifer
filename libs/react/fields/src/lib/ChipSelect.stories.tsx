@@ -1,16 +1,16 @@
 import React, { ChangeEvent, useState } from 'react';
 import { action } from '@storybook/addon-actions';
-import { boolean, text } from '@storybook/addon-knobs';
+import { text } from '@storybook/addon-knobs';
 
-import EditPasswordField from '../lib/EditPasswordField';
+import ChipSelect from './ChipSelect';
 
 // Stories
 export default {
-  title: 'Basics/Fields/EditPasswordField',
-  component: EditPasswordField
+  title: 'Basics/Fields/ChipSelect',
+  component: ChipSelect
 }
 
-export function Story() {
+export function WithSmallChips() {
   const [value, setValue] = useState<string[]>([]);
 
   const handleChange = (event: ChangeEvent<{ value: unknown }>, ...args: any[]) => {
@@ -20,13 +20,13 @@ export function Story() {
 
   return (
     <div style={{ minWidth: 200 }}>
-      <EditPasswordField
-        label={text('label', 'Password')}
-        value={value}
+      <ChipSelect
+        fullWidth
+        label={text('label', 'Food')}
+        helperText={text('helper text', 'Your favorite')}
+        ChipProps={{ size: 'small' }}
+        value={value} options={['Banana', 'Carrot', 'Chocolate']}
         onChange={handleChange}
-
-        editable={boolean('editable', false)}
-        onChangeEditable={action('changeEditable')}
       />
     </div>
   );
