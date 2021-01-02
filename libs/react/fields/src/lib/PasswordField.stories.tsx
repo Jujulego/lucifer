@@ -1,30 +1,50 @@
-import React, { ChangeEvent, useState } from 'react';
-import { action } from '@storybook/addon-actions';
-import { text } from '@storybook/addon-knobs';
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import { Meta, Story } from '@storybook/react';
 
-import PasswordField from './PasswordField';
+import PasswordField, { PasswordFieldProps } from './PasswordField';
+
+// Config
+export default {
+  title: 'Fields/PasswordField',
+  component: PasswordField,
+  argTypes: {
+    onChange: { action: 'onChange' }
+  }
+} as Meta
 
 // Stories
-export default {
-  title: 'Basics/Fields/PasswordField',
-  component: PasswordField
-}
+const Template: Story<PasswordFieldProps> = (args) => {
+  const { onChange } = args;
 
-export function Story() {
-  const [value, setValue] = useState<string[]>([]);
+  // State
+  const [value, setValue] = useState<string>("");
 
-  const handleChange = (event: ChangeEvent<{ value: unknown }>, ...args: any[]) => {
-    action('change')(event, ...args);
-    setValue(event.target.value as string[]);
+  // Effects
+  useEffect(() => {
+    setValue(args.value as string);
+  }, [args.value]);
+
+  // Callbacks
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (onChange) {
+      onChange(event);
+    }
+
+    setValue(event.target.value);
   }
 
   return (
     <div style={{ minWidth: 200 }}>
       <PasswordField
-        label={text('label', 'Password')}
+        {...args}
         value={value}
         onChange={handleChange}
       />
     </div>
   );
 }
+
+export const Primary = Template.bind({});
+Primary.args = {
+  label: 'Password'
+};
