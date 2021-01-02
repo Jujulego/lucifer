@@ -1,33 +1,50 @@
-import React, { ChangeEvent, useState } from 'react';
-import { action } from '@storybook/addon-actions';
-import { text } from '@storybook/addon-knobs';
+import React, { ChangeEvent, ReactNode, useEffect, useState } from 'react';
+import { Meta, Story } from '@storybook/react';
 
-import ChipSelect from './ChipSelect';
+import ChipSelect, { ChipSelectProps } from './ChipSelect';
+
+// Config
+export default {
+  title: 'Fields/ChipSelect',
+  component: ChipSelect,
+  argTypes: {
+    onChange: { action: 'changed' }
+  }
+} as Meta;
 
 // Stories
-export default {
-  title: 'Basics/Fields/ChipSelect',
-  component: ChipSelect
-}
+const Template: Story<ChipSelectProps> = (args) => {
+  const { onChange } = args;
 
-export function WithSmallChips() {
+  // State
   const [value, setValue] = useState<string[]>([]);
 
-  const handleChange = (event: ChangeEvent<{ value: unknown }>, ...args: any[]) => {
-    action('change')(event, ...args);
-    setValue(event.target.value as string[]);
-  }
+  // Effects
+  useEffect(() => {
+    setValue(args.value || []);
+  }, [args.value]);
 
+  // Callbacks
+  const handleChange = (event: ChangeEvent<{ value: unknown }>, child: ReactNode) => {
+    if (onChange) {
+      onChange(event, child);
+    }
+
+    setValue(event.target.value as string[]);
+  };
+
+  // Render
   return (
-    <div style={{ minWidth: 200 }}>
-      <ChipSelect
-        fullWidth
-        label={text('label', 'Food')}
-        helperText={text('helper text', 'Your favorite')}
-        ChipProps={{ size: 'small' }}
-        value={value} options={['Banana', 'Carrot', 'Chocolate']}
-        onChange={handleChange}
-      />
-    </div>
+    <ChipSelect {...args} value={value} onChange={handleChange} />
   );
-}
+};
+
+export const WithSmallChips = Template.bind({});
+WithSmallChips.args = {
+  fullWidth: true,
+  label: 'Label',
+  helperText: 'Helper Text',
+  ChipProps: { size: 'small' },
+  value: [],
+  options: ['Option #1', 'Option #2', 'Option #3']
+};
