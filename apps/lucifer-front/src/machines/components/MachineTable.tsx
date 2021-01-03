@@ -13,7 +13,7 @@ import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from '@materia
 
 import { ConfirmDialog, RefreshButton, ToolbarAction, useConfirm } from '@lucifer/react/basics';
 import { Table, TableBody, TableRow, TableSortCell } from '@lucifer/react/table';
-import { IMachine, Machine } from '@lucifer/types';
+import { IMachine } from '@lucifer/types';
 
 import { useNeedScope } from '../../auth/auth.hooks';
 
@@ -55,7 +55,7 @@ const MachineTable: FC<MachineTableProps> = (props) => {
   const { state: deleteState, confirm: confirmDelete } = useConfirm<IMachine[]>([]);
 
   // Ref
-  const selection = useRef<Machine[]>([]);
+  const selection = useRef<IMachine[]>([]);
 
   // Auth
   const canCreate = useNeedScope('create:machines', usr => usr?.id === ownerId) ?? false;
