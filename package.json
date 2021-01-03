@@ -32,6 +32,7 @@
     "workspace-generator": "nx workspace-generator",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "migration:generate": "yarn run typeorm migration:generate",
+    "storybook": "nx run storybook:storybook",
     "postinstall": "is-ci || husky install"
   },
   "dependencies": {
