@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { FC, ReactNode } from 'react';
 
 import {
   DialogTitle as MuiDialogTitle,
@@ -11,8 +11,8 @@ import { StyledProps } from '@lucifer/react/utils';
 
 // Types
 export type ClosableDialogTitleClassKey = 'root' | 'title' | 'closeButton'
-export type ClosableDialogTitleProps = StyledProps<ClosableDialogTitleClassKey> & {
-  children: ReactNode;
+export interface ClosableDialogTitleProps extends StyledProps<ClosableDialogTitleClassKey> {
+  /** Close callback */
   onClose?: () => void;
 }
 
@@ -31,12 +31,9 @@ const useStyles = makeStyles<Theme, ClosableDialogTitleProps, ClosableDialogTitl
 });
 
 // Component
-const ClosableDialogTitle = (props: ClosableDialogTitleProps) => {
+const ClosableDialogTitle: FC<ClosableDialogTitleProps> = (props) => {
   // Props
-  const {
-    children,
-    onClose
-  } = props;
+  const { children, onClose } = props;
 
   // Render
   const styles = useStyles(props);

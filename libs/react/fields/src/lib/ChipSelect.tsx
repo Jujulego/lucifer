@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 import {
   Chip, MenuItem,
@@ -9,8 +9,10 @@ import { makeStyles } from '@material-ui/core/styles';
 
 // Types
 interface ChipSelectBaseProps {
-  label?: string, helperText?: string,
-  options: string[], value?: string[],
+  label?: string,
+  helperText?: string,
+  options: string[],
+  value?: string[],
   onChange: SelectProps['onChange'],
 
   ChipProps?: Omit<ChipProps, 'label'>,
@@ -34,7 +36,7 @@ const useStyles = makeStyles({
 });
 
 // Component
-const ChipSelect = (props: ChipSelectProps) => {
+const ChipSelect: FC<ChipSelectProps> = (props: ChipSelectProps) => {
   // Props
   const {
     label, helperText,
