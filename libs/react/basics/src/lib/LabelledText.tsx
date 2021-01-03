@@ -1,4 +1,4 @@
-import React, { FC, memo, ReactNode } from 'react';
+import React, { FC, ReactNode } from 'react';
 import clsx from 'clsx';
 
 import { Typography } from '@material-ui/core';
@@ -78,4 +78,4 @@ const LabelledText: FC<LabelledTextProps> = (props) => {
   );
 };
 
-export default memo(LabelledText);
+export default LabelledText;
