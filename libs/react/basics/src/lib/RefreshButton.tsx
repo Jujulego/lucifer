@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 import { CircularProgress, Fade, IconButton, IconButtonProps } from '@material-ui/core';
 import { Refresh as RefreshIcon } from '@material-ui/icons';
@@ -17,12 +17,12 @@ const useStyles = makeStyles({
 });
 
 // Types
-export type RefreshButtonProps = IconButtonProps & {
+export interface RefreshButtonProps extends IconButtonProps {
   refreshing: boolean;
 }
 
 // Component
-const RefreshButton = (props: RefreshButtonProps) => {
+const RefreshButton: FC<RefreshButtonProps> = (props) => {
   const {
     disabled, refreshing,
     onClick,

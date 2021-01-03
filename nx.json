@@ -44,25 +44,32 @@
         "lucifer-api"
       ]
     },
+    "storybook": {
+      "tags": [],
+      "implicitDependencies": [
+        "react-basics",
+        "react-fields"
+      ]
+    },
     "types": {
       "tags": []
     },
     "utils": {
       "tags": []
     },
-    "react-table": {
-      "tags": []
-    },
-    "react-utils": {
+    "react-api": {
       "tags": []
     },
     "react-basics": {
       "tags": []
     },
-    "react-api": {
+    "react-fields": {
       "tags": []
     },
-    "react-fields": {
+    "react-table": {
+      "tags": []
+    },
+    "react-utils": {
       "tags": []
     }
   }

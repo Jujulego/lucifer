@@ -9,17 +9,33 @@ import FileCopyIcon from '@material-ui/icons/FileCopy';
 
 // Types
 export interface CopyButtonProps extends IconButtonProps {
+  /** Content to be copied */
   text: string;
+
+  /**
+   * Mime type of content
+   * @default text/plain
+   */
   format?: string;
 
+  /**
+   * Tooltip content
+   * @default Copié !
+   */
   tooltip?: string;
+
+  /**
+   * Tooltip duration (in milliseconds)
+   * @default 1500
+   */
   tooltipTimeout?: number;
 
+  /** Copied callback, called after a successful copy */
   onCopied?: () => void;
 }
 
 // Component
-const CopyButton: FC<CopyButtonProps> = (props: CopyButtonProps) => {
+const CopyButton: FC<CopyButtonProps> = (props) => {
   // Props
   const {
     text, format = "text/plain",

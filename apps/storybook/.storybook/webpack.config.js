@@ -1,6 +1,5 @@
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-const rootWebpackConfig = require('../../../../.storybook/webpack.config');
-
+const rootWebpackConfig = require('../../../.storybook/webpack.config');
 /**
  * Export a function. Accept the base config as the only param.
  *
@@ -26,7 +25,6 @@ module.exports = async ({ config, mode }) => {
   });
 
   config.module.rules[svgRuleIndex].test = /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|cur|ani|pdf)(\?.*)?$/;
-
   config.module.rules.push(
     {
       test: /\.(png|jpe?g|gif|webp)$/,

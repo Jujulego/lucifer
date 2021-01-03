@@ -7,9 +7,13 @@ import { useInterval } from '@lucifer/react/utils';
 type Mode = "from" | "to";
 
 export interface RelativeDateProps {
-  date: moment.MomentInput,
-  mode: Mode,
-  withoutPrefix?: boolean
+  date: moment.MomentInput;
+  mode: Mode;
+
+  /**
+   * @default false
+   */
+  withoutPrefix?: boolean;
 }
 
 // Component

@@ -186,35 +186,50 @@
         }
       }
     },
-    "types": {
-      "root": "libs/types",
-      "sourceRoot": "libs/types/src",
-      "projectType": "library",
+    "storybook": {
+      "root": "apps/storybook",
+      "sourceRoot": "apps/storybook/src",
+      "projectType": "application",
       "schematics": {},
       "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
+        "storybook": {
+          "builder": "@nrwl/storybook:storybook",
           "options": {
-            "lintFilePatterns": [
-              "libs/types/**/*.ts"
-            ]
+            "uiFramework": "@storybook/react",
+            "port": 4400,
+            "config": {
+              "configFolder": "apps/storybook/.storybook"
+            }
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
           }
         },
-        "test": {
-          "builder": "@nrwl/jest:jest",
+        "build-storybook": {
+          "builder": "@nrwl/storybook:build",
           "options": {
-            "jestConfig": "libs/types/jest.config.js",
-            "passWithNoTests": true
+            "uiFramework": "@storybook/react",
+            "outputPath": "dist/storybook/storybook",
+            "config": {
+              "configFolder": "apps/storybook/.storybook"
+            }
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
           },
           "outputs": [
-            "coverage/libs/types"
+            "{options.outputPath}"
           ]
         }
       }
     },
-    "utils": {
-      "root": "libs/utils",
-      "sourceRoot": "libs/utils/src",
+    "react-api": {
+      "root": "libs/react/api",
+      "sourceRoot": "libs/react/api/src",
       "projectType": "library",
       "schematics": {},
       "architect": {
@@ -222,70 +237,18 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
-              "libs/utils/**/*.ts"
+              "libs/react/api/**/*.{ts,tsx,js,jsx}"
             ]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
           "options": {
-            "jestConfig": "libs/utils/jest.config.js",
+            "jestConfig": "libs/react/api/jest.config.js",
             "passWithNoTests": true
           },
           "outputs": [
-            "coverage/libs/utils"
-          ]
-        }
-      }
-    },
-    "react-table": {
-      "root": "libs/react/table",
-      "sourceRoot": "libs/react/table/src",
-      "projectType": "library",
-      "schematics": {},
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/react/table/**/*.{ts,tsx,js,jsx}"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/react/table/jest.config.js",
-            "passWithNoTests": true
-          },
-          "outputs": [
-            "coverage/libs/react/table"
-          ]
-        }
-      }
-    },
-    "react-utils": {
-      "root": "libs/react/utils",
-      "sourceRoot": "libs/react/utils/src",
-      "projectType": "library",
-      "schematics": {},
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/react/utils/**/*.{ts,tsx,js,jsx}"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/react/utils/jest.config.js",
-            "passWithNoTests": true
-          },
-          "outputs": [
-            "coverage/libs/react/utils"
+            "coverage/libs/react/api"
           ]
         }
       }
@@ -349,32 +312,6 @@
         }
       }
     },
-    "react-api": {
-      "root": "libs/react/api",
-      "sourceRoot": "libs/react/api/src",
-      "projectType": "library",
-      "schematics": {},
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/react/api/**/*.{ts,tsx,js,jsx}"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/react/api/jest.config.js",
-            "passWithNoTests": true
-          },
-          "outputs": [
-            "coverage/libs/react/api"
-          ]
-        }
-      }
-    },
     "react-fields": {
       "root": "libs/react/fields",
       "sourceRoot": "libs/react/fields/src",
@@ -430,6 +367,110 @@
           },
           "outputs": [
             "{options.outputPath}"
+          ]
+        }
+      }
+    },
+    "react-table": {
+      "root": "libs/react/table",
+      "sourceRoot": "libs/react/table/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/react/table/**/*.{ts,tsx,js,jsx}"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/react/table/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": [
+            "coverage/libs/react/table"
+          ]
+        }
+      }
+    },
+    "react-utils": {
+      "root": "libs/react/utils",
+      "sourceRoot": "libs/react/utils/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/react/utils/**/*.{ts,tsx,js,jsx}"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/react/utils/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": [
+            "coverage/libs/react/utils"
+          ]
+        }
+      }
+    },
+    "types": {
+      "root": "libs/types",
+      "sourceRoot": "libs/types/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/types/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/types/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": [
+            "coverage/libs/types"
+          ]
+        }
+      }
+    },
+    "utils": {
+      "root": "libs/utils",
+      "sourceRoot": "libs/utils/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/utils/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/utils/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": [
+            "coverage/libs/utils"
           ]
         }
       }
