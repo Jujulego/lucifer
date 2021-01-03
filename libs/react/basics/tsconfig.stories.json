@@ -1,5 +1,5 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "../../../tsconfig.stories.json",
   "compilerOptions": {
     "emitDecoratorMetadata": true
   },

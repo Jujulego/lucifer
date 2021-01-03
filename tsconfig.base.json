@@ -31,5 +31,10 @@
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": ["node_modules", "tmp", ".storybook"],
+  "references": [
+    {
+      "path": "./tsconfig.stories.json"
+    }
+  ]
 }
