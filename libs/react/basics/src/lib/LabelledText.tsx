@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { PropsWithChildren, ReactNode } from 'react';
 import clsx from 'clsx';
 
 import { Typography } from '@material-ui/core';
@@ -41,11 +41,10 @@ export type LabelledTextProps = StyledProps<LabelledTextClassKey> & {
   label: string;
   zeroMinWidth?: boolean;
   endAdornment?: ReactNode;
-  children: ReactNode;
 }
 
 // Component
-const LabelledText = React.memo((props: LabelledTextProps) => {
+const LabelledText = React.memo((props: PropsWithChildren<LabelledTextProps>) => {
   const {
     label, endAdornment,
     zeroMinWidth = false,
