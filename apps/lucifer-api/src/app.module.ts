@@ -4,7 +4,9 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { AuthModule } from './auth/auth.module';
 import { DatabaseModule } from './database.module';
 import { MachinesModule } from './machines/machines.module';
+import { ProjectsModule } from './projects/projects.module';
 import { UsersModule } from './users/users.module';
+
 import { TransformInterceptor } from './transform.interceptor';
 
 // Module
@@ -13,6 +15,7 @@ import { TransformInterceptor } from './transform.interceptor';
     AuthModule,
     DatabaseModule,
     MachinesModule,
+    ProjectsModule,
     UsersModule,
   ],
   providers: [
