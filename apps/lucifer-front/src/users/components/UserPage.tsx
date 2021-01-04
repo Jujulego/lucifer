@@ -12,6 +12,7 @@ import MachineTable from '../../machines/components/MachineTable';
 import { useUser } from '../users.hooks';
 import UserDetailsTab from './UserDetailsTab';
 import UserHeader from './UserHeader';
+import { ProjectTable } from '../../projects/ProjectTable';
 
 // Utils
 interface LinkTabProps {
@@ -58,6 +59,7 @@ const UserPage = () => {
 
   // Auth
   const canReadMachines = useNeedScope('read:machines', usr => usr?.id === id) ?? false;
+  const canReadProjects = useNeedScope('read:projects', usr => usr?.id === id) ?? false;
 
   // API
   const { user, loading, reload, put } = useUser(id);
@@ -86,6 +88,7 @@ const UserPage = () => {
         <Tabs variant="fullWidth" value={page} onChange={() => null}>
           <LinkTab value="details" label="Détails" />
           <LinkTab value="machines" label="Machines" disabled={!canReadMachines} />
+          <LinkTab value="projects" label="Projects" disabled={!canReadProjects} />
         </Tabs>
       </Paper>
       <UserDetailsTab
@@ -94,6 +97,10 @@ const UserPage = () => {
       />
       <MachineTable
         ownerId={id} show={page === 'machines'}
+        actionsContainer={actionsContainer.current}
+      />
+      <ProjectTable
+        adminId={id} show={page === 'projects'}
         actionsContainer={actionsContainer.current}
       />
     </>
