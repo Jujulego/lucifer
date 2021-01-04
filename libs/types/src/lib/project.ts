@@ -5,8 +5,8 @@ export interface IProject {
   adminId: string;
 
   // Metadata
-  name:         string;
-  description?: string;
+  name:        string;
+  description: string;
 }
 
 export interface ICreateProject {

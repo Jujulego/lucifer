@@ -6,6 +6,9 @@ import { ICreateProject, IUpdateProject } from '@lucifer/types';
 export class CreateProject implements ICreateProject {
   // Attributes
   @IsString() @MaxLength(100)
+  id: string;
+
+  @IsString() @MaxLength(100)
   name: string;
 
   @IsOptional() @IsString()

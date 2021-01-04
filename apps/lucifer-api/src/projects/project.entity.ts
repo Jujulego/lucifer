@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 
 import { IProject } from '@lucifer/types';
 
@@ -8,20 +8,20 @@ import { LocalUser } from '../users/local-user.entity';
 @Entity()
 export class Project implements IProject {
   // Columns
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
-  @Column('varchar', { length: 100 })
-  name: string;
-
-  @Column('text', { nullable: true })
-  description?: string;
-
-  @Column('varchar')
+  @PrimaryColumn('varchar')
   adminId: string;
 
+  @PrimaryColumn('varchar', { length: 100, nullable: false })
+  id: string;
+
+  @Column('varchar', { length: 100, nullable: false })
+  name: string;
+
+  @Column('text', { default: '', nullable: false })
+  description: string;
+
   // Relations
-  @ManyToOne(() => LocalUser, usr => usr.projects, { nullable: false })
+  @ManyToOne(() => LocalUser, usr => usr.projects, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'adminId' })
   admin: Promise<LocalUser>;
 }
