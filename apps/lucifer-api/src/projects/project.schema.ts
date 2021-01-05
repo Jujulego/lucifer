@@ -1,11 +1,11 @@
-import { IsOptional, IsString, MaxLength } from 'class-validator';
+import { IsOptional, IsString, Matches, MaxLength } from 'class-validator';
 
 import { ICreateProject, IUpdateProject } from '@lucifer/types';
 
 // Schemas
 export class CreateProject implements ICreateProject {
   // Attributes
-  @IsString() @MaxLength(100)
+  @IsString() @MaxLength(100) @Matches(/^[a-z0-9-]+$/)
   id: string;
 
   @IsString() @MaxLength(100)

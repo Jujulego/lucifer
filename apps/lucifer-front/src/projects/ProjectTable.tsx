@@ -127,7 +127,7 @@ export const ProjectTable: FC<ProjectTableProps> = (props) => {
           <ConfirmDialog state={deleteState}>
             { (projects) => (
               <>
-                <DialogTitle>Supprimer { projects.length } projects ?</DialogTitle>
+                <DialogTitle>Supprimer { projects.length } projets ?</DialogTitle>
                 <DialogContent className={styles.confirmContent} dividers>
                   <List>
                     { projects.map((prj) => (

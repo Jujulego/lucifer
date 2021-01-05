@@ -1,5 +1,6 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import slugify from 'slugify';
 
 import { Button, CircularProgress, Dialog, DialogActions, DialogContent, Grid, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
@@ -35,9 +36,19 @@ export const AddProjectDialog: FC<AddProjectDialogProps> = (props) => {
   const { open, onAdd, onClose } = props;
 
   // Form
-  const { errors, register, handleSubmit, formState } = useForm<ICreateProject>({
+  const { errors, register, handleSubmit, formState, watch, setValue } = useForm<ICreateProject>({
     mode: 'onChange'
   });
+
+  const fields = watch(['id', 'name']);
+
+  // Effects
+  useEffect(() => {
+    if (fields.name) {
+      const id = slugify(fields.name, { lower: true });
+      setValue('id', id, { shouldValidate: true });
+    }
+  }, [fields.name, setValue]);
 
   // Callbacks
   const handleClose = () => {
@@ -72,7 +83,14 @@ export const AddProjectDialog: FC<AddProjectDialogProps> = (props) => {
             <TextField
               className={styles.field}
               variant="outlined" fullWidth
-              name="id" inputRef={register({ required: true })}
+              name="id" inputRef={register({
+                required: true,
+                maxLength: { value: 100, message: '100 charactères max.' },
+                pattern: { value: /^[a-z0-9-]+$/, message: 'charactères autorisés: a-z, 0-9, -' }
+              })}
+              InputLabelProps={{
+                shrink: !!fields.id
+              }}
               label="Slug" required
               error={!!errors.id} helperText={errors.id?.message}
             />
@@ -81,7 +99,10 @@ export const AddProjectDialog: FC<AddProjectDialogProps> = (props) => {
             <TextField
               className={styles.field}
               variant="outlined" fullWidth
-              name="name" inputRef={register({ required: true })}
+              name="name" inputRef={register({
+                required: true,
+                maxLength: { value: 100, message: '100 charactères max.' }
+              })}
               label="Nom" required
               error={!!errors.name} helperText={errors.name?.message}
             />
