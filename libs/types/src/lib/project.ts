@@ -10,8 +10,12 @@ export interface IProject {
 }
 
 export interface ICreateProject {
+  id:           string;
   name:         string;
   description?: string;
 }
 
-export type IUpdateProject = Partial<ICreateProject>
+export interface IUpdateProject {
+  name?:        string;
+  description?: string;
+}
