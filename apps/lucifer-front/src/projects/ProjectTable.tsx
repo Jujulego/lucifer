@@ -49,13 +49,27 @@ export const ProjectTable: FC<ProjectTableProps> = (props) => {
   const { adminId, show, actionsContainer } = props;
 
   // State
-  const [creating, setCreating] = useState(true);
+  const [creating, setCreating] = useState(false);
+  const { state: deleteState, confirm: confirmDelete } = useConfirm<IProject[]>([]);
+
+  // Ref
+  const selection = useRef<IProject[]>([]);
 
   // Auth
-  const canCreate = useNeedScope('create:machines', usr => usr?.id === adminId) ?? false;
+  const canCreate = useNeedScope('create:projects', usr => usr?.id === adminId) ?? false;
+  const canDelete = useNeedScope('delete:projects', usr => usr?.id === adminId) ?? false;
 
   // API
-  const { projects = [], loading, reload, create } = useProjects(adminId);
+  const { projects = [], loading, reload, create, bulkDelete } = useProjects(adminId);
+
+  // Callbacks
+  const handleDelete = useCallback(async (projects: IProject[]) => {
+    const ids = projects.map(mch => mch.id);
+
+    if (await confirmDelete(projects)) {
+      await bulkDelete(ids);
+    }
+  }, [bulkDelete, confirmDelete]);
 
   // Render
   const styles = useStyles();
@@ -64,6 +78,16 @@ export const ProjectTable: FC<ProjectTableProps> = (props) => {
     <>
       <Portal container={actionsContainer}>
         <span>
+          { canDelete && (
+            <Fade in={show}>
+              <ToolbarAction
+                tooltip="Supprimer des projets" disabled={!canDelete}
+                onClick={() => handleDelete(selection.current)}
+              >
+                <DeleteIcon />
+              </ToolbarAction>
+            </Fade>
+          ) }
           <Fade in={show}>
             <RefreshButton refreshing={loading} onClick={reload} />
           </Fade>
@@ -71,7 +95,7 @@ export const ProjectTable: FC<ProjectTableProps> = (props) => {
       </Portal>
       { show && (
         <TableContainer>
-          <Table documents={projects}>
+          <Table documents={projects} selectionRef={selection}>
             <TableHead>
               <TableRow>
                 <TableSortCell<IProject> field="name">Nom</TableSortCell>
@@ -85,6 +109,11 @@ export const ProjectTable: FC<ProjectTableProps> = (props) => {
                     { prj.name }
                   </TableCell>
                   <TableCell className={styles.actions} onClick={event => event.stopPropagation()}>
+                    { canDelete && (
+                      <IconButton onClick={() => handleDelete([prj])}>
+                        <DeleteIcon />
+                      </IconButton>
+                    ) }
                   </TableCell>
                 </TableRow>
               ) }
@@ -95,6 +124,22 @@ export const ProjectTable: FC<ProjectTableProps> = (props) => {
             onAdd={create}
             onClose={() => setCreating(false)}
           />
+          <ConfirmDialog state={deleteState}>
+            { (projects) => (
+              <>
+                <DialogTitle>Supprimer { projects.length } projects ?</DialogTitle>
+                <DialogContent className={styles.confirmContent} dividers>
+                  <List>
+                    { projects.map((prj) => (
+                      <ListItem key={prj.id}>
+                        <ListItemText primary={prj.name} secondary={prj.id} />
+                      </ListItem>
+                    )) }
+                  </List>
+                </DialogContent>
+              </>
+            ) }
+          </ConfirmDialog>
         </TableContainer>
       ) }
       { canCreate && (
