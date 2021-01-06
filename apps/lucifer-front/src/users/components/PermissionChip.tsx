@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 
 import { Chip, ChipProps } from '@material-ui/core';
-import { Computer as ComputerIcon, People as PeopleIcon } from '@material-ui/icons';
+import { Devices as DevicesIcon, People as PeopleIcon, FolderSpecial as FolderSpecialIcon } from '@material-ui/icons';
 
 // Types
 export type PermissionChipProps = Omit<ChipProps, 'label' | 'icon'> & {
@@ -10,8 +10,9 @@ export type PermissionChipProps = Omit<ChipProps, 'label' | 'icon'> & {
 
 // Constants
 const NAMESPACE_ICONS: Record<string, ReactElement> = {
-  'machines': <ComputerIcon />,
-  'users': <PeopleIcon />
+  'machines': <DevicesIcon />,
+  'projects': <FolderSpecialIcon />,
+  'users': <PeopleIcon />,
 };
 
 // Components

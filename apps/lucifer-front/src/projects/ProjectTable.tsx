@@ -56,8 +56,8 @@ export const ProjectTable: FC<ProjectTableProps> = (props) => {
   const selection = useRef<IProject[]>([]);
 
   // Auth
-  const canCreate = useNeedScope('create:projects', usr => usr?.id === adminId) ?? false;
-  const canDelete = useNeedScope('delete:projects', usr => usr?.id === adminId) ?? false;
+  const canCreate = useNeedScope('create:projects', usr => [adminId, 'me'].includes(usr?.id || '')) ?? false;
+  const canDelete = useNeedScope('delete:projects', usr => [adminId, 'me'].includes(usr?.id || '')) ?? false;
 
   // API
   const { projects = [], loading, reload, create, bulkDelete } = useProjects(adminId);

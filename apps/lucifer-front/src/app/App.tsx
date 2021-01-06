@@ -18,6 +18,7 @@ import CatchErrors from '../snack/components/CatchErrors';
 import AppBar from '../layout/components/AppBar';
 import UserRouter from '../users/components/UserRouter';
 import Home from './Home';
+import { ProjectTable } from '../projects/ProjectTable';
 
 // Component
 const App: FC = () => {
@@ -43,6 +44,9 @@ const App: FC = () => {
             <ApiCache>
               <AppBar>
                 <Switch>
+                  <Route path='/projects'>
+                    <ProjectTable show adminId='me' actionsContainer={null} />
+                  </Route>
                   <Route path='/users' component={UserRouter} />
                   <Route component={Home} />
                 </Switch>
