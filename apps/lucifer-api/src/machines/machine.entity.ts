@@ -17,7 +17,7 @@ export class Machine implements IMachine {
   ownerId: string;
 
   // Relations
-  @ManyToOne(() => LocalUser, usr => usr.machines, { nullable: false })
+  @ManyToOne(() => LocalUser, { nullable: false })
   @JoinColumn({ name: 'ownerId' })
   owner: Promise<LocalUser>;
 }

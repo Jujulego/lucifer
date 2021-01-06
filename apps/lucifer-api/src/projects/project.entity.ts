@@ -21,7 +21,7 @@ export class Project implements IProject {
   description: string;
 
   // Relations
-  @ManyToOne(() => LocalUser, usr => usr.projects, { nullable: false, onDelete: 'CASCADE' })
+  @ManyToOne(() => LocalUser, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'adminId' })
   admin: Promise<LocalUser>;
 }

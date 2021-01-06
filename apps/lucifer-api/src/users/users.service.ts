@@ -34,7 +34,6 @@ export class UsersService {
     const usr: IUser = {
       id: user_id,
       name, email,
-      machines: lcu?.machines ?? [],
     };
 
     // Optional fields
@@ -112,7 +111,6 @@ export class UsersService {
     const [ath, lcu] = await Promise.all([
       this.auth0.getUser({ id }),
       this.repository.findOne({
-        relations: ['machines'],
         where: { id }
       }),
     ]);

@@ -1,7 +1,3 @@
-import { Type } from 'class-transformer';
-
-import { IMachine, Machine } from './machine';
-
 // Interface
 export interface IUser {
   // Attributes
@@ -19,8 +15,6 @@ export interface IUser {
   lastIp?:    string;
   lastLogin?: string;
   blocked?:   boolean;
-
-  machines: IMachine[];
 }
 
 export interface IUpdateUser {
@@ -45,7 +39,4 @@ export class User implements IUser {
   lastIp?:    string;
   lastLogin?: string;
   blocked?:   boolean;
-
-  @Type(() => Machine)
-  machines: Machine[];
 }

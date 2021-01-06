@@ -1,7 +1,8 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-import { User, ConnectedUser } from './user.model';
+import { ConnectedUser } from './user.model';
+import type { User } from './user.model';
 
 // Controller
 @Controller('/auth')
