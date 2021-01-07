@@ -37,3 +37,11 @@ export function useProjects(adminId: string) {
     }, [bulkDelete, update]),
   };
 }
+
+export function useProject(adminId: string, id: string) {
+  const { data: project } = useProjectsAPI.get(adminId, id);
+
+  return {
+    project
+  };
+}

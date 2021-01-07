@@ -1,6 +1,5 @@
 import React from 'react';
-import { useRouteMatch } from 'react-router-dom';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useRouteMatch } from 'react-router-dom';
 
 import { Link, Paper, TableCell, TableContainer, TableHead, Tooltip } from '@material-ui/core';
 import { Check as CheckIcon } from '@material-ui/icons';

@@ -1,7 +1,8 @@
 import React, { FC, useCallback, useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
 import {
-  Fab, IconButton,
+  Fab, IconButton, Link,
   DialogTitle, DialogContent,
   List, ListItem, ListItemText,
   TableContainer, TableHead, TableCell,
@@ -124,7 +125,9 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
               { (prj: IProject) => (
                 <TableRow key={prj.id} doc={prj}>
                   <TableCell>
-                    { prj.name }
+                    <Link component={RouterLink} to={`/projects/${adminId}/${prj.id}`}>
+                      { prj.name }
+                    </Link>
                   </TableCell>
                   <TableCell className={styles.actions} onClick={event => event.stopPropagation()}>
                     { canDelete && (

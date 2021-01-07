@@ -16,7 +16,7 @@ import AutoLogin from '../auth/components/AutoLogin';
 import useDarkTheme from '../layout/theme.hooks';
 import CatchErrors from '../snack/components/CatchErrors';
 import AppBar from '../layout/components/AppBar';
-import { ProjectsPage } from '../projects/ProjectsPage';
+import { ProjectsRouter } from '../projects/ProjectsRouter';
 import UserRouter from '../users/components/UserRouter';
 import Home from './Home';
 
@@ -44,7 +44,7 @@ const App: FC = () => {
             <ApiCache>
               <AppBar>
                 <Switch>
-                  <Route path='/projects' component={ProjectsPage} />
+                  <Route path='/projects' component={ProjectsRouter} />
                   <Route path='/users' component={UserRouter} />
                   <Route component={Home} />
                 </Switch>
