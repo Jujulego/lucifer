@@ -83,28 +83,28 @@ export const AddProjectDialog: FC<AddProjectDialogProps> = (props) => {
             <TextField
               className={styles.field}
               variant="outlined" fullWidth
-              name="id" inputRef={register({
-                required: true,
-                maxLength: { value: 100, message: '100 charactères max.' },
-                pattern: { value: /^[a-z0-9-]+$/, message: 'charactères autorisés: a-z, 0-9, -' }
-              })}
-              InputLabelProps={{
-                shrink: !!fields.id
-              }}
-              label="Slug" required
-              error={!!errors.id} helperText={errors.id?.message}
+              name="name" inputRef={register({
+              required: true,
+              maxLength: { value: 100, message: '100 charactères max.' }
+            })}
+              label="Nom" required
+              error={!!errors.name} helperText={errors.name?.message}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
               className={styles.field}
               variant="outlined" fullWidth
-              name="name" inputRef={register({
-                required: true,
-                maxLength: { value: 100, message: '100 charactères max.' }
-              })}
-              label="Nom" required
-              error={!!errors.name} helperText={errors.name?.message}
+              name="id" inputRef={register({
+              required: true,
+              maxLength: { value: 100, message: '100 charactères max.' },
+              pattern: { value: /^[a-z0-9-]+$/, message: 'charactères autorisés: a-z, 0-9, -' }
+            })}
+              InputLabelProps={{
+                shrink: !!fields.id
+              }}
+              label="Slug" required
+              error={!!errors.id} helperText={errors.id?.message}
             />
           </Grid>
         </Grid>

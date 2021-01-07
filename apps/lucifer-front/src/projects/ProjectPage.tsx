@@ -1,11 +1,11 @@
-import React, { FC, useEffect } from 'react';
-import { useParams } from 'react-router';
+import React, { FC, useCallback, useEffect, useState } from 'react';
+import { useHistory, useParams } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { IUpdateProject } from '@lucifer/types';
 
-import { CircularProgress, Fab, Grid, Paper, TextField, Typography, Zoom } from '@material-ui/core';
+import { CircularProgress, Fab, Grid, IconButton, Paper, TextField, Typography, Zoom } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Save as SaveIcon } from '@material-ui/icons';
+import { Delete, Delete as DeleteIcon, Save as SaveIcon } from '@material-ui/icons';
 import { LabelledText, RefreshButton } from '@lucifer/react/basics';
 
 import { useNeedScope } from '../auth/auth.hooks';
@@ -41,18 +41,23 @@ interface ProjectParams {
 // Component
 export const ProjectPage: FC = () => {
   // Router
+  const history = useHistory();
   const { userId, id } = useParams<ProjectParams>();
 
   // API
-  const { project, loading, reload, update } = useProject(userId, id);
+  const { project, loading, reload, update, remove } = useProject(userId, id);
 
   // Auth
   const canUpdate = useNeedScope('update:project', usr => [project?.adminId, 'me'].includes(usr?.id));
+  const canDelete = useNeedScope('delete:project', usr => [project?.adminId, 'me'].includes(usr?.id));
 
   // Form
   const { errors, register, reset, handleSubmit, formState } = useForm<IUpdateProject>({
     mode: 'onChange'
   });
+
+  // State
+  const [isRemoving, setRemoving] = useState(false);
 
   // Effects
   useEffect(() => {
@@ -64,6 +69,13 @@ export const ProjectPage: FC = () => {
     }
   }, [reset, project]);
 
+  // Callbacks
+  const handleDelete = useCallback(async () => {
+    setRemoving(true);
+    await remove();
+    history.goBack();
+  }, [remove, history]);
+
   // Render
   const styles = useStyles();
 
@@ -73,7 +85,12 @@ export const ProjectPage: FC = () => {
         <ProjectHeader
           project={project}
           actions={(
-            <RefreshButton refreshing={loading} onClick={reload} />
+            <>
+              <IconButton disabled={!canDelete || isRemoving} onClick={handleDelete}>
+                <DeleteIcon />
+              </IconButton>
+              <RefreshButton disabled={isRemoving} refreshing={loading} onClick={reload} />
+            </>
           )}
         />
       </Paper>
@@ -118,7 +135,7 @@ export const ProjectPage: FC = () => {
           <Zoom in appear>
             <Fab
               className={styles.save} color="primary"
-              type="submit" disabled={!formState.isDirty || formState.isSubmitting}
+              type="submit" disabled={!formState.isDirty || formState.isSubmitting || isRemoving}
             >
               <SaveIcon />
             </Fab>
