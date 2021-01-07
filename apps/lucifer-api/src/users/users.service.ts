@@ -141,7 +141,6 @@ export class UsersService {
         email: update.email
       }),
       this.repository.findOne({
-        relations: ['machines'],
         where: { id }
       })
     ]);
