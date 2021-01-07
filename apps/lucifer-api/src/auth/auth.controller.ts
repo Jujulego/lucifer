@@ -1,7 +1,7 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-import { User, ConnectedUser } from './user.model';
+import { Context, Ctx } from '../context';
 
 // Controller
 @Controller('/auth')
@@ -9,7 +9,7 @@ import { User, ConnectedUser } from './user.model';
 export class AuthController {
   // Routes
   @Get('/permissions')
-  getPermissions(@ConnectedUser() user: User): string[] {
-    return user.permissions;
+  getPermissions(@Ctx() ctx: Context): string[] {
+    return ctx.user.permissions;
   }
 }

@@ -12,6 +12,7 @@ import { UsersModule } from './users.module';
 import { UsersService } from './users.service';
 import { UpdateUser } from './user.schema';
 import { LocalUser } from './local-user.entity';
+import { ProjectsModule } from '../projects/projects.module';
 
 // Load services
 let app: TestingModule;
@@ -24,6 +25,7 @@ beforeAll(async () => {
     imports: [
       DatabaseModule,
       MachinesModule,
+      ProjectsModule,
       UsersModule,
     ]
   })
@@ -116,8 +118,7 @@ describe('UsersService.get', () => {
         email:    user.email,
         name:     user.name,
         nickname: user.nickname,
-        picture:  user.picture,
-        machines: []
+        picture:  user.picture
       });
 
     // Check call
@@ -202,8 +203,7 @@ describe('UsersService.update', () => {
         email:    update.email,
         name:     update.name,
         nickname: user.nickname,
-        picture:  user.picture,
-        machines: []
+        picture:  user.picture
       });
 
     // Check call

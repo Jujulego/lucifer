@@ -1,7 +1,9 @@
+import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Connection } from 'typeorm';
 
 import { DatabaseModule } from '../database.module';
+import { ProjectsModule } from '../projects/projects.module';
 import { UsersService } from '../users/users.service';
 import { LocalUser } from '../users/local-user.entity';
 import { UsersServiceMock } from '../../mocks/users-service.mock';
@@ -9,7 +11,6 @@ import { UsersServiceMock } from '../../mocks/users-service.mock';
 import { MachinesModule } from './machines.module';
 import { MachinesService } from './machines.service';
 import { Machine } from './machine.entity';
-import { NotFoundException } from '@nestjs/common';
 
 // Load services
 let app: TestingModule;
@@ -20,7 +21,8 @@ beforeAll(async () => {
   app = await Test.createTestingModule({
     imports: [
       DatabaseModule,
-      MachinesModule
+      MachinesModule,
+      ProjectsModule
     ]
   })
     .overrideProvider(UsersService).useClass(UsersServiceMock)

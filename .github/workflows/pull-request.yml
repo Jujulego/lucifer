@@ -111,87 +111,176 @@ jobs:
       - name: Tests
         run: yarn run affected:test --scan --base=origin/${{ github.base_ref }}
 
-#  tests-e2e:
-#    runs-on: ubuntu-latest
-#    needs: lint
-#
-#    services:
-#      postgres:
-#        image: postgres:12-alpine
-#        env:
-#          POSTGRES_USER: 'root'
-#          POSTGRES_PASSWORD: 'root'
-#        options: >-
-#          --health-cmd pg_isready
-#          --health-interval 10s
-#          --health-timeout 5s
-#          --health-retries 5
-#        ports:
-#          - 5432:5432
-#
-#    env:
-#      AUTH0_DOMAIN: 'test.com'
-#      AUTH0_AUDIENCE: 'test'
-#      AUTH0_CLIENT_ID: 'test'
-#      AUTH0_CLIENT_SECRET: 'test'
-#
-#    steps:
-#      - uses: actions/checkout@v2
-#        with:
-#          ref: ${{ github.event.pull_request.head.ref }}
-#          fetch-depth: 0
-#
-#      - name: Use Node.js 14.x
-#        uses: actions/setup-node@v2.1.4
-#        with:
-#          node-version: 14.x
-#
-#      - name: 'Setup Cache'
-#        id: setup-cache
-#        run: echo "::set-output name=yarn-cache::$(yarn cache dir)"
-#
-#      - name: 'Setup Database'
-#        uses: ./.github/actions/setup-db
-#        with:
-#          db-host: 'localhost'
-#          db-port: 5432
-#          db-username: 'root'
-#          db-password: 'root'
-#
-#      - name: 'Setup Nx'
-#        id: setup
-#        run: git fetch --no-tags --prune --depth=5 origin ${{ github.base_ref }}
-#
-#      - uses: actions/cache@v2
-#        with:
-#          path: ${{ steps.setup-cache.outputs.yarn-cache }}
-#          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-#          restore-keys: ${{ runner.os }}-yarn-
-#
-#      - name: Install dependencies
-#        run: yarn install --pure-lockfile
-#
-#      - name: Migrate
-#        run: |
-#          yarn run build:tools
-#          yarn run nx run-many --all --target=db-migrate --scan
-#
-#      - name: E2E Tests
-#        run: |
-#          echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
-#          yarn start lucifer-api &
-#          API_PID=$!;
-#          yarn run affected:e2e --scan --base=origin/${{ github.base_ref }} --headless
-#          kill $API_PID
-#        env:
-#          DATABASE_URL: "postgres://root:root@localhost:5432"
-#          CYPRESS_Auth0ClientSecret: ${{ secrets.AUTH0_CLIENT_SECRET }}
-#
-#      - name: Archive cypress results
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: cypress-results
-#          path: dist/cypress
+  build:
+    runs-on: ubuntu-latest
+    needs: lint
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v2.1.4
+        with:
+          node-version: 14.x
+
+      - name: Setup Cache
+        id: setup-cache
+        run: echo "::set-output name=yarn-cache::$(yarn cache dir)"
+
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.setup-cache.outputs.yarn-cache }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build
+        run: yarn run nx run-many --all --target=build --scan
+
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: dist
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Download production artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: build
+          path: dist
+
+      - name: Prepare
+        id: prep
+        run: |
+          DOCKER_IMAGE=ghcr.io/${{ github.repository }}/lucifer-api
+          VERSION=edge
+          if [[ $GITHUB_REF == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/}
+          elif [[ $GITHUB_REF == refs/heads/* ]]; then
+            VERSION=$(echo ${GITHUB_REF#refs/heads/} | sed -r 's#/+#-#g')
+          elif [[ $GITHUB_REF == refs/pull/* ]]; then
+            VERSION=pr-${{ github.event.number }}
+          fi
+          TAGS="${DOCKER_IMAGE,,}:${VERSION}"
+          if [ "${{ github.event_name }}" = "push" ]; then
+            TAGS="$TAGS,${DOCKER_IMAGE,,}:sha-${GITHUB_SHA::8}"
+          fi
+          echo ::set-output name=version::${VERSION}
+          echo ::set-output name=tags::${TAGS}
+          echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Setup Docker
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.CR_PAT }}
+
+      - name: Build and Push
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          file: apps/lucifer-api/Dockerfile
+          context: .
+          build-args: |
+            "Auth0Domain=dev-lucifer.eu.auth0.com"
+            "Auth0Audience=https://lucifer-api.herokuapp.com/"
+            "Auth0ClientId=ktmzvUo29TuSbQ8p1AvLrZMPTYCPsH3Z"
+            "Auth0ClientSecret=${{ secrets.AUTH0_CLIENT_SECRET }}"
+          labels: |
+            org.opencontainers.image.source=${{ github.event.repository.html_url }}
+            org.opencontainers.image.created=${{ steps.prep.outputs.created }}
+            org.opencontainers.image.revision=${{ github.sha }}
+          tags:  ${{ steps.prep.outputs.tags }}
+
+  e2e-tests:
+    runs-on: ubuntu-latest
+    needs: [tests, docker]
+
+    services:
+      postgres:
+        image: postgres:12-alpine
+        env:
+          POSTGRES_USER: 'root'
+          POSTGRES_PASSWORD: 'root'
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      lucifer-api:
+        image: ghcr.io/jujulego/lucifer/lucifer-api:pr-${{ github.event.number }}
+        credentials:
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.CR_PAT }}
+        env:
+          DATABASE_URL: 'postgres://root:root@postgres:5432'
+        ports:
+          - 3333:80
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v2.1.4
+        with:
+          node-version: 14.x
+
+      - name: Setup Cache
+        id: setup-cache
+        run: echo "::set-output name=yarn-cache::$(yarn cache dir)"
+
+      - name: 'Setup Nx'
+        id: setup
+        run: git fetch --no-tags --prune --depth=5 origin ${{ github.base_ref }}
+
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.setup-cache.outputs.yarn-cache }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: |
+          yarn install --frozen-lockfile
+          yarn run build:tools
+
+      - name: Migrate
+        run: yarn run nx run-many --all --target=db-migrate --scan
+
+      - name: E2E Tests
+        run: |
+          echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+          yarn run nx affected:e2e --scan --base=origin/${{ github.base_ref }}
+        env:
+          CYPRESS_Auth0ClientSecret: ${{ secrets.E2E_AUTH0_CLIENT_SECRET }}
+
+      - name: Archive cypress results
+        uses: actions/upload-artifact@v2
+        with:
+          name: cypress-results
+          path: dist/cypress
 
   terraform:
     runs-on: ubuntu-latest

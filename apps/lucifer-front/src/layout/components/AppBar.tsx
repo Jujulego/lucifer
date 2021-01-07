@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import FolderSpecialIcon from '@material-ui/icons/FolderSpecial';
 import HomeIcon from '@material-ui/icons/Home';
 import MenuIcon from '@material-ui/icons/Menu';
 import PeopleIcon from '@material-ui/icons/People';
@@ -121,6 +122,10 @@ const AppBar = ({ children }: AppBarProps) => {
           <ListItem button component={Link} to="/">
             <ListItemIcon><HomeIcon /></ListItemIcon>
             <ListItemText primary="Accueil" />
+          </ListItem>
+          <ListItem button component={Link} to="/projects">
+            <ListItemIcon><FolderSpecialIcon /></ListItemIcon>
+            <ListItemText primary="Projets" />
           </ListItem>
           <ScopeGate scope="read:users">
             <ListItem button component={Link} to="/users">

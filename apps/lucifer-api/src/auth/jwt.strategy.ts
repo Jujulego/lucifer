@@ -5,7 +5,7 @@ import * as jwks from 'jwks-rsa';
 
 import { env } from '../env';
 
-import { User } from './user.model';
+import { AuthUser } from './user.model';
 
 // For tests
 export const JWT_KEY = 'a25tp71kchu2m8h3qcrm8hishfv7vpw77mds';
@@ -38,7 +38,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 
   // Methods
   // noinspection JSUnusedGlobalSymbols
-  validate(payload: User): User {
+  validate(payload: AuthUser): AuthUser {
     return payload;
   }
 }
