@@ -22,7 +22,6 @@ export class UsersServiceMock extends UsersService {
     usr.id = id;
     usr.name = "Test test";
     usr.email = "test@test.com";
-    usr.machines = [];
 
     return usr;
   }
@@ -36,7 +35,6 @@ export class UsersServiceMock extends UsersService {
     usr.id = id;
     usr.name = update.name ?? "Test test";
     usr.email = update.email ?? "test@test.com";
-    usr.machines = [];
 
     return usr;
   }
