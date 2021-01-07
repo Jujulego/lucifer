@@ -1,7 +1,6 @@
 import React, { MouseEvent, useState, useEffect, FC } from 'react';
 import copy from 'copy-to-clipboard';
 import clsx from 'clsx';
-import { pick } from 'lodash';
 
 import { Fab, FabProps, FabClassKey, Fade } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -79,7 +78,12 @@ const CopyFab: FC<CopyFabProps> = (props) => {
   };
 
   // Render
-  const styles = useStyles({ classes: pick(classes, ['succeed', 'label']) });
+  const styles = useStyles({
+    classes: {
+      succeed: classes?.succeed,
+      label: classes?.label
+    }
+  });
 
   return (
     <Fab
