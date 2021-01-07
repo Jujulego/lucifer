@@ -12,7 +12,7 @@ import MachineTable from '../../machines/components/MachineTable';
 import { useUser } from '../users.hooks';
 import UserDetailsTab from './UserDetailsTab';
 import UserHeader from './UserHeader';
-import { ProjectTable } from '../../projects/ProjectTable';
+import { ProjectsTable } from '../../projects/ProjectsTable';
 
 // Utils
 interface LinkTabProps {
@@ -99,7 +99,7 @@ const UserPage = () => {
         ownerId={id} show={page === 'machines'}
         actionsContainer={actionsContainer.current}
       />
-      <ProjectTable
+      <ProjectsTable
         adminId={id} show={page === 'projects'}
         actionsContainer={actionsContainer.current}
       />

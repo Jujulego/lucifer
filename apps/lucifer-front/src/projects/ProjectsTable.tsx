@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useRef, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 
 import {
   Fab, IconButton,
@@ -6,13 +6,13 @@ import {
   List, ListItem, ListItemText,
   TableContainer, TableHead, TableCell,
   Fade, Zoom,
-  Portal,
+  Paper, Portal,
   makeStyles
 } from '@material-ui/core';
 import { Add as AddIcon, Delete as DeleteIcon } from '@material-ui/icons';
 
-import { ConfirmDialog, RefreshButton, ToolbarAction, useConfirm } from '@lucifer/react/basics';
-import { Table, TableBody, TableRow, TableSortCell } from '@lucifer/react/table';
+import { ConfirmDialog, RefreshButton, useConfirm } from '@lucifer/react/basics';
+import { Table, TableAction, TableBody, TableRow, TableSortCell, TableToolbar } from '@lucifer/react/table';
 import { IProject } from '@lucifer/types';
 
 import { useNeedScope } from '../auth/auth.hooks';
@@ -21,10 +21,10 @@ import { useProjects } from './projects.hooks';
 import { AddProjectDialog } from './AddProjectDialog';
 
 // Types
-export interface ProjectTableProps {
-  show: boolean;
+export interface ProjectsTableProps {
   adminId: string;
-  actionsContainer: HTMLElement | null;
+  show?: boolean;
+  actionsContainer?: HTMLElement | null;
 }
 
 // Styles
@@ -44,20 +44,21 @@ const useStyles = makeStyles(({ spacing }) => ({
 }));
 
 // Component
-export const ProjectTable: FC<ProjectTableProps> = (props) => {
+export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
   // Props
-  const { adminId, show, actionsContainer } = props;
+  const {
+    adminId,
+    show = true,
+    actionsContainer
+  } = props;
 
   // State
   const [creating, setCreating] = useState(false);
   const { state: deleteState, confirm: confirmDelete } = useConfirm<IProject[]>([]);
 
-  // Ref
-  const selection = useRef<IProject[]>([]);
-
   // Auth
-  const canCreate = useNeedScope('create:projects', usr => [adminId, 'me'].includes(usr?.id || '')) ?? false;
-  const canDelete = useNeedScope('delete:projects', usr => [adminId, 'me'].includes(usr?.id || '')) ?? false;
+  const canCreate = useNeedScope('create:projects', usr => [usr?.id, 'me'].includes(adminId)) ?? false;
+  const canDelete = useNeedScope('delete:projects', usr => [usr?.id, 'me'].includes(adminId)) ?? false;
 
   // API
   const { projects = [], loading, reload, create, bulkDelete } = useProjects(adminId);
@@ -74,28 +75,45 @@ export const ProjectTable: FC<ProjectTableProps> = (props) => {
   // Render
   const styles = useStyles();
 
+  const toolbar = actionsContainer !== undefined ? (
+    <Portal container={actionsContainer}>
+      <span>
+        { show && (
+          <TableAction
+            tooltip="Supprimer des projets" when="some" disabled={!canDelete}
+            onActivate={(selection: IProject[]) => handleDelete(selection)}
+          >
+            <DeleteIcon />
+          </TableAction>
+          ) }
+        <Fade in={show}>
+          <RefreshButton refreshing={loading} onClick={reload} />
+        </Fade>
+      </span>
+    </Portal>
+  ) : (
+    <Paper square>
+      <TableToolbar title="Projets">
+        { (show && canDelete) && (
+          <TableAction
+            tooltip="Supprimer des projets" when="some"
+            onActivate={(selection: IProject[]) => handleDelete(selection)}
+          >
+            <DeleteIcon />
+          </TableAction>
+        ) }
+        <Fade in={show}>
+          <RefreshButton refreshing={loading} onClick={reload} />
+        </Fade>
+      </TableToolbar>
+    </Paper>
+  );
+
   return (
     <>
-      <Portal container={actionsContainer}>
-        <span>
-          { canDelete && (
-            <Fade in={show}>
-              <ToolbarAction
-                tooltip="Supprimer des projets" disabled={!canDelete}
-                onClick={() => handleDelete(selection.current)}
-              >
-                <DeleteIcon />
-              </ToolbarAction>
-            </Fade>
-          ) }
-          <Fade in={show}>
-            <RefreshButton refreshing={loading} onClick={reload} />
-          </Fade>
-        </span>
-      </Portal>
       { show && (
         <TableContainer>
-          <Table documents={projects} selectionRef={selection}>
+          <Table documents={projects} toolbar={toolbar}>
             <TableHead>
               <TableRow>
                 <TableSortCell<IProject> field="name">Nom</TableSortCell>

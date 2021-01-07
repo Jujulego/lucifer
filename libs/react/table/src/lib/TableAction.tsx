@@ -1,7 +1,8 @@
-import React, { ElementType, MouseEvent } from 'react';
+import React, { ComponentType, ElementType, MouseEvent } from 'react';
 
-import { ExtendButtonBaseTypeMap } from '@material-ui/core';
+import { ExtendButtonBaseTypeMap, Fade } from '@material-ui/core';
 import { OverrideProps } from '@material-ui/core/OverridableComponent';
+import { TransitionProps } from '@material-ui/core/transitions';
 
 import { ToolbarAction, ToolbarActionTypeMap, ToolbarActionClassKey } from '@lucifer/react/basics';
 import { ExtendMatButton } from '@lucifer/react/utils';
@@ -19,6 +20,7 @@ export type TableActionTypeMap<
 > = ExtendButtonBaseTypeMap<{
   props: P & ToolbarActionTypeMap<P, D>['props'] & {
     when?: When,
+    Transition?: ComponentType<TransitionProps>,
     onActivate?: (documents: T[]) => void
   };
   defaultComponent: D;
@@ -37,6 +39,7 @@ const TableAction: ExtendMatButton<TableActionTypeMap<never>>
   // Props
   const {
     children, tooltip, when = "always",
+    Transition = Fade,
     onActivate, onClick,
     ...action
   } = props;
@@ -56,13 +59,17 @@ const TableAction: ExtendMatButton<TableActionTypeMap<never>>
     }) : onClick;
 
   // Render
-  if (when === "some" && selectedCount === 0)    return null;
-  if (when === "nothing" && selectedCount !== 0) return null;
+  let show = true;
+
+  if (when === "some" && selectedCount === 0)    show = false;
+  if (when === "nothing" && selectedCount !== 0) show = false;
 
   return (
-    <ToolbarAction {...action} tooltip={tooltip} onClick={handleClick}>
-      { children }
-    </ToolbarAction>
+    <Transition in={show}>
+      <ToolbarAction {...action} tooltip={tooltip} onClick={handleClick}>
+        { children }
+      </ToolbarAction>
+    </Transition>
   );
 };
 
