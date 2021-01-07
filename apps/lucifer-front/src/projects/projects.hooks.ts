@@ -39,9 +39,16 @@ export function useProjects(adminId: string) {
 }
 
 export function useProject(adminId: string, id: string) {
-  const { data: project, loading, reload } = useProjectsAPI.get(adminId, id);
+  const { data: project, loading, reload, update } = useProjectsAPI.get(adminId, id);
+  const { send: put } = useProjectsAPI.put(adminId, id);
 
   return {
-    project, loading, reload
+    project, loading, reload,
+    update: useCallback(async (data: IUpdateProject) => {
+      const prj = await put(data);
+      update(prj);
+
+      return prj;
+    }, [update, put]),
   };
 }

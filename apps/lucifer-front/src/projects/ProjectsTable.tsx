@@ -8,7 +8,7 @@ import {
   TableContainer, TableHead, TableCell,
   Fade, Zoom,
   Paper, Portal,
-  makeStyles
+  makeStyles, Typography
 } from '@material-ui/core';
 import { Add as AddIcon, Delete as DeleteIcon } from '@material-ui/icons';
 
@@ -30,7 +30,11 @@ export interface ProjectsTableProps {
 
 // Styles
 const useStyles = makeStyles(({ spacing }) => ({
+  description: {
+    maxWidth: 0,
+  },
   actions: {
+    width: 0,
     padding: 0,
     textAlign: 'right'
   },
@@ -118,6 +122,7 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
             <TableHead>
               <TableRow>
                 <TableSortCell<IProject> field="name">Nom</TableSortCell>
+                <TableCell>Description</TableCell>
                 <TableCell />
               </TableRow>
             </TableHead>
@@ -128,6 +133,9 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
                     <Link component={RouterLink} to={`/projects/${adminId}/${prj.id}`}>
                       { prj.name }
                     </Link>
+                  </TableCell>
+                  <TableCell className={styles.description}>
+                    <Typography noWrap>{ prj.description }</Typography>
                   </TableCell>
                   <TableCell className={styles.actions} onClick={event => event.stopPropagation()}>
                     { canDelete && (
