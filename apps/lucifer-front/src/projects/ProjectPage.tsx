@@ -1,6 +1,11 @@
 import React, { FC } from 'react';
 import { useParams } from 'react-router';
+
+import { Paper } from '@material-ui/core';
+
 import { useProject } from './projects.hooks';
+import { RefreshButton } from '@lucifer/react/basics';
+import { ProjectHeader } from './ProjectHeader';
 
 // Types
 interface ProjectParams {
@@ -14,10 +19,17 @@ export const ProjectPage: FC = () => {
   const { userId, id } = useParams<ProjectParams>();
 
   // API
-  const { project } = useProject(userId, id);
+  const { project, loading, reload } = useProject(userId, id);
 
   // Render
   return (
-    <span>{ project?.name }</span>
+    <Paper square>
+      <ProjectHeader
+        project={project}
+        actions={(
+          <RefreshButton refreshing={loading} onClick={reload} />
+        )}
+      />
+    </Paper>
   );
 };

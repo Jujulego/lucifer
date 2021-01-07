@@ -39,9 +39,9 @@ export function useProjects(adminId: string) {
 }
 
 export function useProject(adminId: string, id: string) {
-  const { data: project } = useProjectsAPI.get(adminId, id);
+  const { data: project, loading, reload } = useProjectsAPI.get(adminId, id);
 
   return {
-    project
+    project, loading, reload
   };
 }
