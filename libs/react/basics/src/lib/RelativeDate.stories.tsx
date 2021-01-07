@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { Meta, Story } from '@storybook/react';
 
 import RelativeDate, { RelativeDateProps } from '../lib/RelativeDate';
@@ -23,13 +23,13 @@ const Template: Story<RelativeDateProps> = (args) => (
 export const FromNow = Template.bind({});
 FromNow.args = {
   mode: 'from',
-  date: moment()["add"](1, 'day').toISOString(),
+  date: dayjs()["add"](1, 'day').toISOString(),
   withoutPrefix: false
 }
 
 export const ToNow = Template.bind({});
 ToNow.args = {
   mode: 'to',
-  date: moment()["add"](1, 'day').toISOString(),
+  date: dayjs()["add"](1, 'day').toISOString(),
   withoutPrefix: false
 }

@@ -5,7 +5,7 @@ import { Link, Paper, TableCell, TableContainer, TableHead, Tooltip } from '@mat
 import { Check as CheckIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { RefreshButton, RelativeDate } from '@lucifer/react/basics';
+import { LabelledText, RefreshButton, RelativeDate } from '@lucifer/react/basics';
 import { Table, TableBody, TableRow, TableSortCell, TableToolbar } from '@lucifer/react/table';
 import { IUser } from '@lucifer/types';
 
@@ -66,7 +66,9 @@ const UserTable = () => {
                 ) }
               </TableCell>
               <TableCell>
-                <RelativeDate date={usr.lastLogin} mode='from' />
+                { usr.lastLogin && (
+                  <RelativeDate mode='from' date={usr.lastLogin} />
+                ) }
               </TableCell>
             </TableRow>
           ) }

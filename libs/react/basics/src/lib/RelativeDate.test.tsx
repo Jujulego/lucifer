@@ -1,6 +1,6 @@
 import React from 'react';
 import { createShallow } from '@material-ui/core/test-utils';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 import { useInterval } from '@lucifer/react/utils';
 
@@ -27,7 +27,7 @@ describe('to mode', () => {
   it('should render correctly', () => {
     // Render
     const wrapper = shallow(
-      <RelativeDate date={moment().add('1', 'day')} mode='to' />
+      <RelativeDate date={dayjs().add(1, 'day')} mode='to' />
     );
 
     // Checks
@@ -37,7 +37,7 @@ describe('to mode', () => {
   it('should render without prefix', () => {
     // Render
     const wrapper = shallow(
-      <RelativeDate date={moment().add('1', 'day')} mode='to' withoutPrefix />
+      <RelativeDate date={dayjs().add(1, 'day')} mode='to' withoutPrefix />
     );
 
     // Checks
@@ -49,7 +49,7 @@ describe('from mode', () => {
   it('should render correctly', () => {
     // Render
     const wrapper = shallow(
-      <RelativeDate date={moment().add('1', 'day')} mode='from' />
+      <RelativeDate date={dayjs().add(1, 'day')} mode='from' />
     );
 
     // Checks
@@ -59,7 +59,7 @@ describe('from mode', () => {
   it('should render without prefix', () => {
     // Render
     const wrapper = shallow(
-      <RelativeDate date={moment().add('1', 'day')} mode='from' withoutPrefix />
+      <RelativeDate date={dayjs().add(1, 'day')} mode='from' withoutPrefix />
     );
 
     // Checks
@@ -70,7 +70,7 @@ describe('from mode', () => {
 it('should re-render every minutes', () => {
   // Render
   shallow(
-    <RelativeDate date={moment()} mode='to' />
+    <RelativeDate date={dayjs()} mode='to' />
   );
 
   // Checks

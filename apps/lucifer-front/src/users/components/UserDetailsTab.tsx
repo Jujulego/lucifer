@@ -144,7 +144,9 @@ const UserDetailsTab = (props: UserDetailsProps) => {
             </GridItem>
             <GridItem>
               <LabelledText label="Dernière connexion">
-                <RelativeDate mode="from" date={ user.lastLogin } />
+                { user.lastLogin && (
+                  <RelativeDate mode="from" date={user.lastLogin} />
+                ) }
               </LabelledText>
             </GridItem>
           </GridLine>

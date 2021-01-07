@@ -8,9 +8,9 @@
   },
   "files": [],
   "include": [
-    "./*.js",
-    "./*.jsx",
-    "./*.ts",
-    "./*.tsx"
+    ".storybook/*.js",
+    ".storybook/*.jsx",
+    ".storybook/*.ts",
+    ".storybook/*.tsx"
   ]
 }

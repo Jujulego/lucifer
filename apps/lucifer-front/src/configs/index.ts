@@ -1,1 +1,1 @@
-import './moment';
+import 'dayjs/locale/fr';

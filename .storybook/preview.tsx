@@ -1,7 +1,7 @@
 import React from 'react';
 import { addDecorator, addParameters } from '@storybook/react';
 import { themes } from '@storybook/theming';
-import 'moment/locale/fr';
+import 'dayjs/locale/fr';
 
 import { CssBaseline, StylesProvider, ThemeProvider } from '@material-ui/core';
 

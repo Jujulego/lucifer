@@ -1,13 +1,16 @@
 import React, { FC, useMemo } from 'react';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 
 import { useInterval } from '@lucifer/react/utils';
+
+dayjs.extend(relativeTime);
 
 // Types
 type Mode = "from" | "to";
 
 export interface RelativeDateProps {
-  date: moment.MomentInput;
+  date: dayjs.ConfigType;
   mode: Mode;
 
   /**
@@ -25,7 +28,7 @@ const RelativeDate: FC<RelativeDateProps> = (props) => {
   } = props;
 
   // Memo
-  const date = useMemo(() => moment(input), [input]);
+  const date = useMemo(() => dayjs(input), [input]);
 
   // Interval
   useInterval(1, 'minute');
