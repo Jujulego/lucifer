@@ -84,7 +84,8 @@
             "tsConfig": "apps/lucifer-front/tsconfig.app.json",
             "assets": [
               "apps/lucifer-front/src/favicon.ico",
-              "apps/lucifer-front/src/assets"
+              "apps/lucifer-front/src/assets",
+              "apps/lucifer-front/src/Procfile"
             ],
             "styles": [
               "apps/lucifer-front/src/styles.scss"
@@ -160,6 +161,13 @@
           "outputs": [
             "coverage/apps/lucifer-front"
           ]
+        },
+        "deploy": {
+          "builder": ".:deploy",
+          "options": {
+            "buildPath": "dist/apps/lucifer-front",
+            "repository": "https://github.com/Jujulego/lucifer.git"
+          }
         }
       }
     },
