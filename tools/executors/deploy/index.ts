@@ -39,11 +39,13 @@ export default createBuilder(async (options: Options, ctx: BuilderContext) => {
     await spawn('git', ['clone', options.repository, project], { cwd: tmpDir });
 
     // Checkout and pull
+    let newBranch = false;
     const branches = await spawn('git', ['branch', '--list', '-a', `origin/${branch}`], { cwd: repoDir, stdio: 'pipe' });
 
     if (branches.length === 0) {
       await spawn('git', ['checkout', '--orphan', branch], { cwd: repoDir });
       await spawn('git', ['reset', '--hard'], { cwd: repoDir });
+      newBranch = true;
     } else {
       await spawn('git', ['checkout', '-t', `origin/${branch}`], { cwd: repoDir });
       await spawn('git', ['pull', '--ff-only'], { cwd: repoDir });
@@ -61,6 +63,7 @@ export default createBuilder(async (options: Options, ctx: BuilderContext) => {
 
     // Commit
     try {
+      if (newBranch) throw Error();
       await spawn('git', ['diff', '--quiet', '--exit-code'], { cwd: repoDir });
       logger.info('No difference: skipping commit');
     } catch (err) {
