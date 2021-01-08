@@ -3,14 +3,16 @@ import { useCallback } from 'react';
 import { useAPI } from '@lucifer/react/api';
 import { ICreateMachine, IMachine, IUpdateMachine } from '@lucifer/types';
 
+import { env } from '../environments/environment';
+
 // Namespace
 export const useMachinesAPI = {
-  all: (ownerId: string) => useAPI.get<IMachine[]>(`/api/${ownerId}/machines`),
-  create: (ownerId: string) => useAPI.post<ICreateMachine, IMachine>(`/api/${ownerId}/machines`),
-  bulkDelete: (ownerId: string) => useAPI.delete<IMachine>(`/api/${ownerId}/machines`),
+  all: (ownerId: string) => useAPI.get<IMachine[]>(`${env.apiUrl}/api/${ownerId}/machines`),
+  create: (ownerId: string) => useAPI.post<ICreateMachine, IMachine>(`${env.apiUrl}/api/${ownerId}/machines`),
+  bulkDelete: (ownerId: string) => useAPI.delete<IMachine>(`${env.apiUrl}/api/${ownerId}/machines`),
 
-  get: (ownerId: string, id: string) => useAPI.get<IMachine>(`/api/${ownerId}/machines/${id}`),
-  put: (ownerId: string, id: string) => useAPI.put<IUpdateMachine, IMachine>(`/api/${ownerId}/machines/${id}`),
+  get: (ownerId: string, id: string) => useAPI.get<IMachine>(`${env.apiUrl}/api/${ownerId}/machines/${id}`),
+  put: (ownerId: string, id: string) => useAPI.put<IUpdateMachine, IMachine>(`${env.apiUrl}/api/${ownerId}/machines/${id}`),
 }
 
 // Hooks

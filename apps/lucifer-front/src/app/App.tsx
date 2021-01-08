@@ -9,7 +9,7 @@ import { ApiCache } from '@lucifer/react/api';
 import history from '../app.history';
 import createTheme from '../app.theme';
 import authConfig from '../configs/auth';
-import { environment } from '../environments/environment';
+import { env } from '../environments/environment';
 
 import AuthGate from '../auth/components/AuthGate';
 import AutoLogin from '../auth/components/AutoLogin';
@@ -37,10 +37,10 @@ const App: FC = () => {
             client_id={authConfig.clientId}
             audience={authConfig.audience}
             redirect_uri={window.location.origin}
-            cacheLocation={environment.e2e ? 'localstorage' : undefined}
+            cacheLocation={env.e2e ? 'localstorage' : undefined}
             onRedirectCallback={state => history.push(state?.targetUrl || window.location.pathname)}
           >
-            { environment.e2e || <AutoLogin /> }
+            { env.e2e || <AutoLogin /> }
             <ApiCache>
               <AppBar>
                 <Switch>

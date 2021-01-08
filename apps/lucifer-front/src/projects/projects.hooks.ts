@@ -2,16 +2,17 @@ import { useCallback } from 'react';
 
 import { useAPI } from '@lucifer/react/api';
 import { ICreateProject, IProject, IUpdateProject } from '@lucifer/types';
+import { env } from '../environments/environment';
 
 // Namespace
 export const useProjectsAPI = {
-  all: (adminId: string) => useAPI.get<IProject[]>(`/api/${adminId}/projects`),
-  create: (adminId: string) => useAPI.post<ICreateProject, IProject>(`/api/${adminId}/projects`),
-  bulkDelete: (adminId: string) => useAPI.delete<number | null>(`/api/${adminId}/projects`),
+  all: (adminId: string) => useAPI.get<IProject[]>(`${env.apiUrl}/api/${adminId}/projects`),
+  create: (adminId: string) => useAPI.post<ICreateProject, IProject>(`${env.apiUrl}/api/${adminId}/projects`),
+  bulkDelete: (adminId: string) => useAPI.delete<number | null>(`${env.apiUrl}/api/${adminId}/projects`),
 
-  get: (adminId: string, id: string) => useAPI.get<IProject>(`/api/${adminId}/projects/${id}`),
-  put: (adminId: string, id: string) => useAPI.put<IUpdateProject, IProject>(`/api/${adminId}/projects/${id}`),
-  delete: (adminId: string, id: string) => useAPI.delete<number | null>(`/api/${adminId}/projects/${id}`),
+  get: (adminId: string, id: string) => useAPI.get<IProject>(`${env.apiUrl}/api/${adminId}/projects/${id}`),
+  put: (adminId: string, id: string) => useAPI.put<IUpdateProject, IProject>(`${env.apiUrl}/api/${adminId}/projects/${id}`),
+  delete: (adminId: string, id: string) => useAPI.delete<number | null>(`${env.apiUrl}/api/${adminId}/projects/${id}`),
 };
 
 // Hooks

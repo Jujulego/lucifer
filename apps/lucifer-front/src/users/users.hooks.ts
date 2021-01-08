@@ -3,12 +3,14 @@ import { useCallback } from 'react';
 import { IUpdateUser, IUser } from '@lucifer/types';
 import { useAPI } from '@lucifer/react/api';
 
+import { env } from '../environments/environment';
+
 // Namespace
 export const useUsersAPI = {
-  all: () => useAPI.get<IUser[]>('/api/users'),
+  all: () => useAPI.get<IUser[]>(`${env.apiUrl}/api/users`),
 
-  get: (id: string) => useAPI.get<IUser>(`/api/users/${id}`),
-  put: (id: string) => useAPI.put<IUpdateUser, IUser>(`/api/users/${id}`)
+  get: (id: string) => useAPI.get<IUser>(`${env.apiUrl}/api/users/${id}`),
+  put: (id: string) => useAPI.put<IUpdateUser, IUser>(`${env.apiUrl}/api/users/${id}`)
 };
 
 // Hooks

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 
 import { useAPI } from '@lucifer/react/api';
 
+import { env } from '../environments/environment';
 import { AuthUser } from './models/user';
 import { useAuth } from './auth.context';
 
@@ -11,7 +12,7 @@ export type AllowCallback = (user: AuthUser | null) => boolean;
 
 // Namespace
 export const useAuthAPI = {
-  permissions: () => useAPI.get<string[]>('/api/auth/permissions')
+  permissions: () => useAPI.get<string[]>(`${env.apiUrl}/api/auth/permissions`)
 };
 
 // Hooks
