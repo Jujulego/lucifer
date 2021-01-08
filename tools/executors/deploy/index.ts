@@ -75,7 +75,7 @@ export default createBuilder(async (options: Options, ctx: BuilderContext) => {
     }
 
     // Cleanup
-    // await fse.remove(repoDir);
+    await fse.remove(repoDir);
 
     return { success: true };
 
