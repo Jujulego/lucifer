@@ -1,4 +1,5 @@
-variable "auth0-client-secret" {
+variable "auth0-domain" {
   type      = string
-  sensitive = true
+  sensitive = false
+  default   = "jujulego.eu.auth0.com"
 }

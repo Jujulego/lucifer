@@ -1,3 +1,40 @@
+resource "auth0_client" "lucifer-api" {
+  name     = "Lucifer API"
+  app_type = "non_interactive"
+}
+
+resource "auth0_resource_server" "lucifer-api" {
+  name             = "Lucifer API"
+  identifier       = "https://lucifer-api.herokuapp.com/"
+  signing_alg      = "RS256"
+  enforce_policies = true
+  token_dialect    = "access_token_authz"
+
+  scopes {
+    value = "read:users"
+  }
+
+  scopes {
+    value = "update:users"
+  }
+
+  scopes {
+    value = "create:projects"
+  }
+
+  scopes {
+    value = "read:projects"
+  }
+
+  scopes {
+    value = "update:projects"
+  }
+
+  scopes {
+    value = "delete:projects"
+  }
+}
+
 resource "heroku_app" "lucifer-api" {
   name   = "lucifer-api"
   region = "eu"
@@ -7,23 +44,20 @@ resource "heroku_app" "lucifer-api" {
   ]
 
   config_vars = {
-    YARN_PRODUCTION = "true"
+    YARN_PRODUCTION       = "true"
+    NPM_CONFIG_PRODUCTION = "true"
 
-    AUTH0_DOMAIN    = "dev-lucifer.eu.auth0.com"
-    AUTH0_AUDIENCE  = "https://lucifer-api.herokuapp.com/"
-    AUTH0_CLIENT_ID = "ktmzvUo29TuSbQ8p1AvLrZMPTYCPsH3Z"
+    AUTH0_DOMAIN    = var.auth0-domain
+    AUTH0_AUDIENCE  = auth0_resource_server.lucifer-api.identifier
+    AUTH0_CLIENT_ID = auth0_client.lucifer-api.client_id
   }
 
   sensitive_config_vars = {
-    AUTH0_CLIENT_SECRET = var.auth0-client-secret
+    AUTH0_CLIENT_SECRET = auth0_client.lucifer-api.client_secret
   }
 }
 
 resource "heroku_addon" "lucifer-api" {
   app  = heroku_app.lucifer-api.name
   plan = "heroku-postgresql:hobby-dev"
-}
-
-output "lucifer-api-git-url" {
-  value = heroku_app.lucifer-api.git_url
 }
