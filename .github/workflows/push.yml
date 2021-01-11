@@ -194,9 +194,30 @@ jobs:
             org.opencontainers.image.revision=${{ github.sha }}
           tags:  ${{ steps.prep.outputs.tags }}
 
+  terraform:
+    runs-on: ubuntu-latest
+    needs: lint
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Terraform Format
+        run: terraform fmt -check res
+
+      - name: Terraform Init
+        run: terraform init res
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve res
+
   e2e-tests:
     runs-on: ubuntu-latest
-    needs: [tests, docker]
+    needs: [tests, docker, terraform]
 
     services:
       postgres:
@@ -261,30 +282,9 @@ jobs:
           name: cypress-results
           path: dist/cypress
 
-  terraform:
-    runs-on: ubuntu-latest
-    needs: e2e-tests
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-      - name: Terraform Format
-        run: terraform fmt -check res
-
-      - name: Terraform Init
-        run: terraform init res
-
-      - name: Terraform Apply
-        run: terraform apply -auto-approve res
-
   deploy:
     runs-on: ubuntu-latest
-    needs: terraform
+    needs: e2e-tests
 
     steps:
       - uses: actions/checkout@v2
