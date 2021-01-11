@@ -6,7 +6,7 @@ resource "auth0_client" "lucifer-api" {
 resource "auth0_client_grant" "lucifer-api--management-api" {
   audience  = "https://jujulego.eu.auth0.com/api/v2/"
   client_id = auth0_client.lucifer-api.client_id
-  scope = ["read:users", "update:users"]
+  scope     = ["read:users", "update:users"]
 }
 
 resource "auth0_resource_server" "lucifer-api" {
