@@ -6,6 +6,12 @@ resource "auth0_client" "lucifer-front" {
   allowed_origins     = ["http://localhost:4200", heroku_app.lucifer-front.web_url]
 }
 
+resource "auth0_client_grant" "lucifer-front--lucifer-api" {
+  audience  = auth0_resource_server.lucifer-api.identifier
+  client_id = auth0_client.lucifer-front.client_id
+  scope     = []
+}
+
 resource "heroku_app" "lucifer-front" {
   name   = "lucifer-front"
   region = "eu"
