@@ -88,7 +88,7 @@
     "@nrwl/eslint-plugin-nx": "11.0.8",
     "@nrwl/jest": "11.0.8",
     "@nrwl/nest": "11.0.8",
-    "@nrwl/node": "11.0.8",
+    "@nrwl/node": "11.1.1",
     "@nrwl/nx-cloud": "10.1.9",
     "@nrwl/react": "11.1.1",
     "@nrwl/storybook": "11.0.8",
