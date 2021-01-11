@@ -5,7 +5,7 @@ resource "auth0_role" "admin" {
     for_each = auth0_resource_server.lucifer-api.scopes
 
     content {
-      name                       = permissions.value
+      name                       = permissions.value.value
       resource_server_identifier = auth0_resource_server.lucifer-api.identifier
     }
   }
