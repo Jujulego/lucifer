@@ -3,5 +3,5 @@ export const env = {
   production: true,
 
   apiUrl: 'https://lucifer-api.herokuapp.com',
-  auth0ClientId: 'EiFpapg4lwQb1jJGtVGv7pMx49QIgEaP',
+  auth0ClientId: 'NNVhJ2cSgHhoRfN9eREEN5fnfjdUkK3m',
 };
