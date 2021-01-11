@@ -3,5 +3,5 @@ export const env = {
   production: false,
 
   apiUrl: 'http://localhost:4200',
-  auth0ClientId: '9TyheFgTTGvvf0NFCMAYqtkAQfS0vGNY',
+  auth0ClientId: 'dUh0kiXDOKfxJ7nZMD6JOT1harx6SanO',
 };
