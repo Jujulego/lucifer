@@ -12,7 +12,7 @@
           "outputs": ["{options.outputPath}"],
           "options": {
             "main": "",
-            "outputPath": "res/auth0-rules",
+            "outputPath": "res/rules",
             "tsConfig": "apps/auth0-rules/tsconfig.app.json",
             "webpackConfig": "apps/auth0-rules/webpack.config.js"
           }
