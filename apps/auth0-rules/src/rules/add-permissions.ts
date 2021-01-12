@@ -1,9 +1,9 @@
 import type { RuleCallback, RuleContext, RuleUser } from '../types';
 
 // Rule
-function AddPermissions(user: RuleUser, context: RuleContext, cb: RuleCallback): void {
-  context.idToken['https://lucifer-front/permissions'] = user.permissions;
-  context.accessToken['https://lucifer-front/permissions'] = user.permissions;
+function AddPermissions(user: RuleUser, context: RuleContext, callback: RuleCallback): void {
+  context.idToken['https://lucifer-front/roles'] = context.authorization.roles;
+  context.accessToken['https://lucifer-front/roles'] = context.authorization.roles;
 
-  cb(null, user, context);
+  return callback(null, user, context);
 }

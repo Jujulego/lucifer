@@ -12,9 +12,7 @@ export type Protocol =
 export type RuleCallback = (error: any, user: RuleUser, context: RuleContext) => void;
 
 // Types
-export interface RuleUser extends User {
-  permissions: string[];
-}
+export type RuleUser = User;
 
 export interface RuleContext {
   tenant: string;
@@ -58,7 +56,7 @@ export interface RuleContext {
     };
   };
   primaryUser: string;
-  authentification: {
+  authentication: {
     methods: {
       name: 'federated' | 'pwd' | 'sms' | 'email' | 'mfa';
       timestamp: number;
