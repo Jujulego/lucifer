@@ -8,7 +8,6 @@ import { ApiCache } from '@lucifer/react/api';
 
 import history from '../app.history';
 import createTheme from '../app.theme';
-import authConfig from '../configs/auth';
 import { env } from '../environments/environment';
 
 import AuthGate from '../auth/components/AuthGate';
@@ -33,9 +32,9 @@ const App: FC = () => {
       <CatchErrors>
         <Router history={history}>
           <AuthGate
-            domain={authConfig.domain}
-            client_id={authConfig.clientId}
-            audience={authConfig.audience}
+            domain={env.auth0.domain}
+            client_id={env.auth0.clientId}
+            audience={env.auth0.audience}
             redirect_uri={window.location.origin}
             cacheLocation={env.e2e ? 'localstorage' : undefined}
             onRedirectCallback={state => history.push(state?.targetUrl || window.location.pathname)}
