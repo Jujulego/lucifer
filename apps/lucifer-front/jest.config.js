@@ -12,6 +12,6 @@ module.exports = {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/apps/lucifer-front',
   snapshotSerializers: [
-    "enzyme-to-json/serializer"
+    'enzyme-to-json/serializer'
   ]
 };

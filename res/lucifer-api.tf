@@ -1,6 +1,7 @@
 resource "auth0_client" "lucifer-api" {
-  name     = "Lucifer API"
-  app_type = "non_interactive"
+  name        = "Lucifer API"
+  app_type    = "non_interactive"
+  grant_types = ["client_credentials"]
 }
 
 resource "auth0_client_grant" "lucifer-api--management-api" {

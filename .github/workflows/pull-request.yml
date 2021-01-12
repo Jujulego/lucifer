@@ -145,6 +145,12 @@ jobs:
           name: build
           path: dist
 
+      - name: Archive rules artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: rules
+          path: res/rules
+
   docker:
     runs-on: ubuntu-latest
     needs: build
@@ -208,9 +214,79 @@ jobs:
             org.opencontainers.image.revision=${{ github.sha }}
           tags:  ${{ steps.prep.outputs.tags }}
 
+  terraform:
+    runs-on: ubuntu-latest
+    needs: [build, tests]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Download rules artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: rules
+          path: res/rules
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Terraform Format
+        id: fmt
+        run: terraform fmt -check res
+        continue-on-error: true
+
+      - name: Terraform Init
+        id: init
+        if: steps.fmt.outcome == 'success'
+        run: terraform init res
+        continue-on-error: true
+
+      - name: Terraform Plan
+        id: plan
+        if: steps.init.outcome == 'success'
+        run: terraform plan -no-color res
+        continue-on-error: true
+
+      - name: Update Pull Request
+        uses: actions/github-script@v3
+        env:
+          PLAN_OUTPUT: "${{ steps.plan.outputs.stdout }}"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `
+            | Steps                         | Status                     |
+            | ----------------------------- | -------------------------- |
+            | 🖌 Terraform Format and Style | \`${{ steps.fmt.outcome }}\` |
+            | ⚙️ Terraform Initialization   | \`${{ steps.init.outcome }}\` |
+            | 📖 Terraform Plan             | \`${{ steps.plan.outcome }}\` |
+
+            <details><summary>Show Plan</summary>
+
+            \`\`\`terraform
+            ${process.env.PLAN_OUTPUT}
+            \`\`\`
+
+            </details>
+
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            });
+
+      - name: Terraform Status
+        if: steps.plan.outcome != 'success'
+        run: exit 1
+
   e2e-tests:
     runs-on: ubuntu-latest
-    needs: [tests, docker]
+    needs: [terraform, docker]
 
     services:
       postgres:
@@ -281,66 +357,3 @@ jobs:
         with:
           name: cypress-results
           path: dist/cypress
-
-  terraform:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-      - name: Terraform Format
-        id: fmt
-        run: terraform fmt -check res
-        continue-on-error: true
-
-      - name: Terraform Init
-        id: init
-        if: steps.fmt.outcome == 'success'
-        run: terraform init res
-        continue-on-error: true
-
-      - name: Terraform Plan
-        id: plan
-        if: steps.init.outcome == 'success'
-        run: terraform plan -no-color res
-        continue-on-error: true
-
-      - name: Update Pull Request
-        uses: actions/github-script@v3
-        env:
-          PLAN_OUTPUT: "${{ steps.plan.outputs.stdout }}"
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const output = `
-            | Steps                         | Status                     |
-            | ----------------------------- | -------------------------- |
-            | 🖌 Terraform Format and Style | \`${{ steps.fmt.outcome }}\` |
-            | ⚙️ Terraform Initialization   | \`${{ steps.init.outcome }}\` |
-            | 📖 Terraform Plan             | \`${{ steps.plan.outcome }}\` |
-
-            <details><summary>Show Plan</summary>
-
-            \`\`\`terraform
-            ${process.env.PLAN_OUTPUT}
-            \`\`\`
-
-            </details>
-
-            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
-
-            github.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: output
-            });
-
-      - name: Terraform Status
-        if: steps.plan.outcome != 'success'
-        run: exit 1

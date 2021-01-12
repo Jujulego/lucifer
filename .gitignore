@@ -2,6 +2,7 @@
 
 # compiled output
 /dist
+/res/rules
 /tmp
 /out-tsc
 
