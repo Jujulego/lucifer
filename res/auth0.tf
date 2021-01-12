@@ -7,11 +7,9 @@ locals {
   rules-directory = "${path.root}/auth0-rules"
 }
 
-data "local_file" "add-permissions" {
-  filename = "${local.rules-directory}/add-permissions.js"
-}
+resource "auth0_rule" "rule" {
+  for_each = fileset(path.root, "auth0-rules/*.js")
 
-resource "auth0_rule" "add-permissions" {
-  name   = "Add Permissions"
-  script = data.local_file.add-permissions.content
+  name   = title(replace(trimsuffix(basename(each.value), ".js"), "-", " "))
+  script = file(each.value)
 }
