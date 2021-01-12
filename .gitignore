@@ -2,6 +2,7 @@
 
 # compiled output
 /dist
+/res/auth0-rules
 /tmp
 /out-tsc
 
