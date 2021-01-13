@@ -4,7 +4,7 @@ import clsx from 'clsx';
 
 import { CircularProgress, Fab, Grid, TextField, Tooltip, Typography, useMediaQuery, Zoom } from '@material-ui/core';
 import { Check as CheckIcon, Save as SaveIcon } from '@material-ui/icons';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 
 import { LabelledText, RelativeDate } from '@lucifer/react/basics'
 import { IUpdateUser, IUser } from '@lucifer/types';
