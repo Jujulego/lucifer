@@ -21,6 +21,7 @@
         "accessToken": "MmQxMmRiYzAtZjkyMC00YWEzLThjNGItZTFhZmQwOTM4NDBlfHJlYWQtd3JpdGU=",
         "cacheableOperations": [
           "build",
+          "build-storybook",
           "test",
           "lint",
           "e2e"
