@@ -19,16 +19,18 @@
       "runner": "@nrwl/nx-cloud",
       "options": {
         "accessToken": "MmQxMmRiYzAtZjkyMC00YWEzLThjNGItZTFhZmQwOTM4NDBlfHJlYWQtd3JpdGU=",
-        "cacheableOperations": ["build", "test", "lint", "e2e"],
+        "cacheableOperations": [
+          "build",
+          "test",
+          "lint",
+          "e2e"
+        ],
         "canTrackAnalytics": false,
         "showUsageWarnings": true
       }
     }
   },
   "projects": {
-    "auth0-rules": {
-      "tags": []
-    },
     "lucifer-api": {
       "tags": []
     },
@@ -37,7 +39,10 @@
     },
     "lucifer-front-e2e": {
       "tags": [],
-      "implicitDependencies": ["lucifer-front", "lucifer-api"]
+      "implicitDependencies": [
+        "lucifer-front",
+        "lucifer-api"
+      ]
     },
     "react-api": {
       "tags": []
@@ -56,12 +61,18 @@
     },
     "storybook": {
       "tags": [],
-      "implicitDependencies": ["react-basics", "react-fields"]
+      "implicitDependencies": [
+        "react-basics",
+        "react-fields"
+      ]
     },
     "types": {
       "tags": []
     },
     "utils": {
+      "tags": []
+    },
+    "auth0": {
       "tags": []
     }
   }
