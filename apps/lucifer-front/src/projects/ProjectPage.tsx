@@ -5,7 +5,7 @@ import { IUpdateProject } from '@lucifer/types';
 
 import { CircularProgress, Fab, Grid, IconButton, Paper, TextField, Typography, Zoom } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Delete, Delete as DeleteIcon, Save as SaveIcon } from '@material-ui/icons';
+import { Delete as DeleteIcon, Save as SaveIcon } from '@material-ui/icons';
 import { LabelledText, RefreshButton } from '@lucifer/react/basics';
 
 import { useNeedScope } from '../auth/auth.hooks';
@@ -14,13 +14,9 @@ import { useProject } from './projects.hooks';
 import { ProjectHeader } from './ProjectHeader';
 
 // Styles
-const useStyles = makeStyles(({ breakpoints, spacing }) => ({
+const useStyles = makeStyles(({ spacing }) => ({
   root: {
     padding: spacing(3),
-
-    [breakpoints.down('sm')]: {
-      padding: spacing(2),
-    }
   },
   description: {
     whiteSpace: 'pre-line'

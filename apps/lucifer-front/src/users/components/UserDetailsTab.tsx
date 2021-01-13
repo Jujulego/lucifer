@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import clsx from 'clsx';
 
-import { CircularProgress, Fab, Grid, TextField, Tooltip, Typography, Zoom } from '@material-ui/core';
+import { CircularProgress, Fab, Grid, TextField, Tooltip, Typography, useMediaQuery, Zoom } from '@material-ui/core';
 import { Check as CheckIcon, Save as SaveIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -15,13 +15,9 @@ import { useNeedScope } from '../../auth/auth.hooks';
 import PermissionChip from './PermissionChip';
 
 // Styles
-const useStyles = makeStyles(({ breakpoints, spacing }) => ({
+const useStyles = makeStyles(({ spacing }) => ({
   root: {
     padding: spacing(3),
-
-    [breakpoints.down('sm')]: {
-      padding: spacing(2),
-    }
   },
   hidden: {
     padding: 0
