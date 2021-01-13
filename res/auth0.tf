@@ -6,6 +6,7 @@ resource "auth0_tenant" "tenant" {
 resource "auth0_rule" "rule" {
   for_each = fileset(path.root, "rules/*.js")
 
-  name   = title(replace(trimsuffix(basename(each.value), ".js"), "-", " "))
-  script = file(each.value)
+  name    = title(replace(trimsuffix(basename(each.value), ".js"), "-", " "))
+  script  = file(each.value)
+  enabled = true
 }
