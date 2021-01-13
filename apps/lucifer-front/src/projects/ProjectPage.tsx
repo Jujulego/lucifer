@@ -48,8 +48,8 @@ export const ProjectPage: FC = () => {
   const { project, loading, reload, update, remove } = useProject(userId, id);
 
   // Auth
-  const canUpdate = useNeedScope('update:project', usr => [project?.adminId, 'me'].includes(usr?.id));
-  const canDelete = useNeedScope('delete:project', usr => [project?.adminId, 'me'].includes(usr?.id));
+  const canUpdate = useNeedScope('update:project', usr => project?.adminId === usr?.id);
+  const canDelete = useNeedScope('delete:project', usr => project?.adminId === usr?.id);
 
   // Form
   const { errors, register, reset, handleSubmit, formState } = useForm<IUpdateProject>({

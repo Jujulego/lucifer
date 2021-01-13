@@ -62,8 +62,8 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
   const { state: deleteState, confirm: confirmDelete } = useConfirm<IProject[]>([]);
 
   // Auth
-  const canCreate = useNeedScope('create:projects', usr => [usr?.id, 'me'].includes(adminId)) ?? false;
-  const canDelete = useNeedScope('delete:projects', usr => [usr?.id, 'me'].includes(adminId)) ?? false;
+  const canCreate = useNeedScope('create:projects', usr => usr?.id === adminId) ?? false;
+  const canDelete = useNeedScope('delete:projects', usr => usr?.id === adminId) ?? false;
 
   // API
   const { projects = [], loading, reload, create, bulkDelete } = useProjects(adminId);
