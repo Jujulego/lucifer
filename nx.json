@@ -31,18 +31,21 @@
     }
   },
   "projects": {
+    "auth0": {
+      "tags": []
+    },
     "lucifer-api": {
       "tags": []
     },
-    "lucifer-front": {
-      "tags": []
-    },
-    "lucifer-front-e2e": {
+    "lucifer-e2e": {
       "tags": [],
       "implicitDependencies": [
         "lucifer-front",
         "lucifer-api"
       ]
+    },
+    "lucifer-front": {
+      "tags": []
     },
     "react-api": {
       "tags": []
@@ -70,9 +73,6 @@
       "tags": []
     },
     "utils": {
-      "tags": []
-    },
-    "auth0": {
       "tags": []
     }
   }
