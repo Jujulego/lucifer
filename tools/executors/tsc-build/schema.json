@@ -5,6 +5,11 @@
     "tsConfig": {
       "type": "string",
       "description": "TsConfig file"
+    },
+    "watch": {
+      "type": "boolean",
+      "default": false
     }
-  }
+  },
+  "required": ["tsConfig"]
 }
