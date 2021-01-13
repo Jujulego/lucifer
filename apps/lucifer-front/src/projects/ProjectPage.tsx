@@ -14,13 +14,9 @@ import { useProject } from './projects.hooks';
 import { ProjectHeader } from './ProjectHeader';
 
 // Styles
-const useStyles = makeStyles(({ breakpoints, spacing }) => ({
+const useStyles = makeStyles(({ spacing }) => ({
   root: {
     padding: spacing(3),
-
-    [breakpoints.down('sm')]: {
-      padding: spacing(2),
-    }
   },
   description: {
     whiteSpace: 'pre-line'
