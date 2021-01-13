@@ -63,6 +63,6 @@ export interface RuleContext {
     }[];
   };
   authorization: {
-    roles: string[];
+    roles?: string[];
   };
 }

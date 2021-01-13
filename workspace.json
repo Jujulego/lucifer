@@ -8,13 +8,10 @@
       "prefix": "auth0-rules",
       "architect": {
         "build": {
-          "builder": "@nrwl/node:build",
-          "outputs": ["{options.outputPath}"],
+          "builder": ".:tsc-build",
+          "outputs": ["res/rules"],
           "options": {
-            "main": "",
-            "outputPath": "res/rules",
-            "tsConfig": "apps/auth0-rules/tsconfig.app.json",
-            "webpackConfig": "apps/auth0-rules/webpack.config.js"
+            "tsConfig": "apps/auth0-rules/tsconfig.app.json"
           }
         },
         "lint": {
