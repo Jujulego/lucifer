@@ -32,7 +32,7 @@ export function useProjects(adminId: string) {
     }, [create, update]),
     bulkDelete: useCallback(async (ids: string[]) => {
       const affected = await bulkDelete({ ids });
-      update((projects = []) => projects.filter(prj => ids.includes(prj.id)));
+      update((projects = []) => projects.filter(prj => !ids.includes(prj.id)));
 
       return affected;
     }, [bulkDelete, update]),
