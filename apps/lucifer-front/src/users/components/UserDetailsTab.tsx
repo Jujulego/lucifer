@@ -9,10 +9,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import { LabelledText, RelativeDate } from '@lucifer/react/basics'
 import { IUpdateUser, IUser } from '@lucifer/types';
 
-import { useNeedScope, usePermissions } from '../../auth/auth.hooks';
+import { useAuth } from '../../auth/auth.context';
+import { useNeedScope } from '../../auth/auth.hooks';
 
 import PermissionChip from './PermissionChip';
-import { useAuth } from '../../auth/auth.context';
 
 // Styles
 const useStyles = makeStyles(({ breakpoints, spacing }) => ({
@@ -73,9 +73,8 @@ const UserDetailsTab = (props: UserDetailsProps) => {
   } = props;
 
   // Auth
-  const { user: me } = useAuth();
+  const { user: me, permissions = [] } = useAuth();
   const canUpdate = useNeedScope('update:users', usr => usr?.id === user?.id);
-  const { permissions = [] } = usePermissions();
 
   // Form
   const { errors, register, reset, handleSubmit, formState } = useForm<IUpdateUser>();

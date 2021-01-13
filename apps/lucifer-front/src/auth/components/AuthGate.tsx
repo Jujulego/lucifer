@@ -9,6 +9,7 @@ import createAuth0Client, {
 
 import { AuthUser } from '../models/user';
 import { AuthContext } from '../auth.context';
+import { useAuthAPI } from '../auth.hooks';
 
 // Types
 export interface AuthGateProps extends Auth0ClientOptions {
@@ -31,6 +32,9 @@ const AuthGate = (props: AuthGateProps) => {
   const [isLogged, setLogged] = useState(false);
   const [popup,   setPopup]   = useState(false);
   const [user,    setUser]    = useState<AuthUser | null>(null);
+
+  // API
+  const { data: permissions, reload: reloadPermissions } = useAuthAPI.permissions(false);
 
   // Effects
   useEffect(() => {
@@ -78,6 +82,12 @@ const AuthGate = (props: AuthGateProps) => {
 
     return () => axios.interceptors.request.eject(id);
   }, [auth0, isLogged]);
+
+  useEffect(() => {
+    if (isLogged) {
+      reloadPermissions();
+    }
+  }, [isLogged]);
 
   // Callbacks
   const getToken = useCallback(async (options: GetTokenSilentlyOptions = {}) => {
@@ -134,6 +144,7 @@ const AuthGate = (props: AuthGateProps) => {
     <AuthContext.Provider
       value={{
         isLogged, popup, user,
+        permissions: isLogged ? permissions : undefined,
 
         getToken,
         loginWithPopup, loginWithRedirect,

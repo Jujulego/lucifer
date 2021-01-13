@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { CopyButton, LabelledText } from '@lucifer/react/basics';
 
 import { useAuth } from '../auth/auth.context';
-import { useAuthToken, usePermissions } from '../auth/auth.hooks';
+import { useAuthToken } from '../auth/auth.hooks';
 
 import PermissionChip from '../users/components/PermissionChip';
 
@@ -30,8 +30,7 @@ const useStyles = makeStyles(({ spacing }) => ({
 // Component
 const Home = () => {
   // Auth
-  const { user } = useAuth();
-  const { permissions = [] } = usePermissions();
+  const { user, permissions = [] } = useAuth();
   const token = useAuthToken();
 
   // Render

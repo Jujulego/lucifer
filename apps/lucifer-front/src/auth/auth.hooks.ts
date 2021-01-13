@@ -12,7 +12,7 @@ export type AllowCallback = (user: AuthUser | null) => boolean;
 
 // Namespace
 export const useAuthAPI = {
-  permissions: () => useAPI.get<string[]>(`${env.apiUrl}/api/auth/permissions`)
+  permissions: (load = true) => useAPI.get<string[]>(`${env.apiUrl}/api/auth/permissions`, undefined, { load })
 };
 
 // Hooks
@@ -33,22 +33,12 @@ export function useAuthToken(options?: GetTokenSilentlyOptions): string {
   return token;
 }
 
-export function usePermissions() {
-  const { data: permissions, loading, reload } = useAuthAPI.permissions();
-
-  return {
-    permissions, loading,
-    reload
-  };
-}
-
 export function useNeedScope(scope: string, allow?: AllowCallback): boolean | null {
   // Auth
-  const { user } = useAuth();
-  const { permissions = [], loading } = usePermissions();
+  const { user, permissions } = useAuth();
 
   // Allow
-  if (loading) return null;
+  if (!permissions) return null;
   if (allow && allow(user)) return true;
   return permissions.includes(scope);
 }
