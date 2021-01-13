@@ -1,4 +1,4 @@
-import { AppMetadata, ObjectWithId, UpdateUserData, User, UserMetadata } from 'auth0';
+import { AppMetadata, ObjectWithId, Permission, UpdateUserData, User, UserMetadata } from 'auth0';
 
 // Mock
 export class ManagementClientMock<A = AppMetadata, U = UserMetadata> {
@@ -8,6 +8,10 @@ export class ManagementClientMock<A = AppMetadata, U = UserMetadata> {
   }
 
   async getUsers(): Promise<User<A, U>[]> {
+    return [];
+  }
+
+  async getUserPermissions(params: ObjectWithId): Promise<Permission[]> {
     return [];
   }
 
