@@ -134,7 +134,9 @@ jobs:
           restore-keys: ${{ runner.os }}-yarn-
 
       - name: Install dependencies
-        run: yarn install --pure-lockfile
+        run: |
+          yarn install --pure-lockfile
+          yarn run build:tools
 
       - name: Build
         run: yarn run nx run-many --all --target=build --scan
