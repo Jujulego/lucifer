@@ -3,7 +3,7 @@
   "compilerOptions": {
     "outDir": "../../res",
     "types": ["node"],
-    "sourceMap": false,
+    "sourceMap": false
   },
   "exclude": ["**/*.spec.ts"],
   "include": ["src/rules/*.ts"]

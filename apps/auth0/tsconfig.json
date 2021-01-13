@@ -5,8 +5,8 @@
     "module": "esnext",
     "target": "es2019",
 
-    "strict": true,
     "skipLibCheck": true,
+    "noImplicitUseStrict": true,
     "forceConsistentCasingInFileNames": true
   },
   "files": [],
