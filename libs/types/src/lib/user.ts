@@ -1,3 +1,5 @@
+import { Expose } from 'class-transformer';
+
 // Interface
 export interface IUser {
   // Attributes
@@ -15,6 +17,7 @@ export interface IUser {
   lastIp?:    string;
   lastLogin?: string;
   blocked?:   boolean;
+  permissions?: string[];
 }
 
 export interface IUpdateUser {
@@ -39,4 +42,7 @@ export class User implements IUser {
   lastIp?:    string;
   lastLogin?: string;
   blocked?:   boolean;
+
+  @Expose({ groups: ['read:permissions'] })
+  permissions?: string[];
 }

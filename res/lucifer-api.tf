@@ -26,6 +26,14 @@ resource "auth0_resource_server" "lucifer-api" {
   }
 
   scopes {
+    value = "read:permissions"
+  }
+
+  scopes {
+    value = "update:permissions"
+  }
+
+  scopes {
     value = "create:projects"
   }
 

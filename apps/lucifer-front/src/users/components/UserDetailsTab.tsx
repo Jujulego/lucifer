@@ -69,7 +69,7 @@ const UserDetailsTab = (props: UserDetailsProps) => {
   } = props;
 
   // Auth
-  const { user: me, permissions = [] } = useAuth();
+  const { user: me } = useAuth();
   const canUpdate = useNeedScope('update:users', usr => usr?.id === user?.id);
 
   // Form
@@ -145,17 +145,17 @@ const UserDetailsTab = (props: UserDetailsProps) => {
               </LabelledText>
             </GridItem>
           </GridLine>
-          <GridLine>
-            <GridItem>
-              { (me?.id === user.id) && (
+          { (user.permissions) && (
+            <GridLine>
+              <Grid xs={12}>
                 <LabelledText label="Permissions">
-                  { permissions.map(perm => (
+                  { user.permissions.map(perm => (
                     <PermissionChip key={perm} className={styles.chips} permission={perm} />
                   )) }
                 </LabelledText>
-              ) }
-            </GridItem>
-          </GridLine>
+              </Grid>
+            </GridLine>
+          ) }
         </Grid>
       ) }
       { canUpdate && (

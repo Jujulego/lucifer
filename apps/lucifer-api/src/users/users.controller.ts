@@ -1,12 +1,13 @@
-import { Body, Controller, Get, Param, Put, UseFilters, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Put, UseFilters, UseGuards, ValidationPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 import { AllowIf, ScopeGuard, Scopes } from '../auth/scope.guard';
 
 import { User } from '@lucifer/types';
+import { Auth0ErrorFilter } from './auth0-error.filter';
 import { UpdateUser } from './user.schema';
 import { UsersService } from './users.service';
-import { Auth0ErrorFilter } from './auth0-error.filter';
+import { UserId } from './user-id.param';
 
 // Controller
 @Controller('/users')
@@ -27,15 +28,15 @@ export class UsersController {
 
   @Get('/:id')
   @Scopes('read:users')
-  @AllowIf((req, token) => req.params.id === token.sub)
-  async get(@Param('id') id: string): Promise<User> {
+  @AllowIf((req, token) => [token.sub, 'me'].includes(req.params.id))
+  async get(@UserId('id') id: string): Promise<User> {
     return await this.users.get(id);
   }
 
   @Put('/:id')
   @Scopes('update:users')
-  @AllowIf((req, token) => req.params.id === token.sub)
-  async update(@Param('id') id: string, @Body(ValidationPipe) update: UpdateUser): Promise<User> {
+  @AllowIf((req, token) => [token.sub, 'me'].includes(req.params.id))
+  async update(@UserId('id') id: string, @Body(ValidationPipe) update: UpdateUser): Promise<User> {
     return await this.users.update(id, update);
   }
 }

@@ -108,8 +108,9 @@ export class UsersService {
   }
 
   async get(id: string): Promise<User> {
-    const [ath, lcu] = await Promise.all([
+    const [ath, perms, lcu] = await Promise.all([
       this.auth0.getUser({ id }),
+      this.auth0.getUserPermissions({ id }),
       this.repository.findOne({
         where: { id }
       }),
@@ -120,7 +121,11 @@ export class UsersService {
       throw new NotFoundException(`User ${id} not found`);
     }
 
-    return this.format(ath, lcu);
+    // Build users
+    const usr = this.format(ath, lcu);
+    usr.permissions = perms.map(perm => perm.permission_name!);
+
+    return usr;
   }
 
   async list(): Promise<User[]> {
