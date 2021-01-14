@@ -14,6 +14,9 @@ terraform {
     heroku = {
       source = "heroku/heroku"
     }
+    github = {
+      source = "integrations/github"
+    }
   }
 }
 
@@ -22,4 +25,7 @@ provider "auth0" {
 }
 
 provider "heroku" {
+}
+
+provider "github" {
 }
