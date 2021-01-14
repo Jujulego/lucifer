@@ -143,7 +143,7 @@ export const UserDetailsTab = (props: UserDetailsProps) => {
               </LabelledText>
             </GridItem>
           </GridLine>
-          { (user.permissions) && (
+          {/* (user.permissions) && (
             <GridLine>
               <Grid xs={12}>
                 <LabelledText label="Permissions">
@@ -153,7 +153,7 @@ export const UserDetailsTab = (props: UserDetailsProps) => {
                 </LabelledText>
               </Grid>
             </GridLine>
-          ) }
+          ) */}
         </Grid>
       ) }
       { canUpdate && (

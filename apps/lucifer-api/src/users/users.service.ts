@@ -4,7 +4,7 @@ import { ManagementClient, User as Auth0User } from 'auth0';
 import { plainToClass } from 'class-transformer';
 import { Repository } from 'typeorm';
 
-import { IUser, User } from '@lucifer/types';
+import { IUser, Role, User } from '@lucifer/types';
 
 import { UpdateUser } from './user.schema';
 import { LocalUser } from './local-user.entity';
@@ -108,9 +108,9 @@ export class UsersService {
   }
 
   async get(id: string): Promise<User> {
-    const [ath, perms, lcu] = await Promise.all([
+    const [ath, roles, lcu] = await Promise.all([
       this.auth0.getUser({ id }),
-      this.auth0.getUserPermissions({ id }),
+      this.auth0.getUserRoles({ id }),
       this.repository.findOne({
         where: { id }
       }),
@@ -123,7 +123,7 @@ export class UsersService {
 
     // Build users
     const usr = this.format(ath, lcu);
-    usr.permissions = perms.map(perm => perm.permission_name!);
+    usr.roles = roles.map(role => role.name as Role);
 
     return usr;
   }

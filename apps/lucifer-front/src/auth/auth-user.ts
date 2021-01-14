@@ -1,14 +1,11 @@
 import { User } from '@auth0/auth0-spa-js';
-
-// Types
-export type Role = 'admin' | 'reader';
+import { Role } from '@lucifer/types';
 
 // Constants
-export const ROLES: Role[] = ['admin', 'reader'];
 export const ROLES_KEY = 'https://lucifer-front/roles';
 
 // Class
-export interface AuthUser extends User{
+export interface AuthUser extends User {
   // Attributes
   id: string;
   email: string;

@@ -1,7 +1,8 @@
 import { GetTokenSilentlyOptions } from '@auth0/auth0-spa-js';
 import { useState, useEffect } from 'react';
 
-import { AuthUser, Role, ROLES_KEY } from './auth-user';
+import { Role } from '@lucifer/types';
+import { AuthUser, ROLES_KEY } from './auth-user';
 import { useAuth } from './auth.context';
 
 // Types

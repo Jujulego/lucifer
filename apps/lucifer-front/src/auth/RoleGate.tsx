@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from 'react';
+import { Role } from '@lucifer/types';
 
-import { Role } from './auth-user';
 import { AllowCallback, useNeedRole } from './auth.hooks';
 
 // Types

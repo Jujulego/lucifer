@@ -1,7 +1,9 @@
 import React, { ReactNode, useCallback } from 'react';
 import { Route, RouteProps, useHistory } from 'react-router';
 
-import { AuthUser, Role } from './auth-user';
+import { Role } from '@lucifer/types';
+
+import { AuthUser } from './auth-user';
 import { RoleGate } from './RoleGate';
 
 // Types

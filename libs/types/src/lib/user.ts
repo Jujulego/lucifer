@@ -1,5 +1,11 @@
 import { Expose } from 'class-transformer';
 
+// Types
+export type Role = 'admin' | 'reader';
+
+// Constants
+export const ROLES: Role[] = ['admin', 'reader'];
+
 // Interface
 export interface IUser {
   // Attributes
@@ -17,7 +23,7 @@ export interface IUser {
   lastIp?:    string;
   lastLogin?: string;
   blocked?:   boolean;
-  permissions?: string[];
+  roles?:     Role[];
 }
 
 export interface IUpdateUser {
@@ -43,6 +49,6 @@ export class User implements IUser {
   lastLogin?: string;
   blocked?:   boolean;
 
-  @Expose({ groups: ['read:permissions'] })
-  permissions?: string[];
+  //@Expose({ groups: ['read:roles'] })
+  roles?: Role[];
 }
