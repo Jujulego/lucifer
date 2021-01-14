@@ -10,8 +10,8 @@ import history from '../app.history';
 import createTheme from '../app.theme';
 import { env } from '../environments/environment';
 
-import AuthGate from '../auth/components/AuthGate';
-import AutoLogin from '../auth/components/AutoLogin';
+import { AuthGate } from '../auth/AuthGate';
+import { AutoLogin } from '../auth/AutoLogin';
 import useDarkTheme from '../layout/theme.hooks';
 import CatchErrors from '../snack/components/CatchErrors';
 import AppBar from '../layout/components/AppBar';

@@ -4,13 +4,13 @@ import {
   useLocation
 } from 'react-router';
 
-import { useAuth } from '../auth.context';
+import { useAuth } from './auth.context';
 
 // Types
 export type PrivateRouteProps = RouteProps;
 
 // Component
-const PrivateRoute = (props: PrivateRouteProps) => {
+export const PrivateRoute = (props: PrivateRouteProps) => {
   // Router
   const location = useLocation();
 
@@ -24,5 +24,3 @@ const PrivateRoute = (props: PrivateRouteProps) => {
 
   return <Route {...props} />;
 };
-
-export default PrivateRoute;

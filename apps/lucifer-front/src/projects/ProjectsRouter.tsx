@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router';
 
-import ScopedRoute from '../auth/components/ScopedRoute';
+import { ScopedRoute } from '../auth/ScopedRoute';
 import { useAuth } from '../auth/auth.context';
 
 import { ProjectPage } from './ProjectPage';

@@ -12,10 +12,10 @@ import EditIcon from '@material-ui/icons/Edit';
 import LockIcon from '@material-ui/icons/Lock';
 import PersonIcon from '@material-ui/icons/Person';
 
-import { useAuth } from '../auth.context';
+import { useAuth } from './auth.context';
 
 // Component
-const AccountMenu = () => {
+export const AccountMenu = () => {
   // State
   const [anchor, setAnchor] = useState<HTMLElement | null>(null);
 
@@ -80,5 +80,3 @@ const AccountMenu = () => {
     </>
   )
 };
-
-export default AccountMenu;
