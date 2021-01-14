@@ -29,6 +29,7 @@ export interface IUser {
 export interface IUpdateUser {
   name?:  string;
   email?: string;
+  roles?: Role[];
 }
 
 // Model
