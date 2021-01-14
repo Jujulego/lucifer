@@ -7,7 +7,7 @@ import createAuth0Client, {
   RedirectLoginOptions
 } from '@auth0/auth0-spa-js';
 
-import { AuthUser } from '../models/user';
+import { AuthUser } from '../auth-user';
 import { AuthContext } from '../auth.context';
 import { useAuthAPI } from '../auth.hooks';
 
@@ -54,6 +54,7 @@ const AuthGate = (props: AuthGateProps) => {
         const logged = await client.isAuthenticated();
         if (logged) {
           const user = await client.getUser<AuthUser>();
+          console.log(user);
 
           if (user) {
             setUser({ ...user, id: user.sub });
@@ -107,6 +108,7 @@ const AuthGate = (props: AuthGateProps) => {
       // Update state
       if (await auth0.isAuthenticated()) {
         const user = await auth0.getUser<AuthUser>();
+        console.log(user);
 
         if (user) {
           setLogged(true);

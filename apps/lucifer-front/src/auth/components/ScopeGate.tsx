@@ -10,6 +10,7 @@ export interface ScopeGateProps {
 }
 
 // Components
+/** @deprecated */
 const ScopeGate: FC<ScopeGateProps> = (props) => {
   const {
     scope, allow,

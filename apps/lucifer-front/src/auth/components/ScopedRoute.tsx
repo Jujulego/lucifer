@@ -1,7 +1,7 @@
 import React, { ReactNode, useCallback } from 'react';
 import { Route, RouteProps, useHistory } from 'react-router';
 
-import { AuthUser } from '../models/user';
+import { AuthUser } from '../auth-user';
 import ScopeGate from './ScopeGate';
 
 // Types
@@ -14,6 +14,7 @@ export type ScopedRouteProps = Omit<RouteProps, 'render' | 'component' | 'childr
 }
 
 // Component
+/** @deprecated */
 const ScopedRoute = (props: ScopedRouteProps) => {
   const { scope, allow, children, ...route } = props;
 
