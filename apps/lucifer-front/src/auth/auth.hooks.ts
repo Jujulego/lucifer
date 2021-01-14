@@ -37,17 +37,6 @@ export function useAuthToken(options?: GetTokenSilentlyOptions): string {
   return token;
 }
 
-/** @deprecated */
-export function useNeedScope(scope: string, allow?: AllowCallback): boolean | null {
-  // Auth
-  const { user, permissions } = useAuth();
-
-  // Allow
-  if (!permissions) return null;
-  if (allow && allow(user)) return true;
-  return permissions.includes(scope);
-}
-
 /**
  * Test if current user as the needed roles to access resources
  * @param roles Needed roles

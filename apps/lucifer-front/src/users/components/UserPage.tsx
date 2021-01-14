@@ -6,7 +6,7 @@ import { Fade, Paper, Tab, Tabs, makeStyles } from '@material-ui/core';
 
 import { RefreshButton } from '@lucifer/react/basics';
 
-import { useNeedScope } from '../../auth/auth.hooks';
+import { useNeedRole } from '../../auth/auth.hooks';
 import MachineTable from '../../machines/components/MachineTable';
 
 import { useUser } from '../users.hooks';
@@ -58,8 +58,7 @@ const UserPage = () => {
   const { id, page = 'details' } = useParams<UserParams>();
 
   // Auth
-  const canReadMachines = useNeedScope('read:machines', usr => usr?.id === id) ?? false;
-  const canReadProjects = useNeedScope('read:projects', usr => usr?.id === id) ?? false;
+  const isAllowed = useNeedRole(['admin', 'reader'], usr => usr?.id === id) ?? false;
 
   // API
   const { user, loading, reload, put } = useUser(id);
@@ -87,8 +86,8 @@ const UserPage = () => {
         />
         <Tabs variant="fullWidth" value={page} onChange={() => null}>
           <LinkTab value="details" label="Détails" />
-          <LinkTab value="machines" label="Machines" disabled={!canReadMachines} />
-          <LinkTab value="projects" label="Projects" disabled={!canReadProjects} />
+          <LinkTab value="machines" label="Machines" disabled={!isAllowed} />
+          <LinkTab value="projects" label="Projects" disabled={!isAllowed} />
         </Tabs>
       </Paper>
       <UserDetailsTab

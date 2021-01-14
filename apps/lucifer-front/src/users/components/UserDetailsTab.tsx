@@ -9,8 +9,7 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import { LabelledText, RelativeDate } from '@lucifer/react/basics'
 import { IUpdateUser, IUser } from '@lucifer/types';
 
-import { useAuth } from '../../auth/auth.context';
-import { useNeedScope } from '../../auth/auth.hooks';
+import { useNeedRole } from '../../auth/auth.hooks';
 
 import PermissionChip from './PermissionChip';
 
@@ -69,8 +68,7 @@ const UserDetailsTab = (props: UserDetailsProps) => {
   } = props;
 
   // Auth
-  const { user: me } = useAuth();
-  const canUpdate = useNeedScope('update:users', usr => usr?.id === user?.id);
+  const canUpdate = useNeedRole('admin', usr => usr?.id === user?.id);
 
   // Form
   const { errors, register, reset, handleSubmit, formState } = useForm<IUpdateUser>();

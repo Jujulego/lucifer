@@ -16,7 +16,7 @@ import { ConfirmDialog, RefreshButton, useConfirm } from '@lucifer/react/basics'
 import { Table, TableAction, TableBody, TableRow, TableSortCell, TableToolbar } from '@lucifer/react/table';
 import { IProject } from '@lucifer/types';
 
-import { useNeedScope } from '../auth/auth.hooks';
+import { useNeedRole } from '../auth/auth.hooks';
 
 import { useProjects } from './projects.hooks';
 import { AddProjectDialog } from './AddProjectDialog';
@@ -62,8 +62,7 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
   const { state: deleteState, confirm: confirmDelete } = useConfirm<IProject[]>([]);
 
   // Auth
-  const canCreate = useNeedScope('create:projects', usr => usr?.id === adminId) ?? false;
-  const canDelete = useNeedScope('delete:projects', usr => usr?.id === adminId) ?? false;
+  const isAdmin = useNeedRole('admin', usr => usr?.id === adminId) ?? false;
 
   // API
   const { projects = [], loading, reload, create, bulkDelete } = useProjects(adminId);
@@ -85,7 +84,7 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
       <span>
         { show && (
           <TableAction
-            tooltip="Supprimer des projets" when="some" disabled={!canDelete}
+            tooltip="Supprimer des projets" when="some" disabled={!isAdmin}
             onActivate={(selection: IProject[]) => handleDelete(selection)}
           >
             <DeleteIcon />
@@ -99,7 +98,7 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
   ) : (
     <Paper square>
       <TableToolbar title="Projets">
-        { (show && canDelete) && (
+        { (show && isAdmin) && (
           <TableAction
             tooltip="Supprimer des projets" when="some"
             onActivate={(selection: IProject[]) => handleDelete(selection)}
@@ -138,7 +137,7 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
                     <Typography noWrap>{ prj.description }</Typography>
                   </TableCell>
                   <TableCell className={styles.actions} onClick={event => event.stopPropagation()}>
-                    { canDelete && (
+                    { isAdmin && (
                       <IconButton onClick={() => handleDelete([prj])}>
                         <DeleteIcon />
                       </IconButton>
@@ -149,7 +148,7 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
             </TableBody>
           </Table>
           <AddProjectDialog
-            open={canCreate && creating}
+            open={isAdmin && creating}
             onAdd={create}
             onClose={() => setCreating(false)}
           />
@@ -171,7 +170,7 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
           </ConfirmDialog>
         </TableContainer>
       ) }
-      { canCreate && (
+      { isAdmin && (
         <Zoom in={show}>
           <Fab
             className={styles.fab} color="primary"

@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router';
 
-import { ScopedRoute } from '../auth/ScopedRoute';
 import { useAuth } from '../auth/auth.context';
+import { RoleRoute } from '../auth/RoleRoute';
 
 import { ProjectPage } from './ProjectPage';
 import { ProjectsTable } from './ProjectsTable';
@@ -18,12 +18,13 @@ export const ProjectsRouter: FC = () => {
   // Render
   return (
     <Switch>
-      <ScopedRoute
-        scope="read:projects" allow={(user, { userId }) => userId === user?.id}
+      <RoleRoute
+        roles={['admin', 'reader']}
+        allow={(user, { userId }) => userId === user?.id}
         path={`${path}/:userId/:id`}
       >
         <ProjectPage />
-      </ScopedRoute>
+      </RoleRoute>
       <Route path={path} exact>
         { user && (
           <ProjectsTable adminId={user.sub} />

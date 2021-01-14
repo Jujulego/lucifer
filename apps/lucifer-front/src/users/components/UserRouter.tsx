@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, useRouteMatch } from 'react-router';
 
-import { ScopedRoute } from '../../auth/ScopedRoute';
+import { RoleRoute } from '../../auth/RoleRoute';
 
 import UserPage from './UserPage';
 import UserTable from './UserTable';
@@ -14,15 +14,20 @@ const UserRouter = () => {
   // Render
   return (
     <Switch>
-      <ScopedRoute
-        scope="read:users" allow={(user, { id }) => user?.id === id}
+      <RoleRoute
+        roles={['admin', 'reader']}
+        allow={(user, { id }) => user?.id === id}
         path={[`${path}/:id/:page`, `${path}/:id`]}
       >
         <UserPage />
-      </ScopedRoute>
-      <ScopedRoute scope="read:users" path={path} exact>
+      </RoleRoute>
+      <RoleRoute
+        roles={['admin', 'reader']}
+        path={path}
+        exact
+      >
         <UserTable />
-      </ScopedRoute>
+      </RoleRoute>
     </Switch>
   );
 };
