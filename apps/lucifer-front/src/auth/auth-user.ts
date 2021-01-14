@@ -1,10 +1,11 @@
 import { User } from '@auth0/auth0-spa-js';
 
-// Constants
-export const ROLES = 'https://lucifer-front/roles';
-
 // Types
 export type Role = 'admin' | 'reader';
+
+// Constants
+export const ROLES: Role[] = ['admin', 'reader'];
+export const ROLES_KEY = 'https://lucifer-front/roles';
 
 // Class
 export interface AuthUser extends User{
@@ -17,5 +18,5 @@ export interface AuthUser extends User{
   picture: string;
   updated_at: string;
   sub: string;
-  [ROLES]: Role[];
+  [ROLES_KEY]: Role[];
 }

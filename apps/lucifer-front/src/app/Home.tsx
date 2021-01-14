@@ -7,7 +7,7 @@ import { CopyButton, LabelledText } from '@lucifer/react/basics';
 
 import { useAuth } from '../auth/auth.context';
 import { useAuthToken } from '../auth/auth.hooks';
-import { ROLES } from '../auth/auth-user';
+import { ROLES_KEY } from '../auth/auth-user';
 
 // Styles
 const useStyles = makeStyles(({ spacing }) => ({
@@ -45,7 +45,7 @@ const Home = () => {
         <Typography noWrap>{ token }</Typography>
       </LabelledText>
       <LabelledText label="Roles">
-        { user?.[ROLES]?.map(perm => (
+        { user?.[ROLES_KEY]?.map(perm => (
           <Chip key={perm} className={styles.chip} label={perm} />
         )) }
       </LabelledText>

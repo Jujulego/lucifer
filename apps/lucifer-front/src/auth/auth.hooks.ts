@@ -1,7 +1,7 @@
 import { GetTokenSilentlyOptions } from '@auth0/auth0-spa-js';
 import { useState, useEffect } from 'react';
 
-import { AuthUser, Role, ROLES } from './auth-user';
+import { AuthUser, Role, ROLES_KEY } from './auth-user';
 import { useAuth } from './auth.context';
 
 // Types
@@ -43,5 +43,5 @@ export function useNeedRole(roles: Role | Role[], allow?: AllowCallback): boolea
   if (allow && allow(user)) return true;
 
   if (typeof roles === 'string') roles = [roles];
-  return roles.some(role => user[ROLES].includes(role));
+  return roles.some(role => user[ROLES_KEY].includes(role));
 }
