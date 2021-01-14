@@ -16,7 +16,7 @@ const NAMESPACE_ICONS: Record<string, ReactElement> = {
 };
 
 // Components
-const PermissionChip = (props: PermissionChipProps) => {
+export const PermissionChip = (props: PermissionChipProps) => {
   const { permission, ...chip } = props;
 
   // Render
@@ -30,5 +30,3 @@ const PermissionChip = (props: PermissionChipProps) => {
     />
   );
 };
-
-export default PermissionChip;

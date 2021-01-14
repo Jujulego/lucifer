@@ -2,16 +2,16 @@ import React, { ReactNode, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import clsx from 'clsx';
 
-import { CircularProgress, Fab, Grid, TextField, Tooltip, Typography, useMediaQuery, Zoom } from '@material-ui/core';
+import { CircularProgress, Fab, Grid, TextField, Tooltip, Typography, Zoom } from '@material-ui/core';
 import { Check as CheckIcon, Save as SaveIcon } from '@material-ui/icons';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 import { LabelledText, RelativeDate } from '@lucifer/react/basics'
 import { IUpdateUser, IUser } from '@lucifer/types';
 
-import { useNeedRole } from '../../auth/auth.hooks';
+import { useNeedRole } from '../auth/auth.hooks';
 
-import PermissionChip from './PermissionChip';
+import { PermissionChip } from './PermissionChip';
 
 // Styles
 const useStyles = makeStyles(({ spacing }) => ({
@@ -61,7 +61,7 @@ export interface UserDetailsProps {
 }
 
 // Component
-const UserDetailsTab = (props: UserDetailsProps) => {
+export const UserDetailsTab = (props: UserDetailsProps) => {
   const {
     user, show = false,
     onUpdate
@@ -172,5 +172,3 @@ const UserDetailsTab = (props: UserDetailsProps) => {
     </form>
   );
 };
-
-export default UserDetailsTab;

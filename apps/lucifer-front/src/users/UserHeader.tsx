@@ -42,7 +42,7 @@ export interface UserHeaderProps {
 }
 
 // Component
-const UserHeader = (props: UserHeaderProps) => {
+export const UserHeader = (props: UserHeaderProps) => {
   const {
     user,
     actions,
@@ -76,5 +76,3 @@ const UserHeader = (props: UserHeaderProps) => {
     </Grid>
   );
 };
-
-export default UserHeader;

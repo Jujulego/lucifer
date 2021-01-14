@@ -6,13 +6,13 @@ import { Fade, Paper, Tab, Tabs, makeStyles } from '@material-ui/core';
 
 import { RefreshButton } from '@lucifer/react/basics';
 
-import { useNeedRole } from '../../auth/auth.hooks';
-import MachineTable from '../../machines/components/MachineTable';
+import { useNeedRole } from '../auth/auth.hooks';
+import MachineTable from '../machines/components/MachineTable';
 
-import { useUser } from '../users.hooks';
-import UserDetailsTab from './UserDetailsTab';
-import UserHeader from './UserHeader';
-import { ProjectsTable } from '../../projects/ProjectsTable';
+import { useUser } from './users.hooks';
+import { UserDetailsTab } from './UserDetailsTab';
+import { UserHeader } from './UserHeader';
+import { ProjectsTable } from '../projects/ProjectsTable';
 
 // Utils
 interface LinkTabProps {
@@ -53,7 +53,7 @@ const useStyles = makeStyles({
 });
 
 // Component
-const UserPage = () => {
+export const UserPage = () => {
   // Router
   const { id, page = 'details' } = useParams<UserParams>();
 
@@ -105,5 +105,3 @@ const UserPage = () => {
     </>
   );
 };
-
-export default UserPage;

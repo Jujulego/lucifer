@@ -1,13 +1,13 @@
 import React from 'react';
 import { Switch, useRouteMatch } from 'react-router';
 
-import { RoleRoute } from '../../auth/RoleRoute';
+import { RoleRoute } from '../auth/RoleRoute';
 
-import UserPage from './UserPage';
-import UserTable from './UserTable';
+import { UserPage } from './UserPage';
+import { UserTable } from './UserTable';
 
 // Components
-const UserRouter = () => {
+export const UserRouter = () => {
   // Router
   const { path } = useRouteMatch();
 
@@ -31,5 +31,3 @@ const UserRouter = () => {
     </Switch>
   );
 };
-
-export default UserRouter;
