@@ -8,7 +8,6 @@ export type AuthContextProps = {
   isLogged: boolean;
   popup: boolean;
   user: AuthUser | null;
-  permissions?: string[];
 
   getToken: (options?: GetTokenSilentlyOptions) => Promise<string>;
   loginWithPopup: (options?: PopupLoginOptions) => Promise<void>;

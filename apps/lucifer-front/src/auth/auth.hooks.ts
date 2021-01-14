@@ -1,9 +1,6 @@
 import { GetTokenSilentlyOptions } from '@auth0/auth0-spa-js';
 import { useState, useEffect } from 'react';
 
-import { useAPI } from '@lucifer/react/api';
-import { env } from '../environments/environment';
-
 import { AuthUser, Role, ROLES } from './auth-user';
 import { useAuth } from './auth.context';
 
@@ -13,11 +10,6 @@ import { useAuth } from './auth.context';
  * @returns true to allow user, false in other cases
  */
 export type AllowCallback = (user: AuthUser | null) => boolean;
-
-// Namespace
-export const useAuthAPI = {
-  permissions: (load = true) => useAPI.get<string[]>(`${env.apiUrl}/api/auth/permissions`, undefined, { load })
-};
 
 // Hooks
 export function useAuthToken(options?: GetTokenSilentlyOptions): string {

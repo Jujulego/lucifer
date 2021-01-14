@@ -9,7 +9,6 @@ import createAuth0Client, {
 
 import { AuthUser } from './auth-user';
 import { AuthContext } from './auth.context';
-import { useAuthAPI } from './auth.hooks';
 
 // Types
 export interface AuthGateProps extends Auth0ClientOptions {
@@ -33,9 +32,6 @@ export const AuthGate = (props: AuthGateProps) => {
   const [popup,   setPopup]   = useState(false);
   const [user,    setUser]    = useState<AuthUser | null>(null);
 
-  // API
-  const { data: permissions, reload: reloadPermissions } = useAuthAPI.permissions(false);
-
   // Effects
   useEffect(() => {
     (async () => {
@@ -54,7 +50,6 @@ export const AuthGate = (props: AuthGateProps) => {
         const logged = await client.isAuthenticated();
         if (logged) {
           const user = await client.getUser<AuthUser>();
-          console.log(user);
 
           if (user) {
             setUser({ ...user, id: user.sub });
@@ -84,12 +79,6 @@ export const AuthGate = (props: AuthGateProps) => {
     return () => axios.interceptors.request.eject(id);
   }, [auth0, isLogged]);
 
-  useEffect(() => {
-    if (isLogged) {
-      reloadPermissions();
-    }
-  }, [isLogged]);
-
   // Callbacks
   const getToken = useCallback(async (options: GetTokenSilentlyOptions = {}) => {
     if (!auth0) return '';
@@ -108,7 +97,6 @@ export const AuthGate = (props: AuthGateProps) => {
       // Update state
       if (await auth0.isAuthenticated()) {
         const user = await auth0.getUser<AuthUser>();
-        console.log(user);
 
         if (user) {
           setLogged(true);
@@ -146,7 +134,6 @@ export const AuthGate = (props: AuthGateProps) => {
     <AuthContext.Provider
       value={{
         isLogged, popup, user,
-        permissions: isLogged ? permissions : undefined,
 
         getToken,
         loginWithPopup, loginWithRedirect,
