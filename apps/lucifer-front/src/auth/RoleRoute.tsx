@@ -1,7 +1,7 @@
 import React, { ReactNode, useCallback } from 'react';
 import { Route, RouteProps, useHistory } from 'react-router';
 
-import { Role } from '@lucifer/types';
+import { RoleName } from '@lucifer/types';
 
 import { AuthUser } from './auth-user';
 import { RoleGate } from './RoleGate';
@@ -10,7 +10,7 @@ import { RoleGate } from './RoleGate';
 export type AllowRouteCallback = (user: AuthUser | null, params?: any) => boolean;
 
 export type RoleRouteProps = Omit<RouteProps, 'render' | 'component' | 'children'> & {
-  roles: Role | Role[];
+  roles: RoleName | RoleName[];
   allow?: AllowRouteCallback;
   children: ReactNode
 }

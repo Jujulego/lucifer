@@ -4,14 +4,12 @@ import { ManagementClient, User as Auth0User } from 'auth0';
 import { plainToClass } from 'class-transformer';
 import { Repository } from 'typeorm';
 
-import { IUser, Role, User } from '@lucifer/types';
+import { IUser, User } from '@lucifer/types';
 
 import { UpdateUser } from './user.schema';
 import { LocalUser } from './local-user.entity';
 import { Context } from '../context';
-
-// Types
-type RoleMap = Record<Role, string>;
+import { RolesService } from './roles.service';
 
 // Service
 @Injectable()
@@ -21,8 +19,9 @@ export class UsersService {
 
   // Constructor
   constructor(
-    private auth0: ManagementClient,
-    @InjectRepository(LocalUser) private repository: Repository<LocalUser>
+    private readonly auth0: ManagementClient,
+    private readonly roles: RolesService,
+    @InjectRepository(LocalUser) private readonly repository: Repository<LocalUser>
   ) {}
 
   // Methods
@@ -111,20 +110,10 @@ export class UsersService {
     return lcu;
   }
 
-  async getRoles(): Promise<RoleMap> {
-    const roles = await this.auth0.getRoles();
-    return roles.reduce<RoleMap>((roles, role) => Object.assign(roles, { [role.name as Role]: role.id }), {} as RoleMap);
-  }
-
-  async getUserRoles(id: string): Promise<Role[] | null> {
-    const roles = await this.auth0.getUserRoles({ id });
-    return roles?.map(role => role.name as Role) ?? null;
-  }
-
   async get(id: string): Promise<User> {
     const [ath, roles, lcu] = await Promise.all([
       this.auth0.getUser({ id }),
-      this.getUserRoles(id),
+      this.roles.getUserRoles(id),
       this.repository.findOne({
         where: { id }
       }),
@@ -154,38 +143,18 @@ export class UsersService {
   }
 
   async update(ctx: Context, id: string, update: UpdateUser): Promise<User> {
-    const [roles, map] = await Promise.all([
-      this.getUserRoles(id),
-      this.getRoles()
-    ]);
-
     // Update permissions
-    if (roles && update.roles) {
-      const toAssign = update.roles.filter(role => !roles.includes(role)).map(role => map[role]);
-      const toRemove = roles.filter(role => !update.roles!.includes(role)).map(role => map[role]);
-
-      // Start updates
-      const promises: Promise<void>[] = [];
-
-      if (toAssign.length > 0) {
-        ctx.need('update:roles');
-        promises.push(this.auth0.assignRolestoUser({ id }, { roles: toAssign }));
-      }
-
-      if (toRemove.length > 0) {
-        ctx.need('update:roles');
-        promises.push(this.auth0.removeRolesFromUser({ id }, { roles: toRemove }));
-      }
-
-      await Promise.all(promises);
+    if (update.roles) {
+      await this.roles.updateUserRoles(ctx, id, update.roles);
     }
 
     // Updates
-    const [ath, lcu] = await Promise.all([
+    const [ath, roles, lcu] = await Promise.all([
       this.auth0.updateUser({ id }, {
         name: update.name,
         email: update.email
       }),
+      this.roles.getUserRoles(id),
       this.repository.findOne({
         where: { id }
       })

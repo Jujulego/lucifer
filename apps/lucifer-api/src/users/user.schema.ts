@@ -1,6 +1,6 @@
 import { IsEmail, IsIn, IsOptional, IsString } from 'class-validator';
 
-import { IUpdateUser, Role, ROLES } from '@lucifer/types';
+import { IUpdateUser, RoleName, ROLES } from '@lucifer/types';
 
 // Schemas
 export class UpdateUser implements IUpdateUser {
@@ -12,5 +12,5 @@ export class UpdateUser implements IUpdateUser {
   name?:  string;
 
   @IsIn(ROLES, { each: true }) @IsOptional()
-  roles?: Role[];
+  roles?: RoleName[];
 }

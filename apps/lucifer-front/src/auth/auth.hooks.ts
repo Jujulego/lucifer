@@ -1,7 +1,7 @@
 import { GetTokenSilentlyOptions } from '@auth0/auth0-spa-js';
 import { useState, useEffect } from 'react';
 
-import { Role } from '@lucifer/types';
+import { RoleName } from '@lucifer/types';
 import { AuthUser, ROLES_KEY } from './auth-user';
 import { useAuth } from './auth.context';
 
@@ -35,7 +35,7 @@ export function useAuthToken(options?: GetTokenSilentlyOptions): string {
  * @param roles Needed roles
  * @param allow Overload roles. If it returns true, the user will be allowed even if it doesn't have the needed roles
  */
-export function useNeedRole(roles: Role | Role[], allow?: AllowCallback): boolean | null {
+export function useNeedRole(roles: RoleName | RoleName[], allow?: AllowCallback): boolean | null {
   // Auth
   const { user } = useAuth();
 

@@ -1,5 +1,5 @@
 import { User } from '@auth0/auth0-spa-js';
-import { Role } from '@lucifer/types';
+import { RoleName } from '@lucifer/types';
 
 // Constants
 export const ROLES_KEY = 'https://lucifer-front/roles';
@@ -15,5 +15,5 @@ export interface AuthUser extends User {
   picture: string;
   updated_at: string;
   sub: string;
-  [ROLES_KEY]: Role[];
+  [ROLES_KEY]: RoleName[];
 }

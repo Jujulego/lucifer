@@ -1,12 +1,12 @@
 import React, { FC, useEffect } from 'react';
-import { Role } from '@lucifer/types';
+import { RoleName } from '@lucifer/types';
 
 import { AllowCallback, useNeedRole } from './auth.hooks';
 
 // Types
 export interface RoleGateProps {
   /** Required roles */
-  roles: Role | Role[];
+  roles: RoleName | RoleName[];
 
   /**
    * Overload required roles
