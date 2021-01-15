@@ -8,6 +8,7 @@ import { Auth0ErrorFilter } from './auth0-error.filter';
 import { UpdateUser } from './user.schema';
 import { UsersService } from './users.service';
 import { UserId } from './user-id.param';
+import { Context, Ctx } from '../context';
 
 // Controller
 @Controller('/users')
@@ -36,7 +37,11 @@ export class UsersController {
   @Put('/:id')
   @Scopes('update:users')
   @AllowIf((req, token) => [token.sub, 'me'].includes(req.params.id))
-  async update(@UserId('id') id: string, @Body(ValidationPipe) update: UpdateUser): Promise<User> {
-    return await this.users.update(id, update);
+  async update(
+    @Ctx() ctx: Context,
+    @UserId('id') id: string,
+    @Body(ValidationPipe) update: UpdateUser
+  ): Promise<User> {
+    return await this.users.update(ctx, id, update);
   }
 }

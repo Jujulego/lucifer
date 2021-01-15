@@ -8,6 +8,11 @@ import { env } from './env';
 import { migrate } from './db/migrate';
 import { AppModule } from './app.module';
 
+// Debug
+if (!env.PRODUCTION) {
+  import('axios-debug-log');
+}
+
 // Bootstrap
 (async function() {
   const app = await NestFactory.create(AppModule);

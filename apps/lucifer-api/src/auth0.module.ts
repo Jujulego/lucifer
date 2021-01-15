@@ -20,7 +20,7 @@ import { env } from './env';
         domain: env.AUTH0_DOMAIN,
         clientId: env.AUTH0_CLIENT_ID,
         clientSecret: env.AUTH0_CLIENT_SECRET,
-        scope: 'read:users update:users'
+        scope: 'read:users update:users read:roles create:role_members read:role_members delete:role_members'
       })
     }
   ],
