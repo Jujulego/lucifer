@@ -6,13 +6,13 @@ import { Connection } from 'typeorm';
 
 import { DatabaseModule } from '../database.module';
 import { MachinesModule } from '../machines/machines.module';
+import { ProjectsModule } from '../projects/projects.module';
 import { ManagementClientMock } from '../../mocks/management-client.mock';
 
 import { UsersModule } from './users.module';
 import { UsersService } from './users.service';
 import { UpdateUser } from './user.schema';
 import { LocalUser } from './local-user.entity';
-import { ProjectsModule } from '../projects/projects.module';
 
 // Load services
 let app: TestingModule;
@@ -42,7 +42,7 @@ afterAll(async () => {
 });
 
 // Mocks
-afterEach(() => {
+beforeEach(() => {
   jest.resetAllMocks();
 });
 

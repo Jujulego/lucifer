@@ -1,6 +1,7 @@
 import { ManagementClient, Role } from 'auth0';
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { RoleName } from '@lucifer/types';
+
 import { Context } from '../context';
 
 // Types
@@ -59,12 +60,6 @@ export class RolesService {
 
   async getUserRoles(userId: string): Promise<RoleName[]> {
     const roles = await this.auth0.getUserRoles({ id: userId });
-
-    // Throw if not found
-    if (!roles) {
-      throw new NotFoundException(`User ${userId} not found`);
-    }
-
     return roles.map(role => role.name as RoleName);
   }
 
