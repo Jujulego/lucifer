@@ -63,7 +63,7 @@ export class RolesService {
     return roles.map(role => role.name as RoleName);
   }
 
-  async updateUserRoles(ctx: Context, userId: string, target: RoleName[]) {
+  async updateUserRoles(ctx: Context, userId: string, target: RoleName[]): Promise<RoleName[]> {
     const current = await this.getUserRoles(userId);
 
     // Compute diff
@@ -75,5 +75,7 @@ export class RolesService {
       this._assignRoles(ctx, userId, toAssign),
       this._removeRoles(ctx, userId, toRemove)
     ]);
+
+    return target;
   }
 }

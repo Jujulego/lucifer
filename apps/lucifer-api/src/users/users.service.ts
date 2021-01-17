@@ -72,7 +72,7 @@ export class UsersService {
       while (j < lcus.length) {
         const lcu = lcus[j];
 
-        if (lcu.id > ath.user_id!) break;
+        if (lcu.id.localeCompare(ath.user_id || '') > 0) break;
         if (lcu.id === ath.user_id) {
           added = true;
           results.push(this.format(ath, lcu));
@@ -143,17 +143,10 @@ export class UsersService {
   }
 
   async update(ctx: Context, id: string, update: UpdateUser): Promise<User> {
-    // Update permissions
-    if (update.roles) {
-      await this.roles.updateUserRoles(ctx, id, update.roles);
-    }
-
-    // Updates
-    const [ath, roles, lcu] = await Promise.all([
-      this.auth0.updateUser({ id }, {
-        name: update.name,
-        email: update.email
-      }),
+    // Get current state
+    // eslint-disable-next-line prefer-const
+    let [ath, roles, lcu] = await Promise.all([
+      this.auth0.getUser({ id }),
       this.roles.getUserRoles(id),
       this.repository.findOne({
         where: { id }
@@ -163,6 +156,18 @@ export class UsersService {
     // Throw if not found
     if (!ath) {
       throw new NotFoundException(`User ${id} not found`);
+    }
+
+    // Updates
+    if (update.name || update.email) {
+      ath = await this.auth0.updateUser({ id }, {
+        name: update.name ?? ath.name,
+        email: update.email ?? ath.email
+      });
+    }
+
+    if (update.roles) {
+      roles = await this.roles.updateUserRoles(ctx, id, update.roles);
     }
 
     // Build user
