@@ -48,6 +48,7 @@ afterAll(async () => {
 // Mocks
 beforeEach(() => {
   jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
 
 // Tests suites

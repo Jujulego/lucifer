@@ -35,6 +35,7 @@ afterAll(async () => {
 // Mocks
 beforeEach(() => {
   jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
 
 // Tests suites
@@ -51,7 +52,7 @@ describe('RolesService.getUserRoles', () => {
 
   it('should return user\'s roles', async () => {
     jest.spyOn(mgmtClient, 'getUserRoles')
-      .mockImplementation(async () => [{ name: 'test', id: 'role-1' }]);
+      .mockImplementation(async () => [{ name: 'test', id: 'role-test' }]);
 
     await expect(service.getUserRoles('test'))
       .resolves.toEqual(['test']);
@@ -78,7 +79,7 @@ describe('RolesService.updateUserRoles', () => {
     const spyR = jest.spyOn(mgmtClient, 'removeRolesFromUser');
 
     await expect(service.updateUserRoles(ctx, 'test', ['reader', 'admin']))
-      .resolves.toBeUndefined();
+      .resolves.toEqual(['reader', 'admin']);
 
     expect(spyA).toHaveBeenCalledWith({ id: 'test' }, { roles: ['admin-id'] });
     expect(spyR).not.toBeCalled();
@@ -89,7 +90,7 @@ describe('RolesService.updateUserRoles', () => {
     const spyR = jest.spyOn(mgmtClient, 'removeRolesFromUser');
 
     await expect(service.updateUserRoles(ctx, 'test', []))
-      .resolves.toBeUndefined();
+      .resolves.toEqual([]);
 
     expect(spyA).not.toBeCalled();
     expect(spyR).toHaveBeenCalledWith({ id: 'test' }, { roles: ['reader-id'] });
@@ -100,14 +101,14 @@ describe('RolesService.updateUserRoles', () => {
     const spyR = jest.spyOn(mgmtClient, 'removeRolesFromUser');
 
     await expect(service.updateUserRoles(ctx, 'test', ['reader']))
-      .resolves.toBeUndefined();
+      .resolves.toEqual(['reader']);
 
     expect(spyA).not.toBeCalled();
     expect(spyR).not.toBeCalled();
   });
 
   it('should throw forbidden', async () => {
-    const ctx = generateTextContext('test', ['update:roles']);
+    const ctx = generateTextContext('test', []);
 
     const spyA = jest.spyOn(mgmtClient, 'assignRolestoUser');
     const spyR = jest.spyOn(mgmtClient, 'removeRolesFromUser');

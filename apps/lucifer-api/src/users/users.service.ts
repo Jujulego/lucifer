@@ -153,10 +153,9 @@ export class UsersService {
       })
     ]);
 
-    // Throw if not found
-    if (!ath) {
-      throw new NotFoundException(`User ${id} not found`);
-    }
+    // Error cases
+    if (!ath) throw new NotFoundException(`User ${id} not found`);
+    if (update.roles) ctx.need('update:roles');
 
     // Updates
     if (update.name || update.email) {

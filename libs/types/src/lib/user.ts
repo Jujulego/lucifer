@@ -50,6 +50,6 @@ export class User implements IUser {
   lastLogin?: string;
   blocked?:   boolean;
 
-  //@Expose({ groups: ['read:roles'] })
+  @Expose({ groups: ['read:roles'] })
   roles?: RoleName[];
 }
