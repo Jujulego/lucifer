@@ -109,7 +109,10 @@ jobs:
           yarn run nx run-many --all --target=db-migrate --scan
 
       - name: Tests
-        run: yarn run affected:test --scan --base=origin/${{ github.base_ref }}
+        run: yarn run affected:test --scan --base=origin/${{ github.base_ref }} --codeCoverage
+
+      - name: Codecov
+        uses: codecov/codecov-action@v1.0.6
 
   build:
     runs-on: ubuntu-latest
