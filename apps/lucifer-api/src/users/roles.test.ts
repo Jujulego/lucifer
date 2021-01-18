@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { ForbiddenException } from '@nestjs/common';
 import { ManagementClient } from 'auth0';
 
 import { DatabaseModule } from '../database.module';
 import { ManagementClientMock } from '../../mocks/management-client.mock';
+import { generateTextContext } from '../../tests/utils';
 
 import { UsersModule } from './users.module';
 import { RolesService } from './roles.service';
-import { Context } from '../context';
-import { ForbiddenException } from '@nestjs/common';
 
 // Load services
 let app: TestingModule;
@@ -59,10 +59,7 @@ describe('RolesService.getUserRoles', () => {
 });
 
 describe('RolesService.updateUserRoles', () => {
-  const ctx = new Context('token', {
-    sub: 'test',
-    permissions: ['update:roles']
-  });
+  const ctx = generateTextContext('test', ['update:roles']);
 
   beforeEach(() => {
     jest.spyOn(mgmtClient, 'getRoles')
@@ -110,10 +107,7 @@ describe('RolesService.updateUserRoles', () => {
   });
 
   it('should throw forbidden', async () => {
-    const ctx = new Context('token', {
-      sub: 'test',
-      permissions: []
-    });
+    const ctx = generateTextContext('test', ['update:roles']);
 
     const spyA = jest.spyOn(mgmtClient, 'assignRolestoUser');
     const spyR = jest.spyOn(mgmtClient, 'removeRolesFromUser');

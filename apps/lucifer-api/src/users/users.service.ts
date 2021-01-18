@@ -6,9 +6,9 @@ import { Repository } from 'typeorm';
 
 import { IUser, User } from '@lucifer/types';
 
+import { Context } from '../context';
 import { UpdateUser } from './user.schema';
 import { LocalUser } from './local-user.entity';
-import { Context } from '../context';
 import { RolesService } from './roles.service';
 
 // Service

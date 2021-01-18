@@ -8,17 +8,20 @@ import { DatabaseModule } from '../database.module';
 import { MachinesModule } from '../machines/machines.module';
 import { ProjectsModule } from '../projects/projects.module';
 import { ManagementClientMock } from '../../mocks/management-client.mock';
+import { generateTextContext } from '../../tests/utils';
 
 import { UsersModule } from './users.module';
 import { UsersService } from './users.service';
 import { UpdateUser } from './user.schema';
 import { LocalUser } from './local-user.entity';
+import { RolesService } from './roles.service';
 
 // Load services
 let app: TestingModule;
 let service: UsersService;
 let database: Connection;
 let mgmtClient: ManagementClientMock;
+let rolesService: RolesService;
 
 beforeAll(async () => {
   app = await Test.createTestingModule({
@@ -35,6 +38,7 @@ beforeAll(async () => {
   service = app.get(UsersService);
   database = app.get(Connection);
   mgmtClient = app.get(ManagementClient);
+  rolesService = app.get(RolesService);
 });
 
 afterAll(async () => {
@@ -177,6 +181,7 @@ describe('UsersService.list', () => {
 });
 
 describe('UsersService.update', () => {
+  const ctx = generateTextContext('test', ['update:users', 'update:roles']);
   const user = {
     user_id:  'tests|users-auth0-31',
     email:    'test31@users.auth0',
@@ -186,39 +191,93 @@ describe('UsersService.update', () => {
     picture:  'https://auth0.users.com/test31'
   };
 
-  const update = plainToClass(UpdateUser, {
-    name: 'Test #31',
-    email: 'test31@gmail.com',
+  beforeEach(() => {
+    // Mocks
+    jest.spyOn(mgmtClient, 'getUser')
+      .mockResolvedValue(user);
+
+    jest.spyOn(mgmtClient, 'updateUser')
+      .mockImplementation(async (params, data) => ({ ...user, ...data }));
+
+    jest.spyOn(rolesService, 'getUserRoles')
+      .mockResolvedValue([])
+
+    jest.spyOn(rolesService, 'updateUserRoles')
+      .mockImplementation(async (ctx, id, target) => target);
   });
 
   // Tests
-  it('should return updated user', async () => {
-    // Mock
-    const spy = jest.spyOn(mgmtClient, 'updateUser')
-      .mockImplementation(async (params, data) => ({ ...user, ...data }));
+  it('should update user', async () => {
+    const update = plainToClass(UpdateUser, {
+      name: 'Test #31',
+      email: 'test31@gmail.com',
+    });
 
     // Call
-    await expect(service.update(user.user_id, update))
+    await expect(service.update(ctx, user.user_id, update))
       .resolves.toEqual({
         id:       user.user_id,
         email:    update.email,
         name:     update.name,
         nickname: user.nickname,
-        picture:  user.picture
+        picture:  user.picture,
+        roles:    []
       });
 
-    // Check call
-    expect(spy).toHaveBeenCalledTimes(1);
-    expect(spy).toHaveBeenCalledWith({ id: user.user_id }, { name: update.name, email: update.email });
+    // Check calls
+    expect(mgmtClient.updateUser).toBeCalledWith({ id: user.user_id }, { name: update.name, email: update.email });
+    expect(rolesService.updateUserRoles).not.toBeCalled();
+  });
+
+  it('should update user roles', async () => {
+    const update = plainToClass(UpdateUser, {
+      roles: ['reader'],
+    });
+
+    // Call
+    await expect(service.update(ctx, user.user_id, update))
+      .resolves.toEqual({
+        id:       user.user_id,
+        email:    user.email,
+        name:     user.name,
+        nickname: user.nickname,
+        picture:  user.picture,
+        roles:    update.roles
+      });
+
+    // Check calls
+    expect(mgmtClient.updateUser).not.toBeCalled();
+    expect(rolesService.updateUserRoles).toBeCalledWith(ctx, user.user_id, update.roles);
+  });
+
+  it('should do nothing', async () => {
+    const update = plainToClass(UpdateUser, {});
+
+    // Call
+    await expect(service.update(ctx, user.user_id, update))
+      .resolves.toEqual({
+        id:       user.user_id,
+        email:    user.email,
+        name:     user.name,
+        nickname: user.nickname,
+        picture:  user.picture,
+        roles:    []
+      });
+
+    // Check calls
+    expect(mgmtClient.updateUser).not.toBeCalled();
+    expect(rolesService.updateUserRoles).not.toBeCalled();
   });
 
   it('should throw if user is undefined', async () => {
+    const update = plainToClass(UpdateUser, {});
+
     // Mock
-    jest.spyOn(mgmtClient, 'updateUser')
+    jest.spyOn(mgmtClient, 'getUser')
       .mockImplementation(async () => undefined);
 
     // Call
-    await expect(service.update(user.user_id, update))
+    await expect(service.update(ctx, user.user_id, update))
       .rejects.toEqual(new NotFoundException(`User ${user.user_id} not found`));
   });
 });

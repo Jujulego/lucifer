@@ -4,7 +4,7 @@ import supertest from 'supertest';
 
 import { AppModule } from '../../src/app.module';
 
-import { generateToken } from '../utils';
+import { generateTestToken } from '../utils';
 
 // Server setup
 let app: INestApplication;
@@ -31,7 +31,7 @@ let token: string;
 
 beforeEach(async () => {
   // Get token
-  token = await generateToken('test@test.com', ['read:users']);
+  token = await generateTestToken('test@test.com', ['read:users']);
 });
 
 // Tests
