@@ -5,22 +5,18 @@ import { IUpdateProject } from '@lucifer/types';
 
 import { CircularProgress, Fab, Grid, IconButton, Paper, TextField, Typography, Zoom } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Delete, Delete as DeleteIcon, Save as SaveIcon } from '@material-ui/icons';
+import { Delete as DeleteIcon, Save as SaveIcon } from '@material-ui/icons';
 import { LabelledText, RefreshButton } from '@lucifer/react/basics';
 
-import { useNeedScope } from '../auth/auth.hooks';
+import { useNeedRole } from '../auth/auth.hooks';
 
 import { useProject } from './projects.hooks';
 import { ProjectHeader } from './ProjectHeader';
 
 // Styles
-const useStyles = makeStyles(({ breakpoints, spacing }) => ({
+const useStyles = makeStyles(({ spacing }) => ({
   root: {
     padding: spacing(3),
-
-    [breakpoints.down('sm')]: {
-      padding: spacing(2),
-    }
   },
   description: {
     whiteSpace: 'pre-line'
@@ -48,8 +44,7 @@ export const ProjectPage: FC = () => {
   const { project, loading, reload, update, remove } = useProject(userId, id);
 
   // Auth
-  const canUpdate = useNeedScope('update:project', usr => project?.adminId === usr?.id);
-  const canDelete = useNeedScope('delete:project', usr => project?.adminId === usr?.id);
+  const isAdmin = useNeedRole('admin', usr => project?.adminId === usr?.id) ?? false;
 
   // Form
   const { errors, register, reset, handleSubmit, formState } = useForm<IUpdateProject>({
@@ -86,7 +81,7 @@ export const ProjectPage: FC = () => {
           project={project}
           actions={(
             <>
-              <IconButton disabled={!canDelete || isRemoving} onClick={handleDelete}>
+              <IconButton disabled={!isAdmin || isRemoving} onClick={handleDelete}>
                 <DeleteIcon />
               </IconButton>
               <RefreshButton disabled={isRemoving} refreshing={loading} onClick={reload} />
@@ -99,7 +94,7 @@ export const ProjectPage: FC = () => {
           <Grid container spacing={4} direction="column">
             <Grid item container spacing={2}>
               <Grid item xs={12} sm={6} md={4}>
-                { canUpdate ? (
+                { isAdmin ? (
                   <TextField
                     label="Nom" variant="outlined" fullWidth
                     name="name" inputRef={register({
@@ -116,7 +111,7 @@ export const ProjectPage: FC = () => {
             </Grid>
             <Grid item container spacing={2}>
               <Grid item xs>
-                { canUpdate ? (
+                { isAdmin ? (
                   <TextField
                     label="Description" variant="outlined" fullWidth multiline
                     name="description" inputRef={register}
@@ -131,7 +126,7 @@ export const ProjectPage: FC = () => {
             </Grid>
           </Grid>
         ) }
-        { canUpdate && (
+        { isAdmin && (
           <Zoom in appear>
             <Fab
               className={styles.save} color="primary"

@@ -1,3 +1,11 @@
+import { Expose } from 'class-transformer';
+
+// Types
+export type RoleName = 'admin' | 'reader';
+
+// Constants
+export const ROLES: RoleName[] = ['admin', 'reader'];
+
 // Interface
 export interface IUser {
   // Attributes
@@ -15,11 +23,13 @@ export interface IUser {
   lastIp?:    string;
   lastLogin?: string;
   blocked?:   boolean;
+  roles?:     RoleName[];
 }
 
 export interface IUpdateUser {
   name?:  string;
   email?: string;
+  roles?: RoleName[];
 }
 
 // Model
@@ -39,4 +49,7 @@ export class User implements IUser {
   lastIp?:    string;
   lastLogin?: string;
   blocked?:   boolean;
+
+  @Expose({ groups: ['read:roles'] })
+  roles?: RoleName[];
 }

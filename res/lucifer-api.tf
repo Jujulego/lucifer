@@ -7,7 +7,7 @@ resource "auth0_client" "lucifer-api" {
 resource "auth0_client_grant" "lucifer-api--management-api" {
   audience  = "https://${var.auth0-domain}/api/v2/"
   client_id = auth0_client.lucifer-api.client_id
-  scope     = ["read:users", "update:users"]
+  scope     = ["read:users", "update:users", "read:roles", "create:role_members", "read:role_members", "delete:role_members"]
 }
 
 resource "auth0_resource_server" "lucifer-api" {
@@ -23,6 +23,14 @@ resource "auth0_resource_server" "lucifer-api" {
 
   scopes {
     value = "update:users"
+  }
+
+  scopes {
+    value = "read:roles"
+  }
+
+  scopes {
+    value = "update:roles"
   }
 
   scopes {

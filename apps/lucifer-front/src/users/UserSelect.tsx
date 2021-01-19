@@ -9,7 +9,7 @@ import {
   useFormControl
 } from '@material-ui/core';
 
-import { useUsers } from '../users.hooks';
+import { useUsers } from './users.hooks';
 
 // Utils
 const SmallProgress = (props: CircularProgressProps) => <CircularProgress {...props} size={20} />;
@@ -20,7 +20,7 @@ export type UserSelectProps = Omit<SelectProps, 'value'> & {
 };
 
 // Component
-const UserSelect = (props: UserSelectProps) => {
+export const UserSelect = (props: UserSelectProps) => {
   const { disabled, IconComponent, value } = props;
 
   // Context
@@ -55,5 +55,3 @@ const UserSelect = (props: UserSelectProps) => {
     </Select>
   );
 };
-
-export default UserSelect;

@@ -1,21 +1,26 @@
 import React, { ReactNode, useCallback } from 'react';
 import { Route, RouteProps, useHistory } from 'react-router';
 
-import { AuthUser } from '../models/user';
-import ScopeGate from './ScopeGate';
+import { RoleName } from '@lucifer/types';
+
+import { AuthUser } from './auth-user';
+import { RoleGate } from './RoleGate';
 
 // Types
 export type AllowRouteCallback = (user: AuthUser | null, params?: any) => boolean;
 
-export type ScopedRouteProps = Omit<RouteProps, 'render' | 'component' | 'children'> & {
-  scope: string;
+export type RoleRouteProps = Omit<RouteProps, 'render' | 'component' | 'children'> & {
+  roles: RoleName | RoleName[];
   allow?: AllowRouteCallback;
   children: ReactNode
 }
 
 // Component
-const ScopedRoute = (props: ScopedRouteProps) => {
-  const { scope, allow, children, ...route } = props;
+/**
+ * When navigated to it, this route test if user has needed roles, else redirect to home
+ */
+export const RoleRoute = (props: RoleRouteProps) => {
+  const { roles, allow, children, ...route } = props;
 
   // Router
   const history = useHistory();
@@ -29,16 +34,14 @@ const ScopedRoute = (props: ScopedRouteProps) => {
   return (
     <Route {...route}>
       { ({ match }) => (
-        <ScopeGate
-          scope={scope}
+        <RoleGate
+          roles={roles}
           allow={allow && (user => allow(user, match?.params))}
           onForbidden={handleForbidden}
         >
           { children }
-        </ScopeGate>
+        </RoleGate>
       ) }
     </Route>
   );
 };
-
-export default ScopedRoute;

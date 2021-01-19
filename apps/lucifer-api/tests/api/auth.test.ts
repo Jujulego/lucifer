@@ -1,22 +1,14 @@
-import { Test } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import supertest from 'supertest';
 
-import { AppModule } from '../../src/app.module';
-
-import { generateToken } from '../utils';
+import { generateTestToken, initTestingApp } from '../utils';
 
 // Server setup
 let app: INestApplication;
 let request: ReturnType<typeof supertest>;
 
 beforeAll(async () => {
-  const module = await Test.createTestingModule({
-    imports: [AppModule]
-  }).compile();
-
-  app = module.createNestApplication();
-  await app.init();
+  app = await initTestingApp();
 
   // Start server
   request = supertest(app.getHttpServer());
@@ -31,7 +23,7 @@ let token: string;
 
 beforeEach(async () => {
   // Get token
-  token = await generateToken('test@test.com', ['read:users']);
+  token = await generateTestToken('test@test.com', ['read:users']);
 });
 
 // Tests

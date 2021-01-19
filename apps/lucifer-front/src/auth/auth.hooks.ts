@@ -1,19 +1,16 @@
 import { GetTokenSilentlyOptions } from '@auth0/auth0-spa-js';
 import { useState, useEffect } from 'react';
 
-import { useAPI } from '@lucifer/react/api';
-
-import { env } from '../environments/environment';
-import { AuthUser } from './models/user';
+import { RoleName } from '@lucifer/types';
+import { AuthUser, ROLES_KEY } from './auth-user';
 import { useAuth } from './auth.context';
 
 // Types
+/**
+ * @param user Current user
+ * @returns true to allow user, false in other cases
+ */
 export type AllowCallback = (user: AuthUser | null) => boolean;
-
-// Namespace
-export const useAuthAPI = {
-  permissions: () => useAPI.get<string[]>(`${env.apiUrl}/api/auth/permissions`)
-};
 
 // Hooks
 export function useAuthToken(options?: GetTokenSilentlyOptions): string {
@@ -33,22 +30,19 @@ export function useAuthToken(options?: GetTokenSilentlyOptions): string {
   return token;
 }
 
-export function usePermissions() {
-  const { data: permissions, loading, reload } = useAuthAPI.permissions();
-
-  return {
-    permissions, loading,
-    reload
-  };
-}
-
-export function useNeedScope(scope: string, allow?: AllowCallback): boolean | null {
+/**
+ * Test if current user as the needed roles to access resources
+ * @param roles Needed roles
+ * @param allow Overload roles. If it returns true, the user will be allowed even if it doesn't have the needed roles
+ */
+export function useNeedRole(roles: RoleName | RoleName[], allow?: AllowCallback): boolean | null {
   // Auth
   const { user } = useAuth();
-  const { permissions = [], loading } = usePermissions();
 
   // Allow
-  if (loading) return null;
+  if (!user) return null;
   if (allow && allow(user)) return true;
-  return permissions.includes(scope);
+
+  if (typeof roles === 'string') roles = [roles];
+  return roles.some(role => user[ROLES_KEY].includes(role));
 }

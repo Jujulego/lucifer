@@ -15,7 +15,7 @@ import { ConfirmDialog, RefreshButton, ToolbarAction, useConfirm } from '@lucife
 import { Table, TableBody, TableRow, TableSortCell } from '@lucifer/react/table';
 import { IMachine } from '@lucifer/types';
 
-import { useNeedScope } from '../../auth/auth.hooks';
+import { useNeedRole } from '../../auth/auth.hooks';
 
 import { useMachines } from '../machine.hooks';
 import AddMachineDialog from './AddMachineDialog';
@@ -58,9 +58,7 @@ const MachineTable: FC<MachineTableProps> = (props) => {
   const selection = useRef<IMachine[]>([]);
 
   // Auth
-  const canCreate = useNeedScope('create:machines', usr => usr?.id === ownerId) ?? false;
-  const canUpdate = useNeedScope('update:machines', usr => usr?.id === ownerId) ?? false;
-  const canDelete = useNeedScope('delete:machines', usr => usr?.id === ownerId) ?? false;
+  const isAdmin = useNeedRole('admin', usr => usr?.id === ownerId) ?? false;
 
   // API
   const { machines = [], loading, reload, updateCache, create, bulkDelete } = useMachines(ownerId);
@@ -86,10 +84,10 @@ const MachineTable: FC<MachineTableProps> = (props) => {
     <>
       <Portal container={actionsContainer}>
         <span>
-          { canDelete && (
+          { isAdmin && (
             <Fade in={show}>
               <ToolbarAction
-                tooltip="Supprimer une machine" disabled={!canDelete}
+                tooltip="Supprimer une machine" disabled={!isAdmin}
                 onClick={() => handleDelete(selection.current)}
               >
                 <DeleteIcon />
@@ -118,12 +116,12 @@ const MachineTable: FC<MachineTableProps> = (props) => {
                       { mch.shortName }
                     </TableCell>
                     <TableCell className={styles.actions} onClick={event => event.stopPropagation()}>
-                      { canUpdate && (
+                      { isAdmin && (
                         <IconButton onClick={() => setUpdateMachine(mch)}>
                           <EditIcon />
                         </IconButton>
                       ) }
-                      { canDelete && (
+                      { isAdmin && (
                         <IconButton onClick={() => handleDelete([mch])}>
                           <DeleteIcon />
                         </IconButton>
@@ -135,7 +133,7 @@ const MachineTable: FC<MachineTableProps> = (props) => {
             </Table>
           </TableContainer>
           <AddMachineDialog
-            open={addingMachine && canCreate}
+            open={addingMachine && isAdmin}
             onAdd={create}
             onClose={() => setAddingMachine(false)}
           />
@@ -162,7 +160,7 @@ const MachineTable: FC<MachineTableProps> = (props) => {
           </ConfirmDialog>
         </>
       ) }
-      { canCreate && (
+      { isAdmin && (
         <Zoom in={show}>
           <Fab
             className={styles.fab} color="primary"

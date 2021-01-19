@@ -1,13 +1,13 @@
 import { RedirectLoginOptions } from '@auth0/auth0-spa-js';
 import { useEffect } from 'react';
 
-import { useAuth } from '../auth.context';
+import { useAuth } from './auth.context';
 
 // Types
 export type AutoLoginProps = RedirectLoginOptions;
 
 // Component
-const AutoLogin = (props: AutoLoginProps) => {
+export const AutoLogin = (props: AutoLoginProps) => {
   // Auth
   const { isLogged, loginWithRedirect } = useAuth();
 
@@ -22,5 +22,3 @@ const AutoLogin = (props: AutoLoginProps) => {
 
   return null;
 };
-
-export default AutoLogin;

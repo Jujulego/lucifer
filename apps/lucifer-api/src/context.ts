@@ -1,4 +1,4 @@
-import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { createParamDecorator, ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { Request } from 'express';
 
 import type { AuthUser } from './auth/user.model';
@@ -11,7 +11,7 @@ export class Context {
     readonly user: AuthUser
   ) {}
 
-  // Methods
+  // Statics
   /**
    * Build Context from current request
    * @param req
@@ -30,6 +30,18 @@ export class Context {
   static fromExecutionContext(exc: ExecutionContext): Context {
     const req = exc.switchToHttp().getRequest<Request>();
     return this.fromRequest(req);
+  }
+
+  // Methods
+  need(scopes: string | string[]) {
+    if (typeof scopes === 'string') {
+      scopes = [scopes];
+    }
+
+    // Test if has scopes
+    if (scopes.every(scope => !this.user.permissions.includes(scope))) {
+      throw new ForbiddenException();
+    }
   }
 }
 

@@ -6,8 +6,10 @@ import { Repository } from 'typeorm';
 
 import { IUser, User } from '@lucifer/types';
 
+import { Context } from '../context';
 import { UpdateUser } from './user.schema';
 import { LocalUser } from './local-user.entity';
+import { RolesService } from './roles.service';
 
 // Service
 @Injectable()
@@ -17,8 +19,9 @@ export class UsersService {
 
   // Constructor
   constructor(
-    private auth0: ManagementClient,
-    @InjectRepository(LocalUser) private repository: Repository<LocalUser>
+    private readonly auth0: ManagementClient,
+    private readonly roles: RolesService,
+    @InjectRepository(LocalUser) private readonly repository: Repository<LocalUser>
   ) {}
 
   // Methods
@@ -69,7 +72,7 @@ export class UsersService {
       while (j < lcus.length) {
         const lcu = lcus[j];
 
-        if (lcu.id > ath.user_id!) break;
+        if (lcu.id.localeCompare(ath.user_id || '') > 0) break;
         if (lcu.id === ath.user_id) {
           added = true;
           results.push(this.format(ath, lcu));
@@ -108,8 +111,9 @@ export class UsersService {
   }
 
   async get(id: string): Promise<User> {
-    const [ath, lcu] = await Promise.all([
+    const [ath, roles, lcu] = await Promise.all([
       this.auth0.getUser({ id }),
+      this.roles.getUserRoles(id),
       this.repository.findOne({
         where: { id }
       }),
@@ -120,7 +124,11 @@ export class UsersService {
       throw new NotFoundException(`User ${id} not found`);
     }
 
-    return this.format(ath, lcu);
+    // Build users
+    const usr = this.format(ath, lcu);
+    usr.roles = roles || [];
+
+    return usr;
   }
 
   async list(): Promise<User[]> {
@@ -134,22 +142,37 @@ export class UsersService {
     return this.formatAll(aths, lcus);
   }
 
-  async update(id: string, update: UpdateUser): Promise<User> {
-    const [ath, lcu] = await Promise.all([
-      this.auth0.updateUser({ id }, {
-        name: update.name,
-        email: update.email
-      }),
+  async update(ctx: Context, id: string, update: UpdateUser): Promise<User> {
+    // Get current state
+    // eslint-disable-next-line prefer-const
+    let [ath, roles, lcu] = await Promise.all([
+      this.auth0.getUser({ id }),
+      this.roles.getUserRoles(id),
       this.repository.findOne({
         where: { id }
       })
     ]);
 
-    // Throw if not found
-    if (!ath) {
-      throw new NotFoundException(`User ${id} not found`);
+    // Error cases
+    if (!ath) throw new NotFoundException(`User ${id} not found`);
+    if (update.roles) ctx.need('update:roles');
+
+    // Updates
+    if (update.name || update.email) {
+      ath = await this.auth0.updateUser({ id }, {
+        name: update.name ?? ath.name,
+        email: update.email ?? ath.email
+      });
     }
 
-    return this.format(ath, lcu);
+    if (update.roles) {
+      roles = await this.roles.updateUserRoles(ctx, id, update.roles);
+    }
+
+    // Build user
+    const usr = this.format(ath, lcu);
+    usr.roles = roles || [];
+
+    return usr;
   }
 }

@@ -7,8 +7,8 @@ import createAuth0Client, {
   RedirectLoginOptions
 } from '@auth0/auth0-spa-js';
 
-import { AuthUser } from '../models/user';
-import { AuthContext } from '../auth.context';
+import { AuthUser } from './auth-user';
+import { AuthContext } from './auth.context';
 
 // Types
 export interface AuthGateProps extends Auth0ClientOptions {
@@ -17,7 +17,7 @@ export interface AuthGateProps extends Auth0ClientOptions {
 }
 
 // Component
-const AuthGate = (props: AuthGateProps) => {
+export const AuthGate = (props: AuthGateProps) => {
   // Props
   const {
     children,
@@ -144,5 +144,3 @@ const AuthGate = (props: AuthGateProps) => {
     </AuthContext.Provider>
   );
 };
-
-export default AuthGate;

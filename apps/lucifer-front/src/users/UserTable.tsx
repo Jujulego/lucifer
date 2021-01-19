@@ -5,11 +5,11 @@ import { Link, Paper, TableCell, TableContainer, TableHead, Tooltip } from '@mat
 import { Check as CheckIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { LabelledText, RefreshButton, RelativeDate } from '@lucifer/react/basics';
+import { RefreshButton, RelativeDate } from '@lucifer/react/basics';
 import { Table, TableBody, TableRow, TableSortCell, TableToolbar } from '@lucifer/react/table';
 import { IUser } from '@lucifer/types';
 
-import { useUsers } from '../users.hooks';
+import { useUsers } from './users.hooks';
 
 // Styles
 const useStyles = makeStyles(({ spacing }) => ({
@@ -21,7 +21,7 @@ const useStyles = makeStyles(({ spacing }) => ({
 }));
 
 // Component
-const UserTable = () => {
+export const UserTable = () => {
   // Router
   const { url } = useRouteMatch();
 
@@ -77,5 +77,3 @@ const UserTable = () => {
     </TableContainer>
   );
 };
-
-export default UserTable;

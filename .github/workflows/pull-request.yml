@@ -23,11 +23,11 @@ jobs:
         with:
           node-version: 14.x
 
-      - name: 'Setup Cache'
+      - name: Setup Cache
         id: setup-cache
         run: echo "::set-output name=yarn-cache::$(yarn cache dir)"
 
-      - name: 'Setup Nx'
+      - name: Setup Nx
         id: setup
         run: git fetch --no-tags --prune --depth=5 origin ${{ github.base_ref }}
 
@@ -78,11 +78,11 @@ jobs:
         with:
           node-version: 14.x
 
-      - name: 'Setup Cache'
+      - name: Setup Cache
         id: setup-cache
         run: echo "::set-output name=yarn-cache::$(yarn cache dir)"
 
-      - name: 'Setup Database'
+      - name: Setup Database
         uses: ./.github/actions/setup-db
         with:
           db-host: 'localhost'
@@ -90,7 +90,7 @@ jobs:
           db-username: 'root'
           db-password: 'root'
 
-      - name: 'Setup Nx'
+      - name: Setup Nx
         id: setup
         run: git fetch --no-tags --prune --depth=5 origin ${{ github.base_ref }}
 
@@ -165,7 +165,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Download production artifacts
+      - name: Download build artifacts
         uses: actions/download-artifact@v2
         with:
           name: build
@@ -334,7 +334,7 @@ jobs:
         id: setup-cache
         run: echo "::set-output name=yarn-cache::$(yarn cache dir)"
 
-      - name: 'Setup Nx'
+      - name: Setup Nx
         id: setup
         run: git fetch --no-tags --prune --depth=5 origin ${{ github.base_ref }}
 

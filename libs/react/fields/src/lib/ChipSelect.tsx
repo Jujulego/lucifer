@@ -13,10 +13,10 @@ interface ChipSelectBaseProps {
   helperText?: string,
   options: string[],
   value?: string[],
-  onChange: SelectProps['onChange'],
+  onChange?: SelectProps['onChange'],
 
   ChipProps?: Omit<ChipProps, 'label'>,
-  SelectProps?: Omit<SelectProps, 'multiple' | 'value' | 'onChange' | 'renderValue'>
+  SelectProps?: Omit<SelectProps, 'label' | 'multiple' | 'value' | 'onChange' | 'renderValue'>
 }
 
 export type ChipSelectProps =
@@ -54,7 +54,7 @@ const ChipSelect: FC<ChipSelectProps> = (props: ChipSelectProps) => {
     <FormControl {...control}>
       { label && <InputLabel>{ label }</InputLabel> }
       <Select {...SelectProps}
-        multiple
+        multiple label={label}
         value={value} onChange={onChange}
         renderValue={selected => (
           <div className={styles.chips}>

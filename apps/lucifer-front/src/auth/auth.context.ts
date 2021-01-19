@@ -1,7 +1,7 @@
 import { createContext, useContext, useDebugValue } from 'react';
 import { PopupLoginOptions, RedirectLoginOptions, LogoutOptions, GetTokenSilentlyOptions } from '@auth0/auth0-spa-js';
 
-import { AuthUser } from './models/user';
+import { AuthUser } from './auth-user';
 
 // Type
 export type AuthContextProps = {

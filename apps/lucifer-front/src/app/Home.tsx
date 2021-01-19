@@ -1,14 +1,13 @@
 import React from 'react';
 
-import { Typography } from '@material-ui/core';
+import { Chip, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { CopyButton, LabelledText } from '@lucifer/react/basics';
 
 import { useAuth } from '../auth/auth.context';
-import { useAuthToken, usePermissions } from '../auth/auth.hooks';
-
-import PermissionChip from '../users/components/PermissionChip';
+import { useAuthToken } from '../auth/auth.hooks';
+import { ROLES_KEY } from '../auth/auth-user';
 
 // Styles
 const useStyles = makeStyles(({ spacing }) => ({
@@ -31,7 +30,6 @@ const useStyles = makeStyles(({ spacing }) => ({
 const Home = () => {
   // Auth
   const { user } = useAuth();
-  const { permissions = [] } = usePermissions();
   const token = useAuthToken();
 
   // Render
@@ -46,9 +44,9 @@ const Home = () => {
       >
         <Typography noWrap>{ token }</Typography>
       </LabelledText>
-      <LabelledText label="Permissions">
-        { permissions.map(perm => (
-          <PermissionChip key={perm} className={styles.chip} permission={perm} />
+      <LabelledText label="Roles">
+        { user?.[ROLES_KEY]?.map(perm => (
+          <Chip key={perm} className={styles.chip} label={perm} />
         )) }
       </LabelledText>
     </div>
