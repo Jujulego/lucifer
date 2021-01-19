@@ -98,7 +98,7 @@ jobs:
         run: yarn run nx run-many --all --target=test --scan --skip-nx-cache --codeCoverage --coverageReporters=clover
 
       - name: Codecov
-        uses: codecov/codecov-action@v1.0.6
+        uses: codecov/codecov-action@v1.2.1
         with:
           directory: coverage
 
