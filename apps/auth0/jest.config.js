@@ -1,14 +1,18 @@
 module.exports = {
-  displayName: 'auth0-rules',
+  displayName: 'auth0',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
-      tsConfig: '<rootDir>/tsconfig.spec.json',
+      tsconfig: '<rootDir>/tsconfig.spec.json',
     },
   },
   transform: {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/apps/auth0-rules',
+  coverageDirectory: '../../coverage/apps/auth0',
+  collectCoverageFrom: [
+    "src/**/*.ts",
+    "!**/*.test.ts"
+  ]
 };

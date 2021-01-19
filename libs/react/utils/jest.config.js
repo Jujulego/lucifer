@@ -9,4 +9,9 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../../coverage/libs/react/utils',
+  collectCoverageFrom: [
+    "src/**/*.{ts,tsx}",
+    "!**/*.test.{ts,tsx}",
+    "!**/*.stories.{ts,tsx}",
+  ],
 };
