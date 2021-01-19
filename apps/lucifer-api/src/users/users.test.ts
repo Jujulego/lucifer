@@ -124,7 +124,7 @@ describe('UsersService.get', () => {
         name:     user.name,
         nickname: user.nickname,
         picture:  user.picture,
-        permissions: []
+        roles:    []
       });
 
     // Check call

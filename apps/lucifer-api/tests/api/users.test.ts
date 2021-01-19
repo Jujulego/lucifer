@@ -254,7 +254,7 @@ describe('PUT /users/:id', () => {
     // Check body
     expect(rep.body).toEqual({
       error: 'Bad Request',
-      message: ['each value in roles must be one of the following values: admin,reader'],
+      message: ['each value in roles must be one of the following values: admin, reader'],
       statusCode: 400
     });
   });
