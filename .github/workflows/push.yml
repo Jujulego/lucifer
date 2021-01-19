@@ -95,10 +95,12 @@ jobs:
         run: yarn run nx run-many --all --target=db-migrate --scan
 
       - name: Tests
-        run: yarn run nx run-many --all --target=test --scan --skip-nx-cache --codeCoverage
+        run: yarn run nx run-many --all --target=test --scan --skip-nx-cache --codeCoverage --coverageReporters=clover
 
       - name: Codecov
         uses: codecov/codecov-action@v1.0.6
+        with:
+          directory: coverage
 
   build:
     runs-on: ubuntu-latest
