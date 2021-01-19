@@ -6,6 +6,7 @@ exports[`should render correctly 1`] = `
     Test
   </WithStyles(ForwardRef(InputLabel))>
   <WithStyles(ForwardRef(Select))
+    label="Test"
     multiple={true}
     onChange={[Function]}
     renderValue={[Function]}
