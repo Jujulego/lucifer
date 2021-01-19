@@ -5,7 +5,7 @@
       "root": "apps/auth0",
       "sourceRoot": "apps/auth0/src",
       "projectType": "application",
-      "prefix": "auth0-rules",
+      "prefix": "auth0",
       "architect": {
         "build": {
           "builder": ".:tsc-build",

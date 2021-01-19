@@ -11,4 +11,8 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/apps/lucifer-api',
+  collectCoverageFrom: [
+    "src/**/*.ts",
+    "!**/*.test.ts"
+  ]
 };

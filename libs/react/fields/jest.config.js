@@ -10,6 +10,11 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../../coverage/libs/react/fields',
+  collectCoverageFrom: [
+    "src/**/*.{ts,tsx}",
+    "!**/*.test.{ts,tsx}",
+    "!**/*.stories.{ts,tsx}",
+  ],
   snapshotSerializers: [
     "enzyme-to-json/serializer"
   ]

@@ -9,4 +9,8 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../../coverage/libs/react/api',
+  collectCoverageFrom: [
+    "src/**/*.{ts,tsx}",
+    "!**/*.test.ts"
+  ],
 };

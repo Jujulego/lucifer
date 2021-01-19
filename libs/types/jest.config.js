@@ -11,4 +11,8 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/libs/types',
+  collectCoverageFrom: [
+    "src/**/*.ts",
+    "!**/*.test.ts",
+  ],
 };

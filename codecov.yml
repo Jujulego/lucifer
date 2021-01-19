@@ -1,0 +1,52 @@
+coverage:
+  status:
+    project:
+      auth0:
+        target: auto
+        paths:
+          - apps/auth0/**/*
+
+      lucifer-api:
+        target: auto
+        paths:
+          - apps/lucifer-api/**/*
+
+      lucifer-front:
+        target: auto
+        paths:
+          - apps/lucifer-front/**/*
+
+      react-api:
+        target: auto
+        paths:
+          - libs/react-api/**/*
+
+      react-basics:
+        target: auto
+        paths:
+          - libs/react-basics/**/*
+
+      react-fields:
+        target: auto
+        paths:
+          - libs/react-fields/**/*
+
+      react-table:
+        target: auto
+        paths:
+          - libs/react-table/**/*
+
+      react-utils:
+        target: auto
+        paths:
+          - libs/react-utils/**/*
+
+      types:
+        target: auto
+        paths:
+          - libs/types/**/*
+
+      utils:
+        target: auto
+        paths:
+          - libs/utils/**/*
