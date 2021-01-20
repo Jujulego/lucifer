@@ -5,8 +5,6 @@ import { plainToClass } from 'class-transformer';
 import { Connection } from 'typeorm';
 
 import { DatabaseModule } from '../database.module';
-import { MachinesModule } from '../machines/machines.module';
-import { ProjectsModule } from '../projects/projects.module';
 import { ManagementClientMock } from '../../mocks/management-client.mock';
 import { generateTextContext } from '../../tests/utils';
 
@@ -27,8 +25,6 @@ beforeAll(async () => {
   app = await Test.createTestingModule({
     imports: [
       DatabaseModule,
-      MachinesModule,
-      ProjectsModule,
       UsersModule,
     ]
   })

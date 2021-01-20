@@ -2,9 +2,9 @@ import { INestApplication } from '@nestjs/common';
 import { ManagementClient } from 'auth0';
 import supertest from 'supertest';
 
+import { IUpdateUser } from '@lucifer/types';
 import { generateTestToken, initTestingApp } from '../utils';
 import { ManagementClientMock } from '../../mocks/management-client.mock';
-import { IUpdateUser } from '@lucifer/types';
 
 // Server setup
 let app: INestApplication;

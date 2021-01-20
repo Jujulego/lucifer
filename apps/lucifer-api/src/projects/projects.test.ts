@@ -3,7 +3,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { Connection, In } from 'typeorm';
 
 import { DatabaseModule } from '../database.module';
-import { MachinesModule } from '../machines/machines.module';
 import { UsersService } from '../users/users.service';
 import { LocalUser } from '../users/local-user.entity';
 import { UsersServiceMock } from '../../mocks/users-service.mock';
@@ -23,7 +22,6 @@ beforeAll(async () => {
   app = await Test.createTestingModule({
     imports: [
       DatabaseModule,
-      MachinesModule,
       ProjectsModule
     ]
   })
