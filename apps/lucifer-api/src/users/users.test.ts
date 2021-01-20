@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { NotFoundException } from '@nestjs/common';
+import { InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { ManagementClient } from 'auth0';
 import { plainToClass } from 'class-transformer';
 import { Connection } from 'typeorm';
@@ -72,34 +72,34 @@ const users = [
   },
 ];
 
-beforeEach(() => {
+let lcu: LocalUser;
+
+beforeEach(async () => {
   jest.resetAllMocks();
   jest.restoreAllMocks();
 
   // Mocks
   mgmtClient.mockSetUsers(users);
+
+  jest.spyOn(rolesService, 'getUserRoles')
+    .mockResolvedValue([]);
+
+  // Database
+  const repo = database.getRepository(LocalUser);
+
+  lcu = await repo.save(
+    repo.create({ id: 'tests|users-test-1' })
+  );
+});
+
+afterEach(async () => {
+  const repo = database.getRepository(LocalUser);
+
+  await repo.delete(lcu.id);
 });
 
 // Tests suites
 describe('UsersService.getLocal', () => {
-  // Test data
-  let lcu: LocalUser;
-
-  beforeEach(async () => {
-    const repo = database.getRepository(LocalUser);
-
-    lcu = await repo.save(
-      repo.create({ id: 'tests|users-test-1' })
-    );
-  });
-
-  afterEach(async () => {
-    const repo = database.getRepository(LocalUser);
-
-    await repo.delete(lcu.id);
-  });
-
-  // Tests
   it('should return existing user', async () => {
     await expect(service.getLocal(lcu.id))
       .resolves.toEqual(lcu);
@@ -157,6 +157,16 @@ describe('UsersService.get', () => {
     await expect(service.get('not-a-user-id'))
       .rejects.toEqual(new NotFoundException(`User not-a-user-id not found`));
   });
+
+  it('should throw if user misses mandatory fields', async () => {
+    mgmtClient.mockSetUsers([
+      {}
+    ]);
+
+    // Call
+    await expect(service.get('not-a-user-id'))
+      .rejects.toEqual(new NotFoundException(`User not-a-user-id not found`));
+  });
 });
 
 describe('UsersService.list', () => {
@@ -175,6 +185,14 @@ describe('UsersService.list', () => {
     // Check call
     expect(mgmtClient.getUsers).toHaveBeenCalledWith({ sort: 'user_id:1' });
   });
+
+  it('should throw if user misses mandatory fields', async () => {
+    mgmtClient.mockSetUsers([{}]);
+
+    // Call
+    await expect(service.list())
+      .rejects.toEqual(new InternalServerErrorException());
+  });
 });
 
 describe('UsersService.update', () => {
@@ -184,9 +202,6 @@ describe('UsersService.update', () => {
     // Mocks
     jest.spyOn(mgmtClient, 'getUser');
     jest.spyOn(mgmtClient, 'updateUser');
-
-    jest.spyOn(rolesService, 'getUserRoles')
-      .mockResolvedValue([]);
 
     jest.spyOn(rolesService, 'updateUserRoles')
       .mockImplementation(async (ctx, id, target) => target);
