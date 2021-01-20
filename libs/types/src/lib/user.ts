@@ -12,6 +12,7 @@ export interface IUser {
   id:         string;
   email:      string;
   name:       string;
+  canUpdate:  boolean;
   emailVerified?: boolean;
   nickname?:  string;
   username?:  string;
@@ -38,6 +39,7 @@ export class User implements IUser {
   id:         string;
   email:      string;
   name:       string;
+  canUpdate:  boolean;
   emailVerified?: boolean;
   nickname?:  string;
   username?:  string;

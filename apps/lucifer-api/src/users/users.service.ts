@@ -25,7 +25,11 @@ export class UsersService {
   ) {}
 
   // Methods
-  private format(ath: Auth0User, lcu?: LocalUser): User {
+  private _canUpdate(ath: Auth0User): boolean {
+    return ath.identities?.some(id => id.provider === 'auth0') ?? true;
+  }
+
+  private _format(ath: Auth0User, lcu?: LocalUser): User {
     // Mandatory fields
     const { user_id, name, email } = ath;
 
@@ -35,8 +39,10 @@ export class UsersService {
     }
 
     const usr: IUser = {
-      id: user_id,
-      name, email,
+      id:        user_id,
+      name:      name,
+      email:     email,
+      canUpdate: this._canUpdate(ath)
     };
 
     // Optional fields
@@ -55,10 +61,10 @@ export class UsersService {
     return plainToClass(User, usr);
   }
 
-  private formatAll(aths: Auth0User[], lcus: LocalUser[]): User[] {
+  private _formatAll(aths: Auth0User[], lcus: LocalUser[]): User[] {
     // Simple cases
     if (aths.length === 0) return [];
-    if (lcus.length === 0) return aths.map(ath => this.format(ath));
+    if (lcus.length === 0) return aths.map(ath => this._format(ath));
 
     // Build users
     const results: User[] = [];
@@ -75,7 +81,7 @@ export class UsersService {
         if (lcu.id.localeCompare(ath.user_id || '') > 0) break;
         if (lcu.id === ath.user_id) {
           added = true;
-          results.push(this.format(ath, lcu));
+          results.push(this._format(ath, lcu));
 
           break;
         }
@@ -84,7 +90,7 @@ export class UsersService {
       }
 
       if (!added) {
-        results.push(this.format(ath));
+        results.push(this._format(ath));
       }
     }
 
@@ -125,7 +131,7 @@ export class UsersService {
     }
 
     // Build users
-    const usr = this.format(ath, lcu);
+    const usr = this._format(ath, lcu);
     usr.roles = roles || [];
 
     return usr;
@@ -139,7 +145,7 @@ export class UsersService {
       })
     ]);
 
-    return this.formatAll(aths, lcus);
+    return this._formatAll(aths, lcus);
   }
 
   async update(ctx: Context, id: string, update: UpdateUser): Promise<User> {
@@ -158,7 +164,7 @@ export class UsersService {
     if (update.roles) ctx.need('update:roles');
 
     // Updates
-    if (update.name || update.email) {
+    if (this._canUpdate(ath) && (update.name || update.email)) {
       ath = await this.auth0.updateUser({ id }, {
         name: update.name ?? ath.name,
         email: update.email ?? ath.email
@@ -170,7 +176,7 @@ export class UsersService {
     }
 
     // Build user
-    const usr = this.format(ath, lcu);
+    const usr = this._format(ath, lcu);
     usr.roles = roles || [];
 
     return usr;

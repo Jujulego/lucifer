@@ -18,6 +18,7 @@ import AppBar from '../layout/components/AppBar';
 import { ProjectsRouter } from '../projects/ProjectsRouter';
 import { UserRouter } from '../users/UserRouter';
 import Home from './Home';
+import ErrorsSnackbar from '../snack/components/ErrorsSnackbar';
 
 // Component
 const App: FC = () => {
@@ -51,6 +52,7 @@ const App: FC = () => {
             </ApiCache>
           </AuthGate>
         </Router>
+        <ErrorsSnackbar />
       </CatchErrors>
     </ThemeProvider>
   );

@@ -96,10 +96,11 @@ export const UserDetailsTab = (props: UserDetailsProps) => {
         <Grid container spacing={4} direction="column">
           <GridLine>
             <GridItem>
-              { isAdmin ? (
+              { isAllowed ? (
                 <TextField
                   label="Nom" variant="outlined" fullWidth
                   name="name" inputRef={register}
+                  disabled={!user.canUpdate}
                   error={!!errors.name} helperText={errors.name?.message}
                 />
               ) : (
@@ -109,10 +110,11 @@ export const UserDetailsTab = (props: UserDetailsProps) => {
               ) }
             </GridItem>
             <GridItem>
-              { isAdmin ? (
+              { isAllowed ? (
                 <TextField
                   label="Email" variant="outlined" fullWidth
                   name="email" inputRef={register}
+                  disabled={!user.canUpdate}
                   error={!!errors.email} helperText={errors.email?.message}
                   InputProps={{
                     endAdornment: user.emailVerified && (

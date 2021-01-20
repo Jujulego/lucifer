@@ -92,7 +92,8 @@ describe('GET /users/:id', () => {
       id:    basic.user_id,
       email: basic.email,
       name:  basic.name,
-      roles: []
+      roles: [],
+      canUpdate: true
     });
   });
 
@@ -107,7 +108,8 @@ describe('GET /users/:id', () => {
         id:    admin.user_id,
         email: admin.email,
         name:  admin.name,
-        roles: []
+        roles: [],
+        canUpdate: true
       });
   });
 
@@ -121,7 +123,8 @@ describe('GET /users/:id', () => {
       .toEqual({
         id:    basic.user_id,
         email: basic.email,
-        name:  basic.name
+        name:  basic.name,
+        canUpdate: true
       });
   });
 
@@ -175,7 +178,8 @@ describe('PUT /users/:id', () => {
       id:    basic.user_id,
       email: update.email,
       name:  update.name,
-      roles: []
+      roles: [],
+      canUpdate: true
     });
   });
 
@@ -195,7 +199,8 @@ describe('PUT /users/:id', () => {
     expect(rep.body).toEqual({
       id:    basic.user_id,
       email: update.email,
-      name:  update.name
+      name:  update.name,
+      canUpdate: true
     });
   });
 
@@ -215,7 +220,8 @@ describe('PUT /users/:id', () => {
     expect(rep.body).toEqual({
       id:    basic.user_id,
       email: update.email,
-      name:  update.name
+      name:  update.name,
+      canUpdate: true
     });
   });
 

@@ -46,9 +46,38 @@ afterAll(async () => {
 });
 
 // Mocks
+const users = [
+  {
+    user_id: 'tests|users-test-1',
+    email:   'test-1@test.com',
+    name:    'Test 1'
+  },
+  {
+    user_id: 'tests|users-test-2',
+    email:   'test-2@test.com',
+    name:    'Test 2'
+  },
+  {
+    user_id: 'tests|users-test-3',
+    email:   'test-3@test.com',
+    name:    'Test 3',
+    identities: [
+      {
+        connection: 'test',
+        provider:   'test',
+        user_id:    'users-test-3',
+        isSocial:   false
+      }
+    ]
+  },
+];
+
 beforeEach(() => {
   jest.resetAllMocks();
   jest.restoreAllMocks();
+
+  // Mocks
+  mgmtClient.mockSetUsers(users);
 });
 
 // Tests suites
@@ -60,7 +89,7 @@ describe('UsersService.getLocal', () => {
     const repo = database.getRepository(LocalUser);
 
     lcu = await repo.save(
-      repo.create({ id: 'tests|users-01' })
+      repo.create({ id: 'tests|users-test-1' })
     );
   });
 
@@ -77,11 +106,11 @@ describe('UsersService.getLocal', () => {
   });
 
   it('should create existing user in database', async () => {
-    const user = await service.getLocal('tests|users-02');
+    const user = await service.getLocal('tests|users-test-2');
 
     try {
       expect(user).toEqual({
-        id: 'tests|users-02'
+        id: 'tests|users-test-2'
       });
     } finally {
       const repo = database.getRepository(LocalUser);
@@ -95,80 +124,48 @@ describe('UsersService.getLocal', () => {
       .mockImplementation(async () => undefined);
 
     // Tests
-    await expect(service.getLocal('tests|users-02'))
-      .rejects.toEqual(new NotFoundException('User tests|users-02 not found'));
+    await expect(service.getLocal('tests|users-test-2'))
+      .rejects.toEqual(new NotFoundException('User tests|users-test-2 not found'));
   });
 });
 
 describe('UsersService.get', () => {
-  const user = {
-    user_id:  'tests|users-auth0-11',
-    email:    'test11@users.auth0',
-    emailVerified: false,
-    name:     'Test',
-    nickname: 'test',
-    picture:  'https://auth0.users.com/test11'
-  };
+  beforeEach(() => {
+    jest.spyOn(mgmtClient, 'getUser');
+  })
 
   // Tests
   it('should return parsed user', async () => {
-    // Mock
-    const spy = jest.spyOn(mgmtClient, 'getUser')
-      .mockImplementation(async () => user);
+    const user = users[0];
 
     // Call
     await expect(service.get(user.user_id))
       .resolves.toEqual({
-        id:       user.user_id,
-        email:    user.email,
-        name:     user.name,
-        nickname: user.nickname,
-        picture:  user.picture,
-        roles:    []
+        id:        user.user_id,
+        email:     user.email,
+        name:      user.name,
+        roles:     [],
+        canUpdate: true
       });
 
     // Check call
-    expect(spy).toHaveBeenCalledTimes(1);
-    expect(spy).toHaveBeenCalledWith({ id: user.user_id });
+    expect(mgmtClient.getUser).toHaveBeenCalledWith({ id: user.user_id });
   });
 
   it('should throw if user is undefined', async () => {
-    // Mock
-    jest.spyOn(mgmtClient, 'getUser')
-      .mockImplementation(async () => undefined);
-
     // Call
-    await expect(service.get(user.user_id))
-      .rejects.toEqual(new NotFoundException(`User ${user.user_id} not found`));
+    await expect(service.get('not-a-user-id'))
+      .rejects.toEqual(new NotFoundException(`User not-a-user-id not found`));
   });
 });
 
 describe('UsersService.list', () => {
-  const users = [
-    {
-      user_id:  'tests|users-auth0-21',
-      email:    'test21@users.auth0',
-      emailVerified: false,
-      name:     'Test',
-      nickname: 'test',
-      picture:  'https://auth0.users.com/test21'
-    },
-    {
-      user_id:  'tests|users-auth0-22',
-      email:    'test22@users.auth0',
-      emailVerified: false,
-      name:     'Test',
-      nickname: 'test',
-      picture:  'https://auth0.users.com/test22'
-    }
-  ];
+  beforeEach(() => {
+    jest.spyOn(mgmtClient, 'getUsers');
+  });
 
   // Tests
   it('should return parsed user list', async () => {
-    // Mock
-    const spy = jest.spyOn(mgmtClient, 'getUsers')
-      .mockImplementation(async () => users);
-
     // Call
     await expect(service.list())
       .resolves.toEqual(
@@ -176,32 +173,20 @@ describe('UsersService.list', () => {
       );
 
     // Check call
-    expect(spy).toHaveBeenCalledTimes(1);
-    expect(spy).toHaveBeenCalledWith({ sort: 'user_id:1' });
+    expect(mgmtClient.getUsers).toHaveBeenCalledWith({ sort: 'user_id:1' });
   });
 });
 
 describe('UsersService.update', () => {
   const ctx = generateTextContext('test', ['update:users', 'update:roles']);
-  const user = {
-    user_id:  'tests|users-auth0-31',
-    email:    'test31@users.auth0',
-    emailVerified: false,
-    name:     'Test',
-    nickname: 'test',
-    picture:  'https://auth0.users.com/test31'
-  };
 
   beforeEach(() => {
     // Mocks
-    jest.spyOn(mgmtClient, 'getUser')
-      .mockResolvedValue(user);
-
-    jest.spyOn(mgmtClient, 'updateUser')
-      .mockImplementation(async (params, data) => ({ ...user, ...data }));
+    jest.spyOn(mgmtClient, 'getUser');
+    jest.spyOn(mgmtClient, 'updateUser');
 
     jest.spyOn(rolesService, 'getUserRoles')
-      .mockResolvedValue([])
+      .mockResolvedValue([]);
 
     jest.spyOn(rolesService, 'updateUserRoles')
       .mockImplementation(async (ctx, id, target) => target);
@@ -209,20 +194,20 @@ describe('UsersService.update', () => {
 
   // Tests
   it('should update user', async () => {
+    const user = users[0];
     const update = plainToClass(UpdateUser, {
-      name: 'Test #31',
-      email: 'test31@gmail.com',
+      email:   '1-tset@test.com',
+      name:    '1 tseT'
     });
 
     // Call
     await expect(service.update(ctx, user.user_id, update))
       .resolves.toEqual({
-        id:       user.user_id,
-        email:    update.email,
-        name:     update.name,
-        nickname: user.nickname,
-        picture:  user.picture,
-        roles:    []
+        id:        user.user_id,
+        email:     update.email,
+        name:      update.name,
+        roles:     [],
+        canUpdate: true
       });
 
     // Check calls
@@ -231,6 +216,7 @@ describe('UsersService.update', () => {
   });
 
   it('should update user roles', async () => {
+    const user = users[0];
     const update = plainToClass(UpdateUser, {
       roles: ['reader'],
     });
@@ -238,12 +224,11 @@ describe('UsersService.update', () => {
     // Call
     await expect(service.update(ctx, user.user_id, update))
       .resolves.toEqual({
-        id:       user.user_id,
-        email:    user.email,
-        name:     user.name,
-        nickname: user.nickname,
-        picture:  user.picture,
-        roles:    update.roles
+        id:        user.user_id,
+        email:     user.email,
+        name:      user.name,
+        roles:     update.roles,
+        canUpdate: true
       });
 
     // Check calls
@@ -252,17 +237,39 @@ describe('UsersService.update', () => {
   });
 
   it('should do nothing', async () => {
+    const user = users[0];
     const update = plainToClass(UpdateUser, {});
 
     // Call
     await expect(service.update(ctx, user.user_id, update))
       .resolves.toEqual({
-        id:       user.user_id,
-        email:    user.email,
-        name:     user.name,
-        nickname: user.nickname,
-        picture:  user.picture,
-        roles:    []
+        id:        user.user_id,
+        email:     user.email,
+        name:      user.name,
+        roles:     [],
+        canUpdate: true
+      });
+
+    // Check calls
+    expect(mgmtClient.updateUser).not.toBeCalled();
+    expect(rolesService.updateUserRoles).not.toBeCalled();
+  });
+
+  it('should ignore updates on non auth0 user', async () => {
+    const user = users[2];
+    const update = plainToClass(UpdateUser, {
+      email:   '3-tset@test.com',
+      name:    '3 tseT'
+    });
+
+    // Call
+    await expect(service.update(ctx, user.user_id, update))
+      .resolves.toEqual({
+        id:        user.user_id,
+        email:     user.email,
+        name:      user.name,
+        roles:     [],
+        canUpdate: false
       });
 
     // Check calls
@@ -271,6 +278,7 @@ describe('UsersService.update', () => {
   });
 
   it('should throw if user is undefined', async () => {
+    const user = users[0];
     const update = plainToClass(UpdateUser, {});
 
     // Mock
