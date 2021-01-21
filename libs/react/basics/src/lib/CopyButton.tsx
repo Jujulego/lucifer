@@ -73,8 +73,6 @@ const CopyButton: FC<CopyButtonProps> = (props) => {
   return (
     <Tooltip
       title={tooltip} open={showTooltip}
-      onOpen={() => setShowTooltip(true)}
-      onClose={() => setShowTooltip(false)}
       disableFocusListener disableHoverListener disableTouchListener
     >
       <IconButton {...btn} onClick={handleCopy}>

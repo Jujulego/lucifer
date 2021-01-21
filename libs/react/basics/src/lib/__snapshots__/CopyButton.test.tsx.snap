@@ -5,8 +5,6 @@ exports[`should render correctly 1`] = `
   disableFocusListener={true}
   disableHoverListener={true}
   disableTouchListener={true}
-  onClose={[Function]}
-  onOpen={[Function]}
   open={false}
   title="Copié !"
 >

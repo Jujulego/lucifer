@@ -62,8 +62,6 @@ it('should copy on click', () => {
     jest.runAllTimers();
   });
 
-  expect(copy).toHaveBeenCalledTimes(1);
   expect(copy).toHaveBeenCalledWith('test', { format: 'text/plain' });
-
   expect(spy).toHaveBeenCalledTimes(1);
 });
