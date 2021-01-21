@@ -359,6 +359,11 @@ jobs:
         env:
           CYPRESS_Auth0ClientSecret: ${{ secrets.E2E_AUTH0_CLIENT_SECRET }}
 
+      - name: Codecov
+        uses: codecov/codecov-action@v1.2.1
+        with:
+          flags: e2e
+
       - name: Archive cypress results
         uses: actions/upload-artifact@v2
         with:
