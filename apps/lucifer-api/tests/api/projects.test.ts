@@ -4,8 +4,10 @@ import { Connection, In } from 'typeorm';
 import supertest from 'supertest';
 
 import { ICreateProject, IUpdateProject } from '@lucifer/types';
+import { should } from '@lucifer/utils';
 import { LocalUser } from '../../src/users/local-user.entity';
 import { Project } from '../../src/projects/project.entity';
+import { ProjectsService } from '../../src/projects/projects.service';
 
 import { generateTestToken, initTestingApp } from '../utils';
 import { ManagementClientMock } from '../../mocks/management-client.mock';
@@ -14,6 +16,7 @@ import { ManagementClientMock } from '../../mocks/management-client.mock';
 let app: INestApplication;
 let mgmtClient: ManagementClientMock;
 let database: Connection;
+let service: ProjectsService;
 let request: ReturnType<typeof supertest>;
 
 beforeAll(async () => {
@@ -23,6 +26,7 @@ beforeAll(async () => {
   // Start server
   request = supertest(app.getHttpServer());
   database = app.get(Connection);
+  service = app.get(ProjectsService);
 });
 
 afterAll(async () => {
@@ -117,14 +121,10 @@ describe('POST /:userId/projects', () => {
       .expect(400)
       .expect('Content-Type', /json/);
 
-    expect(rep.body).toEqual({
-      error: 'Bad Request',
-      message: expect.arrayContaining([
-        'id must be a string',
-        'name must be a string',
-      ]),
-      statusCode: 400
-    });
+    expect(rep.body).toEqual(should.be.badRequest(
+      'id must be a string',
+      'name must be a string',
+    ));
   });
 
   it('should return 400 (too long id & name)', async () => {
@@ -137,14 +137,10 @@ describe('POST /:userId/projects', () => {
       .expect(400)
       .expect('Content-Type', /json/);
 
-    expect(rep.body).toEqual({
-      error: 'Bad Request',
-      message: expect.arrayContaining([
-        'id must be shorter than or equal to 100 characters',
-        'name must be shorter than or equal to 100 characters',
-      ]),
-      statusCode: 400
-    });
+    expect(rep.body).toEqual(should.be.badRequest(
+      'id must be shorter than or equal to 100 characters',
+      'name must be shorter than or equal to 100 characters',
+    ));
   });
 
   it('should return 400 (invalid id)', async () => {
@@ -157,13 +153,9 @@ describe('POST /:userId/projects', () => {
       .expect(400)
       .expect('Content-Type', /json/);
 
-    expect(rep.body).toEqual({
-      error: 'Bad Request',
-      message: expect.arrayContaining([
-        'id must match /^[a-z0-9-]+$/ regular expression'
-      ]),
-      statusCode: 400
-    });
+    expect(rep.body).toEqual(should.be.badRequest(
+      'id must match /^[a-z0-9-]+$/ regular expression'
+    ));
   });
 
   it('should return 401 (not authenticated)', async () => {
@@ -192,11 +184,7 @@ describe('POST /:userId/projects', () => {
       .send({ id: prj.id, name: prj.name })
       .expect(409);
 
-    expect(rep.body).toEqual({
-      error: 'Conflict',
-      message: 'Project with id test-1 already exists',
-      statusCode: 409
-    });
+    expect(rep.body).toEqual(should.be.httpError(409, 'Project with id test-1 already exists'));
   });
 });
 
@@ -303,6 +291,10 @@ describe('PUT /:userId/projects/:id', () => {
     description: 'Test Project'
   };
 
+  beforeEach(() => {
+    jest.spyOn(service, 'update');
+  });
+
   // Tests
   it('should update project', async () => {
     const prj = projects[0];
@@ -314,6 +306,7 @@ describe('PUT /:userId/projects/:id', () => {
       .expect('Content-Type', /json/);
 
     expect(rep.body).toEqual({ ...prj, ...data });
+    expect(service.update).toBeCalledWith(prj.adminId, prj.id, data);
   });
 
   it('should update project (me special id)', async () => {
@@ -326,6 +319,7 @@ describe('PUT /:userId/projects/:id', () => {
       .expect('Content-Type', /json/);
 
     expect(rep.body).toEqual({ ...prj, ...data });
+    expect(service.update).toBeCalledWith(prj.adminId, prj.id, data);
   });
 
   it('should return 400 (too long name)', async () => {
@@ -339,13 +333,10 @@ describe('PUT /:userId/projects/:id', () => {
       .expect(400)
       .expect('Content-Type', /json/);
 
-    expect(rep.body).toEqual({
-      error: 'Bad Request',
-      message: expect.arrayContaining([
-        'name must be shorter than or equal to 100 characters',
-      ]),
-      statusCode: 400
-    });
+    expect(rep.body).toEqual(should.be.badRequest(
+      'name must be shorter than or equal to 100 characters'
+    ));
+    expect(service.update).not.toBeCalled();
   });
 
   it('should return 401 (not authenticated)', async () => {
@@ -353,6 +344,8 @@ describe('PUT /:userId/projects/:id', () => {
 
     await request.put(`/${prj.adminId}/projects/${prj.id}`)
       .expect(401);
+
+    expect(service.update).not.toBeCalled();
   });
 
   it('should return 403 (missing permissions)', async () => {
@@ -361,6 +354,8 @@ describe('PUT /:userId/projects/:id', () => {
     await request.put(`/${prj.adminId}/projects/${prj.id}`)
       .set('Authorization', `Bearer ${basicToken}`)
       .expect(403);
+
+    expect(service.update).not.toBeCalled();
   });
 
   it('should return 404 (unknown project)', async () => {
@@ -369,6 +364,8 @@ describe('PUT /:userId/projects/:id', () => {
     await request.put(`/${prj.adminId}/projects/not-a-project-id`)
       .set('Authorization', `Bearer ${adminToken}`)
       .expect(404);
+
+    expect(service.update).toBeCalledWith(prj.adminId, 'not-a-project-id', {});
   });
 
   it('should return 404 (unknown project for user)', async () => {
@@ -377,16 +374,37 @@ describe('PUT /:userId/projects/:id', () => {
     await request.put(`/not-a-user-id/projects/${prj.id}`)
       .set('Authorization', `Bearer ${adminToken}`)
       .expect(404);
+
+    expect(service.update).toBeCalledWith('not-a-user-id', prj.id, {});
   });
 });
 
 describe('DELETE /:userId/projects/:id', () => {
+  beforeEach(() => {
+    jest.spyOn(service, 'delete');
+  });
+
+  // Tests
   it('should delete project', async () => {
     const prj = projects[0];
 
     await request.delete(`/${prj.adminId}/projects/${prj.id}`)
       .set('Authorization', `Bearer ${adminToken}`)
       .expect(200);
+
+    expect(service.delete)
+      .toBeCalledWith(prj.adminId, [prj.id]);
+  });
+
+  it('should delete project (me special id)', async () => {
+    const prj = projects[0];
+
+    await request.delete(`/me/projects/${prj.id}`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .expect(200);
+
+    expect(service.delete)
+      .toBeCalledWith(prj.adminId, [prj.id]);
   });
 
   it('should return 401 (not authenticated)', async () => {
@@ -394,6 +412,8 @@ describe('DELETE /:userId/projects/:id', () => {
 
     await request.delete(`/${prj.adminId}/projects/${prj.id}`)
       .expect(401);
+
+    expect(service.delete).not.toBeCalled();
   });
 
   it('should return 403 (missing permissions)', async () => {
@@ -402,5 +422,56 @@ describe('DELETE /:userId/projects/:id', () => {
     await request.delete(`/${prj.adminId}/projects/${prj.id}`)
       .set('Authorization', `Bearer ${basicToken}`)
       .expect(403);
+
+    expect(service.delete).not.toBeCalled();
+  });
+});
+
+describe('DELETE /:userId/projects', () => {
+  let ids: string[];
+
+  beforeEach(() => {
+    jest.spyOn(service, 'delete');
+    ids = projects.map(prj => prj.id);
+  });
+
+  // Tests
+  it('should delete project', async () => {
+    await request.delete(`/${admin.user_id}/projects`)
+      .query({ ids: ids })
+      .set('Authorization', `Bearer ${adminToken}`)
+      .expect(200);
+
+    expect(service.delete)
+      .toBeCalledWith(admin.user_id, ids);
+  });
+
+  it('should delete project (me special id)', async () => {
+    await request.delete('/me/projects')
+      .query({ ids: ids })
+      .set('Authorization', `Bearer ${adminToken}`)
+      .expect(200);
+
+    expect(service.delete)
+      .toBeCalledWith(admin.user_id, ids);
+  });
+
+  it('should return 401 (not authenticated)', async () => {
+    const prj = projects[0];
+
+    await request.delete(`/${prj.adminId}/projects`)
+      .expect(401);
+
+    expect(service.delete).not.toBeCalled();
+  });
+
+  it('should return 403 (missing permissions)', async () => {
+    const prj = projects[0];
+
+    await request.delete(`/${prj.adminId}/projects`)
+      .set('Authorization', `Bearer ${basicToken}`)
+      .expect(403);
+
+    expect(service.delete).not.toBeCalled();
   });
 });
