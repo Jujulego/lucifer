@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render correctly (not refreshing) 1`] = `
+<WithStyles(ForwardRef(IconButton))
+  classes={
+    Object {
+      "label": "makeStyles-label-1",
+    }
+  }
+  color="inherit"
+  disabled={false}
+>
+  <ForwardRef(Fade)
+    in={false}
+    mountOnEnter={true}
+    unmountOnExit={true}
+  >
+    <WithStyles(ForwardRef(CircularProgress))
+      size={24}
+    />
+  </ForwardRef(Fade)>
+  <ForwardRef(Fade)
+    in={true}
+  >
+    <Memo([object Object]) />
+  </ForwardRef(Fade)>
+</WithStyles(ForwardRef(IconButton))>
+`;
+
+exports[`should render correctly (refreshing) 1`] = `
+<WithStyles(ForwardRef(IconButton))
+  classes={
+    Object {
+      "label": "makeStyles-label-1",
+    }
+  }
+  color="inherit"
+  disabled={true}
+>
+  <ForwardRef(Fade)
+    in={true}
+    mountOnEnter={true}
+    unmountOnExit={true}
+  >
+    <WithStyles(ForwardRef(CircularProgress))
+      size={24}
+    />
+  </ForwardRef(Fade)>
+  <ForwardRef(Fade)
+    in={false}
+  >
+    <Memo([object Object]) />
+  </ForwardRef(Fade)>
+</WithStyles(ForwardRef(IconButton))>
+`;

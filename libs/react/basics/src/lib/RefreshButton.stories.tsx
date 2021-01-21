@@ -23,3 +23,13 @@ export const Primary = Template.bind({});
 Primary.args = {
   refreshing: false,
 };
+
+export const Refreshing = Template.bind({});
+Refreshing.args = {
+  refreshing: true,
+};
+
+export const Disabled = Template.bind({});
+Disabled.args = {
+  disabled: true,
+};
