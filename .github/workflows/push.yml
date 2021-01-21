@@ -295,6 +295,15 @@ jobs:
         env:
           CYPRESS_Auth0ClientSecret: ${{ secrets.E2E_AUTH0_CLIENT_SECRET }}
 
+      - name: Generate coverage report
+        run: npx nyc report --reporter=clover --reporter=lcovonly --reporter=json --cwd apps/lucifer-e2e --report-dir ../../coverage/apps/lucifer-e2e
+
+      - name: Codecov
+        uses: codecov/codecov-action@v1.2.1
+        with:
+          directory: coverage
+          flags: e2e
+
       - name: Archive cypress results
         uses: actions/upload-artifact@v2
         with:

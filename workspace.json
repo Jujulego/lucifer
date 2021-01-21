@@ -227,7 +227,10 @@
       "architect": {
         "e2e": {
           "builder": "@nrwl/cypress:cypress",
-          "outputs": ["dist/cypress/lucifer-e2e"],
+          "outputs": [
+            "dist/cypress/lucifer-e2e",
+            "apps/lucifer-e2e/.nyc_output"
+          ],
           "options": {
             "cypressConfig": "apps/lucifer-e2e/cypress.json",
             "tsConfig": "apps/lucifer-e2e/tsconfig.e2e.json",
