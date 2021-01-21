@@ -25,13 +25,27 @@
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "builder": "@angular-devkit/architect:concat",
           "outputs": [
             "coverage/apps/auth0"
           ],
           "options": {
-            "jestConfig": "apps/auth0/jest.config.js",
-            "passWithNoTests": true
+            "builders": [
+              {
+                "builder": ".:tsc-build",
+                "options": {
+                  "tsConfig": "apps/auth0/tsconfig.app.json",
+                  "outDir": "apps/auth0/src"
+                }
+              },
+              {
+                "builder": "@nrwl/jest:jest",
+                "options": {
+                  "jestConfig": "apps/auth0/jest.config.js",
+                  "passWithNoTests": true
+                }
+              }
+            ]
           }
         }
       }

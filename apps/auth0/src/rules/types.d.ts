@@ -1,7 +1,6 @@
 import type { Strategy, User } from 'auth0';
 
-export type Protocol =
-  'oidc-basic-profile' | 'oidc-implicit-profile'
+export type Protocol = 'oidc-basic-profile' | 'oidc-implicit-profile'
   | 'oauth2-device-code' | 'oauth2-resource-owner' | 'oauth2-resource-owner-jwt-bearer' | 'oauth2-password' | 'oauth2-refresh-token'
   | 'samlp' | 'wsfed'
   | 'wstrust-usernamemixed'
@@ -9,6 +8,7 @@ export type Protocol =
   | 'redirect-callback';
 
 declare global {
+  export type Rule = (user: RuleUser, context: RuleContext, cb: RuleCallback) => void;
   export type RuleCallback = (error: any, user: RuleUser, context: RuleContext) => void;
 
   export type RuleUser = User;

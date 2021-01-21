@@ -9,6 +9,10 @@
     "watch": {
       "type": "boolean",
       "default": false
+    },
+    "outDir": {
+      "type": "string",
+      "default": null
     }
   },
   "required": ["tsConfig"]

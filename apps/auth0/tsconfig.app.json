@@ -5,6 +5,6 @@
     "types": ["node"],
     "sourceMap": false
   },
-  "exclude": ["**/*.spec.ts"],
+  "exclude": ["**/*.test.ts"],
   "include": ["src/rules/*.ts"]
 }

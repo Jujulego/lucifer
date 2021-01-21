@@ -9,6 +9,7 @@ import { spawn } from '../utils';
 interface Options extends json.JsonObject {
   tsConfig: string;
   watch: boolean;
+  outDir: string | null;
 }
 
 // Builder
@@ -25,6 +26,10 @@ export default createBuilder(async (options: Options, ctx: BuilderContext) => {
 
     if (options.watch) {
       args.push('--watch')
+    }
+
+    if (options.outDir) {
+      args.push('--outDir', options.outDir)
     }
 
     // Build !
