@@ -138,6 +138,7 @@
     "eslint-plugin-cypress": "^2.10.3",
     "husky": "^5.0.6",
     "is-ci": "^2.0.0",
+    "istanbul-instrumenter-loader": "^3.0.1",
     "jest": "26.2.2",
     "jsonwebtoken": "^8.5.0",
     "lodash.clonedeep": "^4.5.0",

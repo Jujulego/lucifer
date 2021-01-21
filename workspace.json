@@ -166,6 +166,7 @@
               ]
             },
             "e2e": {
+              "webpackConfig": "apps/lucifer-front/webpack-e2e.config.js",
               "fileReplacements": [
                 {
                   "replace": "apps/lucifer-front/src/environments/environment.ts",

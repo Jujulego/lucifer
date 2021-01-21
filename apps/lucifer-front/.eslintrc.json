@@ -2,6 +2,7 @@
   "extends": ["plugin:@nrwl/nx/react", "../../.eslintrc.json"],
   "ignorePatterns": [
     "!**/*",
+    "*.config.js",
     "setup-tests.js"
   ]
 }
