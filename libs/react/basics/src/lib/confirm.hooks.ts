@@ -4,6 +4,8 @@ import { useCallback, useState } from 'react';
 interface ConfirmClosedState<T> {
   data: T;
   open: false;
+  onCancel?: () => void;
+  onConfirm?: () => void;
 }
 
 interface ConfirmOpenedState<T> {
