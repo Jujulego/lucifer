@@ -83,7 +83,7 @@
     "@cypress/code-coverage": "^3.9.2",
     "@nestjs/schematics": "^7.2.7",
     "@nestjs/testing": "^7.6.4",
-    "@nrwl/cli": "11.0.18",
+    "@nrwl/cli": "11.1.5",
     "@nrwl/cypress": "11.0.8",
     "@nrwl/devkit": "11.0.8",
     "@nrwl/eslint-plugin-nx": "11.0.8",
