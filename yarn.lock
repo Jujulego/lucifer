@@ -2250,30 +2250,30 @@
     minimatch "3.0.4"
     tslib "^2.0.0"
 
-"@nrwl/nest@11.0.8":
-  version "11.0.8"
-  resolved "https://registry.yarnpkg.com/@nrwl/nest/-/nest-11.0.8.tgz#743b59b2e3a89ada0dd78c01ddb8b147a6e572f3"
-  integrity sha512-ydlm57VmFzuDkrRQOYI8zWDIZZ9dpCZbwEdnp+O/+VQt8jFNGXBpo1CbpUckp6xELcPAlo4ocN+DZ7ZvoP/j+w==
+"@nrwl/nest@11.1.5":
+  version "11.1.5"
+  resolved "https://registry.yarnpkg.com/@nrwl/nest/-/nest-11.1.5.tgz#921e21500978332c69c69de3431f86ba2185e315"
+  integrity sha512-yybVU2ek7f732M9oGaSi4iDRy+3DtaSNXHUQg8qSfygwsHCE+WanQfuEJZah1f7oeWAiEaXhMG4b8SIhovXvcA==
   dependencies:
     "@angular-devkit/core" "~11.0.1"
     "@angular-devkit/schematics" "~11.0.1"
     "@nestjs/schematics" "^7.0.0"
-    "@nrwl/devkit" "11.0.8"
-    "@nrwl/jest" "11.0.8"
-    "@nrwl/node" "11.0.8"
+    "@nrwl/devkit" "11.1.5"
+    "@nrwl/jest" "11.1.5"
+    "@nrwl/node" "11.1.5"
 
-"@nrwl/node@11.0.8":
-  version "11.0.8"
-  resolved "https://registry.yarnpkg.com/@nrwl/node/-/node-11.0.8.tgz#e531421feaeec5b743ab6e88fc04cd40c3457fa6"
-  integrity sha512-zHen7QpDucJuL1XMAXEUOaUxwmroVWB1GeadzcV9FDws9U/+6RhzAfUgxSANRzm1/I7BANEdVla7DaQiIGnj7A==
+"@nrwl/node@11.1.1":
+  version "11.1.1"
+  resolved "https://registry.yarnpkg.com/@nrwl/node/-/node-11.1.1.tgz#a61665bf6d43ca5d0ccf9e5a86e92dbb4a3d6df9"
+  integrity sha512-YKUX7M5qx12XSHDJgdnQt9xrp+gPsqX2pLeqH0OIUB03nRREl0it8TPtSO1ivNfCvYFIxrRSBlhm4Bahdc3x9w==
   dependencies:
     "@angular-devkit/architect" "~0.1100.1"
     "@angular-devkit/build-webpack" "~0.1100.1"
     "@angular-devkit/core" "~11.0.1"
     "@angular-devkit/schematics" "~11.0.1"
-    "@nrwl/devkit" "11.0.8"
-    "@nrwl/jest" "11.0.8"
-    "@nrwl/linter" "11.0.8"
+    "@nrwl/devkit" "11.1.1"
+    "@nrwl/jest" "11.1.1"
+    "@nrwl/linter" "11.1.1"
     circular-dependency-plugin "5.2.0"
     copy-webpack-plugin "6.0.3"
     fork-ts-checker-webpack-plugin "^3.1.1"
@@ -2291,18 +2291,18 @@
     webpack-merge "4.2.1"
     webpack-node-externals "1.7.2"
 
-"@nrwl/node@11.1.1":
-  version "11.1.1"
-  resolved "https://registry.yarnpkg.com/@nrwl/node/-/node-11.1.1.tgz#a61665bf6d43ca5d0ccf9e5a86e92dbb4a3d6df9"
-  integrity sha512-YKUX7M5qx12XSHDJgdnQt9xrp+gPsqX2pLeqH0OIUB03nRREl0it8TPtSO1ivNfCvYFIxrRSBlhm4Bahdc3x9w==
+"@nrwl/node@11.1.5":
+  version "11.1.5"
+  resolved "https://registry.yarnpkg.com/@nrwl/node/-/node-11.1.5.tgz#0bd4d8559a0f17b3def7256128f5b6387406efb2"
+  integrity sha512-K4jUAOQPtLxwT5qz+S/avW/tue0vWOTGJYn5w45ztdI8q6Cau8fCe3iHLDA8aYzmSMVENlsU7yfFYAdyw+JinQ==
   dependencies:
     "@angular-devkit/architect" "~0.1100.1"
     "@angular-devkit/build-webpack" "~0.1100.1"
     "@angular-devkit/core" "~11.0.1"
     "@angular-devkit/schematics" "~11.0.1"
-    "@nrwl/devkit" "11.1.1"
-    "@nrwl/jest" "11.1.1"
-    "@nrwl/linter" "11.1.1"
+    "@nrwl/devkit" "11.1.5"
+    "@nrwl/jest" "11.1.5"
+    "@nrwl/linter" "11.1.5"
     circular-dependency-plugin "5.2.0"
     copy-webpack-plugin "6.0.3"
     fork-ts-checker-webpack-plugin "^3.1.1"
