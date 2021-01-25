@@ -92,7 +92,7 @@
     "@nrwl/node": "11.1.5",
     "@nrwl/nx-cloud": "10.1.9",
     "@nrwl/react": "11.1.5",
-    "@nrwl/storybook": "11.0.8",
+    "@nrwl/storybook": "11.1.5",
     "@nrwl/web": "11.0.8",
     "@nrwl/workspace": "11.0.8",
     "@storybook/addon-essentials": "^6.1.11",
