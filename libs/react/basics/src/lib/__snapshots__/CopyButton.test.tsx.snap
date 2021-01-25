@@ -11,7 +11,7 @@ exports[`should render correctly 1`] = `
   <WithStyles(ForwardRef(IconButton))
     onClick={[Function]}
   >
-    <Memo([object Object])
+    <Memo(ForwardRef(FileCopyIcon))
       fontSize="small"
     />
   </WithStyles(ForwardRef(IconButton))>

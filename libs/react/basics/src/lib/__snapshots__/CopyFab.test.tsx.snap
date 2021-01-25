@@ -14,13 +14,13 @@ exports[`should render correctly 1`] = `
     in={false}
     timeout={250}
   >
-    <Memo([object Object]) />
+    <Memo(ForwardRef(CheckIcon)) />
   </ForwardRef(Fade)>
   <ForwardRef(Fade)
     in={true}
     timeout={250}
   >
-    <Memo([object Object])
+    <Memo(ForwardRef(FileCopyIcon))
       fontSize="small"
     />
   </ForwardRef(Fade)>

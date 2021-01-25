@@ -33,6 +33,6 @@ exports[`should render with adornment 1`] = `
   >
     Content
   </div>
-  <Memo([object Object]) />
+  <Memo(ForwardRef(CheckIcon)) />
 </div>
 `;
