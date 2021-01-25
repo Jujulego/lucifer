@@ -2288,13 +2288,13 @@
     eslint-plugin-react-hooks "^2.4.0"
     url-loader "^3.0.0"
 
-"@nrwl/storybook@11.0.8":
-  version "11.0.8"
-  resolved "https://registry.yarnpkg.com/@nrwl/storybook/-/storybook-11.0.8.tgz#aefc609e70ad9ca20fa29e8657031ed5de2f1f74"
-  integrity sha512-PhR1NP7krqIaAYbzLx9c+4PFLxtuaH6/bMWXYgiwiyWdEZ1K0TZSorky82mAIZGTKCYJk07m47uFxlOhpiZYPQ==
+"@nrwl/storybook@11.1.5":
+  version "11.1.5"
+  resolved "https://registry.yarnpkg.com/@nrwl/storybook/-/storybook-11.1.5.tgz#b3f81ce0c06b3999ace9c35c4d959b1273336cc0"
+  integrity sha512-ICDYeJctyDEw/NesDQ4BhYD2D+SJsgZn5ZVTVfy2LierrziDAzh27jTrAav3uN7zQat1Xmcq88SBDsQdBCundg==
   dependencies:
-    "@nrwl/cypress" "11.0.8"
-    "@nrwl/devkit" "11.0.8"
+    "@nrwl/cypress" "11.1.5"
+    "@nrwl/devkit" "11.1.5"
     core-js "^3.6.5"
     tree-kill "1.2.2"
     ts-loader "5.4.5"
