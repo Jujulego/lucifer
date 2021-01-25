@@ -22,7 +22,7 @@ exports[`should render correctly (not refreshing) 1`] = `
   <ForwardRef(Fade)
     in={true}
   >
-    <Memo([object Object]) />
+    <Memo(ForwardRef(RefreshIcon)) />
   </ForwardRef(Fade)>
 </WithStyles(ForwardRef(IconButton))>
 `;
@@ -49,7 +49,7 @@ exports[`should render correctly (refreshing) 1`] = `
   <ForwardRef(Fade)
     in={false}
   >
-    <Memo([object Object]) />
+    <Memo(ForwardRef(RefreshIcon)) />
   </ForwardRef(Fade)>
 </WithStyles(ForwardRef(IconButton))>
 `;
