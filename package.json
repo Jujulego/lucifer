@@ -103,7 +103,7 @@
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "11.2.3",
     "@testing-library/user-event": "^12.6.2",
-    "@types/auth0": "^2.20.12",
+    "@types/auth0": "^3.0.0",
     "@types/ci-info": "^2.0.0",
     "@types/cors": "^2.8.9",
     "@types/jest": "26.0.20",

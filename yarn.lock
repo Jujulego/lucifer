@@ -3392,10 +3392,12 @@
   resolved "https://registry.yarnpkg.com/@types/aria-query/-/aria-query-4.2.1.tgz#78b5433344e2f92e8b306c06a5622c50c245bf6b"
   integrity sha512-S6oPal772qJZHoRZLFc/XoZW2gFvwXusYUmXPXkgxJLuEk2vOt7jc4Yo6z/vtI0EBkbPBVrJJ0B+prLIKiWqHg==
 
-"@types/auth0@^2.20.12":
-  version "2.20.13"
-  resolved "https://registry.yarnpkg.com/@types/auth0/-/auth0-2.20.13.tgz#afc39ba502daa61d7c3bfcd88c442da733d13072"
-  integrity sha512-bWnpoezfbaTXwHYZhfrXWH/b3okuLiRX/mlMKIVK3IzUifbkM0svqvMHFzvSlFQFQveNZ4G59Fm5ntitgScCZw==
+"@types/auth0@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@types/auth0/-/auth0-3.0.0.tgz#374f9d36e635a5bce1e4f70086f1876c764df55a"
+  integrity sha512-mPRlYbdlJ0Zx2jrYAug2Bl2VdZdyCN2VqnKCRzZ0nBjRB5us6D9PsXcvrFFIgBDR3E73nD08HTacwdfF4VRpsw==
+  dependencies:
+    "@types/bluebird" "*"
 
 "@types/babel__core@^7.0.0", "@types/babel__core@^7.1.7":
   version "7.1.12"
@@ -3429,6 +3431,11 @@
   integrity sha512-kSjgDMZONiIfSH1Nxcr5JIRMwUetDki63FSQfpTCz8ogF3Ulqm8+mr5f78dUYs6vMiB6gBusQqfQmBvHZj/lwg==
   dependencies:
     "@babel/types" "^7.3.0"
+
+"@types/bluebird@*":
+  version "3.5.33"
+  resolved "https://registry.yarnpkg.com/@types/bluebird/-/bluebird-3.5.33.tgz#d79c020f283bd50bd76101d7d300313c107325fc"
+  integrity sha512-ndEo1xvnYeHxm7I/5sF6tBvnsA4Tdi3zj1keRKRs12SP+2ye2A27NDJ1B6PqkfMbGAcT+mqQVqbZRIrhfOp5PQ==
 
 "@types/body-parser@*":
   version "1.19.0"
