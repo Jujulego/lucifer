@@ -1,1 +1,4 @@
-export const getGreeting = () => cy.get('h5');
+export const getMain = () => cy.findByRole('main');
+
+export const getGreeting = () => getMain().findByRole('heading');
+export const getRoles = () => getMain().findByLabelText('Roles');

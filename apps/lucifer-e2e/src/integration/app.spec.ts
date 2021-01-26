@@ -1,4 +1,4 @@
-import { getGreeting } from '../support/app.po';
+import { getGreeting, getRoles } from '../support/app.po';
 
 describe('home', () => {
   before(() => {
@@ -8,5 +8,9 @@ describe('home', () => {
 
   it('should be successfully logged in', () => {
     getGreeting().contains('Bonjour !');
+  });
+
+  it('should print user\'s roles', () => {
+    getRoles().should('have.text', '');
   });
 });

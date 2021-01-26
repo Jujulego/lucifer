@@ -1,1 +1,3 @@
-export const getMachineTable = () => cy.get('main table#machines-table')
+export const getMain = () => cy.findByRole('main');
+
+export const getMachineTable = () => getMain().findByRole('table');

@@ -230,7 +230,8 @@
           "builder": "@nrwl/cypress:cypress",
           "outputs": [
             "dist/cypress/lucifer-e2e",
-            "apps/lucifer-e2e/.nyc_output"
+            "apps/lucifer-e2e/.nyc_output",
+            "apps/lucifer-e2e/coverage"
           ],
           "options": {
             "cypressConfig": "apps/lucifer-e2e/cypress.json",
