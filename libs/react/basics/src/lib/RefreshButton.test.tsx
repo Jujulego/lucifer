@@ -1,55 +1,60 @@
 import React from 'react';
-import { act } from 'react-dom/test-utils';
-import { createMount, createShallow } from '@material-ui/core/test-utils';
+import { screen, render, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import RefreshButton from '../lib/RefreshButton';
 
-// Setup
-let mount: ReturnType<typeof createMount>;
-let shallow: ReturnType<typeof createShallow>;
-
-beforeAll(() => {
-  mount = createMount();
-  shallow = createShallow();
-});
-
 // Tests
-it('should render correctly (refreshing)', () => {
-  // Render
-  const wrapper = shallow(
-    <RefreshButton refreshing={true} />
-  );
+describe('RefreshButton', () => {
+  it('should render a button', () => {
+    // Render
+    render(
+      <RefreshButton refreshing={false} />
+    );
 
-  // Check elements
-  expect(wrapper).toMatchSnapshot();
-});
-
-it('should render correctly (not refreshing)', () => {
-  // Render
-  const wrapper = shallow(
-    <RefreshButton refreshing={false} />
-  );
-
-  // Check elements
-  expect(wrapper).toMatchSnapshot();
-});
-
-it('should react on click', () => {
-  const spy = jest.fn();
-
-  // Render
-  const wrapper = mount(
-    <RefreshButton refreshing={false} onClick={spy} />
-  );
-
-  // Get button
-  const button = wrapper.find('button');
-  expect(button).toHaveLength(1);
-
-  // Test event
-  act(() => {
-    button.simulate('click');
+    // Check elements
+    const btn = screen.getByRole('button');
+    expect(btn).toBeEnabled();
   });
 
-  expect(spy).toBeCalled();
+  it('should render a progress bar within a disabled button', () => {
+    // Render
+    render(
+      <RefreshButton refreshing={true} />
+    );
+
+    screen.debug();
+
+    // Check elements
+    const btn = screen.getByRole('button');
+    expect(btn).toBeDisabled();
+
+    expect(within(btn).getByRole('progressbar')).toBeInTheDocument();
+  });
+
+  it('should be disabled', () => {
+    // Render
+    render(
+      <RefreshButton refreshing={false} disabled />
+    );
+
+    // Check elements
+    const btn = screen.getByRole('button');
+    expect(btn).toBeDisabled();
+  });
+
+  it('should react on click', () => {
+    const spy = jest.fn();
+
+    // Render
+    render(
+      <RefreshButton refreshing={false} onClick={spy} />
+    );
+
+    // Interact
+    const btn = screen.getByRole('button');
+    userEvent.click(btn);
+
+    expect(spy).toBeCalled();
+  });
 });

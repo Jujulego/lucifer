@@ -1,74 +1,70 @@
 import React from 'react';
-import { createShallow, createMount } from '@material-ui/core/test-utils';
+import { screen, render, within, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { Check as CheckIcon } from '@material-ui/icons';
 
 import ToolbarAction from '../lib/ToolbarAction';
 
 // Setup
-let mount: ReturnType<typeof createMount>;
-let shallow: ReturnType<typeof createShallow>;
-
 beforeAll(() => {
-  mount = createMount();
-  shallow = createShallow();
+  jest.useFakeTimers();
 });
 
 afterAll(() => {
-  mount.cleanUp();
+  jest.restoreAllMocks();
 });
 
 // Tests
-it('should render correctly', () => {
-  // Render
-  const wrapper = shallow(
-    <ToolbarAction tooltip="Test" />
-  );
+describe('ToolbarAction', () => {
+  it('should render a button', () => {
+    // Render
+    render(
+      <ToolbarAction tooltip="tooltip">
+        <CheckIcon data-testid="icon" />
+      </ToolbarAction>
+    );
 
-  // Check elements
-  expect(wrapper).toMatchSnapshot();
-});
+    // Check elements
+    const btn = screen.getByRole('button');
 
-it('should react on click', () => {
-  const spy = jest.fn();
+    expect(btn).toBeEnabled();
+    expect(within(btn).queryByTestId('icon')).toBeInTheDocument();
+  });
 
-  // Render
-  const wrapper = mount(
-    <ToolbarAction tooltip="Test" onClick={spy} />
-  );
+  it('should be disabled', () => {
+    // Render
+    render(
+      <ToolbarAction tooltip="tooltip" disabled>
+        <CheckIcon data-testid="icon" />
+      </ToolbarAction>
+    );
 
-  // Get button
-  const button = wrapper.find('button');
-  expect(button).toHaveLength(1);
+    // Check elements
+    const btn = screen.getByRole('button');
+    expect(btn).toBeDisabled();
+  });
 
-  // Test event
-  button.simulate('click');
+  it('should react on click', async () => {
+    const spy = jest.fn();
 
-  expect(spy).toBeCalledTimes(1);
-});
+    // Render
+    render(
+      <ToolbarAction tooltip="tooltip" onClick={spy}>
+        <CheckIcon data-testid="icon" />
+      </ToolbarAction>
+    );
 
-it('should have no tooltip when disabled', () => {
-  // Render
-  const wrapper = shallow(
-    <ToolbarAction tooltip="Test" disabled />
-  );
+    // Interact
+    const btn = screen.getByRole('button');
+    userEvent.click(btn);
 
-  // Check elements
-  expect(wrapper).toMatchSnapshot();
-});
+    // Check callback
+    expect(spy).toBeCalled();
 
-it('should not react when disabled', () => {
-  const spy = jest.fn();
-
-  // Render
-  const wrapper = mount(
-    <ToolbarAction tooltip="Test" onClick={spy} disabled />
-  );
-
-  // Get button
-  const button = wrapper.find('button');
-  expect(button).toHaveLength(1);
-  expect(button.prop('disabled')).toBeTruthy();
-
-  // Test event
-  button.simulate('click');
-  expect(spy).not.toBeCalled();
+    // Check tooltip
+    await waitFor(() => {
+      const tooltip = screen.getByRole('tooltip');
+      expect(tooltip).toHaveTextContent('tooltip');
+    });
+  });
 });
