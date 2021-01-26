@@ -1,6 +1,7 @@
 import { createParamDecorator, ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { Request } from 'express';
 
+import type { Permission } from '@lucifer/types';
 import type { AuthUser } from './auth/user.model';
 
 // Class
@@ -33,7 +34,7 @@ export class Context {
   }
 
   // Methods
-  need(scopes: string | string[]) {
+  need(scopes: Permission | Permission[]) {
     if (typeof scopes === 'string') {
       scopes = [scopes];
     }

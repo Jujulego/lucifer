@@ -2,7 +2,8 @@ import { CanActivate, CustomDecorator, ExecutionContext, Injectable, Logger, Set
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 
-import { AuthUser } from './user.model';
+import type { Permission } from '@lucifer/types';
+import type { AuthUser } from './user.model';
 
 // Types
 export type AllowIfCallback = (req: Request, user: AuthUser) => boolean;
@@ -14,7 +15,7 @@ const METADATA_KEYS = {
 }
 
 // Decorators
-export function Scopes(...scopes: string[]): CustomDecorator<symbol> {
+export function Scopes(...scopes: Permission[]): CustomDecorator<symbol> {
   return SetMetadata(METADATA_KEYS.scopes, scopes);
 }
 
@@ -45,7 +46,7 @@ export class ScopeGuard implements CanActivate {
 
   canActivate(ctx: ExecutionContext): boolean {
     // Get metadata
-    const scopes = this.getMetadata<string[]>(ctx, METADATA_KEYS.scopes);
+    const scopes = this.getMetadata<Permission[]>(ctx, METADATA_KEYS.scopes);
     const allow = this.getMetadata<AllowIfCallback>(ctx, METADATA_KEYS.allow);
 
     if (!scopes || scopes.length === 0) return true;

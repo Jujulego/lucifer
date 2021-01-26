@@ -3,6 +3,15 @@ import { Expose } from 'class-transformer';
 // Types
 export type RoleName = 'admin' | 'reader';
 
+type RUResource = 'roles' | 'users';
+type CRUDResource = 'machines' | 'projects';
+export type Resource = CRUDResource | RUResource;
+
+type RULevel = 'read' | 'update';
+export type AccessLevel = 'create' | RULevel | 'delete';
+
+export type Permission = `${AccessLevel}:${CRUDResource}` | `${RULevel}:${RUResource}`;
+
 // Constants
 export const ROLES: RoleName[] = ['admin', 'reader'];
 
