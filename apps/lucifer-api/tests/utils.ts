@@ -3,6 +3,7 @@ import { Test } from '@nestjs/testing';
 import { ManagementClient } from 'auth0';
 import * as jwt from 'jsonwebtoken';
 
+import { Permission } from '@lucifer/types';
 import { Context } from '../src/context';
 import { env } from '../src/env';
 import { JWT_KEY } from '../src/auth/jwt.strategy';
@@ -25,12 +26,12 @@ export async function initTestingApp(): Promise<INestApplication> {
   return app;
 }
 
-export const generateTestUser = (user: string, permissions: string[] = []): AuthUser => ({
+export const generateTestUser = (user: string, permissions: Permission[] = []): AuthUser => ({
   sub: user,
   permissions,
 })
 
-export async function generateTestToken(user: string, permissions?: string[]): Promise<string> {
+export async function generateTestToken(user: string, permissions?: Permission[]): Promise<string> {
   const iat = Math.floor(Date.now() / 1000);
   const exp = iat + 5 * 60;
 
@@ -42,6 +43,6 @@ export async function generateTestToken(user: string, permissions?: string[]): P
   }, JWT_KEY);
 }
 
-export function generateTextContext(user: string, permissions?: string[], token = 'token'): Context {
+export function generateTextContext(user: string, permissions?: Permission[], token = 'token'): Context {
   return new Context(token, generateTestUser(user, permissions));
 }
