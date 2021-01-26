@@ -6,7 +6,7 @@ import PasswordField from './PasswordField';
 
 // Test suites
 describe('PasswordField', () => {
-  it('should change input type on button click', async () => {
+  it('should change input type on button click', () => {
     // Render
     render(<PasswordField value="password" />);
 

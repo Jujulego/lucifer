@@ -11,11 +11,20 @@ import {
 } from '@material-ui/icons';
 
 // Types
+type UncontrolledEditableProps = {
+  editable?: undefined,
+  onChangeEditable?: undefined,
+};
+
+type ControlledEditableProps = {
+  editable: boolean,
+  onChangeEditable: (editable: boolean) => void,
+};
+
 type TextToEditPassword<T extends TextFieldProps> =
   Omit<T, 'type' | 'inputRef' | 'InputProps' | 'select' | 'SelectProps'> &
+  (ControlledEditableProps | UncontrolledEditableProps) &
   {
-    editable?: boolean,
-    onChangeEditable?: (editable: boolean) => void,
     InputProps?: Omit<T['InputProps'], 'endAdornment' | 'inputRef'>
   }
 
@@ -33,7 +42,7 @@ const EditPasswordField = (props: EditPasswordFieldProps) => {
   // Props
   const {
     editable: pEditable,
-    onChangeEditable = () => null,
+    onChangeEditable,
 
     disabled, required, value,
     InputProps = {},
@@ -44,8 +53,8 @@ const EditPasswordField = (props: EditPasswordFieldProps) => {
   const [sEditable, setSEditable] = useState(false);
   const [visible, setVisible] = useState(false);
 
-  const editable =    (pEditable !== undefined) ? pEditable        : sEditable;
-  const setEditable = (pEditable !== undefined) ? onChangeEditable : setSEditable;
+  const editable =    (pEditable        !== undefined) ? pEditable        : sEditable;
+  const setEditable = (onChangeEditable !== undefined) ? onChangeEditable : setSEditable;
 
   // Refs
   const input = useRef<HTMLInputElement>(null);
