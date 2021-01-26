@@ -1,17 +1,8 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-
-import { createShallow } from '@material-ui/core/test-utils';
 import { Check as CheckIcon } from '@material-ui/icons';
 
 import LabelledText from '../lib/LabelledText';
-
-// Setup
-let shallow: ReturnType<typeof createShallow>;
-
-beforeAll(() => {
-  shallow = createShallow();
-});
 
 // Tests
 describe('LabelledText', () => {

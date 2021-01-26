@@ -23,8 +23,6 @@ describe('RefreshButton', () => {
       <RefreshButton refreshing={true} />
     );
 
-    screen.debug();
-
     // Check elements
     const btn = screen.getByRole('button');
     expect(btn).toBeDisabled();
