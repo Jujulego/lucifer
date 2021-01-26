@@ -15,14 +15,14 @@ describe('PasswordField', () => {
     const input = screen.getByDisplayValue('password');
 
     // Begin with type password
-    expect(input.getAttribute('type')).toBe('password');
+    expect(input).toHaveAttribute('type', 'password');
 
     // 1st click => change to text
     userEvent.click(button);
-    expect(input.getAttribute('type')).toBe('text');
+    expect(input).toHaveAttribute('type', 'text');
 
     // 2nd click => back to password
     userEvent.click(button);
-    expect(input.getAttribute('type')).toBe('password');
+    expect(input).toHaveAttribute('type', 'password');
   });
-})
+});
