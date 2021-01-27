@@ -70,7 +70,10 @@ const LabelledText: FC<LabelledTextProps> = (props) => {
   return (
     <div className={styles.root}>
       <Typography className={styles.label} variant='caption'>{ label }</Typography>
-      <div className={clsx(styles.content, { [styles.endAdorned]: !!endAdornment, [styles.zeroMinWidth]: zeroMinWidth })}>
+      <div
+        className={clsx(styles.content, { [styles.endAdorned]: !!endAdornment, [styles.zeroMinWidth]: zeroMinWidth })}
+        aria-label={label}
+      >
         { children }
       </div>
       { endAdornment }

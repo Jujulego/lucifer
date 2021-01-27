@@ -1,7 +1,6 @@
 import React from 'react';
-import { createShallow } from '@material-ui/core/test-utils';
 import dayjs from 'dayjs';
-
+import { render } from '@testing-library/react';
 import { useInterval } from '@lucifer/react/utils';
 
 import RelativeDate from '../lib/RelativeDate';
@@ -10,12 +9,6 @@ import RelativeDate from '../lib/RelativeDate';
 jest.mock('@lucifer/react/utils');
 
 // Setup
-let shallow: ReturnType<typeof createShallow>;
-
-beforeAll(() => {
-  shallow = createShallow();
-});
-
 beforeEach(() => {
   (useInterval as jest.Mock)
     .mockImplementation(() => 1)
@@ -23,56 +16,58 @@ beforeEach(() => {
 });
 
 // Tests
-describe('to mode', () => {
-  it('should render correctly', () => {
+describe('RelativeDate', () => {
+  it('should re-render every minutes', () => {
     // Render
-    const wrapper = shallow(
-      <RelativeDate date={dayjs().add(1, 'day')} mode='to' />
+    render(
+      <RelativeDate date={dayjs()} mode='to' />
     );
 
     // Checks
-    expect(wrapper.text()).toBe('a day ago');
+    expect(useInterval).toHaveBeenCalledWith(1, expect.stringMatching(/minutes?/))
   });
 
-  it('should render without prefix', () => {
-    // Render
-    const wrapper = shallow(
-      <RelativeDate date={dayjs().add(1, 'day')} mode='to' withoutPrefix />
-    );
+  describe('to mode', () => {
+    it('should render correctly', () => {
+      // Render
+      const { container } = render(
+        <RelativeDate date={dayjs().add(1, 'day')} mode='to' />
+      );
 
-    // Checks
-    expect(wrapper.text()).toBe('a day');
+      // Checks
+      expect(container).toHaveTextContent('a day ago');
+    });
+
+    it('should render without prefix', () => {
+      // Render
+      const { container } = render(
+        <RelativeDate date={dayjs().add(1, 'day')} mode='to' withoutPrefix />
+      );
+
+      // Checks
+      expect(container).toHaveTextContent('a day');
+    });
   });
-});
 
-describe('from mode', () => {
-  it('should render correctly', () => {
-    // Render
-    const wrapper = shallow(
-      <RelativeDate date={dayjs().add(1, 'day')} mode='from' />
-    );
+  describe('from mode', () => {
+    it('should render correctly', () => {
+      // Render
+      const { container } = render(
+        <RelativeDate date={dayjs().add(1, 'day')} mode='from' />
+      );
 
-    // Checks
-    expect(wrapper.text()).toBe('in a day');
+      // Checks
+      expect(container).toHaveTextContent('in a day');
+    });
+
+    it('should render without prefix', () => {
+      // Render
+      const { container } = render(
+        <RelativeDate date={dayjs().add(1, 'day')} mode='from' withoutPrefix />
+      );
+
+      // Checks
+      expect(container).toHaveTextContent('a day');
+    });
   });
-
-  it('should render without prefix', () => {
-    // Render
-    const wrapper = shallow(
-      <RelativeDate date={dayjs().add(1, 'day')} mode='from' withoutPrefix />
-    );
-
-    // Checks
-    expect(wrapper.text()).toBe('a day');
-  });
-});
-
-it('should re-render every minutes', () => {
-  // Render
-  shallow(
-    <RelativeDate date={dayjs()} mode='to' />
-  );
-
-  // Checks
-  expect(useInterval).toHaveBeenCalledWith(1, expect.stringMatching(/minutes?/))
 });

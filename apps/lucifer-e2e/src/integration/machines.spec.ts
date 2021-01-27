@@ -1,12 +1,15 @@
 import { getMachineTable } from '../support/machines.po';
 
-describe('machines', () => {
+before(() => {
+  cy.login();
+});
+
+describe('Machines table', () => {
   before(() => {
-    cy.login();
+    cy.visit(`/users/${Cypress.env('userId')}/machines`);
   });
 
   it('should show machine table', () => {
-    cy.visit(`/users/${Cypress.env('userId')}/machines`);
-    getMachineTable();
+    getMachineTable().should('exist');
   });
 });

@@ -1,50 +1,38 @@
 import React from 'react';
-import { createShallow, createMount } from '@material-ui/core/test-utils';
+import { screen, render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
-import ClosableDialogTitle from '../lib/ClosableDialogTitle';
-
-// Setup
-let mount: ReturnType<typeof createMount>;
-let shallow: ReturnType<typeof createShallow>;
-
-beforeAll(() => {
-  mount = createMount();
-  shallow = createShallow();
-});
-
-afterAll(() => {
-  mount.cleanUp();
-});
+import ClosableDialogTitle from './ClosableDialogTitle';
 
 // Tests
-it('should render correctly', () => {
-  // Render
-  const wrapper = shallow(
-    <ClosableDialogTitle>
-      Title
-    </ClosableDialogTitle>
-  );
+describe('ClosableDialogTitle', () => {
+  it('should render title', () => {
+    // Render
+    render(
+      <ClosableDialogTitle>
+        Title
+      </ClosableDialogTitle>
+    );
 
-  // Check elements
-  expect(wrapper).toMatchSnapshot();
-});
+    // Check elements
+    const title = screen.getByRole('heading');
+    expect(title).toHaveTextContent('Title');
+  });
 
-it('should react to button click', () => {
-  const spy = jest.fn();
+  it('should close on button click', () => {
+    const spy = jest.fn();
 
-  // Render
-  const wrapper = mount(
-    <ClosableDialogTitle onClose={spy}>
-      Title
-    </ClosableDialogTitle>
-  );
+    // Render
+    render(
+      <ClosableDialogTitle onClose={spy}>
+        Title
+      </ClosableDialogTitle>
+    );
 
-  // Get button
-  const button = wrapper.find('button');
-  expect(button).toHaveLength(1);
+    // Interact
+    const button = screen.getByRole('button');
 
-  // Test event
-  button.simulate('click');
-
-  expect(spy).toHaveBeenCalledTimes(1);
+    userEvent.click(button);
+    expect(spy).toBeCalled();
+  });
 });

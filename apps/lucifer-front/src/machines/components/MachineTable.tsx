@@ -102,7 +102,7 @@ const MachineTable: FC<MachineTableProps> = (props) => {
       { show && (
         <>
           <TableContainer>
-            <Table id="machines-table" documents={machines} selectionRef={selection}>
+            <Table documents={machines} selectionRef={selection}>
               <TableHead>
                 <TableRow>
                   <TableSortCell<IMachine> field="shortName">Nom</TableSortCell>

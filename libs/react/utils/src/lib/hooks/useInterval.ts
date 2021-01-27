@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
+import duration, { DurationUnitType } from 'dayjs/plugin/duration';
 
 dayjs.extend(duration);
 
 // Hooks
-function useInterval(every: number, unit?: dayjs.UnitType): number {
+function useInterval(every: number, unit?: DurationUnitType): number {
   // State
   const [count, setCount] = useState(0);
 

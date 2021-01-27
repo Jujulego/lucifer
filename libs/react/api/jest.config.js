@@ -1,6 +1,7 @@
 module.exports = {
   displayName: 'react-api',
   preset: '../../../jest.preset.js',
+  setupFilesAfterEnv: ['<rootDir>/setup-tests.js'],
   transform: {
     '^.+\\.[tj]sx?$': [
       'babel-jest',

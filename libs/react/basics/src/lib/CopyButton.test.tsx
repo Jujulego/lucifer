@@ -1,28 +1,19 @@
 import React from 'react';
 import copy from 'copy-to-clipboard';
-import { act } from 'react-dom/test-utils';
-import { createShallow, createMount } from '@material-ui/core/test-utils';
+import { act, screen, render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import CopyButton from '../lib/CopyButton';
 
 // Mocks
 jest.mock('copy-to-clipboard');
 
-// Setup
-let mount: ReturnType<typeof createMount>;
-let shallow: ReturnType<typeof createShallow>;
-
 beforeAll(() => {
   jest.useFakeTimers();
-
-  mount = createMount();
-  shallow = createShallow();
 });
 
 afterAll(() => {
   jest.restoreAllMocks();
-
-  mount.cleanUp();
 });
 
 beforeEach(() => {
@@ -30,38 +21,42 @@ beforeEach(() => {
 });
 
 // Tests
-it('should render correctly', () => {
-  // Render
-  const wrapper = shallow(
-    <CopyButton text={'test'} />
-  );
+describe('CopyButton', () => {
+  it('should render a button', () => {
+    // Render
+    render(
+      <CopyButton text="test" />
+    );
 
-  // Check elements
-  expect(wrapper).toMatchSnapshot();
-});
-
-it('should copy on click', () => {
-  const spy = jest.fn();
-  (copy as jest.Mock).mockImplementation(() => true);
-
-  // Render
-  const wrapper = mount(
-    <CopyButton
-      text='test' format='text/plain'
-      onCopied={spy}
-    />
-  );
-
-  // Get button
-  const button = wrapper.find('button');
-  expect(button).toHaveLength(1);
-
-  // Test event
-  act(() => {
-    button.simulate('click');
-    jest.runAllTimers();
+    // Check elements
+    expect(screen.queryByRole('button')).toBeInTheDocument();
   });
 
-  expect(copy).toHaveBeenCalledWith('test', { format: 'text/plain' });
-  expect(spy).toHaveBeenCalledTimes(1);
+  it('should copy on click', () => {
+    const spy = jest.fn();
+    (copy as jest.Mock).mockImplementation(() => true);
+
+    // Render
+    render(
+      <CopyButton text="test" tooltip="tooltip" onCopied={spy} />
+    );
+
+    // Interact
+    const btn = screen.getByRole('button');
+    userEvent.click(btn);
+
+    // Check callbacks
+    expect(spy).toBeCalled();
+    expect(copy).toHaveBeenCalledWith('test', { format: 'text/plain' });
+
+    // Check tooltip
+    const tooltip = screen.getByRole('tooltip');
+    expect(tooltip).toHaveTextContent('tooltip');
+
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+  });
 });

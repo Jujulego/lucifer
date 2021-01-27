@@ -1,23 +1,9 @@
-import React, { useEffect } from 'react';
-import { ReactWrapper } from 'enzyme';
-import { act } from 'react-dom/test-utils';
-import { createMount, createShallow } from '@material-ui/core/test-utils';
+import React, { FC, useEffect } from 'react';
+import { screen, render, within, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import ConfirmDialog from './ConfirmDialog';
 import { useConfirm } from './confirm.hooks';
-
-// Setup
-let mount: ReturnType<typeof createMount>;
-let shallow: ReturnType<typeof createShallow>;
-
-beforeAll(() => {
-  mount = createMount();
-  shallow = createShallow();
-});
-
-afterAll(() => {
-  mount.cleanUp();
-});
 
 // Tests
 describe('ConfirmDialog', () => {
@@ -27,15 +13,15 @@ describe('ConfirmDialog', () => {
 
       return (
         <ConfirmDialog state={state}>
-          {(txt) => txt}
+          { (txt) => txt }
         </ConfirmDialog>
       )
     };
 
     // Render
-    const wrapper = shallow(<TestComponent />).dive();
+    render(<TestComponent />);
 
-    expect(wrapper).toMatchSnapshot();
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
   it('should be opened with content', () => {
@@ -45,42 +31,47 @@ describe('ConfirmDialog', () => {
 
       return (
         <ConfirmDialog state={state}>
-          {(txt) => txt}
+          {(txt) => (
+            <div data-testid="dialog-content">{ txt }</div>
+          )}
         </ConfirmDialog>
       )
     };
 
     // Render
-    const wrapper = shallow(<TestComponent />).dive();
+    render(<TestComponent />);
 
-    expect(wrapper).toMatchSnapshot();
+    // Check dialog exists
+    const dialog = screen.getByRole('dialog');
+    const content = within(dialog).getByTestId('dialog-content');
+
+    expect(content).toHaveTextContent('Test');
+
+    // Check buttons
+    const buttons = within(dialog).getAllByRole('button');
+
+    expect(buttons).toHaveLength(2);
+    expect(buttons[0]).toHaveTextContent('Annuler');
+    expect(buttons[1]).toHaveTextContent('Confirmer');
   });
 });
 
 describe('useConfirm().confirm', () => {
   // Setup
   let spy: jest.Mock<void,[boolean]>;
-
-  let release: () => void;
-  let waiter: Promise<void>;
-
-  let wrapper: ReactWrapper;
+  let TestComponent: FC;
 
   beforeEach(() => {
     // Utils
     spy = jest.fn();
-    waiter = new Promise<void>(resolve => {
-      release = resolve;
-    });
 
     // Component
-    const TestComponent = () => {
+    TestComponent = () => {
       const { state, confirm } = useConfirm("");
 
       useEffect(() => {
         confirm("Test")
-          .then(spy)
-          .finally(release);
+          .then(spy);
       }, [confirm]);
 
       return (
@@ -91,43 +82,27 @@ describe('useConfirm().confirm', () => {
     };
 
     // Render
-    wrapper = mount(<TestComponent />);
+    render(<TestComponent />);
   });
 
   // Tests
   it('should return false if canceled', async () => {
-    // should have 2 buttons
-    const buttons = wrapper.find('button');
-    expect(buttons).toHaveLength(2);
-
-    // 1st should contain "Annuler"
-    const btn = buttons.first();
-    expect(btn.text()).toBe('Annuler');
-
     // Act event
-    act(() => {
-      btn.simulate('click');
-    });
+    const btn = screen.getByText('Annuler');
+    userEvent.click(btn);
 
-    await waiter;
-    expect(spy).toBeCalledWith(false);
+    await waitFor(() => {
+      expect(spy).toBeCalledWith(false);
+    });
   });
 
   it('should return true if confirmed', async () => {
-    // should have 2 buttons
-    const buttons = wrapper.find('button');
-    expect(buttons).toHaveLength(2);
-
-    // 2nd should contain "Confirmer"
-    const btn = buttons.last();
-    expect(btn.text()).toBe('Confirmer');
-
     // Act event
-    act(() => {
-      btn.simulate('click');
-    });
+    const btn = screen.getByText('Confirmer');
+    userEvent.click(btn);
 
-    await waiter;
-    expect(spy).toBeCalledWith(true);
+    await waitFor(() => {
+      expect(spy).toBeCalledWith(true);
+    });
   });
 });

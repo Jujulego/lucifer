@@ -12,6 +12,8 @@
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:jest-dom/recommended",
+    "plugin:testing-library/recommended",
     "prettier",
     "prettier/@typescript-eslint"
   ],

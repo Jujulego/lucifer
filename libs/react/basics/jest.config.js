@@ -14,8 +14,5 @@ module.exports = {
     "src/**/*.{ts,tsx}",
     "!**/*.test.{ts,tsx}",
     "!**/*.stories.{ts,tsx}",
-  ],
-  snapshotSerializers: [
-    "enzyme-to-json/serializer"
   ]
 };

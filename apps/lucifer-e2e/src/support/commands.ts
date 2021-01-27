@@ -1,5 +1,7 @@
+import '@testing-library/cypress/add-commands';
 import jwt from 'jsonwebtoken';
 
+// Declarations
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
@@ -9,6 +11,7 @@ declare global {
     }
   }
 }
+
 // Commands
 Cypress.Commands.add('login', () => {
   // Credentials
