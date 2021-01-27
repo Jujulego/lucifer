@@ -13,7 +13,7 @@ describe('ConfirmDialog', () => {
 
       return (
         <ConfirmDialog state={state}>
-          {(txt) => txt}
+          { (txt) => txt }
         </ConfirmDialog>
       )
     };
