@@ -15,10 +15,13 @@ export class Variable implements IVariable {
   projectId: string;
 
   @PrimaryColumn('varchar', { length: 100, nullable: false })
+  id: string;
+
+  @Column('varchar', { length: 100, nullable: false })
   name: string;
 
-  @Column('text', { nullable: true })
-  value: string | null;
+  @Column('text', { nullable: false })
+  value: string;
 
   // Relations
   @ManyToOne(() => Project, { nullable: false, onDelete: 'CASCADE' })

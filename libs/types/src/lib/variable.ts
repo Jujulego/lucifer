@@ -1,19 +1,22 @@
 // Interface
 export interface IVariable {
+  // Id
+  id:        string;
   projectId: string;
   adminId:   string;
-  name:      string;
-  value:     string | null;
+
+  // Data
+  name:  string;
+  value: string;
 }
 
 export interface ICreateVariable {
-  projectId: string;
-  adminId:   string;
-  name:      string;
-  value:     string | null;
+  id:    string;
+  name:  string;
+  value: string;
 }
 
 export interface IUpdateVariable {
   name?:  string;
-  value?: string | null;
+  value?: string;
 }
