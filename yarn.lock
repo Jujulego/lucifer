@@ -3213,10 +3213,10 @@
   resolved "https://registry.yarnpkg.com/@types/aria-query/-/aria-query-4.2.1.tgz#78b5433344e2f92e8b306c06a5622c50c245bf6b"
   integrity sha512-S6oPal772qJZHoRZLFc/XoZW2gFvwXusYUmXPXkgxJLuEk2vOt7jc4Yo6z/vtI0EBkbPBVrJJ0B+prLIKiWqHg==
 
-"@types/auth0@^2.20.12":
-  version "2.20.13"
-  resolved "https://registry.yarnpkg.com/@types/auth0/-/auth0-2.20.13.tgz#afc39ba502daa61d7c3bfcd88c442da733d13072"
-  integrity sha512-bWnpoezfbaTXwHYZhfrXWH/b3okuLiRX/mlMKIVK3IzUifbkM0svqvMHFzvSlFQFQveNZ4G59Fm5ntitgScCZw==
+"@types/auth0@^2.32.0":
+  version "2.32.0"
+  resolved "https://registry.yarnpkg.com/@types/auth0/-/auth0-2.32.0.tgz#0fa39a2de2e7a96e6afc01ac53e60c4d1e702466"
+  integrity sha512-XOjKLvxx17BLpaV1+RtFxKg/5Q/qcu349TOnOE2rYKBtCMf+Bc1g6m0LNiIKkEmS4IskrdCnJI5/Lavu5S5g1A==
 
 "@types/babel__core@^7.0.0", "@types/babel__core@^7.1.7":
   version "7.1.12"
@@ -9973,10 +9973,10 @@ humanize-ms@^1.2.1:
   dependencies:
     ms "^2.0.0"
 
-husky@^5.0.6:
-  version "5.0.6"
-  resolved "https://registry.yarnpkg.com/husky/-/husky-5.0.6.tgz#27dbefe8603c6c0912fd89a3a67edfed9fac8bb9"
-  integrity sha512-SM+evfvcHT3rAYJKvPlatz3L5RqzgeM6xIvDjhs8VuhKj6iKqFDOt/Ov8sPjvWuE4FDB385gJBwWXRj7G3c1hg==
+husky@^5.0.7:
+  version "5.0.7"
+  resolved "https://registry.yarnpkg.com/husky/-/husky-5.0.7.tgz#00727c9327b22173d7a132a46d284b9a484fe51d"
+  integrity sha512-K90Uvpirq3p5/0w5WIBW3Mp523YmmHvy2EQSscok0f+5MTL6TnTb/h9t8AfLHbXznfMmz82q4RUQnj8MIYxLIQ==
 
 hyphenate-style-name@^1.0.3:
   version "1.0.4"
