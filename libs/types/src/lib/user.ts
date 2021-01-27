@@ -4,7 +4,7 @@ import { Expose } from 'class-transformer';
 export type RoleName = 'admin' | 'reader';
 
 type RUResource = 'roles' | 'users';
-type CRUDResource = 'machines' | 'projects';
+type CRUDResource = 'machines' | 'projects' | 'variables';
 export type Resource = CRUDResource | RUResource;
 
 type RULevel = 'read' | 'update';
