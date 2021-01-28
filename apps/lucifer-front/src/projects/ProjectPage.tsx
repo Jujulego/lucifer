@@ -1,10 +1,10 @@
 import React, { FC, useCallback, useRef, useState } from 'react';
 import { useHistory, useParams, useRouteMatch } from 'react-router';
 
-import { IconButton, Paper, Tab, Tabs } from '@material-ui/core';
+import { Paper, Tab, Tabs } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Delete as DeleteIcon } from '@material-ui/icons';
-import { RefreshButton } from '@lucifer/react/basics';
+import { RefreshButton, ToolbarAction } from '@lucifer/react/basics';
 
 import { useNeedRole } from '../auth/auth.hooks';
 
@@ -12,6 +12,7 @@ import { useProject } from './projects.hooks';
 import { ProjectHeader } from './ProjectHeader';
 import { Link as RouterLink } from 'react-router-dom';
 import { ProjectDetailsTab } from './ProjectDetailsTab';
+import { VariablesTable } from './variables/VariablesTable';
 
 // Utils
 interface LinkTabProps {
@@ -88,9 +89,9 @@ export const ProjectPage: FC = () => {
           actions={(
             <div className={styles.toolbar} ref={actionsContainer}>
               <span>
-                <IconButton disabled={!isAdmin || isRemoving} onClick={handleDelete}>
+                <ToolbarAction disabled={!isAdmin || isRemoving} tooltip="Supprimer le projet" onClick={handleDelete}>
                   <DeleteIcon />
-                </IconButton>
+                </ToolbarAction>
                 <RefreshButton disabled={isRemoving} refreshing={loading} onClick={reload} />
               </span>
             </div>
@@ -98,11 +99,16 @@ export const ProjectPage: FC = () => {
         />
         <Tabs variant="fullWidth" value={page} onChange={() => null}>
           <LinkTab value="details" label="Détails" />
+          <LinkTab value="variables" label="Variables" />
         </Tabs>
       </Paper>
       <ProjectDetailsTab
         project={project} show={page === "details"} isRemoving={isRemoving}
         onUpdate={update}
+      />
+      <VariablesTable
+        adminId={userId} projectId={id} show={page === "variables"}
+        actionsContainer={actionsContainer.current}
       />
     </>
   );

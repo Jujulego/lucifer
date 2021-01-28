@@ -1,5 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import clsx from 'clsx';
 
 import { CircularProgress, Fab, Grid, TextField, Typography, Zoom } from '@material-ui/core';
 import { Save as SaveIcon } from '@material-ui/icons';
@@ -14,6 +15,9 @@ import { useNeedRole } from '../auth/auth.hooks';
 const useStyles = makeStyles(({ spacing }) => ({
   root: {
     padding: spacing(3),
+  },
+  hidden: {
+    padding: 0
   },
   description: {
     whiteSpace: 'pre-line'
@@ -62,7 +66,10 @@ export const ProjectDetailsTab: FC<ProjectDetailsProps> = (props) => {
   const styles = useStyles();
 
   return (
-    <form className={styles.root} onSubmit={handleSubmit(onUpdate)}>
+    <form
+      className={clsx(styles.root, { [styles.hidden]: !show })}
+      onSubmit={handleSubmit(onUpdate)}
+    >
       { (show && project) && (
         <Grid container spacing={4} direction="column">
           <Grid item container spacing={2}>
