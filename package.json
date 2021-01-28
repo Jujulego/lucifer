@@ -43,7 +43,7 @@
     "@nestjs/common": "^7.6.6",
     "@nestjs/core": "^7.6.7",
     "@nestjs/passport": "^7.1.5",
-    "@nestjs/platform-express": "^7.6.4",
+    "@nestjs/platform-express": "^7.6.7",
     "@nestjs/typeorm": "^7.1.5",
     "auth0": "^2.30.0",
     "axios": "^0.21.1",
