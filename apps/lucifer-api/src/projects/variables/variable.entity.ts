@@ -24,7 +24,7 @@ export class Variable implements IVariable {
   value: string;
 
   // Relations
-  @ManyToOne(() => Project, { nullable: false, onDelete: 'CASCADE' })
+  @ManyToOne(() => Project, { nullable: false, onUpdate: 'CASCADE', onDelete: 'CASCADE' })
   @JoinColumn([
     { name: 'adminId',   referencedColumnName: 'adminId' },
     { name: 'projectId', referencedColumnName: 'id' }
