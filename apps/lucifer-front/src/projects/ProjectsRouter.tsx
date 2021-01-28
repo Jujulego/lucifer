@@ -21,7 +21,7 @@ export const ProjectsRouter: FC = () => {
       <RoleRoute
         roles={['admin', 'reader']}
         allow={(user, { userId }) => userId === user?.id}
-        path={`${path}/:userId/:id`}
+        path={[`${path}/:userId/:id`, `${path}/:userId/:id/:page`]}
       >
         <ProjectPage />
       </RoleRoute>

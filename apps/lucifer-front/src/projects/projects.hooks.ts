@@ -23,7 +23,6 @@ export function useProjects(adminId: string) {
 
   return {
     projects, loading, reload,
-    updateCache: update,
     create: useCallback(async (data: ICreateProject) => {
       const prj = await create(data);
       update((projects = []) => [...projects, prj]);
