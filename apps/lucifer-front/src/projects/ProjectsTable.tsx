@@ -17,6 +17,7 @@ import { Table, TableAction, TableBody, TableRow, TableSortCell, TableToolbar } 
 import { IProject } from '@lucifer/types';
 
 import { useNeedRole } from '../auth/auth.hooks';
+import { usePageTab } from '../layout/page-tab.context';
 import { PageActions } from '../layout/PageActions';
 
 import { useProjects } from './projects.hooks';
@@ -25,7 +26,6 @@ import { AddProjectDialog } from './AddProjectDialog';
 // Types
 export interface ProjectsTableProps {
   adminId: string;
-  show?: boolean;
   inUserPage?: boolean;
 }
 
@@ -54,9 +54,11 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
   // Props
   const {
     adminId,
-    show = true,
     inUserPage = false
   } = props;
+
+  // Context
+  const { open } = usePageTab();
 
   // State
   const [creating, setCreating] = useState(false);
@@ -82,7 +84,7 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
 
   const toolbar = inUserPage ? (
     <PageActions>
-      { show && (
+      { open && (
         <TableAction
           tooltip="Supprimer des projets" when="some" disabled={!isAdmin}
           onActivate={(selection: IProject[]) => handleDelete(selection)}
@@ -90,14 +92,14 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
           <DeleteIcon />
         </TableAction>
         ) }
-      <Fade in={show}>
+      <Fade in={open}>
         <RefreshButton refreshing={loading} onClick={reload} />
       </Fade>
     </PageActions>
   ) : (
     <Paper square>
       <TableToolbar title="Projets">
-        { (show && isAdmin) && (
+        { (open && isAdmin) && (
           <TableAction
             tooltip="Supprimer des projets" when="some"
             onActivate={(selection: IProject[]) => handleDelete(selection)}
@@ -105,7 +107,7 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
             <DeleteIcon />
           </TableAction>
         ) }
-        <Fade in={show}>
+        <Fade in={open}>
           <RefreshButton refreshing={loading} onClick={reload} />
         </Fade>
       </TableToolbar>
@@ -114,7 +116,7 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
 
   return (
     <>
-      { show && (
+      { open && (
         <TableContainer>
           <Table documents={projects} toolbar={toolbar}>
             <TableHead>
@@ -170,7 +172,7 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
         </TableContainer>
       ) }
       { isAdmin && (
-        <Zoom in={show}>
+        <Zoom in={open}>
           <Fab
             className={styles.fab} color="primary"
             onClick={() => setCreating(true)}

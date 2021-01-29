@@ -15,15 +15,15 @@ import { Table, TableBody, TableRow, TableSortCell } from '@lucifer/react/table'
 import { IMachine } from '@lucifer/types';
 
 import { useNeedRole } from '../../auth/auth.hooks';
+import { PageActions } from '../../layout/PageActions';
+import { usePageTab } from '../../layout/page-tab.context';
 
 import { useMachines } from '../machine.hooks';
 import AddMachineDialog from './AddMachineDialog';
 import MachineDialog from './MachineDialog';
-import { PageActions } from '../../layout/PageActions';
 
 // Types
 export interface MachineTableProps {
-  show: boolean;
   ownerId: string;
 }
 
@@ -45,8 +45,10 @@ const useStyles = makeStyles(({ spacing }) => ({
 
 // Component
 const MachineTable: FC<MachineTableProps> = (props) => {
-  // Props
-  const { ownerId, show } = props;
+  const { ownerId } = props;
+
+  // Context
+  const { open } = usePageTab();
 
   // State
   const [addingMachine, setAddingMachine] = useState(false);
@@ -83,7 +85,7 @@ const MachineTable: FC<MachineTableProps> = (props) => {
     <>
       <PageActions>
         { isAdmin && (
-          <Fade in={show}>
+          <Fade in={open}>
             <ToolbarAction
               tooltip="Supprimer une machine" disabled={!isAdmin}
               onClick={() => handleDelete(selection.current)}
@@ -92,11 +94,11 @@ const MachineTable: FC<MachineTableProps> = (props) => {
             </ToolbarAction>
           </Fade>
         ) }
-        <Fade in={show}>
+        <Fade in={open}>
           <RefreshButton refreshing={loading} onClick={reload} />
         </Fade>
       </PageActions>
-      { show && (
+      { open && (
         <>
           <TableContainer>
             <Table documents={machines} selectionRef={selection}>
@@ -158,7 +160,7 @@ const MachineTable: FC<MachineTableProps> = (props) => {
         </>
       ) }
       { isAdmin && (
-        <Zoom in={show}>
+        <Zoom in={open}>
           <Fab
             className={styles.fab} color="primary"
             onClick={() => setAddingMachine(true)}

@@ -7,18 +7,20 @@ import { IVariable } from '@lucifer/types';
 
 import { useVariables } from './variables.hooks';
 import { PageActions } from '../../layout/PageActions';
+import { usePageTab } from '../../layout/page-tab.context';
 
 // Types
 export interface VariablesTableProps {
   adminId: string;
   projectId: string;
-  show?: boolean;
 }
 
 // Component
 export const VariablesTable: FC<VariablesTableProps> = (props) => {
-  // Props
-  const { adminId, show = true, projectId } = props;
+  const { adminId, projectId } = props;
+
+  // Context
+  const { open } = usePageTab();
 
   // API
   const { variables = [], loading, reload } = useVariables(adminId, projectId);
@@ -27,11 +29,11 @@ export const VariablesTable: FC<VariablesTableProps> = (props) => {
   return (
     <>
       <PageActions>
-        <Fade in={show}>
+        <Fade in={open}>
           <RefreshButton refreshing={loading} onClick={reload} />
         </Fade>
       </PageActions>
-      { show && (
+      { open && (
         <TableContainer>
           <Table documents={variables}>
             <TableHead>

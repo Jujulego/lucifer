@@ -49,27 +49,14 @@ export const UserPage = () => {
           )}
         />
       </PageHeader>
-      <PageTab label="Détails" value="details">
-        { (show) => (
-          <UserDetailsTab
-            user={user} show={show}
-            onUpdate={put}
-          />
-        ) }
+      <PageTab label="Détails" value="details" keepMounted>
+        <UserDetailsTab user={user} onUpdate={put} />
       </PageTab>
-      <PageTab label="Machines" value="machines" disabled={!isAllowed}>
-        { (show) => (
-          <MachineTable
-            ownerId={id} show={show}
-          />
-        ) }
+      <PageTab label="Machines" value="machines" keepMounted disabled={!isAllowed}>
+        <MachineTable ownerId={id} />
       </PageTab>
-      <PageTab label="Projets" value="projects" disabled={!isAllowed}>
-        { (show) => (
-          <ProjectsTable
-            adminId={id} show={show} inUserPage
-          />
-        ) }
+      <PageTab label="Projets" value="projects" keepMounted disabled={!isAllowed}>
+        <ProjectsTable adminId={id} inUserPage />
       </PageTab>
     </PageLayout>
   );

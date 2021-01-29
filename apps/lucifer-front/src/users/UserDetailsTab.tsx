@@ -6,11 +6,12 @@ import { Chip, CircularProgress, Fab, Grid, TextField, Tooltip, Typography, Zoom
 import { Check as CheckIcon, Save as SaveIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { LabelledText, RelativeDate } from '@lucifer/react/basics'
+import { LabelledText, RelativeDate } from '@lucifer/react/basics';
+import { ChipSelect } from '@lucifer/react/fields';
 import { IUpdateUser, IUser, ROLES } from '@lucifer/types';
 
 import { useNeedRole } from '../auth/auth.hooks';
-import { ChipSelect } from '@lucifer/react/fields';
+import { usePageTab } from '../layout/page-tab.context';
 
 // Styles
 const useStyles = makeStyles(({ spacing }) => ({
@@ -55,16 +56,18 @@ const GridItem = ({ children }: GridProps) => (
 // Types
 export interface UserDetailsProps {
   user?: IUser;
-  show?: boolean;
   onUpdate: (update: IUpdateUser) => void;
 }
 
 // Component
 export const UserDetailsTab = (props: UserDetailsProps) => {
   const {
-    user, show = false,
+    user,
     onUpdate
   } = props;
+
+  // Context
+  const { open } = usePageTab();
 
   // Auth
   const isAdmin = useNeedRole('admin');
@@ -82,17 +85,17 @@ export const UserDetailsTab = (props: UserDetailsProps) => {
         roles: user.roles
       });
     }
-  }, [reset, user, show]);
+  }, [reset, user, open]);
 
   // Render
   const styles = useStyles();
 
   return (
     <form
-      className={clsx(styles.root, { [styles.hidden]: !show })}
+      className={clsx(styles.root, { [styles.hidden]: !open })}
       onSubmit={isAdmin ? handleSubmit(onUpdate) : undefined}
     >
-      { (show && user) && (
+      { (open && user) && (
         <Grid container spacing={4} direction="column">
           <GridLine>
             <GridItem>
@@ -168,7 +171,7 @@ export const UserDetailsTab = (props: UserDetailsProps) => {
         </Grid>
       ) }
       { isAdmin && (
-        <Zoom in={show}>
+        <Zoom in={open}>
           <Fab
             className={styles.save} color="primary"
             type="submit" disabled={!formState.isDirty || formState.isSubmitting}

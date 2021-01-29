@@ -1,21 +1,22 @@
-import React, { FC, ReactNode, useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
+import { useParams } from 'react-router';
 
 import { usePageLayout } from './page-layout.context';
-import { useParams } from 'react-router';
+import { PageTabContext } from './page-tab.context';
 
 // Types
 export interface PageTabProps {
   value: string;
   label: string;
   disabled?: boolean;
-
-  children: (show: boolean) => ReactNode;
+  keepMounted?: boolean;
 }
 
 // Component
-export const PageTab: FC<PageTabProps> = (props) => {
+export const PageTab: FC<PageTabProps> =(props) => {
   const {
     value, label, disabled,
+    keepMounted,
     children
   } = props;
 
@@ -36,5 +37,15 @@ export const PageTab: FC<PageTabProps> = (props) => {
   }, [updateTab, value, label, disabled]);
 
   // Render
-  return <>{ children(page === value) }</>;
+  const open = page === value;
+
+  if (open || keepMounted) {
+    return (
+      <PageTabContext.Provider value={{ open }}>
+        { children }
+      </PageTabContext.Provider>
+    );
+  }
+
+  return null;
 }

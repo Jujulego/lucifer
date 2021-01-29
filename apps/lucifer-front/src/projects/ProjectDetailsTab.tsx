@@ -10,6 +10,7 @@ import { LabelledText } from '@lucifer/react/basics';
 import { IProject, IUpdateProject } from '@lucifer/types';
 
 import { useNeedRole } from '../auth/auth.hooks';
+import { usePageTab } from '../layout/page-tab.context';
 
 // Styles
 const useStyles = makeStyles(({ spacing }) => ({
@@ -31,8 +32,7 @@ const useStyles = makeStyles(({ spacing }) => ({
 
 // Types
 interface ProjectDetailsProps {
-  project?: IProject
-  show?: boolean;
+  project?: IProject;
   isRemoving: boolean;
   onUpdate: (update: IUpdateProject) => void;
 }
@@ -40,9 +40,12 @@ interface ProjectDetailsProps {
 // Component
 export const ProjectDetailsTab: FC<ProjectDetailsProps> = (props) => {
   const {
-    project, isRemoving, show = false,
+    project, isRemoving,
     onUpdate
   } = props;
+
+  // Context
+  const { open } = usePageTab();
 
   // Auth
   const isAdmin = useNeedRole('admin', usr => project?.adminId === usr?.id) ?? false;
@@ -67,10 +70,10 @@ export const ProjectDetailsTab: FC<ProjectDetailsProps> = (props) => {
 
   return (
     <form
-      className={clsx(styles.root, { [styles.hidden]: !show })}
+      className={clsx(styles.root, { [styles.hidden]: !open })}
       onSubmit={handleSubmit(onUpdate)}
     >
-      { (show && project) && (
+      { (open && project) && (
         <Grid container spacing={4} direction="column">
           <Grid item container spacing={2}>
             <Grid item xs={12} sm={6} md={4}>
@@ -107,7 +110,7 @@ export const ProjectDetailsTab: FC<ProjectDetailsProps> = (props) => {
         </Grid>
       ) }
       { isAdmin && (
-        <Zoom in={show}>
+        <Zoom in={open}>
           <Fab
             className={styles.save} color="primary"
             type="submit" disabled={!formState.isDirty || formState.isSubmitting || isRemoving}

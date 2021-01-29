@@ -59,20 +59,11 @@ export const ProjectPage: FC = () => {
           )}
         />
       </PageHeader>
-      <PageTab value="details" label="Détails">
-        { (show) => (
-          <ProjectDetailsTab
-            project={project} show={show} isRemoving={isRemoving}
-            onUpdate={update}
-          />
-        ) }
+      <PageTab value="details" label="Détails" keepMounted>
+        <ProjectDetailsTab project={project} isRemoving={isRemoving} onUpdate={update} />
       </PageTab>
-      <PageTab value="variables" label="Variables">
-        { (show) => (
-          <VariablesTable
-            adminId={userId} projectId={id} show={show}
-          />
-        ) }
+      <PageTab value="variables" label="Variables" keepMounted>
+        <VariablesTable adminId={userId} projectId={id} />
       </PageTab>
     </PageLayout>
   );
