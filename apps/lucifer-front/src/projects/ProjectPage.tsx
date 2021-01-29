@@ -1,38 +1,17 @@
 import React, { FC, useCallback, useRef, useState } from 'react';
-import { useHistory, useParams, useRouteMatch } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 
-import { Paper, Tab, Tabs } from '@material-ui/core';
+import { Paper, Tabs } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Delete as DeleteIcon } from '@material-ui/icons';
-import { RefreshButton, ToolbarAction } from '@lucifer/react/basics';
+import { LinkTab, RefreshButton, ToolbarAction } from '@lucifer/react/basics';
 
 import { useNeedRole } from '../auth/auth.hooks';
 
 import { useProject } from './projects.hooks';
 import { ProjectHeader } from './ProjectHeader';
-import { Link as RouterLink } from 'react-router-dom';
 import { ProjectDetailsTab } from './ProjectDetailsTab';
 import { VariablesTable } from './variables/VariablesTable';
-
-// Utils
-interface LinkTabProps {
-  value: string;
-  label: string;
-  disabled?: boolean;
-}
-
-const LinkTab = (props: LinkTabProps) => {
-  const { value } = props;
-  const { url } = useRouteMatch();
-  const { page } = useParams<ProjectParams>();
-
-  return (
-    <Tab {...props}
-      component={RouterLink}
-      to={page ? url.replace(page, value) : `${url}/${value}`}
-    />
-  );
-};
 
 // Types
 interface ProjectParams {
@@ -98,8 +77,8 @@ export const ProjectPage: FC = () => {
           )}
         />
         <Tabs variant="fullWidth" value={page} onChange={() => null}>
-          <LinkTab value="details" label="Détails" />
-          <LinkTab value="variables" label="Variables" />
+          <LinkTab routeParameter="page" value="details" label="Détails" />
+          <LinkTab routeParameter="page" value="variables" label="Variables" />
         </Tabs>
       </Paper>
       <ProjectDetailsTab

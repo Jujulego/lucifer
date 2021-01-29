@@ -1,10 +1,9 @@
 import React, { useRef } from 'react';
-import { useParams, useRouteMatch } from 'react-router';
-import { Link as RouterLink } from 'react-router-dom';
+import { useParams } from 'react-router';
 
-import { Fade, Paper, Tab, Tabs, makeStyles } from '@material-ui/core';
+import { Fade, Paper, Tabs, makeStyles } from '@material-ui/core';
 
-import { RefreshButton } from '@lucifer/react/basics';
+import { LinkTab, RefreshButton } from '@lucifer/react/basics';
 
 import { useNeedRole } from '../auth/auth.hooks';
 import MachineTable from '../machines/components/MachineTable';
@@ -13,26 +12,6 @@ import { useUser } from './users.hooks';
 import { UserDetailsTab } from './UserDetailsTab';
 import { UserHeader } from './UserHeader';
 import { ProjectsTable } from '../projects/ProjectsTable';
-
-// Utils
-interface LinkTabProps {
-  value: string;
-  label: string;
-  disabled?: boolean;
-}
-
-const LinkTab = (props: LinkTabProps) => {
-  const { value } = props;
-  const { url } = useRouteMatch();
-  const { page } = useParams<UserParams>();
-
-  return (
-    <Tab {...props}
-      component={RouterLink}
-      to={page ? url.replace(page, value) : `${url}/${value}`}
-    />
-  );
-};
 
 // Types
 interface UserParams {
@@ -85,9 +64,9 @@ export const UserPage = () => {
           )}
         />
         <Tabs variant="fullWidth" value={page} onChange={() => null}>
-          <LinkTab value="details" label="Détails" />
-          <LinkTab value="machines" label="Machines" disabled={!isAllowed} />
-          <LinkTab value="projects" label="Projects" disabled={!isAllowed} />
+          <LinkTab routeParameter="page" value="details" label="Détails" />
+          <LinkTab routeParameter="page" value="machines" label="Machines" disabled={!isAllowed} />
+          <LinkTab routeParameter="page" value="projects" label="Projects" disabled={!isAllowed} />
         </Tabs>
       </Paper>
       <UserDetailsTab
