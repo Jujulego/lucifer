@@ -6,7 +6,6 @@ import {
   List, ListItem, ListItemText,
   TableContainer, TableHead, TableCell,
   Fade, Zoom,
-  Portal,
   makeStyles
 } from '@material-ui/core';
 import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from '@material-ui/icons';
@@ -20,12 +19,12 @@ import { useNeedRole } from '../../auth/auth.hooks';
 import { useMachines } from '../machine.hooks';
 import AddMachineDialog from './AddMachineDialog';
 import MachineDialog from './MachineDialog';
+import { PageActions } from '../../layout/PageActions';
 
 // Types
 export interface MachineTableProps {
   show: boolean;
   ownerId: string;
-  actionsContainer: HTMLElement | null;
 }
 
 // Styles
@@ -47,7 +46,7 @@ const useStyles = makeStyles(({ spacing }) => ({
 // Component
 const MachineTable: FC<MachineTableProps> = (props) => {
   // Props
-  const { ownerId, show, actionsContainer } = props;
+  const { ownerId, show } = props;
 
   // State
   const [addingMachine, setAddingMachine] = useState(false);
@@ -82,23 +81,21 @@ const MachineTable: FC<MachineTableProps> = (props) => {
 
   return (
     <>
-      <Portal container={actionsContainer}>
-        <span>
-          { isAdmin && (
-            <Fade in={show}>
-              <ToolbarAction
-                tooltip="Supprimer une machine" disabled={!isAdmin}
-                onClick={() => handleDelete(selection.current)}
-              >
-                <DeleteIcon />
-              </ToolbarAction>
-            </Fade>
-          ) }
+      <PageActions>
+        { isAdmin && (
           <Fade in={show}>
-            <RefreshButton refreshing={loading} onClick={reload} />
+            <ToolbarAction
+              tooltip="Supprimer une machine" disabled={!isAdmin}
+              onClick={() => handleDelete(selection.current)}
+            >
+              <DeleteIcon />
+            </ToolbarAction>
           </Fade>
-        </span>
-      </Portal>
+        ) }
+        <Fade in={show}>
+          <RefreshButton refreshing={loading} onClick={reload} />
+        </Fade>
+      </PageActions>
       { show && (
         <>
           <TableContainer>

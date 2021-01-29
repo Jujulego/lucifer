@@ -7,7 +7,7 @@ import {
   List, ListItem, ListItemText,
   TableContainer, TableHead, TableCell,
   Fade, Zoom,
-  Paper, Portal,
+  Paper,
   makeStyles, Typography
 } from '@material-ui/core';
 import { Add as AddIcon, Delete as DeleteIcon } from '@material-ui/icons';
@@ -20,12 +20,13 @@ import { useNeedRole } from '../auth/auth.hooks';
 
 import { useProjects } from './projects.hooks';
 import { AddProjectDialog } from './AddProjectDialog';
+import { PageActions } from '../layout/PageActions';
 
 // Types
 export interface ProjectsTableProps {
   adminId: string;
   show?: boolean;
-  actionsContainer?: HTMLElement | null;
+  inUserPage?: boolean;
 }
 
 // Styles
@@ -54,7 +55,7 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
   const {
     adminId,
     show = true,
-    actionsContainer
+    inUserPage = false
   } = props;
 
   // State
@@ -79,22 +80,20 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
   // Render
   const styles = useStyles();
 
-  const toolbar = actionsContainer !== undefined ? (
-    <Portal container={actionsContainer}>
-      <span>
-        { show && (
-          <TableAction
-            tooltip="Supprimer des projets" when="some" disabled={!isAdmin}
-            onActivate={(selection: IProject[]) => handleDelete(selection)}
-          >
-            <DeleteIcon />
-          </TableAction>
-          ) }
-        <Fade in={show}>
-          <RefreshButton refreshing={loading} onClick={reload} />
-        </Fade>
-      </span>
-    </Portal>
+  const toolbar = inUserPage ? (
+    <PageActions>
+      { show && (
+        <TableAction
+          tooltip="Supprimer des projets" when="some" disabled={!isAdmin}
+          onActivate={(selection: IProject[]) => handleDelete(selection)}
+        >
+          <DeleteIcon />
+        </TableAction>
+        ) }
+      <Fade in={show}>
+        <RefreshButton refreshing={loading} onClick={reload} />
+      </Fade>
+    </PageActions>
   ) : (
     <Paper square>
       <TableToolbar title="Projets">

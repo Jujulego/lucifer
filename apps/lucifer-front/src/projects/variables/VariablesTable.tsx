@@ -1,24 +1,24 @@
 import React, { FC } from 'react';
 
-import { Fade, Portal, TableCell, TableContainer, TableHead } from '@material-ui/core';
+import { Fade, TableCell, TableContainer, TableHead } from '@material-ui/core';
+import { RefreshButton } from '@lucifer/react/basics';
 import { Table, TableBody, TableRow, TableSortCell } from '@lucifer/react/table';
 import { IVariable } from '@lucifer/types';
 
 import { useVariables } from './variables.hooks';
-import { RefreshButton } from '@lucifer/react/basics';
+import { PageActions } from '../../layout/PageActions';
 
 // Types
 export interface VariablesTableProps {
   adminId: string;
   projectId: string;
   show?: boolean;
-  actionsContainer: HTMLElement | null;
 }
 
 // Component
 export const VariablesTable: FC<VariablesTableProps> = (props) => {
   // Props
-  const { adminId, show = true, projectId, actionsContainer } = props;
+  const { adminId, show = true, projectId } = props;
 
   // API
   const { variables = [], loading, reload } = useVariables(adminId, projectId);
@@ -26,13 +26,11 @@ export const VariablesTable: FC<VariablesTableProps> = (props) => {
   // Render
   return (
     <>
-      <Portal container={actionsContainer}>
-        <span>
-          <Fade in={show}>
-            <RefreshButton refreshing={loading} onClick={reload} />
-          </Fade>
-        </span>
-      </Portal>
+      <PageActions>
+        <Fade in={show}>
+          <RefreshButton refreshing={loading} onClick={reload} />
+        </Fade>
+      </PageActions>
       { show && (
         <TableContainer>
           <Table documents={variables}>

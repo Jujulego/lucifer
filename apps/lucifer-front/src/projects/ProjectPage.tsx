@@ -1,8 +1,7 @@
-import React, { FC, useCallback, useRef, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
 
 import { Paper, Tabs } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import { Delete as DeleteIcon } from '@material-ui/icons';
 import { LinkTab, RefreshButton, ToolbarAction } from '@lucifer/react/basics';
 
@@ -12,6 +11,8 @@ import { useProject } from './projects.hooks';
 import { ProjectHeader } from './ProjectHeader';
 import { ProjectDetailsTab } from './ProjectDetailsTab';
 import { VariablesTable } from './variables/VariablesTable';
+import { PageLayout } from '../layout/PageLayout';
+import { PageToolbar } from '../layout/PageToolbar';
 
 // Types
 interface ProjectParams {
@@ -19,18 +20,6 @@ interface ProjectParams {
   id: string;
   page: string;
 }
-
-// Styles
-const useStyles = makeStyles({
-  toolbar: {
-    display: 'grid',
-    justifyItems: 'end',
-
-    '& > *': {
-      gridArea: '1 / 1 / 2 / 2',
-    }
-  }
-});
 
 // Component
 export const ProjectPage: FC = () => {
@@ -54,26 +43,19 @@ export const ProjectPage: FC = () => {
     history.goBack();
   }, [remove, history]);
 
-  // Refs
-  const actionsContainer = useRef<HTMLDivElement>(null);
-
   // Render
-  const styles = useStyles();
-
   return (
-    <>
+    <PageLayout>
       <Paper square>
         <ProjectHeader
           project={project}
           actions={(
-            <div className={styles.toolbar} ref={actionsContainer}>
-              <span>
-                <ToolbarAction disabled={!isAdmin || isRemoving} tooltip="Supprimer le projet" onClick={handleDelete}>
-                  <DeleteIcon />
-                </ToolbarAction>
-                <RefreshButton disabled={isRemoving} refreshing={loading} onClick={reload} />
-              </span>
-            </div>
+            <PageToolbar>
+              <ToolbarAction disabled={!isAdmin || isRemoving} tooltip="Supprimer le projet" onClick={handleDelete}>
+                <DeleteIcon />
+              </ToolbarAction>
+              <RefreshButton disabled={isRemoving} refreshing={loading} onClick={reload} />
+            </PageToolbar>
           )}
         />
         <Tabs variant="fullWidth" value={page} onChange={() => null}>
@@ -87,8 +69,7 @@ export const ProjectPage: FC = () => {
       />
       <VariablesTable
         adminId={userId} projectId={id} show={page === "variables"}
-        actionsContainer={actionsContainer.current}
       />
-    </>
+    </PageLayout>
   );
 };

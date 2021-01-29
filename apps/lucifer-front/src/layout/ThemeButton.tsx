@@ -4,7 +4,7 @@ import { IconButton, IconButtonProps } from '@material-ui/core';
 import DarkIcon from '@material-ui/icons/Brightness4';
 import LightIcon from '@material-ui/icons/Brightness7';
 
-import useDarkTheme from '../theme.hooks';
+import useDarkTheme from './theme.hooks';
 
 // Props
 export type ThemeButtonProps = Omit<IconButtonProps<'button'>, 'onClick'>

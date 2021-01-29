@@ -10,7 +10,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import { StyledProps } from '@lucifer/react/utils';
 
 // Types
-export type ClosableDialogTitleClassKey = 'root' | 'title' | 'closeButton'
+export type ClosableDialogTitleClassKey = 'root' | 'title' | 'closeButton';
 export interface ClosableDialogTitleProps extends StyledProps<ClosableDialogTitleClassKey> {
   /** Close callback */
   onClose?: () => void;

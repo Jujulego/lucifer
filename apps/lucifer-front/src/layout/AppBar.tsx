@@ -16,8 +16,8 @@ import HomeIcon from '@material-ui/icons/Home';
 import MenuIcon from '@material-ui/icons/Menu';
 import PeopleIcon from '@material-ui/icons/People';
 
-import { AccountMenu } from '../../auth/AccountMenu';
-import { RoleGate } from '../../auth/RoleGate';
+import { AccountMenu } from '../auth/AccountMenu';
+import { RoleGate } from '../auth/RoleGate';
 
 import ThemeButton from './ThemeButton';
 
