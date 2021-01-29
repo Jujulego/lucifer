@@ -1,9 +1,8 @@
 import React, { FC, useCallback, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
 
-import { Paper, Tabs } from '@material-ui/core';
 import { Delete as DeleteIcon } from '@material-ui/icons';
-import { LinkTab, RefreshButton, ToolbarAction } from '@lucifer/react/basics';
+import { RefreshButton, ToolbarAction } from '@lucifer/react/basics';
 
 import { useNeedRole } from '../auth/auth.hooks';
 
@@ -13,19 +12,20 @@ import { ProjectDetailsTab } from './ProjectDetailsTab';
 import { VariablesTable } from './variables/VariablesTable';
 import { PageLayout } from '../layout/PageLayout';
 import { PageToolbar } from '../layout/PageToolbar';
+import { PageHeader } from '../layout/PageHeader';
+import { PageTab } from '../layout/PageTab';
 
 // Types
 interface ProjectParams {
   userId: string;
   id: string;
-  page: string;
 }
 
 // Component
 export const ProjectPage: FC = () => {
   // Router
   const history = useHistory();
-  const { userId, id, page = "details" } = useParams<ProjectParams>();
+  const { userId, id} = useParams<ProjectParams>();
 
   // API
   const { project, loading, reload, update, remove } = useProject(userId, id);
@@ -45,8 +45,8 @@ export const ProjectPage: FC = () => {
 
   // Render
   return (
-    <PageLayout>
-      <Paper square>
+    <PageLayout defaultTab="details" routeParameter="page">
+      <PageHeader>
         <ProjectHeader
           project={project}
           actions={(
@@ -58,18 +58,22 @@ export const ProjectPage: FC = () => {
             </PageToolbar>
           )}
         />
-        <Tabs variant="fullWidth" value={page} onChange={() => null}>
-          <LinkTab routeParameter="page" value="details" label="Détails" />
-          <LinkTab routeParameter="page" value="variables" label="Variables" />
-        </Tabs>
-      </Paper>
-      <ProjectDetailsTab
-        project={project} show={page === "details"} isRemoving={isRemoving}
-        onUpdate={update}
-      />
-      <VariablesTable
-        adminId={userId} projectId={id} show={page === "variables"}
-      />
+      </PageHeader>
+      <PageTab value="details" label="Détails">
+        { (show) => (
+          <ProjectDetailsTab
+            project={project} show={show} isRemoving={isRemoving}
+            onUpdate={update}
+          />
+        ) }
+      </PageTab>
+      <PageTab value="variables" label="Variables">
+        { (show) => (
+          <VariablesTable
+            adminId={userId} projectId={id} show={show}
+          />
+        ) }
+      </PageTab>
     </PageLayout>
   );
 };

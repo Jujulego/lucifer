@@ -17,10 +17,10 @@ import { Table, TableAction, TableBody, TableRow, TableSortCell, TableToolbar } 
 import { IProject } from '@lucifer/types';
 
 import { useNeedRole } from '../auth/auth.hooks';
+import { PageActions } from '../layout/PageActions';
 
 import { useProjects } from './projects.hooks';
 import { AddProjectDialog } from './AddProjectDialog';
-import { PageActions } from '../layout/PageActions';
 
 // Types
 export interface ProjectsTableProps {

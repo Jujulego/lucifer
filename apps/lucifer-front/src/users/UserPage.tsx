@@ -1,19 +1,21 @@
 import React from 'react';
 import { useParams } from 'react-router';
 
-import { Fade, Paper, Tabs } from '@material-ui/core';
+import { Fade } from '@material-ui/core';
 
-import { LinkTab, RefreshButton } from '@lucifer/react/basics';
+import { RefreshButton } from '@lucifer/react/basics';
 
 import { useNeedRole } from '../auth/auth.hooks';
+import { PageHeader } from '../layout/PageHeader';
+import { PageLayout } from '../layout/PageLayout';
+import { PageToolbar } from '../layout/PageToolbar';
 import MachineTable from '../machines/components/MachineTable';
+import { ProjectsTable } from '../projects/ProjectsTable';
 
 import { useUser } from './users.hooks';
 import { UserDetailsTab } from './UserDetailsTab';
 import { UserHeader } from './UserHeader';
-import { ProjectsTable } from '../projects/ProjectsTable';
-import { PageLayout } from '../layout/PageLayout';
-import { PageToolbar } from '../layout/PageToolbar';
+import { PageTab } from '../layout/PageTab';
 
 // Types
 interface UserParams {
@@ -34,8 +36,8 @@ export const UserPage = () => {
 
   // Render
   return (
-    <PageLayout>
-      <Paper square>
+    <PageLayout defaultTab="details" routeParameter="page">
+      <PageHeader>
         <UserHeader
           user={user}
           actions={(
@@ -46,23 +48,29 @@ export const UserPage = () => {
             </PageToolbar>
           )}
         />
-        <Tabs variant="fullWidth" value={page} onChange={() => null}>
-          <LinkTab routeParameter="page" value="details" label="Détails" />
-          <LinkTab routeParameter="page" value="machines" label="Machines" disabled={!isAllowed} />
-          <LinkTab routeParameter="page" value="projects" label="Projects" disabled={!isAllowed} />
-        </Tabs>
-      </Paper>
-      <UserDetailsTab
-        user={user} show={page === 'details'}
-        onUpdate={put}
-      />
-      <MachineTable
-        ownerId={id} show={page === 'machines'}
-      />
-      <ProjectsTable
-        adminId={id} show={page === 'projects'}
-        inUserPage
-      />
+      </PageHeader>
+      <PageTab label="Détails" value="details">
+        { (show) => (
+          <UserDetailsTab
+            user={user} show={show}
+            onUpdate={put}
+          />
+        ) }
+      </PageTab>
+      <PageTab label="Machines" value="machines" disabled={!isAllowed}>
+        { (show) => (
+          <MachineTable
+            ownerId={id} show={show}
+          />
+        ) }
+      </PageTab>
+      <PageTab label="Projets" value="projects" disabled={!isAllowed}>
+        { (show) => (
+          <ProjectsTable
+            adminId={id} show={show} inUserPage
+          />
+        ) }
+      </PageTab>
     </PageLayout>
   );
 };
