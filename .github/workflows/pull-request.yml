@@ -280,7 +280,17 @@ jobs:
         run: yarn run nx run-many --all --target=db-migrate --scan
 
       - name: Start API
-        run: yarn run nx run lucifer-api:serve &
+        run: |
+          yarn run nx run lucifer-api:serve &
+
+          while [ 1 ]; do
+            sleep 5
+            curl -f http://localhost:3333/
+
+            if [ $? -eq 22 ]; then
+              break;
+            fi;
+          done;
         env:
           PORT: 3333
           DATABASE_URL: 'postgres://root:root@localhost:5432'
