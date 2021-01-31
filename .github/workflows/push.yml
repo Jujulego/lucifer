@@ -252,15 +252,15 @@ jobs:
         ports:
           - 5432:5432
 
-      lucifer-api:
-        image: ghcr.io/jujulego/lucifer/lucifer-api:master
-        credentials:
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.CR_PAT }}
-        env:
-          DATABASE_URL: 'postgres://root:root@postgres:5432'
-        ports:
-          - 3333:80
+#      lucifer-api:
+#        image: ghcr.io/jujulego/lucifer/lucifer-api:master
+#        credentials:
+#          username: ${{ github.repository_owner }}
+#          password: ${{ secrets.CR_PAT }}
+#        env:
+#          DATABASE_URL: 'postgres://root:root@postgres:5432'
+#        ports:
+#          - 3333:80
 
     steps:
       - uses: actions/checkout@v2
@@ -287,6 +287,11 @@ jobs:
 
       - name: Migrate
         run: yarn run nx run-many --all --target=db-migrate --scan
+
+      - name: Start API server
+        run: nx run lucifer-api:serve &
+        env:
+          DATABASE_URL: 'postgres://root:root@localhost:5432'
 
       - name: E2E Tests
         run: |
