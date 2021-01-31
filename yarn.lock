@@ -2127,23 +2127,24 @@
     webpack-node-externals "1.7.2"
     yargs-parser "20.0.0"
 
-"@nrwl/devkit@11.1.5":
-  version "11.1.5"
-  resolved "https://registry.yarnpkg.com/@nrwl/devkit/-/devkit-11.1.5.tgz#0dfd4a9301be7064f65e3edc876ad3c593a5ec0c"
-  integrity sha512-PMjLv8ISYJlq792A274ckK33YDzwEGnY+WVooCDp+1ctO2rlI2y+aY1kvDBmsKFEldvpNsXnnNGMfKcERkVCNg==
-  dependencies:
-    "@nrwl/tao" "11.1.5"
-    ejs "^3.1.5"
-    semver "6.3.0"
-    strip-json-comments "2.0.1"
-    tslib "^2.0.0"
-
 "@nrwl/devkit@11.2.0":
   version "11.2.0"
   resolved "https://registry.yarnpkg.com/@nrwl/devkit/-/devkit-11.2.0.tgz#517f0c4fffd2198f7bc02128946e5c12f473dcec"
   integrity sha512-VKt/zA0jiyVM+yD8Bz1ls+GiItflSL7RvgethJHESxSUDtQfEI3eWlWcZ9SFGe+Wzk4DcmI8OVllkAdViYxOtg==
   dependencies:
     "@nrwl/tao" "11.2.0"
+    ejs "^3.1.5"
+    ignore "^5.0.4"
+    semver "6.3.0"
+    strip-json-comments "2.0.1"
+    tslib "^2.0.0"
+
+"@nrwl/devkit@11.2.6":
+  version "11.2.6"
+  resolved "https://registry.yarnpkg.com/@nrwl/devkit/-/devkit-11.2.6.tgz#cac1ccf8351898cd96b48eb11a834cf7846d5fb6"
+  integrity sha512-p7UVF3qgkw23mYZStt3kj8lSM5IwxQ6sNlrku4PeJdujn6XiEASoR+bG5zTikwwvE18h3jwo0Ev7vrFLE5nn5A==
+  dependencies:
+    "@nrwl/tao" "11.2.6"
     ejs "^3.1.5"
     ignore "^5.0.4"
     semver "6.3.0"
@@ -2266,30 +2267,31 @@
     tsconfig-paths-webpack-plugin "3.2.0"
     webpack-node-externals "1.7.2"
 
-"@nrwl/tao@11.1.5":
-  version "11.1.5"
-  resolved "https://registry.yarnpkg.com/@nrwl/tao/-/tao-11.1.5.tgz#eb8b95b0dbdd1cf20c57d70b08fc88d07cbe9555"
-  integrity sha512-lTGuGpNCyvT1yt7LCloOD8heQ/sRfQlYZbnh7BzkT7ZOad0S2TCNxXXEFcd6ZNxYEW2gKAtdnhRaTHtbQRdYDA==
+"@nrwl/tao@11.2.0":
+  version "11.2.0"
+  resolved "https://registry.yarnpkg.com/@nrwl/tao/-/tao-11.2.0.tgz#15ebace96fb37f33183a5897c6d4e0dfb684e66b"
+  integrity sha512-hv1NvICNWJ9P5QBqNhMev9eoSXZDvUj5Cfqf/BaN2q4pWtKvmP2fM/WMoXPJm5PVz/yCcVdgOYnPn73UlsLyXQ==
   dependencies:
-    "@angular-devkit/architect" "~0.1100.1"
-    "@angular-devkit/core" "~11.0.1"
-    "@angular-devkit/schematics" "~11.0.1"
     chalk "4.1.0"
     fs-extra "7.0.1"
     inquirer "^6.3.1"
     minimist "^1.2.5"
     rxjs "^6.5.4"
+    rxjs-for-await "0.0.2"
     semver "6.3.0"
     strip-json-comments "2.0.1"
     tmp "0.0.33"
     tslib "^2.0.0"
     yargs-parser "20.0.0"
 
-"@nrwl/tao@11.2.0":
-  version "11.2.0"
-  resolved "https://registry.yarnpkg.com/@nrwl/tao/-/tao-11.2.0.tgz#15ebace96fb37f33183a5897c6d4e0dfb684e66b"
-  integrity sha512-hv1NvICNWJ9P5QBqNhMev9eoSXZDvUj5Cfqf/BaN2q4pWtKvmP2fM/WMoXPJm5PVz/yCcVdgOYnPn73UlsLyXQ==
+"@nrwl/tao@11.2.6":
+  version "11.2.6"
+  resolved "https://registry.yarnpkg.com/@nrwl/tao/-/tao-11.2.6.tgz#8ecb9a754340086b50bc70feb0446a970ff2c092"
+  integrity sha512-vIgZaCnQzj92DMXiFcik3/36Nm7M7JUnCVpSXVOoLRf9rDRFanR5oSdlfiu29xPTzX82h/k+1iIompBjrb00Bg==
   dependencies:
+    "@angular-devkit/architect" "~0.1100.1"
+    "@angular-devkit/core" "~11.0.1"
+    "@angular-devkit/schematics" "~11.0.1"
     chalk "4.1.0"
     fs-extra "7.0.1"
     inquirer "^6.3.1"
