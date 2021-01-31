@@ -295,7 +295,8 @@ jobs:
       - name: E2E Tests
         run: |
           echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
-          yarn run nx affected:e2e --scan --base=origin/${{ github.base_ref }}
+          #yarn run nx affected:e2e --scan --base=origin/${{ github.base_ref }}
+          yarn run nx run-many --target=e2e --all --skip-nx-cache --scan --base=origin/${{ github.base_ref }}
         env:
           CYPRESS_Auth0ClientSecret: ${{ secrets.E2E_AUTH0_CLIENT_SECRET }}
 
