@@ -197,7 +197,7 @@ jobs:
           file: apps/lucifer-api/Dockerfile
           context: .
           build-args: |
-            "Auth0Domain=dev-lucifer.eu.auth0.com"
+            "Auth0Domain=jujulego.eu.auth0.com"
             "Auth0Audience=https://lucifer-api.herokuapp.com/"
             "Auth0ClientId=ktmzvUo29TuSbQ8p1AvLrZMPTYCPsH3Z"
             "Auth0ClientSecret=${{ secrets.AUTH0_CLIENT_SECRET }}"
@@ -291,7 +291,13 @@ jobs:
       - name: Start API server
         run: yarn run nx run lucifer-api:serve &
         env:
+          PORT: 3333
           DATABASE_URL: 'postgres://root:root@localhost:5432'
+
+          AUTH0_DOMAIN: jujulego.eu.auth0.com
+          AUTH0_AUDIENCE: 'https://lucifer-api.herokuapp.com/'
+          AUTH0_CLIENT_ID: ktmzvUo29TuSbQ8p1AvLrZMPTYCPsH3Z
+          AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
 
       - name: E2E Tests
         run: |
