@@ -236,7 +236,7 @@ jobs:
 
   e2e-tests:
     runs-on: ubuntu-latest
-    needs: [docker, terraform]
+    needs: terraform
 
     services:
       postgres:
@@ -251,16 +251,6 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
-
-#      lucifer-api:
-#        image: ghcr.io/jujulego/lucifer/lucifer-api:master
-#        credentials:
-#          username: ${{ github.repository_owner }}
-#          password: ${{ secrets.CR_PAT }}
-#        env:
-#          DATABASE_URL: 'postgres://root:root@postgres:5432'
-#        ports:
-#          - 3333:80
 
     steps:
       - uses: actions/checkout@v2
