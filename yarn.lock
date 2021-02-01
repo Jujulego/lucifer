@@ -2107,6 +2107,17 @@
     yargs "15.4.1"
     yargs-parser "20.0.0"
 
+"@nrwl/cli@11.2.6":
+  version "11.2.6"
+  resolved "https://registry.yarnpkg.com/@nrwl/cli/-/cli-11.2.6.tgz#adee60f757c96d2177999029663109f77a907976"
+  integrity sha512-JiPlV354vs/I2hHCWKIAIXckyHwvhdksRt8GV8JfoPLa0IxDGnxVAI+XbSQWc5YinyLq/plohvOKcrmoAjDGdg==
+  dependencies:
+    "@nrwl/tao" "11.2.6"
+    chalk "4.1.0"
+    tmp "0.0.33"
+    yargs "15.4.1"
+    yargs-parser "20.0.0"
+
 "@nrwl/cypress@11.2.0":
   version "11.2.0"
   resolved "https://registry.yarnpkg.com/@nrwl/cypress/-/cypress-11.2.0.tgz#db8482599585ae5319e82b4169db026a70985272"
