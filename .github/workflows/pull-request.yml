@@ -103,11 +103,10 @@ jobs:
       - name: Install dependencies
         run: yarn install --pure-lockfile
 
-      - name: Migrate & Seed
+      - name: Migrate
         run: |
           yarn run build:tools
           yarn run nx run-many --all --target=db-migrate --scan
-          yarn run nx run-many --all --target=seed --scan
 
       - name: Tests
         run: yarn run affected:test --scan --base=origin/${{ github.base_ref }} --codeCoverage --coverageReporters=clover,lcovonly,json
@@ -277,8 +276,10 @@ jobs:
           yarn install --pure-lockfile
           yarn run build:tools
 
-      - name: Migrate
-        run: yarn run nx run-many --all --target=db-migrate --scan
+      - name: Migrate & Seed
+        run: |
+          yarn run nx run-many --all --target=db-migrate --scan
+          yarn run nx run-many --all --target=seed --scan
 
       - name: Start API
         run: |
