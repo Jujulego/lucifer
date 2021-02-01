@@ -2453,15 +2453,15 @@
     webpack-subresource-integrity "^1.5.1"
     worker-plugin "3.2.0"
 
-"@nrwl/workspace@11.2.0":
-  version "11.2.0"
-  resolved "https://registry.yarnpkg.com/@nrwl/workspace/-/workspace-11.2.0.tgz#1a158d5adc3dfc4aff775485bd7e4155811e9ad1"
-  integrity sha512-nkj+rEoFoY4QLDY/Gu8ZOfvZlAK9hqXwIZrkmXFomb1QZf2kAOMwmzpyv1yA/9y8/J9mdv0R3rP5eghhiPWy3g==
+"@nrwl/workspace@11.2.6":
+  version "11.2.6"
+  resolved "https://registry.yarnpkg.com/@nrwl/workspace/-/workspace-11.2.6.tgz#6505610d3e459ffe5b4dfc39c6d241355476e6ac"
+  integrity sha512-olI+h9gSISCvAipw+4tzdJtSRi/kjPPZnZO6U+c8DDAsnt73O508pFyIVj0zsxdEhKaXODQTOfoWVshENdwyYQ==
   dependencies:
-    "@nrwl/cli" "11.2.0"
-    "@nrwl/devkit" "11.2.0"
-    "@nrwl/jest" "11.2.0"
-    "@nrwl/linter" "11.2.0"
+    "@nrwl/cli" "11.2.6"
+    "@nrwl/devkit" "11.2.6"
+    "@nrwl/jest" "11.2.6"
+    "@nrwl/linter" "11.2.6"
     axios "0.21.1"
     chalk "4.1.0"
     cosmiconfig "^4.0.0"
