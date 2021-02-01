@@ -276,14 +276,13 @@ jobs:
           yarn install --pure-lockfile
           yarn run build:tools
 
-      - name: Migrate & Seed
-        run: |
-          yarn run nx run-many --all --target=db-migrate --scan
-          yarn run nx run-many --all --target=seed --scan
+      - name: Migrate
+        run: yarn run nx run-many --all --target=db-migrate --scan
 
-      - name: Start API
+      - name: Start & Seed API
         run: |
           yarn run nx run lucifer-api:serve &
+          yarn run nx run lucifer-api:seed --scan
           sleep 10
         env:
           PORT: 3333
