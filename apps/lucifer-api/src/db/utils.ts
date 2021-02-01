@@ -1,8 +1,12 @@
 import { Connection, ConnectionOptions, ConnectionOptionsReader, createConnection } from 'typeorm';
 import * as path from 'path';
 
-import { MIGRATIONS } from './migrations';
 import { env } from '../env';
+import { LocalUser } from '../users/local-user.entity';
+import { Machine } from '../machines/machine.entity';
+import { Project } from '../projects/project.entity';
+
+import { MIGRATIONS } from './migrations';
 
 // Namespace
 export const DatabaseUtils = {
@@ -31,7 +35,8 @@ export const DatabaseUtils = {
       return {
         type: 'postgres',
         url: env.DATABASE_URL,
-        migrations: MIGRATIONS
+        migrations: MIGRATIONS,
+        entities: [LocalUser, Machine, Project]
       };
 
     } else {
