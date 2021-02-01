@@ -1,0 +1,16 @@
+users:
+  - id: &userId "auth0|5ffc657caa275600713a3d71"
+
+machines:
+  - id: "000000000000-0e2e-1e21-0000-00000001"
+    ownerId: *userId
+    shortName: "Test #1"
+
+  - id: "000000000000-0e2e-1e21-0000-00000002"
+    ownerId: *userId
+    shortName: "Test #2"
+
+  - id: "000000000000-0e2e-1e21-0000-00000003"
+    ownerId: *userId
+    shortName: "Test #3"
+

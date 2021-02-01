@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ForbiddenException } from '@nestjs/common';
 import { ManagementClient } from 'auth0';
 
-import { DatabaseModule } from '../database.module';
+import { DatabaseModule } from '../db/database.module';
 import { ManagementClientMock } from '../../mocks/management-client.mock';
 import { generateTextContext } from '../../tests/utils';
 

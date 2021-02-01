@@ -2,7 +2,7 @@ import { ConflictException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Connection, In } from 'typeorm';
 
-import { DatabaseModule } from '../database.module';
+import { DatabaseModule } from '../db/database.module';
 import { UsersService } from '../users/users.service';
 import { LocalUser } from '../users/local-user.entity';
 import { UsersServiceMock } from '../../mocks/users-service.mock';

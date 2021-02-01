@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "$id": "http://lucifer.herokuapp.com/user.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "User unique identifier"
+    }
+  },
+  "required": ["id"]
+}
