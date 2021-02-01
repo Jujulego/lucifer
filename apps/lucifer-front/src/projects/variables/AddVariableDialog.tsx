@@ -5,13 +5,13 @@ import slugify from 'slugify';
 import { Button, CircularProgress, Dialog, DialogActions, DialogContent, Grid, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
 
-import { ICreateProject } from '@lucifer/types';
 import { ClosableDialogTitle } from '@lucifer/react/basics';
+import { ICreateVariable } from '@lucifer/types';
 
 // Types
-export interface AddProjectDialogProps {
+export interface AddVariableDialogProps {
   open: boolean;
-  onAdd: (data: ICreateProject) => void;
+  onAdd: (data: ICreateVariable) => void;
   onClose: () => void;
 }
 
@@ -31,12 +31,11 @@ const useStyles = makeStyles(({ spacing }) => ({
 }));
 
 // Component
-export const AddProjectDialog: FC<AddProjectDialogProps> = (props) => {
-  // Props
+export const AddVariableDialog: FC<AddVariableDialogProps> = (props) => {
   const { open, onAdd, onClose } = props;
 
   // Form
-  const { errors, register, handleSubmit, formState, watch, setValue } = useForm<ICreateProject>({
+  const { errors, register, handleSubmit, formState, watch, setValue } = useForm<ICreateVariable>({
     mode: 'onChange'
   });
 
@@ -57,7 +56,7 @@ export const AddProjectDialog: FC<AddProjectDialogProps> = (props) => {
     }
   };
 
-  const handleAdd = async (data: ICreateProject) => {
+  const handleAdd = async (data: ICreateVariable) => {
     await onAdd(data);
     onClose();
   };
@@ -76,7 +75,7 @@ export const AddProjectDialog: FC<AddProjectDialogProps> = (props) => {
         onSubmit: handleSubmit(handleAdd)
       }}
     >
-      <ClosableDialogTitle onClose={handleClose}>Nouveau projet</ClosableDialogTitle>
+      <ClosableDialogTitle onClose={handleClose}>Nouvelle variable</ClosableDialogTitle>
       <DialogContent>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
@@ -110,9 +109,9 @@ export const AddProjectDialog: FC<AddProjectDialogProps> = (props) => {
         </Grid>
         <TextField
           variant="outlined" fullWidth multiline
-          name="description" inputRef={register({ required: false })}
-          label="Description"
-          error={!!errors.description} helperText={errors.description?.message}
+          name="value" inputRef={register({ required: true })}
+          label="Valeur"
+          error={!!errors.value} helperText={errors.value?.message}
         />
       </DialogContent>
       <DialogActions>

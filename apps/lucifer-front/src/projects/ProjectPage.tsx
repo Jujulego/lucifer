@@ -14,18 +14,20 @@ import { PageLayout } from '../layout/PageLayout';
 import { PageToolbar } from '../layout/PageToolbar';
 import { PageHeader } from '../layout/PageHeader';
 import { PageTab } from '../layout/PageTab';
+import { Fade } from '@material-ui/core';
 
 // Types
 interface ProjectParams {
   userId: string;
   id: string;
+  page: string;
 }
 
 // Component
 export const ProjectPage: FC = () => {
   // Router
   const history = useHistory();
-  const { userId, id} = useParams<ProjectParams>();
+  const { userId, id, page } = useParams<ProjectParams>();
 
   // API
   const { project, loading, reload, update, remove } = useProject(userId, id);
@@ -51,10 +53,14 @@ export const ProjectPage: FC = () => {
           project={project}
           actions={(
             <PageToolbar>
-              <ToolbarAction disabled={!isAdmin || isRemoving} tooltip="Supprimer le projet" onClick={handleDelete}>
-                <DeleteIcon />
-              </ToolbarAction>
-              <RefreshButton disabled={isRemoving} refreshing={loading} onClick={reload} />
+              <Fade in={page === 'details'}>
+                <ToolbarAction disabled={!isAdmin || isRemoving} tooltip="Supprimer le projet" onClick={handleDelete}>
+                  <DeleteIcon />
+                </ToolbarAction>
+              </Fade>
+              { (page === 'details') && (
+                <RefreshButton disabled={isRemoving} refreshing={loading} onClick={reload} />
+              ) }
             </PageToolbar>
           )}
         />
