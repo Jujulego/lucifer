@@ -2,7 +2,7 @@ import React, { FC, useCallback, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
 import {
-  Fab, IconButton, Link,
+  Fab, Link,
   DialogTitle, DialogContent,
   List, ListItem, ListItemText,
   TableContainer, TableHead, TableCell,
@@ -123,7 +123,6 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
               <TableRow>
                 <TableSortCell<IProject> field="name">Nom</TableSortCell>
                 <TableCell>Description</TableCell>
-                <TableCell />
               </TableRow>
             </TableHead>
             <TableBody>
@@ -136,13 +135,6 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
                   </TableCell>
                   <TableCell className={styles.description}>
                     <Typography noWrap>{ prj.description }</Typography>
-                  </TableCell>
-                  <TableCell className={styles.actions} onClick={event => event.stopPropagation()}>
-                    { isAdmin && (
-                      <IconButton onClick={() => handleDelete([prj])}>
-                        <DeleteIcon />
-                      </IconButton>
-                    ) }
                   </TableCell>
                 </TableRow>
               ) }

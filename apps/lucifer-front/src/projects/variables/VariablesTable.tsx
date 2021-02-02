@@ -1,7 +1,8 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 
-import { Fab, Fade, makeStyles, TableCell, TableContainer, TableHead, Zoom } from '@material-ui/core';
-import { Add as AddIcon, Delete as DeleteIcon } from '@material-ui/icons';
+import { Fab, Fade, IconButton, makeStyles, TableCell, TableContainer, TableHead, Zoom } from '@material-ui/core';
+import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from '@material-ui/icons';
+
 import { RefreshButton } from '@lucifer/react/basics';
 import { Table, TableAction, TableBody, TableRow, TableSortCell } from '@lucifer/react/table';
 import { IVariable } from '@lucifer/types';
@@ -12,6 +13,7 @@ import { usePageTab } from '../../layout/page-tab.context';
 
 import { useVariables } from './variables.hooks';
 import { AddVariableDialog } from './AddVariableDialog';
+import { UpdateVariableDialog } from './UpdateVariableDialog';
 
 // Types
 export interface VariablesTableProps {
@@ -21,6 +23,11 @@ export interface VariablesTableProps {
 
 // Styles
 const useStyles = makeStyles(({ spacing }) => ({
+  actions: {
+    width: 0,
+    padding: 0,
+    textAlign: 'right'
+  },
   fab: {
     position: 'absolute',
     bottom: spacing(2),
@@ -37,12 +44,18 @@ export const VariablesTable: FC<VariablesTableProps> = (props) => {
 
   // State
   const [creating, setCreating] = useState(false);
+  const [updating, setUpdating] = useState<IVariable | undefined>();
 
   // Auth
   const isAdmin = useNeedRole('admin', usr => usr?.id === adminId) ?? false;
 
   // API
-  const { variables = [], create, loading, reload } = useVariables(adminId, projectId);
+  const { variables = [], create, loading, reload, updateCache } = useVariables(adminId, projectId);
+
+  // Callbacks
+  const handleUpdated = useCallback((vrb: IVariable) => {
+    updateCache((old = []) => old.map(v => v.id === vrb.id ? vrb : v))
+  }, [updateCache]);
 
   // Render
   const styles = useStyles();
@@ -67,6 +80,7 @@ export const VariablesTable: FC<VariablesTableProps> = (props) => {
               <TableRow>
                 <TableSortCell<IVariable> field="name">Nom</TableSortCell>
                 <TableCell>Value</TableCell>
+                <TableCell />
               </TableRow>
             </TableHead>
             <TableBody>
@@ -74,6 +88,11 @@ export const VariablesTable: FC<VariablesTableProps> = (props) => {
                 <TableRow key={vrb.id} doc={vrb}>
                   <TableCell>{ vrb.name }</TableCell>
                   <TableCell>{ vrb.value }</TableCell>
+                  <TableCell className={styles.actions} onClick={event => event.stopPropagation()}>
+                    <IconButton onClick={() => setUpdating(vrb)}>
+                      <EditIcon />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
               ) }
             </TableBody>
@@ -82,6 +101,12 @@ export const VariablesTable: FC<VariablesTableProps> = (props) => {
             open={isAdmin && creating}
             onAdd={create}
             onClose={() => setCreating(false)}
+          />
+          <UpdateVariableDialog
+            open={isAdmin && !!updating}
+            variable={updating}
+            onUpdated={handleUpdated}
+            onClose={() => setUpdating(undefined)}
           />
         </TableContainer>
       ) }

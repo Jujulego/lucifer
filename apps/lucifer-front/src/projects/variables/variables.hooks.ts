@@ -28,7 +28,7 @@ export function useVariables(adminId: string, projectId: string) {
   const { send: bulkDelete } = useVariablesAPI.bulkDelete(adminId, projectId);
 
   return {
-    variables, loading, reload,
+    variables, loading, reload, updateCache: update,
     create: useCallback(async (data: ICreateVariable) => {
       const vrb = await create(data);
       update((variables = []) => [...variables, vrb]);
