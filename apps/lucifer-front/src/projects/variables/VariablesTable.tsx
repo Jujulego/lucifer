@@ -1,9 +1,20 @@
 import React, { FC, useCallback, useState } from 'react';
 
-import { Fab, Fade, IconButton, makeStyles, TableCell, TableContainer, TableHead, Zoom } from '@material-ui/core';
+import {
+  DialogContent,
+  DialogTitle,
+  Fab,
+  Fade,
+  IconButton, List, ListItem, ListItemText,
+  makeStyles,
+  TableCell,
+  TableContainer,
+  TableHead,
+  Zoom
+} from '@material-ui/core';
 import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from '@material-ui/icons';
 
-import { RefreshButton } from '@lucifer/react/basics';
+import { ConfirmDialog, RefreshButton, useConfirm } from '@lucifer/react/basics';
 import { Table, TableAction, TableBody, TableRow, TableSortCell } from '@lucifer/react/table';
 import { IVariable } from '@lucifer/types';
 
@@ -28,6 +39,9 @@ const useStyles = makeStyles(({ spacing }) => ({
     padding: 0,
     textAlign: 'right'
   },
+  confirmContent: {
+    padding: 0,
+  },
   fab: {
     position: 'absolute',
     bottom: spacing(2),
@@ -45,24 +59,33 @@ export const VariablesTable: FC<VariablesTableProps> = (props) => {
   // State
   const [creating, setCreating] = useState(false);
   const [updating, setUpdating] = useState<IVariable | undefined>();
+  const { state: deleteState, confirm: confirmDelete } = useConfirm<IVariable[]>([]);
 
   // Auth
   const isAdmin = useNeedRole('admin', usr => usr?.id === adminId) ?? false;
 
   // API
-  const { variables = [], create, loading, reload, updateCache } = useVariables(adminId, projectId);
+  const { variables = [], create, loading, reload, updateCache, bulkDelete } = useVariables(adminId, projectId);
 
   // Callbacks
   const handleUpdated = useCallback((vrb: IVariable) => {
     updateCache((old = []) => old.map(v => v.id === vrb.id ? vrb : v))
   }, [updateCache]);
 
+  const handleDelete = useCallback(async (variables: IVariable[]) => {
+    const ids = variables.map(vrb => vrb.id);
+
+    if (await confirmDelete(variables)) {
+      await bulkDelete(ids);
+    }
+  }, [bulkDelete, confirmDelete]);
+
   // Render
   const styles = useStyles();
 
   const toolbar = (
     <PageActions>
-      <TableAction when="some">
+      <TableAction when="some" onActivate={handleDelete}>
         <DeleteIcon />
       </TableAction>
       <Fade in={open}>
@@ -108,6 +131,22 @@ export const VariablesTable: FC<VariablesTableProps> = (props) => {
             onUpdated={handleUpdated}
             onClose={() => setUpdating(undefined)}
           />
+          <ConfirmDialog state={deleteState}>
+            { (variables) => (
+              <>
+                <DialogTitle>Supprimer { variables.length } variables ?</DialogTitle>
+                <DialogContent className={styles.confirmContent} dividers>
+                  <List>
+                    { variables.map((vrb) => (
+                      <ListItem key={vrb.id}>
+                        <ListItemText primary={vrb.name} secondary={vrb.id} />
+                      </ListItem>
+                    )) }
+                  </List>
+                </DialogContent>
+              </>
+            ) }
+          </ConfirmDialog>
         </TableContainer>
       ) }
       { isAdmin && (

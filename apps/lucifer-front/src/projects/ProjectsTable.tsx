@@ -102,7 +102,7 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
         { (open && isAdmin) && (
           <TableAction
             tooltip="Supprimer des projets" when="some"
-            onActivate={(selection: IProject[]) => handleDelete(selection)}
+            onActivate={handleDelete}
           >
             <DeleteIcon />
           </TableAction>
