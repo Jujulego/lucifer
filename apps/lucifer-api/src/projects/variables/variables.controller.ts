@@ -19,6 +19,8 @@ import { UserId } from '../../users/user-id.param';
 import { Variable } from './variable.entity';
 import { CreateVariable, UpdateVariable } from './variable.schema';
 import { VariablesService } from './variables.service';
+import { YupPipe } from '../../utils/yup.pipe';
+import { createVariableSchema, ICreateVariable } from '@lucifer/types';
 
 // Controller
 @Controller('/:userId/projects/:projectId/variables')
@@ -36,7 +38,7 @@ export class VariablesController {
   async create(
     @UserId('userId') userId: string,
     @Param('projectId') projectId: string,
-    @Body(ValidationPipe) data: CreateVariable
+    @Body(new YupPipe(createVariableSchema)) data: ICreateVariable
   ): Promise<Variable> {
     return await this.variables.create(userId, projectId, data);
   }

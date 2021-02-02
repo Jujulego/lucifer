@@ -2,10 +2,11 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 
+import { ICreateVariable } from '@lucifer/types';
 import { ProjectsService } from '../projects.service';
 
 import { Variable } from './variable.entity';
-import { CreateVariable, UpdateVariable } from './variable.schema';
+import { UpdateVariable } from './variable.schema';
 
 // Service
 @Injectable()
@@ -25,7 +26,7 @@ export class VariablesService {
     return vrb || null;
   }
 
-  async create(adminId: string, projectId: string, data: CreateVariable): Promise<Variable> {
+  async create(adminId: string, projectId: string, data: ICreateVariable): Promise<Variable> {
     // Ensure project exists (throw if it does not exists)
     await this.projects.get(adminId, projectId);
 
