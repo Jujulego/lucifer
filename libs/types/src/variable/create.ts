@@ -1,18 +1,6 @@
-import { SchemaOf, object, string } from 'yup';
+import { object, SchemaOf, string } from 'yup';
 
-// Interface
-export interface IVariable {
-  // Id
-  id:        string;
-  projectId: string;
-  adminId:   string;
-
-  // Data
-  name:  string;
-  value: string;
-}
-
-// Schemas
+// Schema
 export interface ICreateVariable {
   id:    string;
   name:  string;
@@ -29,8 +17,3 @@ export const createVariableSchema: SchemaOf<ICreateVariable> = object({
 
   value: string().required(),
 });
-
-export interface IUpdateVariable {
-  name?:  string;
-  value?: string;
-}

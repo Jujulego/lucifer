@@ -1,26 +1,13 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  ParseArrayPipe,
-  Post,
-  Put,
-  Query,
-  UseGuards,
-  ValidationPipe
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseArrayPipe, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
+import { createVariableSchema, ICreateVariable, IUpdateVariable, updateVariableSchema } from '@lucifer/types';
 import { AllowIf, ScopeGuard, Scopes } from '../../auth/scope.guard';
 import { UserId } from '../../users/user-id.param';
+import { YupPipe } from '../../utils/yup.pipe';
 
 import { Variable } from './variable.entity';
-import { CreateVariable, UpdateVariable } from './variable.schema';
 import { VariablesService } from './variables.service';
-import { YupPipe } from '../../utils/yup.pipe';
-import { createVariableSchema, ICreateVariable } from '@lucifer/types';
 
 // Controller
 @Controller('/:userId/projects/:projectId/variables')
@@ -68,7 +55,7 @@ export class VariablesController {
     @UserId('userId') userId: string,
     @Param('projectId') projectId: string,
     @Param('id') id: string,
-    @Body(ValidationPipe) update: UpdateVariable
+    @Body(new YupPipe(updateVariableSchema)) update: IUpdateVariable
   ): Promise<Variable> {
     return await this.variables.update(userId, projectId, id, update);
   }

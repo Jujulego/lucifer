@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
 
-import { User } from '@lucifer/types';
+import { IUpdateUser, User } from '@lucifer/types';
 
 import { Context } from '../src/context';
 import { LocalUser } from '../src/users/local-user.entity';
 import { UsersService } from '../src/users/users.service';
-import { UpdateUser } from '../src/users/user.schema';
 
 // Class
 @Injectable()
@@ -31,7 +30,7 @@ export class UsersServiceMock extends UsersService {
     return [];
   }
 
-  async update(ctx: Context, id: string, update: UpdateUser): Promise<User> {
+  async update(ctx: Context, id: string, update: IUpdateUser): Promise<User> {
     const usr = new User();
     usr.id = id;
     usr.name = update.name ?? "Test test";

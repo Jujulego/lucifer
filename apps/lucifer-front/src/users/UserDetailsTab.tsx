@@ -1,5 +1,6 @@
 import React, { ReactNode, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup'
 import clsx from 'clsx';
 
 import { Chip, CircularProgress, Fab, Grid, TextField, Tooltip, Typography, Zoom } from '@material-ui/core';
@@ -8,7 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { LabelledText, RelativeDate } from '@lucifer/react/basics';
 import { ChipSelect } from '@lucifer/react/fields';
-import { IUpdateUser, IUser, ROLES } from '@lucifer/types';
+import { IUpdateUser, IUser, ROLES, updateUserSchema } from '@lucifer/types';
 
 import { useNeedRole } from '../auth/auth.hooks';
 import { usePageTab } from '../layout/page-tab.context';
@@ -74,7 +75,9 @@ export const UserDetailsTab = (props: UserDetailsProps) => {
   const isAllowed = useNeedRole('admin', usr => usr?.id === user?.id);
 
   // Form
-  const { errors, control, register, reset, handleSubmit, formState } = useForm<IUpdateUser>();
+  const { errors, control, register, reset, handleSubmit, formState } = useForm<IUpdateUser>({
+    resolver: yupResolver(updateUserSchema),
+  });
 
   // Effects
   useEffect(() => {

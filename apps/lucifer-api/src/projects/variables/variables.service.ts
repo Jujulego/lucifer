@@ -2,11 +2,10 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 
-import { ICreateVariable } from '@lucifer/types';
+import { ICreateVariable, IUpdateVariable } from '@lucifer/types';
 import { ProjectsService } from '../projects.service';
 
 import { Variable } from './variable.entity';
-import { UpdateVariable } from './variable.schema';
 
 // Service
 @Injectable()
@@ -61,7 +60,7 @@ export class VariablesService {
     return vrb;
   }
 
-  async update(adminId: string, projectId: string, id: string, update: UpdateVariable): Promise<Variable> {
+  async update(adminId: string, projectId: string, id: string, update: IUpdateVariable): Promise<Variable> {
     const vrb = await this.get(adminId, projectId, id);
 
     // Apply update

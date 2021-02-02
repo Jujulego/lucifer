@@ -1,16 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { ManagementClient } from 'auth0';
-import { plainToClass } from 'class-transformer';
 import { Connection } from 'typeorm';
 
+import { IUpdateUser } from '@lucifer/types';
 import { DatabaseModule } from '../database.module';
 import { ManagementClientMock } from '../../mocks/management-client.mock';
 import { generateTextContext } from '../../tests/utils';
 
 import { UsersModule } from './users.module';
 import { UsersService } from './users.service';
-import { UpdateUser } from './user.schema';
 import { LocalUser } from './local-user.entity';
 import { RolesService } from './roles.service';
 
@@ -206,10 +205,10 @@ describe('UsersService.update', () => {
   // Tests
   it('should update user', async () => {
     const user = users[0];
-    const update = plainToClass(UpdateUser, {
+    const update: IUpdateUser = {
       email:   '1-tset@test.com',
       name:    '1 tseT'
-    });
+    };
 
     // Call
     await expect(service.update(ctx, user.user_id, update))
@@ -228,9 +227,9 @@ describe('UsersService.update', () => {
 
   it('should update user roles', async () => {
     const user = users[0];
-    const update = plainToClass(UpdateUser, {
+    const update: IUpdateUser = {
       roles: ['reader'],
-    });
+    };
 
     // Call
     await expect(service.update(ctx, user.user_id, update))
@@ -249,7 +248,7 @@ describe('UsersService.update', () => {
 
   it('should do nothing', async () => {
     const user = users[0];
-    const update = plainToClass(UpdateUser, {});
+    const update: IUpdateUser = {};
 
     // Call
     await expect(service.update(ctx, user.user_id, update))
@@ -268,10 +267,10 @@ describe('UsersService.update', () => {
 
   it('should ignore updates on non auth0 user', async () => {
     const user = users[2];
-    const update = plainToClass(UpdateUser, {
-      email:   '3-tset@test.com',
-      name:    '3 tseT'
-    });
+    const update: IUpdateUser = {
+      email: '3-tset@test.com',
+      name:  '3 tseT'
+    };
 
     // Call
     await expect(service.update(ctx, user.user_id, update))
@@ -290,7 +289,7 @@ describe('UsersService.update', () => {
 
   it('should throw if user is undefined', async () => {
     const user = users[0];
-    const update = plainToClass(UpdateUser, {});
+    const update: IUpdateUser = {};
 
     // Mock
     jest.spyOn(mgmtClient, 'getUser')
