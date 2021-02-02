@@ -1,5 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import axios from 'axios';
 import slugify from 'slugify';
 
 import { Grid, TextField } from '@material-ui/core';
@@ -8,6 +9,7 @@ import { makeStyles } from '@material-ui/core';
 import { ICreateVariable } from '@lucifer/types';
 
 import { FormDialog } from '../../layout/FormDialog';
+import { handleAPIErrors } from '../../utils/form';
 
 // Types
 export interface AddVariableDialogProps {
@@ -28,7 +30,7 @@ export const AddVariableDialog: FC<AddVariableDialogProps> = (props) => {
   const { open, onAdd, onClose } = props;
 
   // Form
-  const { errors, register, handleSubmit, formState, watch, setValue } = useForm<ICreateVariable>({
+  const { errors, register, handleSubmit, formState, watch, setValue, setError } = useForm<ICreateVariable>({
     mode: 'onChange'
   });
 
@@ -50,8 +52,14 @@ export const AddVariableDialog: FC<AddVariableDialogProps> = (props) => {
   };
 
   const handleAdd = async (data: ICreateVariable) => {
-    await onAdd(data);
-    onClose();
+    try {
+      await onAdd(data);
+      onClose();
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        handleAPIErrors(error, 'id', setError);
+      }
+    }
   };
 
   // Render
