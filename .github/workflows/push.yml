@@ -197,7 +197,7 @@ jobs:
           file: apps/lucifer-api/Dockerfile
           context: .
           build-args: |
-            "Auth0Domain=dev-lucifer.eu.auth0.com"
+            "Auth0Domain=jujulego.eu.auth0.com"
             "Auth0Audience=https://lucifer-api.herokuapp.com/"
             "Auth0ClientId=ktmzvUo29TuSbQ8p1AvLrZMPTYCPsH3Z"
             "Auth0ClientSecret=${{ secrets.AUTH0_CLIENT_SECRET }}"
@@ -252,15 +252,15 @@ jobs:
         ports:
           - 5432:5432
 
-      lucifer-api:
-        image: ghcr.io/jujulego/lucifer/lucifer-api:master
-        credentials:
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.CR_PAT }}
-        env:
-          DATABASE_URL: 'postgres://root:root@postgres:5432'
-        ports:
-          - 3333:80
+#      lucifer-api:
+#        image: ghcr.io/jujulego/lucifer/lucifer-api:master
+#        credentials:
+#          username: ${{ github.repository_owner }}
+#          password: ${{ secrets.CR_PAT }}
+#        env:
+#          DATABASE_URL: 'postgres://root:root@postgres:5432'
+#        ports:
+#          - 3333:80
 
     steps:
       - uses: actions/checkout@v2
@@ -288,10 +288,21 @@ jobs:
       - name: Migrate
         run: yarn run nx run-many --all --target=db-migrate --scan
 
+      - name: Start API server
+        run: yarn run nx run lucifer-api:serve &
+        env:
+          PORT: 3333
+          DATABASE_URL: 'postgres://root:root@localhost:5432'
+
+          AUTH0_DOMAIN: jujulego.eu.auth0.com
+          AUTH0_AUDIENCE: 'https://lucifer-api.herokuapp.com/'
+          AUTH0_CLIENT_ID: ktmzvUo29TuSbQ8p1AvLrZMPTYCPsH3Z
+          AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
+
       - name: E2E Tests
         run: |
           echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
-          yarn run nx run-many --all --target=e2e --scan
+          yarn run nx run-many --all --target=e2e --scan --skip-nx-cache
         env:
           CYPRESS_Auth0ClientSecret: ${{ secrets.E2E_AUTH0_CLIENT_SECRET }}
 
