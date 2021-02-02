@@ -9,7 +9,6 @@ import { useNeedRole } from '../auth/auth.hooks';
 import { PageHeader } from '../layout/PageHeader';
 import { PageLayout } from '../layout/PageLayout';
 import { PageToolbar } from '../layout/PageToolbar';
-import MachineTable from '../machines/components/MachineTable';
 import { ProjectsTable } from '../projects/ProjectsTable';
 
 import { useUser } from './users.hooks';
@@ -51,9 +50,6 @@ export const UserPage = () => {
       </PageHeader>
       <PageTab label="Détails" value="details" keepMounted>
         <UserDetailsTab user={user} onUpdate={put} />
-      </PageTab>
-      <PageTab label="Machines" value="machines" keepMounted disabled={!isAllowed}>
-        <MachineTable ownerId={id} />
       </PageTab>
       <PageTab label="Projets" value="projects" keepMounted disabled={!isAllowed}>
         <ProjectsTable adminId={id} inUserPage />

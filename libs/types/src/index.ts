@@ -1,4 +1,3 @@
-export * from './lib/machine';
 export * from './error';
 export * from './project';
 export * from './permissions';
