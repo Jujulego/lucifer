@@ -2096,12 +2096,12 @@
     puka "^1.0.1"
     read-package-json-fast "^1.1.3"
 
-"@nrwl/cli@11.2.6":
-  version "11.2.6"
-  resolved "https://registry.yarnpkg.com/@nrwl/cli/-/cli-11.2.6.tgz#adee60f757c96d2177999029663109f77a907976"
-  integrity sha512-JiPlV354vs/I2hHCWKIAIXckyHwvhdksRt8GV8JfoPLa0IxDGnxVAI+XbSQWc5YinyLq/plohvOKcrmoAjDGdg==
+"@nrwl/cli@11.2.7":
+  version "11.2.7"
+  resolved "https://registry.yarnpkg.com/@nrwl/cli/-/cli-11.2.7.tgz#e299fd6d12ea0f6e760be58cc42138a821dbb74a"
+  integrity sha512-hOYTtpyL17ae2iU17F04VcHaK+wphHCOl56ID/eGcXRJTU/O/Y8Yt9O9bUKpTW8ZS3gKJF1hhTQjl1JKtyTnrg==
   dependencies:
-    "@nrwl/tao" "11.2.6"
+    "@nrwl/tao" "11.2.7"
     chalk "4.1.0"
     tmp "0.0.33"
     yargs "15.4.1"
@@ -2621,15 +2621,15 @@
     webpack-subresource-integrity "^1.5.1"
     worker-plugin "3.2.0"
 
-"@nrwl/workspace@11.2.6":
-  version "11.2.6"
-  resolved "https://registry.yarnpkg.com/@nrwl/workspace/-/workspace-11.2.6.tgz#6505610d3e459ffe5b4dfc39c6d241355476e6ac"
-  integrity sha512-olI+h9gSISCvAipw+4tzdJtSRi/kjPPZnZO6U+c8DDAsnt73O508pFyIVj0zsxdEhKaXODQTOfoWVshENdwyYQ==
+"@nrwl/workspace@11.2.7":
+  version "11.2.7"
+  resolved "https://registry.yarnpkg.com/@nrwl/workspace/-/workspace-11.2.7.tgz#eaf47cfbc0b15db33808575a3542f1bed0debbb9"
+  integrity sha512-G95evDr2qj3DhdV7aNwTL9o2UPeOtdvmTJwksoBeByJSfk12FN6kwVNmZZbiZWVGQbpeQ/PVfw2zgQ1/JhGdqg==
   dependencies:
-    "@nrwl/cli" "11.2.6"
-    "@nrwl/devkit" "11.2.6"
-    "@nrwl/jest" "11.2.6"
-    "@nrwl/linter" "11.2.6"
+    "@nrwl/cli" "11.2.7"
+    "@nrwl/devkit" "11.2.7"
+    "@nrwl/jest" "11.2.7"
+    "@nrwl/linter" "11.2.7"
     axios "0.21.1"
     chalk "4.1.0"
     cosmiconfig "^4.0.0"
