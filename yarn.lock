@@ -2355,14 +2355,15 @@
     eslint-plugin-react-hooks "^2.4.0"
     url-loader "^3.0.0"
 
-"@nrwl/storybook@11.2.6":
-  version "11.2.6"
-  resolved "https://registry.yarnpkg.com/@nrwl/storybook/-/storybook-11.2.6.tgz#0df62f88be344b39ab29716e6ac933e10bbef28b"
-  integrity sha512-HD2oKnUSAIXNeU4PFnsDTGvY9Y6prHL64wsDM/Mu9+miaPferN4M1rUX4tu4+hN0s9WW+erS/vweqLsb4L+Imw==
+"@nrwl/storybook@11.2.7":
+  version "11.2.7"
+  resolved "https://registry.yarnpkg.com/@nrwl/storybook/-/storybook-11.2.7.tgz#632f26fc8303338b0aa5f90d3446bf893bd1bd3e"
+  integrity sha512-PLJ4YNFnHCxpxwFDygJMW3HvEmbSx22wQ0cW/Ds6s1WTfSgrXVK7sXS67GA47STpDFkFOxAOB1L3veXcF4F1Rg==
   dependencies:
-    "@nrwl/cypress" "11.2.6"
-    "@nrwl/devkit" "11.2.6"
+    "@nrwl/cypress" "11.2.7"
+    "@nrwl/devkit" "11.2.7"
     core-js "^3.6.5"
+    semver "6.3.0"
     tree-kill "1.2.2"
     ts-loader "5.4.5"
     tsconfig-paths-webpack-plugin "3.2.0"
