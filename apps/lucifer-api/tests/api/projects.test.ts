@@ -122,8 +122,8 @@ describe('POST /:userId/projects', () => {
       .expect('Content-Type', /json/);
 
     expect(rep.body).toEqual(should.be.badRequest(
-      'id must be a string',
-      'name must be a string',
+      { path: 'id', type: 'required', errors: [expect.any(String)] },
+      { path: 'name', type: 'required', errors: [expect.any(String)] },
     ));
   });
 
@@ -138,8 +138,8 @@ describe('POST /:userId/projects', () => {
       .expect('Content-Type', /json/);
 
     expect(rep.body).toEqual(should.be.badRequest(
-      'id must be shorter than or equal to 100 characters',
-      'name must be shorter than or equal to 100 characters',
+      { path: 'id', type: 'max', errors: [expect.any(String)] },
+      { path: 'name', type: 'max', errors: [expect.any(String)] },
     ));
   });
 
@@ -154,7 +154,7 @@ describe('POST /:userId/projects', () => {
       .expect('Content-Type', /json/);
 
     expect(rep.body).toEqual(should.be.badRequest(
-      'id must match /^[a-z0-9-]+$/ regular expression'
+      { path: 'id', type: 'matches', errors: [expect.any(String)] }
     ));
   });
 
@@ -334,7 +334,7 @@ describe('PUT /:userId/projects/:id', () => {
       .expect('Content-Type', /json/);
 
     expect(rep.body).toEqual(should.be.badRequest(
-      'name must be shorter than or equal to 100 characters'
+      { path: 'name', type: 'max', errors: [expect.any(String)] }
     ));
     expect(service.update).not.toBeCalled();
   });

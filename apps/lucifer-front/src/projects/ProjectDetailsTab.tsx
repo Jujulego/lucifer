@@ -1,5 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import clsx from 'clsx';
 
 import { CircularProgress, Fab, Grid, TextField, Typography, Zoom } from '@material-ui/core';
@@ -7,7 +8,7 @@ import { Save as SaveIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { LabelledText } from '@lucifer/react/basics';
-import { IProject, IUpdateProject } from '@lucifer/types';
+import { IProject, IUpdateProject, updateProjectSchema } from '@lucifer/types';
 
 import { useNeedRole } from '../auth/auth.hooks';
 import { usePageTab } from '../layout/page-tab.context';
@@ -52,7 +53,8 @@ export const ProjectDetailsTab: FC<ProjectDetailsProps> = (props) => {
 
   // Form
   const { errors, register, reset, handleSubmit, formState } = useForm<IUpdateProject>({
-    mode: 'onChange'
+    mode: 'onChange',
+    resolver: yupResolver(updateProjectSchema)
   });
 
   // Effects
@@ -80,9 +82,7 @@ export const ProjectDetailsTab: FC<ProjectDetailsProps> = (props) => {
               { isAdmin ? (
                 <TextField
                   label="Nom" variant="outlined" fullWidth
-                  name="name" inputRef={register({
-                    maxLength: { value: 100, message: '100 charactères max.' },
-                  })}
+                  name="name" inputRef={register}
                   error={!!errors.name} helperText={errors.name?.message}
                 />
               ) : (

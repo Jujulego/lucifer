@@ -1,12 +1,13 @@
 import React, { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import axios from 'axios';
 import slugify from 'slugify';
 
 import { Grid, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
 
-import { ICreateProject } from '@lucifer/types';
+import { createProjectSchema, ICreateProject } from '@lucifer/types';
 
 import { FormDialog } from '../layout/FormDialog';
 import { handleAPIErrors } from '../utils/form';
@@ -31,7 +32,8 @@ export const AddProjectDialog: FC<AddProjectDialogProps> = (props) => {
 
   // Form
   const { errors, register, handleSubmit, formState, watch, setValue, setError } = useForm<ICreateProject>({
-    mode: 'onChange'
+    mode: 'onChange',
+    resolver: yupResolver(createProjectSchema),
   });
 
   const fields = watch(['id', 'name']);
@@ -80,10 +82,7 @@ export const AddProjectDialog: FC<AddProjectDialogProps> = (props) => {
           <TextField
             className={styles.field}
             variant="outlined" fullWidth
-            name="name" inputRef={register({
-              required: true,
-              maxLength: { value: 100, message: '100 charactères max.' }
-            })}
+            name="name" inputRef={register}
             label="Nom" required
             error={!!errors.name} helperText={errors.name?.message}
           />
@@ -92,11 +91,7 @@ export const AddProjectDialog: FC<AddProjectDialogProps> = (props) => {
           <TextField
             className={styles.field}
             variant="outlined" fullWidth
-            name="id" inputRef={register({
-              required: true,
-              maxLength: { value: 100, message: '100 charactères max.' },
-              pattern: { value: /^[a-z0-9-]+$/, message: 'charactères autorisés: a-z, 0-9, -' }
-            })}
+            name="id" inputRef={register}
             InputLabelProps={{
               shrink: !!fields.id
             }}
@@ -107,7 +102,7 @@ export const AddProjectDialog: FC<AddProjectDialogProps> = (props) => {
       </Grid>
       <TextField
         variant="outlined" fullWidth multiline
-        name="description" inputRef={register({ required: false })}
+        name="description" inputRef={register}
         label="Description"
         error={!!errors.description} helperText={errors.description?.message}
       />

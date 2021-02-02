@@ -1,23 +1,12 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  ParseArrayPipe,
-  Post,
-  Put,
-  Query,
-  UseGuards,
-  ValidationPipe
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseArrayPipe, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
+import { createProjectSchema, ICreateProject, IUpdateProject, updateProjectSchema } from '@lucifer/types';
 import { AllowIf, ScopeGuard, Scopes } from '../auth/scope.guard';
 import { UserId } from '../users/user-id.param';
+import { YupPipe } from '../utils/yup.pipe';
 
 import { Project } from './project.entity';
-import { CreateProject, UpdateProject } from './project.schema';
 import { ProjectsService } from './projects.service';
 
 // Controller
@@ -35,7 +24,7 @@ export class ProjectsController {
   @Scopes('create:projects')
   async create(
     @UserId('userId') userId: string,
-    @Body(ValidationPipe) data: CreateProject
+    @Body(new YupPipe(createProjectSchema)) data: ICreateProject
   ): Promise<Project> {
     return await this.projects.create(userId, data);
   }
@@ -62,7 +51,7 @@ export class ProjectsController {
   async update(
     @UserId('userId') userId: string,
     @Param('id') id: string,
-    @Body(ValidationPipe) update: UpdateProject
+    @Body(new YupPipe(updateProjectSchema)) update: IUpdateProject
   ): Promise<Project> {
     return await this.projects.update(userId, id, update);
   }

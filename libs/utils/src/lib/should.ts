@@ -1,5 +1,6 @@
 import { HttpStatus } from '@nestjs/common';
 import { HTTP_CODES } from './http';
+import { ValidationError } from '@lucifer/types';
 
 // Matchers logic
 class All implements jest.AsymmetricMatcher {
@@ -52,6 +53,8 @@ export const should = {
       message: message || error
     }),
 
-    badRequest(...message: string[]) { return this.httpError(400, expect.arrayContaining(message)) }
+    badRequest<T extends Record<string, any>>(...errors: ValidationError<T>[]) {
+      return this.httpError(400, expect.arrayContaining(errors));
+    }
   },
 };

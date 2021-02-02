@@ -1,12 +1,7 @@
 import { AxiosError } from 'axios';
 import { FieldName, FieldValues, UseFormMethods } from 'react-hook-form';
 
-// Types
-interface ValidationError<T extends FieldValues> {
-  path: FieldName<T>;
-  type?: string;
-  errors: string[];
-}
+import { ValidationError } from '@lucifer/types';
 
 // Utils
 export function handleAPIErrors<T extends FieldValues>(error: AxiosError, idField: FieldName<T>, setError: UseFormMethods<T>['setError']) {
@@ -15,7 +10,7 @@ export function handleAPIErrors<T extends FieldValues>(error: AxiosError, idFiel
   switch (res?.status) {
     case 400: // Bad Request
       for (const { path, type, errors } of res.data.message as ValidationError<T>[]) {
-        setError(path, { type, message: errors[0] });
+        setError(path as FieldName<T>, { type, message: errors[0] });
       }
 
       break;

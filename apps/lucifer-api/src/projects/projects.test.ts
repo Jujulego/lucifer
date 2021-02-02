@@ -2,6 +2,7 @@ import { ConflictException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Connection, In } from 'typeorm';
 
+import { IUpdateProject } from '@lucifer/types';
 import { DatabaseModule } from '../database.module';
 import { UsersService } from '../users/users.service';
 import { LocalUser } from '../users/local-user.entity';
@@ -10,8 +11,6 @@ import { UsersServiceMock } from '../../mocks/users-service.mock';
 import { ProjectsModule } from './projects.module';
 import { ProjectsService } from './projects.service';
 import { Project } from './project.entity';
-import { plainToClass } from 'class-transformer';
-import { UpdateProject } from './project.schema';
 
 // Load services
 let app: TestingModule;
@@ -144,10 +143,10 @@ describe('ProjectsService.get', () => {
 });
 
 describe('ProjectsService.update', () => {
-  const update = plainToClass(UpdateProject, {
+  const update: IUpdateProject = {
     name: 'updated',
     description: 'updated'
-  });
+  };
 
   // Tests
   it('should update a project', async () => {
