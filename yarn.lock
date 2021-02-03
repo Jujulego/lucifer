@@ -1993,10 +1993,10 @@
     fs-extra "9.1.0"
     pluralize "8.0.0"
 
-"@nestjs/testing@^7.6.8":
-  version "7.6.8"
-  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-7.6.8.tgz#2276b84449cf823d7e343a674614fbda936dc12e"
-  integrity sha512-Jz9LNbgEMDLvijlBfWJnbAfWxj8I838Uk2EKwsDMjOl7plDvaYxmvu2B2QFQyAR7wK7VBZsAv7KiojvvFbHz+g==
+"@nestjs/testing@^7.6.9":
+  version "7.6.9"
+  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-7.6.9.tgz#b69f87cbe3ee5af08fe5a46c8e09ebdff5714696"
+  integrity sha512-1nWuW7WHMXoiuhYPeL2+IWtR3742jYUMxduIpPLxjaeHxBmM161ylbPOkinCxgdKzVjFMblwTKXG4xIjEjrD+Q==
   dependencies:
     optional "0.1.4"
     tslib "2.1.0"
@@ -4100,10 +4100,10 @@
   resolved "https://registry.yarnpkg.com/@types/parse5/-/parse5-5.0.3.tgz#e7b5aebbac150f8b5fdd4a46e7f0bd8e65e19109"
   integrity sha512-kUNnecmtkunAoQ3CnjmMkzNU/gtxG8guhi+Fk2U/kOpIKjIMKnXGp4IJCgQJrXSgMsWYimYG4TGjz/UzbGEBTw==
 
-"@types/passport-jwt@^3.0.3":
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/@types/passport-jwt/-/passport-jwt-3.0.3.tgz#47b6c43af668852d7c83e56a23ed9f4515dd1814"
-  integrity sha512-RlOCXiTitE8kazj9jZc6/BfGCSqnv2w/eYPDm3+3iNsquHn7ratu7oIUskZx9ZtnwMdpvdpy+Z/QYClocH5NvQ==
+"@types/passport-jwt@^3.0.4":
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/@types/passport-jwt/-/passport-jwt-3.0.4.tgz#d6078512acacb875d9011ede5b064baffae81a43"
+  integrity sha512-GDtQaG9Wg+9lUk6MTbYI1yMr3TonFlDO0QpQp2EA4Di+VnNvz5fHJ4P763bgaGmtqQATYHg/8iDL7oqJ7Ed9AA==
   dependencies:
     "@types/express" "*"
     "@types/jsonwebtoken" "*"
