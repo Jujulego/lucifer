@@ -1993,10 +1993,10 @@
     fs-extra "9.1.0"
     pluralize "8.0.0"
 
-"@nestjs/testing@^7.6.8":
-  version "7.6.8"
-  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-7.6.8.tgz#2276b84449cf823d7e343a674614fbda936dc12e"
-  integrity sha512-Jz9LNbgEMDLvijlBfWJnbAfWxj8I838Uk2EKwsDMjOl7plDvaYxmvu2B2QFQyAR7wK7VBZsAv7KiojvvFbHz+g==
+"@nestjs/testing@^7.6.9":
+  version "7.6.9"
+  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-7.6.9.tgz#b69f87cbe3ee5af08fe5a46c8e09ebdff5714696"
+  integrity sha512-1nWuW7WHMXoiuhYPeL2+IWtR3742jYUMxduIpPLxjaeHxBmM161ylbPOkinCxgdKzVjFMblwTKXG4xIjEjrD+Q==
   dependencies:
     optional "0.1.4"
     tslib "2.1.0"
@@ -2199,6 +2199,18 @@
     strip-json-comments "2.0.1"
     tslib "^2.0.0"
 
+"@nrwl/devkit@11.2.9":
+  version "11.2.9"
+  resolved "https://registry.yarnpkg.com/@nrwl/devkit/-/devkit-11.2.9.tgz#5266dc0cf319e868859316baf35c7dcb7e9bca99"
+  integrity sha512-lF9IvjT2WInwKo5HxovZyefgsc839xItOEz/8J0bR+QI5fp9nxY3aer413BDhnfgUbkKp/KjKGcPSWdKVHSR2A==
+  dependencies:
+    "@nrwl/tao" "11.2.9"
+    ejs "^3.1.5"
+    ignore "^5.0.4"
+    semver "6.3.0"
+    strip-json-comments "2.0.1"
+    tslib "^2.0.0"
+
 "@nrwl/eslint-plugin-nx@11.2.7":
   version "11.2.7"
   resolved "https://registry.yarnpkg.com/@nrwl/eslint-plugin-nx/-/eslint-plugin-nx-11.2.7.tgz#533cd64b075415418ea487f0427b87c2b9fb4892"
@@ -2236,6 +2248,17 @@
   integrity sha512-JV6Y+QKvUjmQCmQ/ARAzoatnrZCe74W4Ca884Xq8BDqkZQEZVC312puOVshGErUhda8mdjeWzBT5B7TNShpxfg==
   dependencies:
     "@nrwl/devkit" "11.2.7"
+    jest-resolve "^26.6.2"
+    rxjs "^6.5.4"
+    strip-json-comments "2.0.1"
+    tslib "^2.0.0"
+
+"@nrwl/jest@11.2.9":
+  version "11.2.9"
+  resolved "https://registry.yarnpkg.com/@nrwl/jest/-/jest-11.2.9.tgz#af3207798668dabd3b3fc6b224ef639dc326ebc5"
+  integrity sha512-MdZRiYc/0iTXsrqeFQDcSuuFOc5nfgriG9/PT166O0gpj94TfQmut4pRjgEzGYU9EA2waZt8LqIx5JnVmyxo8w==
+  dependencies:
+    "@nrwl/devkit" "11.2.9"
     jest-resolve "^26.6.2"
     rxjs "^6.5.4"
     strip-json-comments "2.0.1"
@@ -2400,6 +2423,26 @@
   resolved "https://registry.yarnpkg.com/@nrwl/tao/-/tao-11.2.7.tgz#e661066e613b1e26c3158585dc8c2105e516f0f7"
   integrity sha512-OL/no+nPzpeZ76iPpoV7BLMUGlWOVCz+aA8iUeppcL0IalajLylo1+I7M6i4jP06coGEtxrhTfYU/u88oJTjwg==
   dependencies:
+    chalk "4.1.0"
+    fs-extra "7.0.1"
+    inquirer "^6.3.1"
+    minimist "^1.2.5"
+    rxjs "^6.5.4"
+    rxjs-for-await "0.0.2"
+    semver "6.3.0"
+    strip-json-comments "2.0.1"
+    tmp "0.0.33"
+    tslib "^2.0.0"
+    yargs-parser "20.0.0"
+
+"@nrwl/tao@11.2.9":
+  version "11.2.9"
+  resolved "https://registry.yarnpkg.com/@nrwl/tao/-/tao-11.2.9.tgz#a534f1fe91500f791895431a219a74bea26adee7"
+  integrity sha512-XV2iBEVNI4KW6T/S5gZ9sqNTzs7ziNDDrDoFlDdaWs0wmvHxGp8KzWS4/4WlHZkNhjTYUWCWdrMEvy427YyxNQ==
+  dependencies:
+    "@angular-devkit/architect" "~0.1100.1"
+    "@angular-devkit/core" "~11.0.1"
+    "@angular-devkit/schematics" "~11.0.1"
     chalk "4.1.0"
     fs-extra "7.0.1"
     inquirer "^6.3.1"
