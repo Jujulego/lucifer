@@ -2107,6 +2107,17 @@
     yargs "15.4.1"
     yargs-parser "20.0.0"
 
+"@nrwl/cli@11.2.9":
+  version "11.2.9"
+  resolved "https://registry.yarnpkg.com/@nrwl/cli/-/cli-11.2.9.tgz#6d3f2a3a014f5eaeca7afe17047ef44fba76ce97"
+  integrity sha512-0Q5fO33uU5yeyVlopROi2ZdhJQvFbOJdPVDT+cU6U++DHmmAqF1bjwL/V6+QCfYikLob7LbzaE4g/5Zpvd7n3Q==
+  dependencies:
+    "@nrwl/tao" "11.2.9"
+    chalk "4.1.0"
+    tmp "0.0.33"
+    yargs "15.4.1"
+    yargs-parser "20.0.0"
+
 "@nrwl/cypress@11.2.0":
   version "11.2.0"
   resolved "https://registry.yarnpkg.com/@nrwl/cypress/-/cypress-11.2.0.tgz#db8482599585ae5319e82b4169db026a70985272"
@@ -2653,15 +2664,15 @@
     webpack-subresource-integrity "^1.5.1"
     worker-plugin "3.2.0"
 
-"@nrwl/workspace@11.2.7":
-  version "11.2.7"
-  resolved "https://registry.yarnpkg.com/@nrwl/workspace/-/workspace-11.2.7.tgz#eaf47cfbc0b15db33808575a3542f1bed0debbb9"
-  integrity sha512-G95evDr2qj3DhdV7aNwTL9o2UPeOtdvmTJwksoBeByJSfk12FN6kwVNmZZbiZWVGQbpeQ/PVfw2zgQ1/JhGdqg==
+"@nrwl/workspace@11.2.9":
+  version "11.2.9"
+  resolved "https://registry.yarnpkg.com/@nrwl/workspace/-/workspace-11.2.9.tgz#534a70f278dd546a06d130dd410da4d504715574"
+  integrity sha512-5rW1uBa6XNkTTRNqIfg+aFXGDmmzwbdre7t+IxPJL0G6GkMhD+LznZUAhaiOLdboQ1KrXHnrEI8vjRFlWsiikQ==
   dependencies:
-    "@nrwl/cli" "11.2.7"
-    "@nrwl/devkit" "11.2.7"
-    "@nrwl/jest" "11.2.7"
-    "@nrwl/linter" "11.2.7"
+    "@nrwl/cli" "11.2.9"
+    "@nrwl/devkit" "11.2.9"
+    "@nrwl/jest" "11.2.9"
+    "@nrwl/linter" "11.2.9"
     axios "0.21.1"
     chalk "4.1.0"
     cosmiconfig "^4.0.0"
