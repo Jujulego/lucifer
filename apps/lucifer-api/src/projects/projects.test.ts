@@ -70,7 +70,7 @@ afterEach(async () => {
 });
 
 // Tests suites
-describe('ProjectsService.create', function() {
+describe('ProjectsService.create', () => {
   // Tests
   it('should create a new project', async () => {
     const project = await service.create(admins[1].id, { id: 'test-4', name: 'Test #4' });
@@ -99,7 +99,7 @@ describe('ProjectsService.create', function() {
 
 describe('ProjectsService.list', () => {
   // Tests
-  it('should return all owner\'s machines', async () => {
+  it('should return all admin\'s projects', async () => {
     const adm = admins[0];
 
     // Call
@@ -109,7 +109,6 @@ describe('ProjectsService.list', () => {
       );
   });
 
-  // Tests
   it('should empty array for unknown user', async () => {
     // Call
     await expect(service.list('unknown-user'))

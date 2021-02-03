@@ -39,16 +39,6 @@ export class VariablesController {
     return await this.variables.list(userId, projectId);
   }
 
-  @Get('/:id')
-  @Scopes('read:variables')
-  async get(
-    @UserId('userId') userId: string,
-    @Param('projectId') projectId: string,
-    @Param('id') id: string,
-  ): Promise<Variable> {
-    return await this.variables.get(userId, projectId, id);
-  }
-
   @Put('/:id')
   @Scopes('update:variables')
   async update(
