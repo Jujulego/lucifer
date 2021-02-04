@@ -37,10 +37,9 @@ jobs:
           restore-keys: ${{ runner.os }}-yarn-
 
       - name: Install dependencies
-        run: yarn install --pure-lockfile
-
-      - name: Lint
-        run: yarn run nx run auth0:lint
+        run: |
+          yarn install --pure-lockfile
+          yarn run build:tools
 
       - name: Build
         run: yarn run nx run auth0:build
