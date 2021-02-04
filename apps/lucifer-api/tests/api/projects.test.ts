@@ -40,13 +40,13 @@ let lcu: LocalUser;
 let projects: Project[];
 
 const admin = {
-  user_id: 'tests|api-users-admin',
+  user_id: 'tests|api-projects-admin',
   email:   'admin@test.com',
   name:    'Admin'
 };
 
 const basic = {
-  user_id: 'tests|api-users-basic',
+  user_id: 'tests|api-projects-basic',
   email:   'basic@test.com',
   name:    'Basic'
 };
@@ -101,6 +101,21 @@ describe('POST /:userId/projects', () => {
   // Tests
   it('should return created project', async () => {
     const rep = await request.post(`/${admin.user_id}/projects`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send(data)
+      .expect(201)
+      .expect('Content-Type', /json/);
+
+    expect(rep.body).toEqual({
+      id:      data.id,
+      adminId: admin.user_id,
+      name:    data.name,
+      description: ''
+    });
+  });
+
+  it('should return created project (me special id)', async () => {
+    const rep = await request.post('/me/projects')
       .set('Authorization', `Bearer ${adminToken}`)
       .send(data)
       .expect(201)
@@ -368,7 +383,7 @@ describe('PUT /:userId/projects/:id', () => {
     expect(service.update).toBeCalledWith(prj.adminId, 'not-a-project-id', {});
   });
 
-  it('should return 404 (unknown project for user)', async () => {
+  it('should return 404 (unknown user)', async () => {
     const prj = projects[0];
 
     await request.put(`/not-a-user-id/projects/${prj.id}`)
