@@ -4,7 +4,7 @@ import { ManagementClient } from 'auth0';
 import { plainToClass } from 'class-transformer';
 import { Connection } from 'typeorm';
 
-import { DatabaseModule } from '../database.module';
+import { DatabaseModule } from '../db/database.module';
 import { ManagementClientMock } from '../../mocks/management-client.mock';
 import { generateTextContext } from '../../tests/utils';
 
