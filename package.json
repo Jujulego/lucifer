@@ -89,7 +89,7 @@
     "@nrwl/devkit": "11.2.9",
     "@nrwl/eslint-plugin-nx": "11.2.9",
     "@nrwl/jest": "11.2.9",
-    "@nrwl/nest": "11.2.9",
+    "@nrwl/nest": "11.2.10",
     "@nrwl/node": "11.2.9",
     "@nrwl/nx-cloud": "11.1.2",
     "@nrwl/react": "11.2.9",
