@@ -86,7 +86,7 @@
     "@nestjs/testing": "^7.6.11",
     "@nrwl/cli": "11.2.9",
     "@nrwl/cypress": "11.2.9",
-    "@nrwl/devkit": "11.2.9",
+    "@nrwl/devkit": "11.2.10",
     "@nrwl/eslint-plugin-nx": "11.2.9",
     "@nrwl/jest": "11.2.9",
     "@nrwl/nest": "11.2.9",
