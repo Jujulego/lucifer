@@ -261,6 +261,14 @@ jobs:
         id: setup-cache
         run: echo "::set-output name=yarn-cache::$(yarn cache dir)"
 
+      - name: Setup Database
+        uses: ./.github/actions/setup-db
+        with:
+          db-host: 'localhost'
+          db-port: 5432
+          db-username: 'root'
+          db-password: 'root'
+
       - name: Setup Nx
         id: setup
         run: git fetch --no-tags --prune --depth=5 origin ${{ github.base_ref }}
@@ -282,12 +290,11 @@ jobs:
       - name: Start & Seed API
         # TODO: find better alternative to `sleep 10`
         run: |
-          yarn run nx run lucifer-api:serve & > server.log
+          yarn run nx run lucifer-api:serve > server.log &
           yarn run nx run lucifer-api:seed --scan
           sleep 10
         env:
           PORT: 3333
-          DATABASE_URL: 'postgres://root:root@localhost:5432'
 
           AUTH0_DOMAIN: jujulego.eu.auth0.com
           AUTH0_AUDIENCE: 'https://lucifer-api.herokuapp.com/'
