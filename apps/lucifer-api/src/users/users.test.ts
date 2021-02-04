@@ -4,7 +4,7 @@ import { ManagementClient } from 'auth0';
 import { Connection } from 'typeorm';
 
 import { IUpdateUser } from '@lucifer/types';
-import { DatabaseModule } from '../database.module';
+import { DatabaseModule } from '../db/database.module';
 import { ManagementClientMock } from '../../mocks/management-client.mock';
 import { generateTextContext } from '../../tests/utils';
 
