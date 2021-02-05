@@ -3,7 +3,9 @@ import { getDialog, getMain } from './common.po';
 // Table
 export const getLoader = () => getMain().findByRole('progressbar');
 export const getProjectsTable = () => getMain().findByRole('table');
+export const getProjectRow = (text: string) => getProjectsTable().findByText(text).parents('tr');
 export const getAddButton = () => getMain().findByLabelText('add project');
+export const getDeleteButton = () => getMain().findByLabelText('delete projects');
 
 // Add dialog
 export const getAddNameField = () => getDialog().findByLabelText('Nom *');

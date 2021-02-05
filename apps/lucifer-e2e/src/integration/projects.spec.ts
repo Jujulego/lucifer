@@ -1,11 +1,12 @@
+import { getDialog } from '../support/common.po';
+import { getConfirmCancelButton, getConfirmConfirmButton, getConfirmList } from '../support/confirm.po';
 import {
   getAddButton, getAddCloseButton, getAddDescriptionField, getAddLoader,
   getAddNameField,
-  getAddSlugField, getAddSubmitButton,
-  getLoader,
+  getAddSlugField, getAddSubmitButton, getDeleteButton,
+  getLoader, getProjectRow,
   getProjectsTable
 } from '../support/projects-table.po';
-import { getDialog } from '../support/common.po';
 
 beforeEach(() => {
   cy.login();
@@ -13,6 +14,7 @@ beforeEach(() => {
 
   cy.intercept('GET', '**/api/*/projects').as('getProjects');
   cy.intercept('POST', '**/api/*/projects').as('createProject');
+  cy.intercept('DELETE', '**/api/*/projects?*').as('deleteProjects');
 });
 
 // Test suites
@@ -29,7 +31,8 @@ describe('Projects table', () => {
 });
 
 describe('Add a new project', () => {
-  const projectId = 'cypress-test';
+  const projectId = 'cypress-add-project-test';
+  const projectName = 'Cypress Add Project Test';
 
   afterEach(() => {
     // Remove created project
@@ -38,8 +41,7 @@ describe('Add a new project', () => {
       url: `/api/${Cypress.env('userId')}/projects/${projectId}`,
       headers: {
         'Authorization': `Bearer ${Cypress.env('accessToken')}`,
-      },
-      failOnStatusCode: false
+      }
     });
   });
 
@@ -47,13 +49,13 @@ describe('Add a new project', () => {
   it('should add a new project', () => {
     // Assert project does not exist
     cy.wait('@getProjects');
-    getProjectsTable().findByText('Cypress Test').should('not.exist');
+    getProjectsTable().findByText(projectName).should('not.exist');
 
     // Open creation dialog
     getAddButton().click();
 
     // Fill form
-    getAddNameField().type('Cypress Test');
+    getAddNameField().type(projectName);
     getAddSlugField().should('have.value', projectId);
     getAddDescriptionField().type('This is a cypress test generated project');
 
@@ -64,25 +66,25 @@ describe('Add a new project', () => {
     // Await creation
     cy.wait('@createProject');
     getDialog().should('not.exist');
-    getProjectsTable().findByText('Cypress Test').should('exist');
+    getProjectsTable().findByText(projectName).should('exist');
   });
 
   it('should close created dialog without creating project', () => {
     // Assert project does not exist
     cy.wait('@getProjects');
-    getProjectsTable().findByText('Cypress Test').should('not.exist');
+    getProjectsTable().findByText(projectName).should('not.exist');
 
     // Open creation dialog
     getAddButton().click();
 
     // Fill form
-    getAddNameField().type('Cypress Test');
+    getAddNameField().type(projectName);
     getAddDescriptionField().type('This is a cypress test generated project');
 
     // Close dialog
     getAddCloseButton().click();
     getDialog().should('not.exist');
-    getProjectsTable().findByText('Cypress Test').should('not.exist');
+    getProjectsTable().findByText(projectName).should('not.exist');
 
     // Dialog form should be reset
     getAddButton().click();
@@ -107,13 +109,13 @@ describe('Add a new project', () => {
 
     // Assert project does not exist
     cy.wait('@getProjects');
-    getProjectsTable().findByText('Cypress Test').should('not.exist');
+    getProjectsTable().findByText(projectName).should('not.exist');
 
     // Open creation dialog
     getAddButton().click();
 
     // Fill form
-    getAddNameField().type('Cypress Test');
+    getAddNameField().type(projectName);
     getAddDescriptionField().type('This is a cypress test generated project');
 
     // Submit and check for errors
@@ -143,13 +145,13 @@ describe('Add a new project', () => {
 
     // Assert project does not exist
     cy.wait('@getProjects');
-    getProjectsTable().findByText('Cypress Test').should('not.exist');
+    getProjectsTable().findByText(projectName).should('not.exist');
 
     // Open creation dialog
     getAddButton().click();
 
     // Fill form
-    getAddNameField().type('Cypress Test');
+    getAddNameField().type(projectName);
 
     // Submit and check for errors
     getAddSubmitButton().click();
@@ -158,5 +160,82 @@ describe('Add a new project', () => {
     getAddSlugField()
       .parent().parent()
       .findByText(`Project with id ${projectId} already exists`).should('exist');
+  });
+});
+
+describe('Delete a project', () => {
+  const projectId = 'cypress-delete-project-test';
+  const projectName = 'Cypress Delete Project Test';
+
+  beforeEach(() => {
+    // Create a project to delete
+    cy.request({
+      method: 'POST',
+      url: `/api/${Cypress.env('userId')}/projects/`,
+      body: {
+        id: projectId,
+        name: projectName
+      },
+      headers: {
+        'Authorization': `Bearer ${Cypress.env('accessToken')}`,
+      }
+    });
+
+    cy.reload();
+  });
+
+  afterEach(() => {
+    // Remove created project
+    cy.request({
+      method: 'DELETE',
+      url: `/api/${Cypress.env('userId')}/projects/${projectId}`,
+      headers: {
+        'Authorization': `Bearer ${Cypress.env('accessToken')}`,
+      }
+    });
+  });
+
+  // Tests
+  it('should delete a project', () => {
+    // Assert project does exist
+    cy.wait('@getProjects');
+    getProjectRow(projectName).should('exist');
+
+    // Select project
+    getProjectRow(projectName).findByRole('checkbox').click();
+    getDeleteButton().click();
+
+    // Confirm should contain list of selected projects
+    getConfirmList().findByRole('listitem')
+      .should('contain.text', projectName)
+      .and('contain.text', projectId);
+
+    // Confirm
+    getConfirmConfirmButton().click();
+
+    // Assert project dont exist
+    cy.wait('@deleteProjects');
+    getProjectsTable().findByText(projectName).should('not.exist');
+  });
+
+  it('should cancel and do not delete', () => {
+    // Assert project does exist
+    cy.wait('@getProjects');
+    getProjectRow(projectName).should('exist');
+
+    // Select project
+    getProjectRow(projectName).findByRole('checkbox').click();
+    getDeleteButton().click();
+
+    // Confirm should contain list of selected projects
+    getConfirmList().findByRole('listitem')
+      .should('contain.text', projectName)
+      .and('contain.text', projectId);
+
+    // Confirm
+    getConfirmCancelButton().click();
+
+    // Assert project dont exist
+    getProjectsTable().findByText(projectName).should('exist');
   });
 });

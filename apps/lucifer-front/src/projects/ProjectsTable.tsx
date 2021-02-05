@@ -87,6 +87,7 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
       { open && (
         <TableAction
           tooltip="Supprimer des projets" when="some" disabled={!isAdmin}
+          aria-label="delete projects"
           onActivate={(selection: IProject[]) => handleDelete(selection)}
         >
           <DeleteIcon />
