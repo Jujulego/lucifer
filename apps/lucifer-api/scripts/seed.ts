@@ -3,18 +3,18 @@ import fs from 'fs';
 import path from 'path';
 import yaml from 'yaml';
 
-import { IMachine, IProject, IUser } from '@lucifer/types';
+import { IProject, IUser, IVariable } from '@lucifer/types';
 
 import { DatabaseUtils } from '../src/db/utils';
 import { LocalUser } from '../src/users/local-user.entity';
-import { Machine } from '../src/machines/machine.entity';
 import { Project } from '../src/projects/project.entity';
+import { Variable } from '../src/projects/variables/variable.entity';
 
 // Types
 interface SeedData {
   users?: Pick<IUser, 'id'>[];
-  machines?: IMachine[];
   projects?: IProject[];
+  variables?: IVariable[];
 }
 
 // Seed
@@ -33,20 +33,20 @@ interface SeedData {
   try {
     await connection.transaction(async manager => {
       const repoLcu = manager.getRepository(LocalUser);
-      const repoMch = manager.getRepository(Machine);
       const repoPrj = manager.getRepository(Project);
+      const repoVrb = manager.getRepository(Variable);
 
       // Create users
       const users = await repoLcu.save(data.users?.map(usr => repoLcu.create(usr)) || []);
       Logger.log(`${users.length} users created`);
 
-      // Create machines
-      const machines = await repoMch.save(data.machines?.map(mch => repoMch.create(mch)) || []);
-      Logger.log(`${machines.length} machines created`);
-
-      // Create users
+      // Create projects
       const projects = await repoPrj.save(data.projects?.map(prj => repoPrj.create(prj)) || []);
       Logger.log(`${projects.length} projects created`);
+
+      // Create variables
+      const variables = await repoVrb.save(data.variables?.map(vrb => repoVrb.create(vrb)) || []);
+      Logger.log(`${variables.length} variables created`);
     });
   } finally {
     await connection.close();

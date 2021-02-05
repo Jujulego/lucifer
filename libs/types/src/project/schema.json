@@ -5,15 +5,17 @@
   "additionalProperties": false,
   "properties": {
     "adminId": {
-      "$ref": "./user.schema.json#/properties/id",
-      "description": "Admin's identifier"
+      "$ref": "../user/schema.json#/properties/id"
     },
     "id": {
       "type": "string",
+      "maxLength": 100,
+      "pattern": "^[a-z0-9-]+$",
       "description": "Project identifier"
     },
     "name": {
       "type": "string",
+      "maxLength": 100,
       "description": "Project's name"
     },
     "description": {

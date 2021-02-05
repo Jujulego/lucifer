@@ -8,21 +8,21 @@
       "type": "array",
       "description": "Users to create (must already exists in auth0)",
       "items": {
-        "$ref": "lib/user.schema.json"
+        "$ref": "user/schema.json"
       }
     },
     "projects": {
       "type": "array",
       "description": "Projects to create",
       "items": {
-        "$ref": "lib/project.schema.json"
+        "$ref": "project/schema.json"
       }
     },
-    "machines": {
+    "variables": {
       "type": "array",
-      "description": "Machines to create",
+      "description": "Variables to create",
       "items": {
-        "$ref": "lib/machine.schema.json"
+        "$ref": "variable/schema.json"
       }
     }
   }
