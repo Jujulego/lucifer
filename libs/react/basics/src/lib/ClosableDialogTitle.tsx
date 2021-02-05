@@ -46,7 +46,7 @@ const ClosableDialogTitle: FC<ClosableDialogTitleProps> = (props) => {
       >
         { children }
       </Typography>
-      <IconButton classes={{ root: styles.closeButton }} edge="end" onClick={onClose}>
+      <IconButton classes={{ root: styles.closeButton }} edge="end" onClick={onClose} aria-label="close dialog">
         <CloseIcon />
       </IconButton>
     </MuiDialogTitle>

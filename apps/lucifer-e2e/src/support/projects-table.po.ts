@@ -11,3 +11,4 @@ export const getAddSlugField = () => getDialog().findByLabelText('Slug *');
 export const getAddDescriptionField = () => getDialog().findByLabelText('Description');
 export const getAddSubmitButton = () => getDialog().findByText('Créer');
 export const getAddLoader = () => getDialog().findByRole('progressbar');
+export const getAddCloseButton = () => getDialog().findByLabelText('close dialog');
