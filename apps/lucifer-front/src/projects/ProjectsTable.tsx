@@ -167,6 +167,7 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
         <Zoom in={open}>
           <Fab
             className={styles.fab} color="primary"
+            aria-label="add project"
             onClick={() => setCreating(true)}
           >
             <AddIcon />

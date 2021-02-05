@@ -83,7 +83,7 @@ export const AddProjectDialog: FC<AddProjectDialogProps> = (props) => {
             className={styles.field}
             variant="outlined" fullWidth
             name="name" inputRef={register}
-            label="Nom" required
+            id="add-project-name" label="Nom" required
             error={!!errors.name} helperText={errors.name?.message}
           />
         </Grid>
@@ -95,7 +95,7 @@ export const AddProjectDialog: FC<AddProjectDialogProps> = (props) => {
             InputLabelProps={{
               shrink: !!fields.id
             }}
-            label="Slug" required
+            id="add-project-id" label="Slug" required
             error={!!errors.id} helperText={errors.id?.message}
           />
         </Grid>
@@ -103,7 +103,7 @@ export const AddProjectDialog: FC<AddProjectDialogProps> = (props) => {
       <TextField
         variant="outlined" fullWidth multiline
         name="description" inputRef={register}
-        label="Description"
+        id="add-project-description" label="Description"
         error={!!errors.description} helperText={errors.description?.message}
       />
     </FormDialog>
