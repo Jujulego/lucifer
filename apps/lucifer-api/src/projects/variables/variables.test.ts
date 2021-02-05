@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { Connection, In } from 'typeorm';
 
 import { ICreateVariable, IUpdateVariable } from '@lucifer/types';
-import { DatabaseModule } from '../../database.module';
+import { DatabaseModule } from '../../db/database.module';
 import { UsersService } from '../../users/users.service';
 import { LocalUser } from '../../users/local-user.entity';
 import { Project } from '../project.entity';
@@ -74,8 +74,8 @@ afterEach(async () => {
   const repoPrj = database.getRepository(Project);
   const repoVrb = database.getRepository(Variable);
 
-  await repoVrb.delete({ id: In(variables.map(vrb => vrb.id)) });
-  await repoPrj.delete({ id: In(projects.map(obj => obj.id)) });
+  await repoVrb.delete({ adminId: admin.id, id: In(variables.map(vrb => vrb.id)) });
+  await repoPrj.delete({ adminId: admin.id, id: In(projects.map(obj => obj.id)) });
   await repoLcu.delete(admin.id);
 });
 

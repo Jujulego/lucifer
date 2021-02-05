@@ -93,8 +93,8 @@ afterEach(async () => {
   const repoPrj = database.getRepository(Project);
   const repoVrb = database.getRepository(Variable);
 
-  await repoVrb.delete({ id: In(variables.map(vrb => vrb.id)) });
-  await repoPrj.delete({ id: In(projects.map(prj => prj.id)) });
+  await repoVrb.delete({ adminId: lcu.id, id: In(variables.map(vrb => vrb.id)) });
+  await repoPrj.delete({ adminId: lcu.id, id: In(projects.map(prj => prj.id)) });
   await repoLcu.delete(lcu.id);
 });
 

@@ -65,8 +65,8 @@ afterEach(async () => {
   const repoLcu = database.getRepository(LocalUser);
   const repoPrj = database.getRepository(Project);
 
-  await repoPrj.delete({ id: In(projects.map(mch => mch.id)) });
-  await repoLcu.delete(admins.map(own => own.id));
+  await repoPrj.delete({ adminId: In(admins.map(adm => adm.id)), id: In(projects.map(prj => prj.id)) });
+  await repoLcu.delete(admins.map(adm => adm.id));
 });
 
 // Tests suites
