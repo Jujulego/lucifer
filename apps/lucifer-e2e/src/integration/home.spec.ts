@@ -1,4 +1,4 @@
-import { getGreeting, getRoles } from '../support/app.po';
+import { getGreeting, getRoles } from '../support/home.po';
 
 describe('home', () => {
   before(() => {
