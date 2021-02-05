@@ -29,19 +29,18 @@ describe('Projects table', () => {
 });
 
 describe('Add a new project', () => {
-  beforeEach(() => {
+  const projectId = 'cypress-test';
+
+  afterEach(() => {
     // Remove created project
     cy.request({
       method: 'DELETE',
-      url: `/api/${Cypress.env('userId')}/projects/cypress-test`,
+      url: `/api/${Cypress.env('userId')}/projects/${projectId}`,
       headers: {
         'Authorization': `Bearer ${Cypress.env('accessToken')}`,
       },
       failOnStatusCode: false
     });
-
-    // Reload page
-    cy.reload();
   });
 
   // Tests
@@ -55,7 +54,7 @@ describe('Add a new project', () => {
 
     // Fill form
     getAddNameField().type('Cypress Test');
-    getAddSlugField().should('have.value', 'cypress-test');
+    getAddSlugField().should('have.value', projectId);
     getAddDescriptionField().type('This is a cypress test generated project');
 
     // Submit form
@@ -138,7 +137,7 @@ describe('Add a new project', () => {
       req.reply(409, {
         statusCode: 409,
         error: 'Conflict',
-        message: 'Project with id cypress-test already exists'
+        message: `Project with id ${projectId} already exists`
       });
     }).as('createProject');
 
@@ -158,6 +157,6 @@ describe('Add a new project', () => {
 
     getAddSlugField()
       .parent().parent()
-      .findByText('Project with id cypress-test already exists').should('exist');
+      .findByText(`Project with id ${projectId} already exists`).should('exist');
   });
 });
