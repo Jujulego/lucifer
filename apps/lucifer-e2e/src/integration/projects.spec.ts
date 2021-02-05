@@ -29,15 +29,19 @@ describe('Projects table', () => {
 });
 
 describe('Add a new project', () => {
-  afterEach(() => {
+  beforeEach(() => {
     // Remove created project
     cy.request({
       method: 'DELETE',
       url: `/api/${Cypress.env('userId')}/projects/cypress-test`,
       headers: {
         'Authorization': `Bearer ${Cypress.env('accessToken')}`,
-      }
+      },
+      failOnStatusCode: false
     });
+
+    // Reload page
+    cy.reload();
   });
 
   // Tests
@@ -86,5 +90,74 @@ describe('Add a new project', () => {
     getAddNameField().should('have.value', '');
     getAddSlugField().should('have.value', '');
     getAddDescriptionField().should('have.value', '');
+  });
+
+  it('should show field errors', () => {
+    // Prepare request interception
+    cy.intercept('POST', '**/api/*/projects', (req) => {
+      req.reply(400, {
+        statusCode: 400,
+        error: 'Bad Request',
+        message: [
+          { path: 'id', type: 'cypress', errors: ['cypress generated error on id'] },
+          { path: 'name', type: 'cypress', errors: ['cypress generated error on name'] },
+          { path: 'description', type: 'cypress', errors: ['cypress generated error on description'] },
+        ]
+      });
+    }).as('createProject');
+
+    // Assert project does not exist
+    cy.wait('@getProjects');
+    getProjectsTable().findByText('Cypress Test').should('not.exist');
+
+    // Open creation dialog
+    getAddButton().click();
+
+    // Fill form
+    getAddNameField().type('Cypress Test');
+    getAddDescriptionField().type('This is a cypress test generated project');
+
+    // Submit and check for errors
+    getAddSubmitButton().click();
+    cy.wait('@createProject');
+
+    getAddSlugField()
+      .parent().parent()
+      .findByText('cypress generated error on id').should('exist');
+    getAddNameField()
+      .parent().parent()
+      .findByText('cypress generated error on name').should('exist');
+    getAddDescriptionField()
+      .parent().parent()
+      .findByText('cypress generated error on description').should('exist');
+  });
+
+  it('should show conflict error', () => {
+    // Prepare request interception
+    cy.intercept('POST', '**/api/*/projects', (req) => {
+      req.reply(409, {
+        statusCode: 409,
+        error: 'Conflict',
+        message: 'Project with id cypress-test already exists'
+      });
+    }).as('createProject');
+
+    // Assert project does not exist
+    cy.wait('@getProjects');
+    getProjectsTable().findByText('Cypress Test').should('not.exist');
+
+    // Open creation dialog
+    getAddButton().click();
+
+    // Fill form
+    getAddNameField().type('Cypress Test');
+
+    // Submit and check for errors
+    getAddSubmitButton().click();
+    cy.wait('@createProject');
+
+    getAddSlugField()
+      .parent().parent()
+      .findByText('Project with id cypress-test already exists').should('exist');
   });
 });

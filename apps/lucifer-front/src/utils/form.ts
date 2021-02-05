@@ -16,7 +16,7 @@ export function handleAPIErrors<T extends FieldValues>(error: AxiosError, idFiel
       break;
 
     case 409: // Conflict
-      setError(idField, { message: res.data.message, shouldFocus: true });
+      setError(idField, { type: 'conflict', message: res.data.message, shouldFocus: true });
 
       break;
 

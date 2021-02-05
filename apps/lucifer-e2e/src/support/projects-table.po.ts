@@ -9,6 +9,6 @@ export const getAddButton = () => getMain().findByLabelText('add project');
 export const getAddNameField = () => getDialog().findByLabelText('Nom *');
 export const getAddSlugField = () => getDialog().findByLabelText('Slug *');
 export const getAddDescriptionField = () => getDialog().findByLabelText('Description');
-export const getAddSubmitButton = () => getDialog().findByText('Créer');
+export const getAddSubmitButton = () => getDialog().findByText('créer', { exact: false });
 export const getAddLoader = () => getDialog().findByRole('progressbar');
 export const getAddCloseButton = () => getDialog().findByLabelText('close dialog');
