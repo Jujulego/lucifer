@@ -16,6 +16,6 @@ export class CoverageController {
   // Endpoints
   @Get('__coverage__')
   coverage() {
-    return global.__coverage__;
+    return { coverage: global.__coverage__ };
   }
 }

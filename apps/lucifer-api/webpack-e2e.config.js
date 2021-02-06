@@ -9,7 +9,7 @@ module.exports = (config, context) => {
     options: { esModules: true },
     enforce: 'post',
     include: [
-      path.join(__dirname, '..', 'src'),
+      path.join(__dirname, 'src'),
       path.join(options.root, 'libs'),
     ],
     exclude: [
