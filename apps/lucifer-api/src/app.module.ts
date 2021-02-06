@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { DynamicModule, Module } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 
 import { AuthModule } from './auth/auth.module';
@@ -22,4 +22,19 @@ import { TransformInterceptor } from './transform.interceptor';
     { provide: APP_INTERCEPTOR, useClass: TransformInterceptor }
   ]
 })
-export class AppModule {}
+export class AppModule {
+  // Statics
+  static async dynamic(): Promise<DynamicModule> {
+    const module: DynamicModule = {
+      module: AppModule,
+    };
+
+    // Load and add coverage controller
+    if (global.__coverage__) {
+      const { CoverageController } = await import('./coverage.controller');
+      module.controllers = [CoverageController];
+    }
+
+    return module;
+  }
+}

@@ -72,6 +72,9 @@
               "optimization": true,
               "extractLicenses": true,
               "inspect": false
+            },
+            "e2e": {
+              "webpackConfig": "apps/lucifer-api/webpack-e2e.config.js"
             }
           },
           "outputs": [
@@ -82,6 +85,11 @@
           "builder": "@nrwl/node:execute",
           "options": {
             "buildTarget": "lucifer-api:build"
+          },
+          "configurations": {
+            "e2e": {
+              "buildTarget": "lucifer-api:build:e2e"
+            }
           }
         },
         "lint": {

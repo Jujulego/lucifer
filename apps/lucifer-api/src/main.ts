@@ -15,7 +15,7 @@ if (!env.PRODUCTION) {
 
 // Bootstrap
 (async function() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule.dynamic());
 
   // Commands
   switch (process.argv[2]) {

@@ -178,7 +178,7 @@ jobs:
       - name: Start & Seed API
         # TODO: find better alternative to `sleep 10`
         run: |
-          yarn run nx run lucifer-api:serve &
+          yarn run nx run lucifer-api:serve:e2e &
           yarn run nx run lucifer-api:seed --scan
           sleep 10
         env:
