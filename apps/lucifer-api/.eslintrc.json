@@ -2,7 +2,7 @@
   "extends": "../../.eslintrc.json",
   "ignorePatterns": [
     "!**/*",
-    "jest.config.js"
+    "*.config.js"
   ],
   "rules": {}
 }
