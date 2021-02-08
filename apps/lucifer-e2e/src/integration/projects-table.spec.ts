@@ -21,6 +21,7 @@ beforeEach(() => {
 describe('Projects table', () => {
   // Tests
   it('should show project table', () => {
+    cy.wait('@getProjects');
     getLoader().should('not.exist');
 
     getProjectsTable().should('exist');
