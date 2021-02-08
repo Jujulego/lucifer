@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import yaml from 'yaml';
 
-import { IProject, IUser, IVariable } from '@lucifer/types';
+import { ICreateProject, ICreateVariable, IUser } from '@lucifer/types';
 
 import { DatabaseUtils } from '../src/db/utils';
 import { LocalUser } from '../src/users/local-user.entity';
@@ -11,10 +11,16 @@ import { Project } from '../src/projects/project.entity';
 import { Variable } from '../src/projects/variables/variable.entity';
 
 // Types
+type Seed<B, C extends Record<string, unknown>> = (B & {
+  [K in keyof C]?: C[K] extends unknown[] ? C[K] : C[K][]
+})[];
+
 interface SeedData {
-  users?: Pick<IUser, 'id'>[];
-  projects?: IProject[];
-  variables?: IVariable[];
+  users: Seed<Pick<IUser, 'id'>, {
+    projects: Seed<ICreateProject, {
+      variables: ICreateVariable
+    }>;
+  }>;
 }
 
 // Seed
@@ -37,16 +43,16 @@ interface SeedData {
       const repoVrb = manager.getRepository(Variable);
 
       // Create users
-      const users = await repoLcu.save(data.users?.map(usr => repoLcu.create(usr)) || []);
-      Logger.log(`${users.length} users created`);
+      const { users = [] } = data;
+      Logger.log(`${(await repoLcu.save(users.map(usr => repoLcu.create(usr)))).length} users created`);
 
-      // Create projects
-      const projects = await repoPrj.save(data.projects?.map(prj => repoPrj.create(prj)) || []);
-      Logger.log(`${projects.length} projects created`);
+      for (const { id: adminId, projects = [] } of users) {
+        Logger.log(`${(await repoLcu.save(projects.map(prj => repoPrj.create({ adminId, ...prj })))).length} projects created`);
 
-      // Create variables
-      const variables = await repoVrb.save(data.variables?.map(vrb => repoVrb.create(vrb)) || []);
-      Logger.log(`${variables.length} variables created`);
+        for (const { id: projectId, variables = [] } of projects) {
+          Logger.log(`${(await repoVrb.save(variables.map(vrb => repoVrb.create({ adminId, projectId, ...vrb })))).length} variables created`);
+        }
+      }
     });
   } finally {
     await connection.close();
