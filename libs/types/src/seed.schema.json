@@ -12,6 +12,7 @@
           { "$ref": "user/schema.json#/definitions/createLocalUser" },
           {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "projects": {
                 "type": "array",
@@ -20,6 +21,7 @@
                     { "$ref": "project/schema.json#/definitions/createProject" },
                     {
                       "type": "object",
+                      "additionalProperties": false,
                       "properties": {
                         "variables": {
                           "type": "array",

@@ -1,24 +1,16 @@
 users:
-  - id: &userId "auth0|5ffc657caa275600713a3d71"
+  - id: 'auth0|5ffc657caa275600713a3d71'
+    projects:
+      - id: test-1
+        name: 'Test #1'
+        variables:
+          - id: test-1
+            name: TEST_1
+            value: '1'
 
-projects:
-  - id: &projectId test-1
-    adminId: *userId
-    name: "Test #1"
+          - id: test-2
+            name: TEST_2
+            value: '2'
 
-  - id: test-2
-    adminId: *userId
-    name: "Test #2"
-
-variables:
-  - id: test-1
-    adminId: *userId
-    projectId: *projectId
-    name: TEST_1
-    value: '1'
-
-  - id: test-2
-    adminId: *userId
-    projectId: *projectId
-    name: TEST_2
-    value: '2'
+      - id: test-2
+        name: 'Test #2'
