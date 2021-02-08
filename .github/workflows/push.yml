@@ -24,7 +24,7 @@ jobs:
         id: setup-cache
         run: echo "::set-output name=yarn-cache::$(yarn cache dir)"
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v2.1.4
         with:
           path: ${{ steps.setup-cache.outputs.yarn-cache }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -80,7 +80,7 @@ jobs:
           db-username: 'root'
           db-password: 'root'
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v2.1.4
         with:
           path: ${{ steps.setup-cache.outputs.yarn-cache }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -118,7 +118,7 @@ jobs:
         id: setup-cache
         run: echo "::set-output name=yarn-cache::$(yarn cache dir)"
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v2.1.4
         with:
           path: ${{ steps.setup-cache.outputs.yarn-cache }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -272,7 +272,7 @@ jobs:
           db-username: 'root'
           db-password: 'root'
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v2.1.4
         with:
           path: ${{ steps.setup-cache.outputs.yarn-cache }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -345,7 +345,7 @@ jobs:
           git config --global user.name github-actions
           git config --global user.email github-actions@github.com
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v2.1.4
         with:
           path: ${{ steps.setup-cache.outputs.yarn-cache }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
