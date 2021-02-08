@@ -8,21 +8,35 @@
       "type": "array",
       "description": "Users to create (must already exists in auth0)",
       "items": {
-        "$ref": "user/schema.json"
-      }
-    },
-    "projects": {
-      "type": "array",
-      "description": "Projects to create",
-      "items": {
-        "$ref": "project/schema.json"
-      }
-    },
-    "variables": {
-      "type": "array",
-      "description": "Variables to create",
-      "items": {
-        "$ref": "variable/schema.json"
+        "allOf": [
+          { "$ref": "user/schema.json#/definitions/createLocalUser" },
+          {
+            "type": "object",
+            "properties": {
+              "projects": {
+                "type": "array",
+                "items": {
+                  "allOf": [
+                    { "$ref": "project/schema.json#/definitions/createProject" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "variables": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "variable/schema.json#/definitions/createVariable"
+                          },
+                          "default": []
+                        }
+                      }
+                    }
+                  ]
+                },
+                "default": []
+              }
+            }
+          }
+        ]
       }
     }
   }

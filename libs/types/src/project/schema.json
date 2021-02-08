@@ -3,24 +3,51 @@
   "$id": "http://lucifer.herokuapp.com/project.schema.json",
   "type": "object",
   "additionalProperties": false,
-  "properties": {
-    "adminId": {
-      "$ref": "../user/schema.json#/properties/id"
-    },
+  "definitions": {
     "id": {
+      "$id": "#id",
       "type": "string",
       "maxLength": 100,
-      "pattern": "^[a-z0-9-]+$",
-      "description": "Project identifier"
+      "pattern": "^[a-z0-9-]+$"
     },
+    "createProject": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#id" },
+        "name": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "name"]
+    },
+    "updateProject": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "properties": {
+    "id":      { "$ref": "#id" },
+    "adminId": { "$ref": "../user/schema.json#/definitions/id" },
     "name": {
       "type": "string",
-      "maxLength": 100,
-      "description": "Project's name"
+      "maxLength": 100
     },
     "description": {
-      "type": "string",
-      "description": "Project's name"
+      "type": "string"
     }
   },
   "required": ["adminId", "id", "name"]

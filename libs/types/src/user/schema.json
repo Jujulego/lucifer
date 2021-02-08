@@ -3,11 +3,98 @@
   "$id": "http://lucifer.herokuapp.com/user.schema.json",
   "type": "object",
   "additionalProperties": false,
-  "properties": {
+  "definitions": {
     "id": {
+      "$id": "#id",
       "type": "string",
-      "description": "User unique identifier"
+      "description": "User's id"
+    },
+    "roleName": {
+      "$id": "#roleName",
+      "type": "string",
+      "enum": ["admin", "reader"]
+    },
+    "createLocalUser": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#id" }
+      },
+      "required": ["id"]
+    },
+    "updateUser": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "name": {
+          "type": "string"
+        },
+        "roles": {
+          "type": "array",
+          "items": { "$ref": "#roleName" }
+        }
+      }
     }
   },
-  "required": ["id"]
+  "properties": {
+    "id": { "$ref": "#id" },
+    "email": {
+      "type": "string",
+      "format": "email"
+    },
+    "name": {
+      "type": "string"
+    },
+    "canUpdate": {
+      "type": "boolean"
+    },
+    "emailVerified": {
+      "type": "boolean"
+    },
+    "nickname": {
+      "type": "string"
+    },
+    "username": {
+      "type": "string"
+    },
+    "givenName": {
+      "type": "string"
+    },
+    "familyName": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date"
+    },
+    "picture": {
+      "type": "string",
+      "format": "uri"
+    },
+    "lastIp": {
+      "type": "string"
+    },
+    "lastLogin": {
+      "type": "string",
+      "format": "date"
+    },
+    "blocked": {
+      "type": "boolean"
+    },
+    "roles": {
+      "type": "array",
+      "items": {
+        "$ref": "#roleName"
+      }
+    }
+  },
+  "required": ["id", "email", "name", "canUpdate"]
 }
