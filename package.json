@@ -45,7 +45,7 @@
     "@nestjs/passport": "^7.1.5",
     "@nestjs/platform-express": "^7.6.11",
     "@nestjs/typeorm": "^7.1.5",
-    "auth0": "^2.32.0",
+    "auth0": "^2.33.0",
     "axios": "^0.21.1",
     "class-transformer": "^0.3.2",
     "class-validator": "^0.13.1",
