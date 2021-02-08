@@ -31,7 +31,7 @@ jobs:
         id: setup
         run: git fetch --no-tags --prune --depth=5 origin ${{ github.base_ref }}
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v2.1.4
         with:
           path: ${{ steps.setup-cache.outputs.yarn-cache }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -94,7 +94,7 @@ jobs:
         id: setup
         run: git fetch --no-tags --prune --depth=5 origin ${{ github.base_ref }}
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v2.1.4
         with:
           path: ${{ steps.setup-cache.outputs.yarn-cache }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -161,7 +161,7 @@ jobs:
         id: setup
         run: git fetch --no-tags --prune --depth=5 origin ${{ github.base_ref }}
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v2.1.4
         with:
           path: ${{ steps.setup-cache.outputs.yarn-cache }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -223,7 +223,7 @@ jobs:
         id: setup-cache
         run: echo "::set-output name=yarn-cache::$(yarn cache dir)"
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v2.1.4
         with:
           path: ${{ steps.setup-cache.outputs.yarn-cache }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
