@@ -5515,10 +5515,10 @@ atob@^2.1.2:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-auth0@^2.32.0:
-  version "2.32.0"
-  resolved "https://registry.yarnpkg.com/auth0/-/auth0-2.32.0.tgz#dd6731fb4c6d7a2a1261218ddbe9bc2326f87734"
-  integrity sha512-i7opuHn8MpOBCEQgS0DlAwT3J1G+MH/qfrnX7Xl5rO9amd8rgK9F/QJ8aRnqsHEgcfbj5UH6JD4gmpoarXokuQ==
+auth0@^2.33.0:
+  version "2.33.0"
+  resolved "https://registry.yarnpkg.com/auth0/-/auth0-2.33.0.tgz#1284ad691fa841b19b96e8a0a8df44f536d25372"
+  integrity sha512-q9xCKE+WC9FKnPdsOis6K9zHGGZBviNN39ltIJvawkUT8N2/q95T1WeS1oVVmVrBxtSOag4G5VC1mfeD7fLBaQ==
   dependencies:
     axios "^0.21.1"
     es6-promisify "^6.1.1"
