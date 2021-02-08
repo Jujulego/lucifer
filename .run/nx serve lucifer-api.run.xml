@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="start lucifer-api" type="js.build_tools.npm">
+    <package-json value="$PROJECT_DIR$/package.json" />
+    <command value="start" />
+    <arguments value="lucifer-api" />
+    <node-interpreter value="project" />
+    <envs>
+      <env name="DEBUG" value="axios" />
+    </envs>
+    <method v="2" />
+  </configuration>
+</component>

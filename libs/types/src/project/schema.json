@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "http://lucifer.herokuapp.com/project.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "adminId": {
+      "$ref": "../user/schema.json#/properties/id"
+    },
+    "id": {
+      "type": "string",
+      "maxLength": 100,
+      "pattern": "^[a-z0-9-]+$",
+      "description": "Project identifier"
+    },
+    "name": {
+      "type": "string",
+      "maxLength": 100,
+      "description": "Project's name"
+    },
+    "description": {
+      "type": "string",
+      "description": "Project's name"
+    }
+  },
+  "required": ["adminId", "id", "name"]
+}

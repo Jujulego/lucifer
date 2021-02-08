@@ -1,16 +1,24 @@
 users:
   - id: &userId "auth0|5ffc657caa275600713a3d71"
 
-machines:
-  - id: "000000000000-0e2e-1e21-0000-00000001"
-    ownerId: *userId
-    shortName: "Test #1"
+projects:
+  - id: &projectId test-1
+    adminId: *userId
+    name: "Test #1"
 
-  - id: "000000000000-0e2e-1e21-0000-00000002"
-    ownerId: *userId
-    shortName: "Test #2"
+  - id: test-2
+    adminId: *userId
+    name: "Test #2"
 
-  - id: "000000000000-0e2e-1e21-0000-00000003"
-    ownerId: *userId
-    shortName: "Test #3"
+variables:
+  - id: test-1
+    adminId: *userId
+    projectId: *projectId
+    name: TEST_1
+    value: '1'
 
+  - id: test-2
+    adminId: *userId
+    projectId: *projectId
+    name: TEST_2
+    value: '2'

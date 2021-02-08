@@ -2,15 +2,18 @@ import { Logger } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 
 import { envSchema } from './env.schema';
+import { Asserts } from 'yup';
 
 // Load config
 dotenv.config();
 
 // Validate env
-const { error, value } = envSchema.validate(process.env, { allowUnknown: true });
+let value: Asserts<typeof envSchema>;
 
-if (error) {
-  if (value.NODE_ENV === 'test') {
+try {
+  value = envSchema.validateSync(process.env);
+} catch (error) {
+  if (process.env.NODE_ENV === 'test') {
     console.error(error.message);
   } else {
     const logger = new Logger('Configuration')
@@ -23,14 +26,14 @@ if (error) {
 // Environment
 export const env = {
   // Basic
-  DATABASE_URL: value.DATABASE_URL as string,
-  PORT:         value.PORT as number,
+  DATABASE_URL: value.DATABASE_URL,
+  PORT:         value.PORT,
   PRODUCTION:   value.NODE_ENV === 'production',
   TESTS:        value.NODE_ENV === 'test',
 
   // Auth0
-  AUTH0_DOMAIN:        value.AUTH0_DOMAIN as string,
-  AUTH0_AUDIENCE:      value.AUTH0_AUDIENCE as string,
-  AUTH0_CLIENT_ID:     value.AUTH0_CLIENT_ID as string,
-  AUTH0_CLIENT_SECRET: value.AUTH0_CLIENT_SECRET as string,
+  AUTH0_DOMAIN:        value.AUTH0_DOMAIN,
+  AUTH0_AUDIENCE:      value.AUTH0_AUDIENCE,
+  AUTH0_CLIENT_ID:     value.AUTH0_CLIENT_ID,
+  AUTH0_CLIENT_SECRET: value.AUTH0_CLIENT_SECRET,
 }

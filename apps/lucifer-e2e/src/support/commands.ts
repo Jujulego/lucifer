@@ -36,17 +36,15 @@ Cypress.Commands.add('login', () => {
     .then((res) => {
       const { access_token, expires_in, id_token } = res.body;
 
+      // Store token in environment
+      Cypress.env('accessToken', access_token);
+
       // Intercept Auth0 request and return our token
-      cy.server();
-      cy.route({
-        method: 'POST',
-        url: 'oauth/token',
-        response: {
-          access_token,
-          expires_in,
-          id_token,
-          token_type: 'Bearer'
-        }
+      cy.intercept('POST', 'oauth/token', {
+        access_token,
+        expires_in,
+        id_token,
+        token_type: 'Bearer'
       });
 
       return cy.window()

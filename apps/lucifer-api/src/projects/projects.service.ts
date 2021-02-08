@@ -2,10 +2,10 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 
+import { ICreateProject, IUpdateProject } from '@lucifer/types';
 import { UsersService } from '../users/users.service';
 
 import { Project } from './project.entity';
-import { CreateProject, UpdateProject } from './project.schema';
 
 // Service
 @Injectable()
@@ -25,7 +25,7 @@ export class ProjectsService {
     return prj || null;
   }
 
-  async create(adminId: string, data: CreateProject): Promise<Project> {
+  async create(adminId: string, data: ICreateProject): Promise<Project> {
     // Ensure user exists
     await this.users.getLocal(adminId);
 
@@ -60,7 +60,7 @@ export class ProjectsService {
     return prj;
   }
 
-  async update(adminId: string, id: string, update: UpdateProject): Promise<Project> {
+  async update(adminId: string, id: string, update: IUpdateProject): Promise<Project> {
     const prj = await this.get(adminId, id);
 
     // Apply update

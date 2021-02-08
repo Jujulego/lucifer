@@ -14,6 +14,8 @@ export * from './lib/CopyFab';
 export { default as LabelledText } from './lib/LabelledText';
 export * from './lib/LabelledText';
 
+export * from './lib/LinkTab';
+
 export { default as RefreshButton } from './lib/RefreshButton';
 export * from './lib/RefreshButton';
 

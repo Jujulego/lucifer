@@ -48,6 +48,22 @@ resource "auth0_resource_server" "lucifer-api" {
   scopes {
     value = "delete:projects"
   }
+
+  scopes {
+    value = "create:variables"
+  }
+
+  scopes {
+    value = "read:variables"
+  }
+
+  scopes {
+    value = "update:variables"
+  }
+
+  scopes {
+    value = "delete:variables"
+  }
 }
 
 resource "heroku_app" "lucifer-api" {

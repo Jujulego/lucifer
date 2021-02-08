@@ -240,7 +240,11 @@ describe('PUT /users/:id', () => {
     // Check body
     expect(rep.body).toEqual({
       error: 'Bad Request',
-      message: ['email must be an email'],
+      message: [{
+        path: 'email',
+        type: 'email',
+        errors: ['email must be a valid email']
+      }],
       statusCode: 400
     });
   });
@@ -260,7 +264,11 @@ describe('PUT /users/:id', () => {
     // Check body
     expect(rep.body).toEqual({
       error: 'Bad Request',
-      message: ['each value in roles must be one of the following values: admin, reader'],
+      message: [{
+        path: 'roles[0]',
+        type: 'oneOf',
+        errors: ['roles[0] must be one of the following values: admin, reader'],
+      }],
       statusCode: 400
     });
   });
