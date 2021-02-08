@@ -76,7 +76,7 @@
     "typeorm": "^0.2.30"
   },
   "devDependencies": {
-    "@angular-devkit/architect": "^0.1101.3",
+    "@angular-devkit/architect": "^0.1101.4",
     "@babel/core": "7.12.13",
     "@babel/preset-env": "7.12.13",
     "@babel/preset-react": "7.12.13",
