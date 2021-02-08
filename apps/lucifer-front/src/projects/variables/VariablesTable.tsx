@@ -85,7 +85,7 @@ export const VariablesTable: FC<VariablesTableProps> = (props) => {
 
   const toolbar = (
     <PageActions>
-      <TableAction when="some" onActivate={handleDelete}>
+      <TableAction when="some" aria-label="delete variables" onActivate={handleDelete}>
         <DeleteIcon />
       </TableAction>
       <Fade in={open}>
@@ -153,6 +153,7 @@ export const VariablesTable: FC<VariablesTableProps> = (props) => {
         <Zoom in={open}>
           <Fab
             className={styles.fab} color="primary"
+            aria-label="add variable"
             onClick={() => setCreating(true)}
           >
             <AddIcon />

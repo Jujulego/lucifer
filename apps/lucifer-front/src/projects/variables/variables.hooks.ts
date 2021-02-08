@@ -37,7 +37,7 @@ export function useVariables(adminId: string, projectId: string) {
     }, [create, update]),
     bulkDelete: useCallback(async (ids: string[]) => {
       const affected = await bulkDelete({ ids });
-      update((variables = []) => variables.filter(vrb => ids.includes(vrb.id)));
+      update((variables = []) => variables.filter(vrb => !ids.includes(vrb.id)));
 
       return affected;
     }, [bulkDelete, update])

@@ -41,7 +41,7 @@ export const AddVariableDialog: FC<AddVariableDialogProps> = (props) => {
   // Effects
   useEffect(() => {
     if (fields.name) {
-      const id = slugify(fields.name, { lower: true });
+      const id = slugify(fields.name.replace(/_/g, '-'), { lower: true });
       setValue('id', id, { shouldValidate: true });
     }
   }, [fields.name, setValue]);
@@ -83,7 +83,7 @@ export const AddVariableDialog: FC<AddVariableDialogProps> = (props) => {
             className={styles.field}
             variant="outlined" fullWidth
             name="name" inputRef={register}
-            label="Nom" required
+            label="Nom" id="add-variable-name" required
             error={!!errors.name} helperText={errors.name?.message}
           />
         </Grid>
@@ -95,7 +95,7 @@ export const AddVariableDialog: FC<AddVariableDialogProps> = (props) => {
             InputLabelProps={{
               shrink: !!fields.id
             }}
-            label="Slug" required
+            label="Slug" id="add-variable-id" required
             error={!!errors.id} helperText={errors.id?.message}
           />
         </Grid>
@@ -103,7 +103,7 @@ export const AddVariableDialog: FC<AddVariableDialogProps> = (props) => {
       <TextField
         variant="outlined" fullWidth multiline
         name="value" inputRef={register}
-        label="Valeur" required
+        label="Valeur" id="add-variable-value" required
         error={!!errors.value} helperText={errors.value?.message}
       />
     </FormDialog>
