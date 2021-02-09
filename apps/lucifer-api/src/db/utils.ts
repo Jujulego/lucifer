@@ -3,8 +3,8 @@ import * as path from 'path';
 
 import { env } from '../env';
 import { LocalUser } from '../users/local-user.entity';
-import { Machine } from '../machines/machine.entity';
 import { Project } from '../projects/project.entity';
+import { Variable } from '../projects/variables/variable.entity';
 
 import { MIGRATIONS } from './migrations';
 
@@ -36,7 +36,7 @@ export const DatabaseUtils = {
         type: 'postgres',
         url: env.DATABASE_URL,
         migrations: MIGRATIONS,
-        entities: [LocalUser, Machine, Project]
+        entities: [LocalUser, Project, Variable]
       };
 
     } else {

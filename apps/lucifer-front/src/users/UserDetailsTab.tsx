@@ -1,16 +1,18 @@
 import React, { ReactNode, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup'
 import clsx from 'clsx';
 
 import { Chip, CircularProgress, Fab, Grid, TextField, Tooltip, Typography, Zoom } from '@material-ui/core';
 import { Check as CheckIcon, Save as SaveIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { LabelledText, RelativeDate } from '@lucifer/react/basics'
-import { IUpdateUser, IUser, ROLES } from '@lucifer/types';
+import { LabelledText, RelativeDate } from '@lucifer/react/basics';
+import { ChipSelect } from '@lucifer/react/fields';
+import { IUpdateUser, IUser, ROLES, updateUserSchema } from '@lucifer/types';
 
 import { useNeedRole } from '../auth/auth.hooks';
-import { ChipSelect } from '@lucifer/react/fields';
+import { usePageTab } from '../layout/page-tab.context';
 
 // Styles
 const useStyles = makeStyles(({ spacing }) => ({
@@ -55,23 +57,27 @@ const GridItem = ({ children }: GridProps) => (
 // Types
 export interface UserDetailsProps {
   user?: IUser;
-  show?: boolean;
   onUpdate: (update: IUpdateUser) => void;
 }
 
 // Component
 export const UserDetailsTab = (props: UserDetailsProps) => {
   const {
-    user, show = false,
+    user,
     onUpdate
   } = props;
+
+  // Context
+  const { open } = usePageTab();
 
   // Auth
   const isAdmin = useNeedRole('admin');
   const isAllowed = useNeedRole('admin', usr => usr?.id === user?.id);
 
   // Form
-  const { errors, control, register, reset, handleSubmit, formState } = useForm<IUpdateUser>();
+  const { errors, control, register, reset, handleSubmit, formState } = useForm<IUpdateUser>({
+    resolver: yupResolver(updateUserSchema),
+  });
 
   // Effects
   useEffect(() => {
@@ -82,17 +88,17 @@ export const UserDetailsTab = (props: UserDetailsProps) => {
         roles: user.roles
       });
     }
-  }, [reset, user, show]);
+  }, [reset, user, open]);
 
   // Render
   const styles = useStyles();
 
   return (
     <form
-      className={clsx(styles.root, { [styles.hidden]: !show })}
+      className={clsx(styles.root, { [styles.hidden]: !open })}
       onSubmit={isAdmin ? handleSubmit(onUpdate) : undefined}
     >
-      { (show && user) && (
+      { (open && user) && (
         <Grid container spacing={4} direction="column">
           <GridLine>
             <GridItem>
@@ -168,7 +174,7 @@ export const UserDetailsTab = (props: UserDetailsProps) => {
         </Grid>
       ) }
       { isAdmin && (
-        <Zoom in={show}>
+        <Zoom in={open}>
           <Fab
             className={styles.save} color="primary"
             type="submit" disabled={!formState.isDirty || formState.isSubmitting}

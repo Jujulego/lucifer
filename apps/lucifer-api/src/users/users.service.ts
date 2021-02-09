@@ -4,10 +4,9 @@ import { ManagementClient, User as Auth0User } from 'auth0';
 import { plainToClass } from 'class-transformer';
 import { Repository } from 'typeorm';
 
-import { IUser, User } from '@lucifer/types';
-
+import { IUpdateUser, IUser, User } from '@lucifer/types';
 import { Context } from '../context';
-import { UpdateUser } from './user.schema';
+
 import { LocalUser } from './local-user.entity';
 import { RolesService } from './roles.service';
 
@@ -148,7 +147,7 @@ export class UsersService {
     return this._formatAll(aths, lcus);
   }
 
-  async update(ctx: Context, id: string, update: UpdateUser): Promise<User> {
+  async update(ctx: Context, id: string, update: IUpdateUser): Promise<User> {
     // Get current state
     // eslint-disable-next-line prefer-const
     let [ath, roles, lcu] = await Promise.all([

@@ -2,6 +2,7 @@ import { ConflictException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Connection, In } from 'typeorm';
 
+import { IUpdateProject } from '@lucifer/types';
 import { DatabaseModule } from '../db/database.module';
 import { UsersService } from '../users/users.service';
 import { LocalUser } from '../users/local-user.entity';
@@ -10,8 +11,6 @@ import { UsersServiceMock } from '../../mocks/users-service.mock';
 import { ProjectsModule } from './projects.module';
 import { ProjectsService } from './projects.service';
 import { Project } from './project.entity';
-import { plainToClass } from 'class-transformer';
-import { UpdateProject } from './project.schema';
 
 // Load services
 let app: TestingModule;
@@ -66,12 +65,12 @@ afterEach(async () => {
   const repoLcu = database.getRepository(LocalUser);
   const repoPrj = database.getRepository(Project);
 
-  await repoPrj.delete({ id: In(projects.map(mch => mch.id)) });
-  await repoLcu.delete(admins.map(own => own.id));
+  await repoPrj.delete({ adminId: In(admins.map(adm => adm.id)), id: In(projects.map(prj => prj.id)) });
+  await repoLcu.delete(admins.map(adm => adm.id));
 });
 
 // Tests suites
-describe('ProjectsService.create', function() {
+describe('ProjectsService.create', () => {
   // Tests
   it('should create a new project', async () => {
     const project = await service.create(admins[1].id, { id: 'test-4', name: 'Test #4' });
@@ -100,7 +99,7 @@ describe('ProjectsService.create', function() {
 
 describe('ProjectsService.list', () => {
   // Tests
-  it('should return all owner\'s machines', async () => {
+  it('should return all admin\'s projects', async () => {
     const adm = admins[0];
 
     // Call
@@ -110,7 +109,6 @@ describe('ProjectsService.list', () => {
       );
   });
 
-  // Tests
   it('should empty array for unknown user', async () => {
     // Call
     await expect(service.list('unknown-user'))
@@ -144,10 +142,10 @@ describe('ProjectsService.get', () => {
 });
 
 describe('ProjectsService.update', () => {
-  const update = plainToClass(UpdateProject, {
+  const update: IUpdateProject = {
     name: 'updated',
     description: 'updated'
-  });
+  };
 
   // Tests
   it('should update a project', async () => {

@@ -31,7 +31,7 @@ jobs:
         id: setup
         run: git fetch --no-tags --prune --depth=5 origin ${{ github.base_ref }}
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v2.1.4
         with:
           path: ${{ steps.setup-cache.outputs.yarn-cache }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -94,19 +94,19 @@ jobs:
         id: setup
         run: git fetch --no-tags --prune --depth=5 origin ${{ github.base_ref }}
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v2.1.4
         with:
           path: ${{ steps.setup-cache.outputs.yarn-cache }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-
 
       - name: Install dependencies
-        run: yarn install --pure-lockfile
+        run: |
+          yarn install --pure-lockfile
+          yarn run build:tools
 
       - name: Migrate
-        run: |
-          yarn run build:tools
-          yarn run nx run-many --all --target=db-migrate --scan
+        run: yarn run nx run-many --all --target=db-migrate --scan
 
       - name: Tests
         run: yarn run affected:test --scan --base=origin/${{ github.base_ref }} --codeCoverage --coverageReporters=clover,lcovonly,json
@@ -161,7 +161,7 @@ jobs:
         id: setup
         run: git fetch --no-tags --prune --depth=5 origin ${{ github.base_ref }}
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v2.1.4
         with:
           path: ${{ steps.setup-cache.outputs.yarn-cache }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -222,7 +222,7 @@ jobs:
         id: setup-cache
         run: echo "::set-output name=yarn-cache::$(yarn cache dir)"
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v2.1.4
         with:
           path: ${{ steps.setup-cache.outputs.yarn-cache }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}

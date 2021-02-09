@@ -53,11 +53,13 @@ describe('should.be.httpError', () => {
 
 describe('should.be.badRequest', () => {
   test('with message', () => {
-    expect(should.be.badRequest('error', 'message'))
+    const err = { path: 'id', type: 'test', errors: ['error !'] };
+
+    expect(should.be.badRequest(err))
       .toEqual({
         statusCode: 400,
         error: 'Bad Request',
-        message: ['error', 'message']
+        message: [err]
       });
   });
 });

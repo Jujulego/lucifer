@@ -1,15 +1,15 @@
-import * as joi from 'joi';
+import { number, object, string } from 'yup';
 
 // Schema
-export const envSchema = joi.object({
+export const envSchema = object({
   // Basic config
-  DATABASE_URL: joi.string(),
-  NODE_ENV: joi.string().default('local'),
-  PORT: joi.number().port().default(3333),
+  DATABASE_URL: string(),
+  NODE_ENV: string().default('local'),
+  PORT: number().integer().default(3333),
 
   // Auth0
-  AUTH0_DOMAIN: joi.string().required(),
-  AUTH0_AUDIENCE: joi.string().required(),
-  AUTH0_CLIENT_ID: joi.string().required(),
-  AUTH0_CLIENT_SECRET: joi.string().required(),
+  AUTH0_DOMAIN: string().required(),
+  AUTH0_AUDIENCE: string().required(),
+  AUTH0_CLIENT_ID: string().required(),
+  AUTH0_CLIENT_SECRET: string().required(),
 });

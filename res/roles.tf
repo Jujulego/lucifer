@@ -28,4 +28,9 @@ resource "auth0_role" "reader" {
     name                       = "read:projects"
     resource_server_identifier = auth0_resource_server.lucifer-api.identifier
   }
+
+  permissions {
+    name                       = "read:variables"
+    resource_server_identifier = auth0_resource_server.lucifer-api.identifier
+  }
 }

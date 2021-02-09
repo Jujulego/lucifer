@@ -40,13 +40,13 @@ let lcu: LocalUser;
 let projects: Project[];
 
 const admin = {
-  user_id: 'tests|api-users-admin',
+  user_id: 'tests|api-projects-admin',
   email:   'admin@test.com',
   name:    'Admin'
 };
 
 const basic = {
-  user_id: 'tests|api-users-basic',
+  user_id: 'tests|api-projects-basic',
   email:   'basic@test.com',
   name:    'Basic'
 };
@@ -82,7 +82,7 @@ afterEach(async () => {
   const repoLcu = database.getRepository(LocalUser);
   const repoPrj = database.getRepository(Project);
 
-  await repoPrj.delete({ id: In(projects.map(prj => prj.id)) });
+  await repoPrj.delete({ adminId: lcu.id, id: In(projects.map(prj => prj.id)) });
   await repoLcu.delete(lcu.id);
 });
 
@@ -114,6 +114,21 @@ describe('POST /:userId/projects', () => {
     });
   });
 
+  it('should return created project (me special id)', async () => {
+    const rep = await request.post('/me/projects')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send(data)
+      .expect(201)
+      .expect('Content-Type', /json/);
+
+    expect(rep.body).toEqual({
+      id:      data.id,
+      adminId: admin.user_id,
+      name:    data.name,
+      description: ''
+    });
+  });
+
   it('should return 400 (missing parameters)', async () => {
     const rep = await request.post(`/${admin.user_id}/projects`)
       .set('Authorization', `Bearer ${adminToken}`)
@@ -122,8 +137,8 @@ describe('POST /:userId/projects', () => {
       .expect('Content-Type', /json/);
 
     expect(rep.body).toEqual(should.be.badRequest(
-      'id must be a string',
-      'name must be a string',
+      { path: 'id', type: 'required', errors: [expect.any(String)] },
+      { path: 'name', type: 'required', errors: [expect.any(String)] },
     ));
   });
 
@@ -138,8 +153,8 @@ describe('POST /:userId/projects', () => {
       .expect('Content-Type', /json/);
 
     expect(rep.body).toEqual(should.be.badRequest(
-      'id must be shorter than or equal to 100 characters',
-      'name must be shorter than or equal to 100 characters',
+      { path: 'id', type: 'max', errors: [expect.any(String)] },
+      { path: 'name', type: 'max', errors: [expect.any(String)] },
     ));
   });
 
@@ -154,7 +169,7 @@ describe('POST /:userId/projects', () => {
       .expect('Content-Type', /json/);
 
     expect(rep.body).toEqual(should.be.badRequest(
-      'id must match /^[a-z0-9-]+$/ regular expression'
+      { path: 'id', type: 'matches', errors: [expect.any(String)] }
     ));
   });
 
@@ -334,7 +349,7 @@ describe('PUT /:userId/projects/:id', () => {
       .expect('Content-Type', /json/);
 
     expect(rep.body).toEqual(should.be.badRequest(
-      'name must be shorter than or equal to 100 characters'
+      { path: 'name', type: 'max', errors: [expect.any(String)] }
     ));
     expect(service.update).not.toBeCalled();
   });
@@ -368,7 +383,7 @@ describe('PUT /:userId/projects/:id', () => {
     expect(service.update).toBeCalledWith(prj.adminId, 'not-a-project-id', {});
   });
 
-  it('should return 404 (unknown project for user)', async () => {
+  it('should return 404 (unknown user)', async () => {
     const prj = projects[0];
 
     await request.put(`/not-a-user-id/projects/${prj.id}`)
