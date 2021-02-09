@@ -131,6 +131,14 @@
             ],
             "cwd": "apps/lucifer-api"
           }
+        },
+        "wait": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "wait-on http://localhost:3333"
+            ]
+          }
         }
       }
     },
