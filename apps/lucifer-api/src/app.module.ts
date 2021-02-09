@@ -6,6 +6,7 @@ import { DatabaseModule } from './db/database.module';
 import { ProjectsModule } from './projects/projects.module';
 import { UsersModule } from './users/users.module';
 
+import { AppController } from './app.controller';
 import { TransformInterceptor } from './transform.interceptor';
 
 // Module
@@ -18,6 +19,9 @@ import { TransformInterceptor } from './transform.interceptor';
   ],
   providers: [
     { provide: APP_INTERCEPTOR, useClass: TransformInterceptor }
+  ],
+  controllers: [
+    AppController
   ]
 })
 export class AppModule {

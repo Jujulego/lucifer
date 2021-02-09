@@ -136,7 +136,7 @@
           "builder": "@nrwl/workspace:run-commands",
           "options": {
             "commands": [
-              "wait-on http://localhost:3333"
+              "wait-on http://localhost:3333/api"
             ]
           }
         }
