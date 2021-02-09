@@ -73,7 +73,7 @@
     "rxjs": "~6.6.3",
     "slugify": "^1.4.6",
     "tslib": "^2.0.3",
-    "typeorm": "^0.2.30",
+    "typeorm": "^0.2.31",
     "yup": "^0.32.8"
   },
   "devDependencies": {
