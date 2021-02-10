@@ -43,7 +43,7 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@nestjs/common": "^7.6.12",
-    "@nestjs/core": "^7.6.11",
+    "@nestjs/core": "^7.6.12",
     "@nestjs/passport": "^7.1.5",
     "@nestjs/platform-express": "^7.6.12",
     "@nestjs/typeorm": "^7.1.5",
