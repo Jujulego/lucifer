@@ -97,7 +97,7 @@
     "@nrwl/react": "11.2.10",
     "@nrwl/storybook": "11.2.10",
     "@nrwl/web": "11.2.10",
-    "@nrwl/workspace": "11.2.10",
+    "@nrwl/workspace": "11.2.11",
     "@storybook/addon-essentials": "^6.1.17",
     "@storybook/addons": "^6.1.17",
     "@storybook/react": "^6.1.17",
