@@ -3973,10 +3973,10 @@
   resolved "https://registry.yarnpkg.com/@types/aria-query/-/aria-query-4.2.1.tgz#78b5433344e2f92e8b306c06a5622c50c245bf6b"
   integrity sha512-S6oPal772qJZHoRZLFc/XoZW2gFvwXusYUmXPXkgxJLuEk2vOt7jc4Yo6z/vtI0EBkbPBVrJJ0B+prLIKiWqHg==
 
-"@types/auth0@^2.32.1":
-  version "2.32.1"
-  resolved "https://registry.yarnpkg.com/@types/auth0/-/auth0-2.32.1.tgz#8c85fb1b0867ef848b56b0bbcbebbdc719f34e4e"
-  integrity sha512-G2hHHn5ofOwsMEgTve6wqiNHCQqxfEvGvPhM8a9ntEOOAkf465FoND+xD0DaVS4M01hLcYvbQr7Trh2++je8og==
+"@types/auth0@^2.33.0":
+  version "2.33.0"
+  resolved "https://registry.yarnpkg.com/@types/auth0/-/auth0-2.33.0.tgz#0bf2cb486fb8af313817e2bf12f079b3c95c0b61"
+  integrity sha512-13p5aL4I4TWqBBdYa4Xuq88vxDDK+s3rIN4fMjHgrpzUIIDOUktcdI0FaejYwwONuyhY8avyrWa9RZCIbxcT0w==
 
 "@types/babel__core@^7.0.0", "@types/babel__core@^7.1.7":
   version "7.1.12"
