@@ -96,7 +96,7 @@
     "@nrwl/nx-cloud": "11.1.3",
     "@nrwl/react": "11.2.10",
     "@nrwl/storybook": "11.2.10",
-    "@nrwl/web": "11.2.10",
+    "@nrwl/web": "11.2.11",
     "@nrwl/workspace": "11.2.10",
     "@storybook/addon-essentials": "^6.1.17",
     "@storybook/addons": "^6.1.17",
