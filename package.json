@@ -85,7 +85,7 @@
     "@babel/preset-typescript": "7.12.13",
     "@cypress/code-coverage": "^3.9.2",
     "@nestjs/schematics": "^7.2.7",
-    "@nestjs/testing": "^7.6.11",
+    "@nestjs/testing": "^7.6.12",
     "@nrwl/cli": "11.2.11",
     "@nrwl/cypress": "11.2.11",
     "@nrwl/devkit": "11.2.11",
