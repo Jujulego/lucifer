@@ -63,9 +63,7 @@
             "outputPath": "dist/apps/lucifer-api",
             "main": "apps/lucifer-api/src/main.ts",
             "tsConfig": "apps/lucifer-api/tsconfig.app.json",
-            "assets": [
-              "apps/lucifer-api/src/Procfile"
-            ]
+            "assets": []
           },
           "configurations": {
             "production": {
@@ -109,13 +107,6 @@
           "outputs": [
             "coverage/apps/lucifer-api"
           ]
-        },
-        "deploy": {
-          "builder": ".:deploy",
-          "options": {
-            "buildPath": "dist/apps/lucifer-api",
-            "repository": "https://github.com/Jujulego/lucifer.git"
-          }
         },
         "db-migrate": {
           "builder": ".:db-migrate"

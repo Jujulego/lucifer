@@ -73,13 +73,20 @@ resource "heroku_app" "lucifer-api" {
   region = "eu"
 
   buildpacks = [
+    "https://github.com/heroku/heroku-buildpack-multi-procfile.git",
     "heroku/nodejs"
   ]
 
   config_vars = {
+    # Multi-Procfile
+    PROCFILE = "apps/lucifer-api/Procfile"
+
+    # NodeJS
     YARN_PRODUCTION       = "true"
     NPM_CONFIG_PRODUCTION = "true"
+    NX_APP                = "lucifer-api"
 
+    # App config
     AUTH0_DOMAIN    = var.auth0-domain
     AUTH0_AUDIENCE  = auth0_resource_server.lucifer-api.identifier
     AUTH0_CLIENT_ID = auth0_client.lucifer-api.client_id
