@@ -1,2 +1,2 @@
-release: node dist/lucifer-api/main.js migrate
-web: node dist/lucifer-api/main.js
+release: ls && node dist/lucifer-api/main migrate
+web: node dist/lucifer-api/main
