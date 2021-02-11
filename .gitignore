@@ -2,15 +2,11 @@
 
 # compiled output
 /dist
-/res/rules
 /tmp
 /out-tsc
 
 # dependencies
 /node_modules
-
-# terraform
-/.terraform
 
 # IDEs and editors
 /.idea

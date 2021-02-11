@@ -70,19 +70,22 @@ jobs:
 
       - name: Terraform Format
         id: fmt
-        run: terraform fmt -check res
+        run: terraform fmt -check
+        working-directory: ./res
         continue-on-error: true
 
       - name: Terraform Init
         id: init
         if: steps.fmt.outcome == 'success'
-        run: terraform init res
+        run: terraform init
+        working-directory: ./res
         continue-on-error: true
 
       - name: Terraform Plan
         id: plan
         if: steps.init.outcome == 'success'
-        run: terraform plan -no-color res
+        run: terraform plan -no-color
+        working-directory: ./res
         continue-on-error: true
 
       - name: Update Pull Request

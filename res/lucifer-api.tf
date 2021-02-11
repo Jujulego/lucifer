@@ -1,3 +1,4 @@
+# Auth0 resources
 resource "auth0_client" "lucifer-api" {
   name        = "Lucifer API"
   app_type    = "non_interactive"
@@ -66,6 +67,7 @@ resource "auth0_resource_server" "lucifer-api" {
   }
 }
 
+# Heroku resources
 resource "heroku_app" "lucifer-api" {
   name   = "lucifer-api"
   region = "eu"

@@ -163,13 +163,16 @@ jobs:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       - name: Terraform Format
-        run: terraform fmt -check res
+        run: terraform fmt -check
+        working-directory: ./res
 
       - name: Terraform Init
-        run: terraform init res
+        run: terraform init
+        working-directory: ./res
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve res
+        run: terraform apply -auto-approve
+        working-directory: ./res
 
   docker:
     runs-on: ubuntu-latest
