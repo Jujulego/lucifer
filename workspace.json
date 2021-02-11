@@ -63,9 +63,7 @@
             "outputPath": "dist/apps/lucifer-api",
             "main": "apps/lucifer-api/src/main.ts",
             "tsConfig": "apps/lucifer-api/tsconfig.app.json",
-            "assets": [
-              "apps/lucifer-api/src/Procfile"
-            ]
+            "assets": []
           },
           "configurations": {
             "production": {
@@ -110,13 +108,6 @@
             "coverage/apps/lucifer-api"
           ]
         },
-        "deploy": {
-          "builder": ".:deploy",
-          "options": {
-            "buildPath": "dist/apps/lucifer-api",
-            "repository": "https://github.com/Jujulego/lucifer.git"
-          }
-        },
         "db-migrate": {
           "builder": ".:db-migrate"
         },
@@ -158,8 +149,7 @@
             "tsConfig": "apps/lucifer-front/tsconfig.app.json",
             "assets": [
               "apps/lucifer-front/src/favicon.ico",
-              "apps/lucifer-front/src/assets",
-              "apps/lucifer-front/src/Procfile"
+              "apps/lucifer-front/src/assets"
             ],
             "styles": [
               "apps/lucifer-front/src/styles.scss"
@@ -236,13 +226,6 @@
           "outputs": [
             "coverage/apps/lucifer-front"
           ]
-        },
-        "deploy": {
-          "builder": ".:deploy",
-          "options": {
-            "buildPath": "dist/apps/lucifer-front",
-            "repository": "https://github.com/Jujulego/lucifer.git"
-          }
         }
       }
     },

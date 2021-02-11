@@ -1,3 +1,4 @@
+# Auth0 resources
 resource "auth0_client" "lucifer-front" {
   name                = "Lucifer"
   app_type            = "spa"
@@ -12,16 +13,21 @@ resource "auth0_client" "lucifer-front" {
   }
 }
 
+# Heroku resources
 resource "heroku_app" "lucifer-front" {
   name   = "lucifer-front"
   region = "eu"
 
   buildpacks = [
+    "https://github.com/heroku/heroku-buildpack-multi-procfile.git",
     "heroku/nodejs"
   ]
 
   config_vars = {
-    YARN_PRODUCTION       = "true"
-    NPM_CONFIG_PRODUCTION = "true"
+    # Multi-Procfile
+    PROCFILE = "apps/lucifer-front/Procfile"
+
+    # NodeJS
+    NX_APP = "lucifer-front"
   }
 }
