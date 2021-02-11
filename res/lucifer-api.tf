@@ -82,9 +82,7 @@ resource "heroku_app" "lucifer-api" {
     PROCFILE = "apps/lucifer-api/Procfile"
 
     # NodeJS
-    YARN_PRODUCTION       = "true"
-    NPM_CONFIG_PRODUCTION = "true"
-    NX_APP                = "lucifer-api"
+    NX_APP = "lucifer-api"
 
     # App config
     AUTH0_DOMAIN    = var.auth0-domain

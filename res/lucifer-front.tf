@@ -25,10 +25,9 @@ resource "heroku_app" "lucifer-front" {
 
   config_vars = {
     # Multi-Procfile
-    PROCFILE = "apps/lucifer-api/Procfile"
+    PROCFILE = "apps/lucifer-front/Procfile"
 
     # NodeJS
-    YARN_PRODUCTION       = "true"
-    NPM_CONFIG_PRODUCTION = "true"
+    NX_APP = "lucifer-front"
   }
 }
