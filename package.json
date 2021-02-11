@@ -35,8 +35,7 @@
     "migration:generate": "yarn run typeorm migration:generate",
     "storybook": "nx run storybook:storybook",
     "postinstall": "is-ci || husky install",
-    "heroku-postbuild": "nx run $NX_APP:build --scan --prod",
-    "heroku-cleanup": "cp -rf \"dist/apps/$NX_APP/*\" ."
+    "heroku-postbuild": "nx run $NX_APP:build --scan --prod"
   },
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.13.6",
