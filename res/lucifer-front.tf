@@ -18,7 +18,7 @@ resource "heroku_pipeline" "lucifer-front" {
   name = "lucifer-front"
 
   owner {
-    id   = var.owner
+    id   = var.heroku-owner
     type = "user"
   }
 }

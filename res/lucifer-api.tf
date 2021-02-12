@@ -72,7 +72,7 @@ resource "heroku_pipeline" "lucifer-api" {
   name = "lucifer-api"
 
   owner {
-    id   = var.owner
+    id   = var.heroku-owner
     type = "user"
   }
 }

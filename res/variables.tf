@@ -1,4 +1,4 @@
-variable "owner" {
+variable "heroku-owner" {
   type      = string
   sensitive = true
 }
