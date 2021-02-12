@@ -68,9 +68,19 @@ resource "auth0_resource_server" "lucifer-api" {
 }
 
 # Heroku resources
+resource "heroku_pipeline" "lucifer-api" {
+  name = "lucifer-api"
+
+  owner {
+    id   = var.owner
+    type = "user"
+  }
+}
+
 resource "heroku_app" "lucifer-api" {
   name   = "lucifer-api"
   region = "eu"
+  stack  = "heroku-20"
 
   buildpacks = [
     "https://github.com/heroku/heroku-buildpack-multi-procfile.git",
@@ -98,4 +108,10 @@ resource "heroku_app" "lucifer-api" {
 resource "heroku_addon" "lucifer-api" {
   app  = heroku_app.lucifer-api.name
   plan = "heroku-postgresql:hobby-dev"
+}
+
+resource "heroku_pipeline_coupling" "lucifer-api-production" {
+  app      = heroku_app.lucifer-api.name
+  pipeline = heroku_pipeline.lucifer-api.id
+  stage    = "production"
 }

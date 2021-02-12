@@ -14,6 +14,15 @@ resource "auth0_client" "lucifer-front" {
 }
 
 # Heroku resources
+resource "heroku_pipeline" "lucifer-front" {
+  name = "lucifer-front"
+
+  owner {
+    id   = var.owner
+    type = "user"
+  }
+}
+
 resource "heroku_app" "lucifer-front" {
   name   = "lucifer-front"
   region = "eu"
@@ -30,4 +39,10 @@ resource "heroku_app" "lucifer-front" {
     # NodeJS
     NX_APP = "lucifer-front"
   }
+}
+
+resource "heroku_pipeline_coupling" "lucifer-front-production" {
+  app      = heroku_app.lucifer-front.name
+  pipeline = heroku_pipeline.lucifer-front.id
+  stage    = "production"
 }
