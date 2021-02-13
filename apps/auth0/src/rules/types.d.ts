@@ -16,10 +16,10 @@ declare global {
 
   export interface RuleContext {
     tenant: string;
-    clientId: string;
+    clientID: string;
     clientName: string;
     clientMetadata: Record<string, string>;
-    connectionId: string;
+    connectionID: string;
     connection: string;
     connectionStrategy: Strategy;
     connectionOptions: any;
@@ -37,7 +37,7 @@ declare global {
     idToken: Record<string, any>;
     original_protocol: Protocol;
     multifactor: any;
-    sessionId: string;
+    sessionID: string;
     request?: {
       userAgent: string;
       ip: string;
