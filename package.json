@@ -26,7 +26,6 @@
     "format": "nx format:write",
     "format:write": "nx format:write",
     "format:check": "nx format:check",
-    "wait:lucifer-api": "wait-on http://localhost:3333",
     "update": "nx migrate latest",
     "dep-graph": "nx dep-graph",
     "help": "nx help",
