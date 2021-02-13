@@ -14,6 +14,6 @@ resource "auth0_user" "e2e" {
   password        = "e2e-cypress"
 
   app_metadata = jsonencode({
-    e2e: true
+    e2e : true
   })
 }
