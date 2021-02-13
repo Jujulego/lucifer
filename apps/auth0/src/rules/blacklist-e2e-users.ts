@@ -2,7 +2,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function BlacklistE2EUsers(user: RuleUser, context: RuleContext, callback: RuleCallback) {
   // Check is E2E user
-  if (!user.app_metadata.e2e) {
+  if (!user.app_metadata?.e2e) {
     return callback(null, user, context);
   }
 
