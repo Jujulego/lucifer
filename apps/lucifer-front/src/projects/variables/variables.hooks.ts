@@ -3,8 +3,6 @@ import { useCallback } from 'react';
 import { APIParams, useAPI } from '@lucifer/react/api';
 import { ICreateVariable, IUpdateVariable, IVariable } from '@lucifer/types';
 
-import { env } from '../../environments/environment';
-
 // Types
 interface IBulkDelete extends APIParams {
   ids: string[];
@@ -12,13 +10,13 @@ interface IBulkDelete extends APIParams {
 
 // Namespace
 export const useVariablesAPI = {
-  all: (adminId: string, projectId: string) => useAPI.get<IVariable[]>(`${env.apiUrl}/api/${adminId}/projects/${projectId}/variables`),
-  create: (adminId: string, projectId: string) => useAPI.post<ICreateVariable, IVariable>(`${env.apiUrl}/api/${adminId}/projects/${projectId}/variables`),
-  bulkDelete: (adminId: string, projectId: string) => useAPI.delete<number | null, IBulkDelete>(`${env.apiUrl}/api/${adminId}/projects/${projectId}/variables`),
+  all: (adminId: string, projectId: string) => useAPI.get<IVariable[]>(`/api/${adminId}/projects/${projectId}/variables`),
+  create: (adminId: string, projectId: string) => useAPI.post<ICreateVariable, IVariable>(`/api/${adminId}/projects/${projectId}/variables`),
+  bulkDelete: (adminId: string, projectId: string) => useAPI.delete<number | null, IBulkDelete>(`/api/${adminId}/projects/${projectId}/variables`),
 
-  get: (adminId: string, projectId: string, id: string) => useAPI.get<IVariable>(`${env.apiUrl}/api/${adminId}/projects/${projectId}/variables/${id}`),
-  put: (adminId: string, projectId: string, id: string) => useAPI.put<IUpdateVariable, IVariable>(`${env.apiUrl}/api/${adminId}/projects/${projectId}/variables/${id}`),
-  delete: (adminId: string, projectId: string, id: string) => useAPI.delete<IVariable>(`${env.apiUrl}/api/${adminId}/projects/${projectId}/variables/${id}`),
+  get: (adminId: string, projectId: string, id: string) => useAPI.get<IVariable>(`/api/${adminId}/projects/${projectId}/variables/${id}`),
+  put: (adminId: string, projectId: string, id: string) => useAPI.put<IUpdateVariable, IVariable>(`/api/${adminId}/projects/${projectId}/variables/${id}`),
+  delete: (adminId: string, projectId: string, id: string) => useAPI.delete<IVariable>(`/api/${adminId}/projects/${projectId}/variables/${id}`),
 };
 
 // Hooks

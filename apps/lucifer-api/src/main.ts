@@ -23,10 +23,6 @@ if (!env.PRODUCTION) {
       return await migrate(app);
   }
 
-  // Setup server
-  const globalPrefix = 'api';
-  app.setGlobalPrefix(globalPrefix);
-
   // Middlewares
   app.use(helmet());
   app.use(cors());
@@ -41,6 +37,6 @@ if (!env.PRODUCTION) {
 
   // Start server
   await app.listen(env.PORT, () => {
-    Logger.log(`Listening at http://localhost:${env.PORT}/${globalPrefix}`);
+    Logger.log(`Listening at http://localhost:${env.PORT}/`);
   });
 })();
