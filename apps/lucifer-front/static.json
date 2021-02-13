@@ -1,0 +1,13 @@
+{
+  "root": "dist/apps/lucifer-front/",
+  "clean_url": true,
+  "proxies": {
+    "/api/": {
+      "origin": "${API_URL}"
+    }
+  },
+  "routes": {
+    "/assets/*": "/assets/",
+    "/**": "index.html"
+  }
+}

@@ -83,7 +83,7 @@ resource "heroku_app" "lucifer-api" {
   stack  = "heroku-20"
 
   buildpacks = [
-    "https://github.com/heroku/heroku-buildpack-multi-procfile.git",
+    "heroku-community/multi-procfile",
     "heroku/nodejs"
   ]
 

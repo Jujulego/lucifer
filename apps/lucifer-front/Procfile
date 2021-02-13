@@ -1,1 +1,1 @@
-web: npx serve -s -p $PORT dist/apps/lucifer-front
+web: bin/boot

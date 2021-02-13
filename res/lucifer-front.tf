@@ -26,10 +26,12 @@ resource "heroku_pipeline" "lucifer-front" {
 resource "heroku_app" "lucifer-front" {
   name   = "lucifer-front"
   region = "eu"
+  stack  = "heroku-20"
 
   buildpacks = [
-    "https://github.com/heroku/heroku-buildpack-multi-procfile.git",
-    "heroku/nodejs"
+    "heroku-community/multi-procfile",
+    "heroku/nodejs",
+    "heroku-community/static",
   ]
 
   config_vars = {
@@ -38,6 +40,9 @@ resource "heroku_app" "lucifer-front" {
 
     # NodeJS
     NX_APP = "lucifer-front"
+
+    # Static
+    API_URL = heroku_app.lucifer-api.web_url
   }
 }
 
