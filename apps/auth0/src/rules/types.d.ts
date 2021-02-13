@@ -8,6 +8,7 @@ export type Protocol = 'oidc-basic-profile' | 'oidc-implicit-profile'
   | 'redirect-callback';
 
 declare global {
+  // Types
   export type Rule = (user: RuleUser, context: RuleContext, cb: RuleCallback) => void;
   export type RuleCallback = (error: any, user: RuleUser, context: RuleContext) => void;
 
@@ -65,4 +66,12 @@ declare global {
       roles?: string[];
     };
   }
+
+  // Classes
+  class UnauthorizedError extends Error {}
+
+  // Values
+  const configuration: {
+    E2E_CLIENT: string
+  };
 }
