@@ -1,2 +1,0 @@
-release: node main migrate
-web: node main

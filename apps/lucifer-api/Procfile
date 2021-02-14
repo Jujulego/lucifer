@@ -1,0 +1,2 @@
+release: node dist/apps/lucifer-api/main migrate
+web: node dist/apps/lucifer-api/main

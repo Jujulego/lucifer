@@ -1,4 +1,3 @@
-/* istanbul remove next */
 import { Controller, Get } from '@nestjs/common';
 
 declare global {

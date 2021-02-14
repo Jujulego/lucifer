@@ -1,3 +1,4 @@
+# Auth0 resources
 resource "auth0_client" "lucifer-front" {
   name                = "Lucifer"
   app_type            = "spa"
@@ -12,16 +13,41 @@ resource "auth0_client" "lucifer-front" {
   }
 }
 
+# Heroku resources
+resource "heroku_pipeline" "lucifer-front" {
+  name = "lucifer-front"
+
+  owner {
+    id   = var.heroku-owner
+    type = "user"
+  }
+}
+
 resource "heroku_app" "lucifer-front" {
   name   = "lucifer-front"
   region = "eu"
+  stack  = "heroku-20"
 
   buildpacks = [
-    "heroku/nodejs"
+    "heroku-community/multi-procfile",
+    "heroku/nodejs",
+    "heroku-community/static",
   ]
 
   config_vars = {
-    YARN_PRODUCTION       = "true"
-    NPM_CONFIG_PRODUCTION = "true"
+    # Multi-Procfile
+    PROCFILE = "apps/lucifer-front/Procfile"
+
+    # NodeJS
+    NX_APP = "lucifer-front"
+
+    # Static
+    API_URL = heroku_app.lucifer-api.web_url
   }
+}
+
+resource "heroku_pipeline_coupling" "lucifer-front-production" {
+  app      = heroku_app.lucifer-front.name
+  pipeline = heroku_pipeline.lucifer-front.id
+  stage    = "production"
 }

@@ -8,6 +8,7 @@ export type Protocol = 'oidc-basic-profile' | 'oidc-implicit-profile'
   | 'redirect-callback';
 
 declare global {
+  // Types
   export type Rule = (user: RuleUser, context: RuleContext, cb: RuleCallback) => void;
   export type RuleCallback = (error: any, user: RuleUser, context: RuleContext) => void;
 
@@ -15,10 +16,10 @@ declare global {
 
   export interface RuleContext {
     tenant: string;
-    clientId: string;
+    clientID: string;
     clientName: string;
     clientMetadata: Record<string, string>;
-    connectionId: string;
+    connectionID: string;
     connection: string;
     connectionStrategy: Strategy;
     connectionOptions: any;
@@ -36,7 +37,7 @@ declare global {
     idToken: Record<string, any>;
     original_protocol: Protocol;
     multifactor: any;
-    sessionId: string;
+    sessionID: string;
     request?: {
       userAgent: string;
       ip: string;
@@ -65,4 +66,12 @@ declare global {
       roles?: string[];
     };
   }
+
+  // Classes
+  class UnauthorizedError extends Error {}
+
+  // Values
+  const configuration: {
+    E2E_CLIENT: string
+  };
 }
