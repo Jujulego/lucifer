@@ -1,4 +1,4 @@
-name: Prepare Deploy
+name: Pre-deploy
 
 on:
   push:
