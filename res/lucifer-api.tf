@@ -68,6 +68,7 @@ resource "auth0_resource_server" "lucifer-api" {
 }
 
 # Heroku resources
+# - production app
 resource "heroku_app" "lucifer-api" {
   name   = "lucifer-api"
   region = "eu"
@@ -99,4 +100,42 @@ resource "heroku_app" "lucifer-api" {
 resource "heroku_addon" "lucifer-api" {
   app  = heroku_app.lucifer-api.name
   plan = "heroku-postgresql:hobby-dev"
+}
+
+# - pipeline
+resource "heroku_pipeline" "lucifer-api" {
+  name = "lucifer-api"
+
+  owner {
+    id   = var.heroku-owner
+    type = "user"
+  }
+}
+
+resource "heroku_pipeline_config_var" "lucifer-api-config" {
+  pipeline_id    = heroku_pipeline.lucifer-api
+  pipeline_stage = "review"
+
+  vars = {
+    # Multi-Procfile
+    PROCFILE = "apps/lucifer-api/Procfile"
+
+    # NodeJS
+    NX_APP = "lucifer-api"
+
+    # App config
+    AUTH0_DOMAIN    = var.auth0-domain
+    AUTH0_AUDIENCE  = auth0_resource_server.lucifer-api.identifier
+    AUTH0_CLIENT_ID = auth0_client.lucifer-api.client_id
+  }
+
+  sensitive_vars = {
+    AUTH0_CLIENT_SECRET = auth0_client.lucifer-api.client_secret
+  }
+}
+
+resource "heroku_pipeline_coupling" "lucifer-api-production" {
+  app      = heroku_app.lucifer-api.name
+  pipeline = heroku_pipeline.lucifer-api.id
+  stage    = "production"
 }

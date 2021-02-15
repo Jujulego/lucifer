@@ -36,3 +36,34 @@ resource "heroku_app" "lucifer-front" {
     API_URL = heroku_app.lucifer-api.web_url
   }
 }
+
+resource "heroku_pipeline" "lucifer-front" {
+  name = "lucifer-front"
+
+  owner {
+    id   = var.heroku-owner
+    type = "user"
+  }
+}
+
+resource "heroku_pipeline_config_var" "lucifer-front-config" {
+  pipeline_id    = heroku_pipeline.lucifer-front
+  pipeline_stage = "review"
+
+  vars = {
+    # Multi-Procfile
+    PROCFILE = "apps/lucifer-front/Procfile"
+
+    # NodeJS
+    NX_APP = "lucifer-front"
+
+    # Static
+    API_URL = heroku_app.lucifer-api.web_url
+  }
+}
+
+resource "heroku_pipeline_coupling" "lucifer-front-production" {
+  app      = heroku_app.lucifer-front.name
+  pipeline = heroku_pipeline.lucifer-front.id
+  stage    = "production"
+}
