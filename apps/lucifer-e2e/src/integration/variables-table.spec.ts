@@ -66,7 +66,6 @@ describe('Add a new variable', () => {
 
     // Submit form
     getDialogSubmitButton().click();
-    getDialogLoader().should('exist');
 
     // Await creation
     cy.wait('@createVariable');

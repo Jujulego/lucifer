@@ -1,0 +1,20 @@
+{
+  "name": "Lucifer Monorepo",
+  "repository": "https://github.com/Jujulego/lucifer",
+  "env": {
+    "PROCFILE": {
+      "required": true
+    },
+    "NX_APP": {
+      "required": true
+    }
+  },
+  "addons": [
+    "heroku-postgresql:hobby-dev"
+  ],
+  "buildpacks": [
+    "heroku-community/multi-procfile",
+    "heroku/nodejs",
+    "heroku-community/static"
+  ]
+}

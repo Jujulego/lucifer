@@ -14,15 +14,6 @@ resource "auth0_client" "lucifer-front" {
 }
 
 # Heroku resources
-resource "heroku_pipeline" "lucifer-front" {
-  name = "lucifer-front"
-
-  owner {
-    id   = var.heroku-owner
-    type = "user"
-  }
-}
-
 resource "heroku_app" "lucifer-front" {
   name   = "lucifer-front"
   region = "eu"
@@ -35,6 +26,31 @@ resource "heroku_app" "lucifer-front" {
   ]
 
   config_vars = {
+    # Multi-Procfile
+    PROCFILE = "apps/lucifer-front/Procfile"
+
+    # NodeJS
+    NX_APP = "lucifer-front"
+
+    # Static
+    API_URL = heroku_app.lucifer-api.web_url
+  }
+}
+
+resource "heroku_pipeline" "lucifer-front" {
+  name = "lucifer-front"
+
+  owner {
+    id   = var.heroku-owner
+    type = "user"
+  }
+}
+
+resource "heroku_pipeline_config_var" "lucifer-front-config" {
+  pipeline_id    = heroku_pipeline.lucifer-front.id
+  pipeline_stage = "review"
+
+  vars = {
     # Multi-Procfile
     PROCFILE = "apps/lucifer-front/Procfile"
 
