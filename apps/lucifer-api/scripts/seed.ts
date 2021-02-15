@@ -1,4 +1,5 @@
 import { Logger } from '@nestjs/common';
+import { DeepPartial, Repository } from 'typeorm';
 import fs from 'fs';
 import path from 'path';
 import yaml from 'yaml';
@@ -24,6 +25,13 @@ interface SeedData {
 }
 
 // Seed
+async function seed<E>(name: string, repo: Repository<E>, seeds: DeepPartial<E>[]) {
+  const objs = await repo.save(seeds.map(usr => repo.create(usr)));
+  Logger.log(`${objs.length} ${name} created`);
+
+  return objs;
+}
+
 (async () => {
   const filename = path.join(__dirname, 'seeds', process.argv[2]);
 
@@ -44,13 +52,13 @@ interface SeedData {
 
       // Create users
       const { users = [] } = data;
-      Logger.log(`${(await repoLcu.save(users.map(usr => repoLcu.create(usr)))).length} users created`);
+      await seed('users', repoLcu, users);
 
       for (const { id: adminId, projects = [] } of users) {
-        Logger.log(`${(await repoLcu.save(projects.map(prj => repoPrj.create({ adminId, ...prj })))).length} projects created`);
+        await seed('projects', repoPrj, projects.map(prj => ({ ...prj, adminId })));
 
         for (const { id: projectId, variables = [] } of projects) {
-          Logger.log(`${(await repoVrb.save(variables.map(vrb => repoVrb.create({ adminId, projectId, ...vrb })))).length} variables created`);
+          await seed('variables', repoVrb, variables.map(vrb => ({ ...vrb, adminId, projectId })));
         }
       }
     });
