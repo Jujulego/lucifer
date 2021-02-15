@@ -131,7 +131,7 @@
     "babel-loader": "8.2.2",
     "ci-info": "^2.0.0",
     "cypress": "^6.4.0",
-    "eslint": "7.19.0",
+    "eslint": "7.20.0",
     "eslint-config-prettier": "7.2.0",
     "eslint-plugin-cypress": "^2.10.3",
     "eslint-plugin-jest-dom": "^3.6.5",
