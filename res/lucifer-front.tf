@@ -47,7 +47,7 @@ resource "heroku_pipeline" "lucifer-front" {
 }
 
 resource "heroku_pipeline_config_var" "lucifer-front-config" {
-  pipeline_id    = heroku_pipeline.lucifer-front
+  pipeline_id    = heroku_pipeline.lucifer-front.id
   pipeline_stage = "review"
 
   vars = {

@@ -113,7 +113,7 @@ resource "heroku_pipeline" "lucifer-api" {
 }
 
 resource "heroku_pipeline_config_var" "lucifer-api-config" {
-  pipeline_id    = heroku_pipeline.lucifer-api
+  pipeline_id    = heroku_pipeline.lucifer-api.id
   pipeline_stage = "review"
 
   vars = {
