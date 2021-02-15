@@ -3787,18 +3787,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*":
-  version "17.0.0"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.0.tgz#5af3eb7fad2807092f0046a1302b7823e27919b8"
-  integrity sha512-aj/L7RIMsRlWML3YB6KZiXB3fV2t41+5RBGYF8z+tAKU43Px8C3cYUZsDvf1/+Bm4FK21QWBrDutu8ZJ/70qOw==
-  dependencies:
-    "@types/prop-types" "*"
-    csstype "^3.0.2"
-
-"@types/react@17.0.1":
-  version "17.0.1"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.1.tgz#eb1f1407dea8da3bc741879c1192aa703ab9975b"
-  integrity sha512-w8t9f53B2ei4jeOqf/gxtc2Sswnc3LBK5s0DyJcg5xd10tMHXts2N31cKjWfH9IC/JvEPa/YF1U4YeP1t4R6HQ==
+"@types/react@*", "@types/react@17.0.2":
+  version "17.0.2"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.2.tgz#3de24c4efef902dd9795a49c75f760cbe4f7a5a8"
+  integrity sha512-Xt40xQsrkdvjn1EyWe1Bc0dJLcil/9x2vAuW7ya+PuQip4UYUaXyhzWmAbwRsdMgwOFHpfp7/FFZebDU6Y8VHA==
   dependencies:
     "@types/prop-types" "*"
     csstype "^3.0.2"
@@ -6379,10 +6371,10 @@ cjs-module-lexer@^0.6.0:
   resolved "https://registry.yarnpkg.com/cjs-module-lexer/-/cjs-module-lexer-0.6.0.tgz#4186fcca0eae175970aee870b9fe2d6cf8d5655f"
   integrity sha512-uc2Vix1frTfnuzxxu1Hp4ktSvM3QaI4oXl4ZUqL1wjTu/BGki9TrCWoqLTg/drR1KwAEarXuRFCG2Svr1GxPFw==
 
-class-transformer@^0.3.2:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/class-transformer/-/class-transformer-0.3.2.tgz#779ef5f124784324b40f8e927c774bd96cdecd4b"
-  integrity sha512-9QY6QXBH/+Gt1C3HBmJCrgY6+EFpIa6aLjfDnlXFx0zQl/HjrCE7qoaI0srNrxpMIfsobCpgUdDG5JYtJOpVsw==
+class-transformer@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/class-transformer/-/class-transformer-0.4.0.tgz#b52144117b423c516afb44cc1c76dbad31c2165b"
+  integrity sha512-ETWD/H2TbWbKEi7m9N4Km5+cw1hNcqJSxlSYhsLsNjQzWWiZIYA1zafxpK9PwVfaZ6AqR5rrjPVUBGESm5tQUA==
 
 class-utils@^0.3.5:
   version "0.3.6"
