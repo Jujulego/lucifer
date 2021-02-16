@@ -1,5 +1,5 @@
 users:
-  - id: &userId "auth0|5ffc657caa275600713a3d71"
+  - id: &userId "auth0|602ba487d8ace4007007f9f1"
 
 projects:
   - id: &projectId test-1
