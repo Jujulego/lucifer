@@ -36,7 +36,10 @@ export const DatabaseUtils = {
         type: 'postgres',
         url: env.DATABASE_URL,
         migrations: MIGRATIONS,
-        entities: [LocalUser, Project, Variable]
+        entities: [LocalUser, Project, Variable],
+        ssl: {
+          rejectUnauthorized: false
+        }
       };
 
     } else {
