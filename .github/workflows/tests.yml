@@ -185,7 +185,7 @@ jobs:
 
           AUTH0_DOMAIN: jujulego.eu.auth0.com
           AUTH0_AUDIENCE: 'https://lucifer-api.herokuapp.com/'
-          AUTH0_CLIENT_ID: dpD3arJJNBkxfNcrAyLPKf3Zc7oMmIdX
+          AUTH0_CLIENT_ID: Ni7eCeRfTINTJeDBlXyxtavguBCQR6iH
           AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
 
       - name: E2E Tests

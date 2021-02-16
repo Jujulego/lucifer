@@ -4,7 +4,7 @@ export const env = {
 
   auth0: {
     domain: 'jujulego.eu.auth0.com',
-    clientId: 'NNVhJ2cSgHhoRfN9eREEN5fnfjdUkK3m',
+    clientId: '5JljofyvHLKItBSYbeQmR3xh82zaAIgF',
     audience: 'https://lucifer-api.herokuapp.com/'
   }
 };
