@@ -13,6 +13,7 @@ terraform {
     auth0 = {
       source = "alexkappa/auth0"
     }
+
     heroku = {
       source = "heroku/heroku"
     }
