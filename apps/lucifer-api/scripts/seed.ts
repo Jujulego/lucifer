@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import yaml from 'yaml';
 
-import { ICreateProject, ICreateVariable, IUser } from '@lucifer/types';
+import { ICreateProject, ICreateVariable, IProject, IUser } from '@lucifer/types';
 
 import { DatabaseUtils } from '../src/db/utils';
 import { LocalUser } from '../src/users/local-user.entity';
@@ -54,13 +54,15 @@ async function seed<E>(name: string, repo: Repository<E>, seeds: DeepPartial<E>[
       const { users = [] } = data;
       await seed('users', repoLcu, users);
 
-      for (const { id: adminId, projects = [] } of users) {
-        await seed('projects', repoPrj, projects.map(prj => ({ ...prj, adminId })));
+      // Create projects
+      const projects = users.map(({ id: adminId, projects = [] }) => projects.map(prj => ({ ...prj, adminId })))
+        .reduce((acc, prjs) => acc.concat(prjs), []);
+      await seed('projects', repoPrj, projects);
 
-        for (const { id: projectId, variables = [] } of projects) {
-          await seed('variables', repoVrb, variables.map(vrb => ({ ...vrb, adminId, projectId })));
-        }
-      }
+      // Create variables
+      const variables = projects.map(({ id: projectId, adminId, variables = [] }) => variables.map(vrb => ({ ...vrb, adminId, projectId })))
+        .reduce((acc, vrbs) => acc.concat(vrbs), []);
+      await seed('variables', repoVrb, variables);
     });
   } finally {
     await connection.close();
