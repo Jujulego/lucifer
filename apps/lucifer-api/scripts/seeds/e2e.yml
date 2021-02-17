@@ -1,8 +1,9 @@
 users:
-  - id: 'auth0|5ffc657caa275600713a3d71'
+  - id: 'auth0|602ba487d8ace4007007f9f1'
     projects:
       - id: test-1
         name: 'Test #1'
+
         variables:
           - id: test-1
             name: TEST_1

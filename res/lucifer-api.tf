@@ -116,6 +116,7 @@ resource "heroku_pipeline_config_var" "lucifer-api-config" {
   pipeline_id    = heroku_pipeline.lucifer-api.id
   pipeline_stage = "review"
 
+  # Same vars for review apps than in production
   vars = {
     # Multi-Procfile
     PROCFILE = "apps/lucifer-api/Procfile"

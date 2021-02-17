@@ -1,4 +1,4 @@
-// Auth0 resources
+# Auth0 resources
 resource "auth0_client" "lucifer-e2e" {
   name                = "Lucifer E2E"
   app_type            = "spa"

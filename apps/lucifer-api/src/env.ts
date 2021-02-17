@@ -1,8 +1,8 @@
 import { Logger } from '@nestjs/common';
+import { Asserts } from 'yup';
 import * as dotenv from 'dotenv';
 
 import { envSchema } from './env.schema';
-import { Asserts } from 'yup';
 
 // Load config
 dotenv.config();
