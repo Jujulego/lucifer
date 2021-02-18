@@ -3,27 +3,53 @@
   "$id": "http://lucifer.herokuapp.com/project.schema.json",
   "type": "object",
   "additionalProperties": false,
-  "properties": {
-    "adminId": {
-      "$ref": "../user/schema.json#/properties/id"
-    },
-    "projectId": {
-      "$ref": "../project/schema.json#/properties/id"
-    },
+  "definitions": {
     "id": {
+      "$id": "#id",
       "type": "string",
       "maxLength": 100,
-      "pattern": "^[a-z0-9-]+$",
-      "description": "Variable's identifier"
+      "pattern": "^[a-z0-9-]+$"
     },
+    "createVariable": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#id" },
+        "name": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "name", "value"]
+    },
+    "updateVariable": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "properties": {
+    "adminId":   { "$ref": "../user/schema.json#/definitions/id" },
+    "projectId": { "$ref": "../project/schema.json#/definitions/id" },
+    "id":        { "$ref": "#id" },
     "name": {
       "type": "string",
-      "maxLength": 100,
-      "description": "Variable's name"
+      "maxLength": 100
     },
     "value": {
-      "type": "string",
-      "description": "Variable's value"
+      "type": "string"
     }
-  }
+  },
+  "required": ["adminId", "projectId", "id", "name", "value"]
 }

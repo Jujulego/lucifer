@@ -1,9 +1,10 @@
 import { Logger } from '@nestjs/common';
+import { DeepPartial, Repository } from 'typeorm';
 import fs from 'fs';
 import path from 'path';
 import yaml from 'yaml';
 
-import { IProject, IUser, IVariable } from '@lucifer/types';
+import { ICreateProject, ICreateVariable, IProject, IUser } from '@lucifer/types';
 
 import { DatabaseUtils } from '../src/db/utils';
 import { LocalUser } from '../src/users/local-user.entity';
@@ -11,13 +12,26 @@ import { Project } from '../src/projects/project.entity';
 import { Variable } from '../src/projects/variables/variable.entity';
 
 // Types
+type Seed<B, C extends Record<string, unknown>> = (B & {
+  [K in keyof C]?: C[K] extends unknown[] ? C[K] : C[K][]
+})[];
+
 interface SeedData {
-  users?: Pick<IUser, 'id'>[];
-  projects?: IProject[];
-  variables?: IVariable[];
+  users: Seed<Pick<IUser, 'id'>, {
+    projects: Seed<ICreateProject, {
+      variables: ICreateVariable
+    }>;
+  }>;
 }
 
 // Seed
+async function seed<E>(name: string, repo: Repository<E>, seeds: DeepPartial<E>[]) {
+  const objs = await repo.save(seeds.map(usr => repo.create(usr)));
+  Logger.log(`${objs.length} ${name} created`);
+
+  return objs;
+}
+
 (async () => {
   const filename = path.join(__dirname, 'seeds', process.argv[2]);
 
@@ -37,16 +51,18 @@ interface SeedData {
       const repoVrb = manager.getRepository(Variable);
 
       // Create users
-      const users = await repoLcu.save(data.users?.map(usr => repoLcu.create(usr)) || []);
-      Logger.log(`${users.length} users created`);
+      const { users = [] } = data;
+      await seed('users', repoLcu, users);
 
       // Create projects
-      const projects = await repoPrj.save(data.projects?.map(prj => repoPrj.create(prj)) || []);
-      Logger.log(`${projects.length} projects created`);
+      const projects = users.map(({ id: adminId, projects = [] }) => projects.map(prj => ({ ...prj, adminId })))
+        .reduce((acc, prjs) => acc.concat(prjs), []);
+      await seed('projects', repoPrj, projects);
 
       // Create variables
-      const variables = await repoVrb.save(data.variables?.map(vrb => repoVrb.create(vrb)) || []);
-      Logger.log(`${variables.length} variables created`);
+      const variables = projects.map(({ id: projectId, adminId, variables = [] }) => variables.map(vrb => ({ ...vrb, adminId, projectId })))
+        .reduce((acc, vrbs) => acc.concat(vrbs), []);
+      await seed('variables', repoVrb, variables);
     });
   } finally {
     await connection.close();

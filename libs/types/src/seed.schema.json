@@ -3,26 +3,52 @@
   "$id": "http://lucifer.herokuapp.com/seed.schema.json",
   "type": "object",
   "additionalProperties": false,
+  "definitions": {
+    "user": {
+      "$id": "#user",
+      "allOf": [
+        { "$ref": "user/schema.json#/definitions/createLocalUser" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "projects": {
+              "type": "array",
+              "items": { "$ref": "#project" },
+              "default": []
+            }
+          }
+        }
+      ]
+    },
+    "project": {
+      "$id": "#project",
+      "allOf": [
+        { "$ref": "project/schema.json#/definitions/createProject" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "variables": {
+              "type": "array",
+              "items": { "$ref": "#variable" },
+              "default": []
+            }
+          }
+        }
+      ]
+    },
+    "variable": {
+      "$id": "#variable",
+      "$ref": "variable/schema.json#/definitions/createVariable"
+    }
+  },
   "properties": {
     "users": {
       "type": "array",
       "description": "Users to create (must already exists in auth0)",
       "items": {
-        "$ref": "user/schema.json"
-      }
-    },
-    "projects": {
-      "type": "array",
-      "description": "Projects to create",
-      "items": {
-        "$ref": "project/schema.json"
-      }
-    },
-    "variables": {
-      "type": "array",
-      "description": "Variables to create",
-      "items": {
-        "$ref": "variable/schema.json"
+        "$ref": "#user"
       }
     }
   }

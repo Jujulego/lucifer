@@ -13,8 +13,8 @@
     "heroku-postgresql:hobby-dev"
   ],
   "buildpacks": [
-    "heroku-community/multi-procfile",
-    "heroku/nodejs",
-    "heroku-community/static"
+    { "url": "heroku-community/multi-procfile" },
+    { "url": "heroku/nodejs" },
+    { "url": "heroku-community/static" }
   ]
 }
