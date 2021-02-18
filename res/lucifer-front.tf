@@ -4,9 +4,9 @@ resource "auth0_client" "lucifer-front" {
   app_type            = "spa"
   grant_types         = ["implicit", "authorization_code", "refresh_token"]
   oidc_conformant     = true
-  callbacks           = ["http://localhost:4200", heroku_app.lucifer-front.web_url]
-  allowed_logout_urls = ["http://localhost:4200", heroku_app.lucifer-front.web_url]
-  web_origins         = ["http://localhost:4200", heroku_app.lucifer-front.web_url]
+  callbacks           = ["http://localhost:4200", "https://lucifer-front-pr-*.herokuapp.com", heroku_app.lucifer-front.web_url]
+  allowed_logout_urls = ["http://localhost:4200", "https://lucifer-front-pr-*.herokuapp.com", heroku_app.lucifer-front.web_url]
+  web_origins         = ["http://localhost:4200", "https://lucifer-front-pr-*.herokuapp.com", heroku_app.lucifer-front.web_url]
 
   jwt_configuration {
     alg = "RS256"

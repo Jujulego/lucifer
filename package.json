@@ -75,10 +75,10 @@
     "slugify": "^1.4.6",
     "tslib": "^2.0.3",
     "typeorm": "^0.2.31",
-    "yup": "^0.32.8"
+    "yup": "^0.32.9"
   },
   "devDependencies": {
-    "@angular-devkit/architect": "^0.1102.0",
+    "@angular-devkit/architect": "^0.1102.1",
     "@babel/core": "^7.12.16",
     "@babel/preset-env": "^7.12.16",
     "@babel/preset-react": "^7.12.13",
@@ -129,7 +129,7 @@
     "axios-debug-log": "^0.8.2",
     "babel-jest": "^26.6.3",
     "babel-loader": "^8.2.2",
-    "ci-info": "^2.0.0",
+    "ci-info": "^3.1.1",
     "cypress": "^6.5.0",
     "eslint": "^7.20.0",
     "eslint-config-prettier": "^7.2.0",
