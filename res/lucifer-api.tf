@@ -12,11 +12,12 @@ resource "auth0_client_grant" "lucifer-api--management-api" {
 }
 
 resource "auth0_resource_server" "lucifer-api" {
-  name             = "Lucifer API"
-  identifier       = "https://lucifer-api.herokuapp.com/"
-  signing_alg      = "RS256"
-  enforce_policies = true
-  token_dialect    = "access_token_authz"
+  name                 = "Lucifer API"
+  identifier           = "https://lucifer-api.herokuapp.com/"
+  signing_alg          = "RS256"
+  enforce_policies     = true
+  token_dialect        = "access_token_authz"
+  allow_offline_access = true
 
   scopes {
     value = "read:users"
