@@ -3,9 +3,14 @@ resource "auth0_client" "lucifer-e2e" {
   name                = "Lucifer E2E"
   app_type            = "spa"
   grant_types         = ["password"]
+  oidc_conformant     = true
   callbacks           = ["http://localhost:4200"]
   allowed_logout_urls = ["http://localhost:4200"]
   web_origins         = ["http://localhost:4200"]
+
+  jwt_configuration {
+    alg = "RS256"
+  }
 }
 
 resource "auth0_user" "e2e" {
