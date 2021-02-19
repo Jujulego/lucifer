@@ -23,7 +23,7 @@ ENV AUTH0_CLIENT_SECRET=$Auth0ClientSecret
 # Install dependencies
 ADD package.json /app/
 ADD yarn.lock /app/
-RUN yarn install --prod --pure-lockfile --ignore-scripts
+RUN yarn install --immutable
 
 # Copy builded files
 ADD dist/apps/lucifer-api /app/src

@@ -23,22 +23,18 @@ jobs:
         with:
           node-version: 14.x
 
-      - name: Setup Cache
-        id: setup-cache
-        run: echo "::set-output name=yarn-cache::$(yarn cache dir)"
-
       - name: Setup Nx
         id: setup
         run: git fetch --no-tags --prune --depth=5 origin ${{ github.base_ref }}
 
       - uses: actions/cache@v2.1.4
         with:
-          path: ${{ steps.setup-cache.outputs.yarn-cache }}
+          path: .yarn/cache
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-
 
       - name: Install dependencies
-        run: yarn install --pure-lockfile
+        run: yarn install --immutable
 
       - name: Lint
         run: yarn run affected:lint --scan --base=origin/${{ github.base_ref }}
@@ -78,10 +74,6 @@ jobs:
         with:
           node-version: 14.x
 
-      - name: Setup Cache
-        id: setup-cache
-        run: echo "::set-output name=yarn-cache::$(yarn cache dir)"
-
       - name: Setup Database
         uses: ./.github/actions/setup-db
         with:
@@ -96,13 +88,13 @@ jobs:
 
       - uses: actions/cache@v2.1.4
         with:
-          path: ${{ steps.setup-cache.outputs.yarn-cache }}
+          path: .yarn/cache
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-
 
       - name: Install dependencies
         run: |
-          yarn install --pure-lockfile
+          yarn install --immutable
           yarn run build:tools
 
       - name: Migrate
@@ -145,10 +137,6 @@ jobs:
         with:
           node-version: 14.x
 
-      - name: Setup Cache
-        id: setup-cache
-        run: echo "::set-output name=yarn-cache::$(yarn cache dir)"
-
       - name: Setup Database
         uses: ./.github/actions/setup-db
         with:
@@ -163,13 +151,13 @@ jobs:
 
       - uses: actions/cache@v2.1.4
         with:
-          path: ${{ steps.setup-cache.outputs.yarn-cache }}
+          path: .yarn/cache
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-
 
       - name: Install dependencies
         run: |
-          yarn install --pure-lockfile
+          yarn install --immutable
           yarn run build:tools
 
       - name: Migrate
@@ -218,19 +206,15 @@ jobs:
         with:
           node-version: 14.x
 
-      - name: Setup Cache
-        id: setup-cache
-        run: echo "::set-output name=yarn-cache::$(yarn cache dir)"
-
       - uses: actions/cache@v2.1.4
         with:
-          path: ${{ steps.setup-cache.outputs.yarn-cache }}
+          path: .yarn/cache
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-
 
       - name: Install dependencies
         run: |
-          yarn install --pure-lockfile
+          yarn install --immutable
           yarn run build:tools
 
       - name: Build
