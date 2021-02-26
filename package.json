@@ -58,7 +58,7 @@
     "document-register-element": "^1.14.10",
     "dotenv": "^8.2.0",
     "helmet": "^4.4.1",
-    "jwks-rsa": "^1.12.2",
+    "jwks-rsa": "^1.12.3",
     "lodash.isequal": "^4.5.0",
     "morgan": "^1.10.0",
     "passport": "^0.4.1",
