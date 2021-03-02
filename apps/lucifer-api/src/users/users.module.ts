@@ -5,9 +5,10 @@ import { Auth0Module } from '../auth0.module';
 
 import { ApiKey } from './api-key.entity';
 import { LocalUser } from './local-user.entity';
+import { ApiKeyService } from './api-key.service';
+import { RolesService } from './roles.service';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
-import { RolesService } from './roles.service';
 
 // Module
 @Module({
@@ -16,6 +17,7 @@ import { RolesService } from './roles.service';
     TypeOrmModule.forFeature([ApiKey, LocalUser])
   ],
   providers: [
+    ApiKeyService,
     RolesService,
     UsersService
   ],

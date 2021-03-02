@@ -109,6 +109,7 @@
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.0",
     "@types/auth0": "^2.33.1",
+    "@types/bcrypt": "^3.0.0",
     "@types/ci-info": "^2.0.0",
     "@types/cors": "^2.8.10",
     "@types/jest": "^26.0.20",
