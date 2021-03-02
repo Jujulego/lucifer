@@ -1,6 +1,6 @@
 // Resources
 type RUResource = 'roles' | 'users';
-type CRUDResource = 'machines' | 'projects' | 'variables';
+type CRUDResource = 'api-keys' | 'machines' | 'projects' | 'variables';
 export type Resource = CRUDResource | RUResource;
 
 // Levels
