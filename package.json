@@ -80,7 +80,7 @@
   "devDependencies": {
     "@angular-devkit/architect": "^0.1102.2",
     "@babel/core": "^7.13.1",
-    "@babel/preset-env": "^7.13.8",
+    "@babel/preset-env": "^7.13.9",
     "@babel/preset-react": "^7.12.13",
     "@babel/preset-typescript": "^7.13.0",
     "@cypress/code-coverage": "^3.9.2",
