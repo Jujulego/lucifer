@@ -4,6 +4,10 @@
   "type": "object",
   "additionalProperties": false,
   "definitions": {
+    "api-key": {
+      "$id": "#api-key",
+      "$ref": "api-key/schema.json#/definitions/createApiKey"
+    },
     "user": {
       "$id": "#user",
       "allOf": [
@@ -12,6 +16,11 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
+            "apiKeys": {
+              "type": "array",
+              "items": { "$ref": "#api-key" },
+              "default": []
+            },
             "projects": {
               "type": "array",
               "items": { "$ref": "#project" },

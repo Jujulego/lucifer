@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "http://lucifer.herokuapp.com/api-key.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "definitions": {
+    "id": {
+      "$id": "#id",
+      "type": "string",
+      "pattern": "uuid"
+    },
+    "createApiKey": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "type": "string",
+          "maxLength": 100,
+          "default": ""
+        }
+      },
+      "required": []
+    },
+    "updateProject": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "type": "string",
+          "maxLength": 100
+        }
+      }
+    }
+  },
+  "properties": {
+    "id":     { "$ref": "#id" },
+    "userId": { "$ref": "../user/schema.json#/definitions/id" },
+    "label": {
+      "type": "string",
+      "maxLength": 100
+    }
+  },
+  "required": ["userId", "id", "label"]
+}

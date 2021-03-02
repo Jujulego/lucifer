@@ -2,6 +2,7 @@ import { Connection, ConnectionOptions, ConnectionOptionsReader, createConnectio
 import * as path from 'path';
 
 import { env } from '../env';
+import { ApiKey } from '../users/api-key.entity';
 import { LocalUser } from '../users/local-user.entity';
 import { Project } from '../projects/project.entity';
 import { Variable } from '../projects/variables/variable.entity';
@@ -36,7 +37,7 @@ export const DatabaseUtils = {
         type: 'postgres',
         url: env.DATABASE_URL,
         migrations: MIGRATIONS,
-        entities: [LocalUser, Project, Variable],
+        entities: [ApiKey, LocalUser, Project, Variable],
         ssl: {
           rejectUnauthorized: false
         }

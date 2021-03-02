@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { Auth0Module } from '../auth0.module';
 
+import { ApiKey } from './api-key.entity';
 import { LocalUser } from './local-user.entity';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
@@ -12,7 +13,7 @@ import { RolesService } from './roles.service';
 @Module({
   imports: [
     Auth0Module,
-    TypeOrmModule.forFeature([LocalUser])
+    TypeOrmModule.forFeature([ApiKey, LocalUser])
   ],
   providers: [
     RolesService,
