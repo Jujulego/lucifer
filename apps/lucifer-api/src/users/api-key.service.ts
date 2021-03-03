@@ -41,7 +41,7 @@ export class ApiKeyService {
     });
 
     // Generate key
-    const key = crypto.randomBytes(64).toString('base64');
+    const key = crypto.randomBytes(60).toString('base64');
     apk.key = await bcrypt.hash(key, 10000);
 
     apk = await this.repository.save(apk);

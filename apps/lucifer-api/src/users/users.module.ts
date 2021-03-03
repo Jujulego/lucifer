@@ -8,6 +8,7 @@ import { LocalUser } from './local-user.entity';
 import { ApiKeyService } from './api-key.service';
 import { RolesService } from './roles.service';
 import { UsersService } from './users.service';
+import { ApiKeyController } from './api-key.controller';
 import { UsersController } from './users.controller';
 
 // Module
@@ -22,6 +23,7 @@ import { UsersController } from './users.controller';
     UsersService
   ],
   controllers: [
+    ApiKeyController,
     UsersController
   ],
   exports: [

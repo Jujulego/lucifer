@@ -1,5 +1,5 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
-import { Expose } from 'class-transformer';
+import { Exclude } from 'class-transformer';
 
 import { IApiKeyWithKey } from '@lucifer/types';
 
@@ -18,7 +18,7 @@ export class ApiKey implements IApiKeyWithKey {
   @Column('varchar', { length: 100, nullable: false, default: '' })
   label: string;
 
-  @Expose({ groups: ['create:api-key'] })
+  @Exclude()
   @Column('text', { nullable: false })
   @Index({ unique: true })
   key: string;
