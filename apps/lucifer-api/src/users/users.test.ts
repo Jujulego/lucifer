@@ -6,7 +6,7 @@ import { Connection } from 'typeorm';
 import { IUpdateUser } from '@lucifer/types';
 import { DatabaseModule } from '../db/database.module';
 import { ManagementClientMock } from '../../mocks/management-client.mock';
-import { generateTextContext } from '../../tests/utils';
+import { generateTestContext } from '../../tests/utils';
 
 import { UsersModule } from './users.module';
 import { UsersService } from './users.service';
@@ -191,7 +191,7 @@ describe('UsersService.list', () => {
 });
 
 describe('UsersService.update', () => {
-  const ctx = generateTextContext('test', ['update:users', 'update:roles']);
+  const ctx = generateTestContext('test', ['update:users', 'update:roles']);
 
   beforeEach(() => {
     // Mocks

@@ -43,6 +43,6 @@ export async function generateTestToken(user: string, permissions?: Permission[]
   }, JWT_KEY);
 }
 
-export function generateTextContext(user: string, permissions?: Permission[], token = 'token'): Context {
+export function generateTestContext(user: string, permissions?: Permission[], token = 'token'): Context {
   return new Context(token, generateTestUser(user, permissions));
 }
