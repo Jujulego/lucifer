@@ -1,4 +1,4 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Exclude } from 'class-transformer';
 
 import { IApiKeyWithKey } from '@lucifer/types';
@@ -9,11 +9,11 @@ import { LocalUser } from './local-user.entity';
 @Entity()
 export class ApiKey implements IApiKeyWithKey {
   // Columns
-  @PrimaryColumn('varchar')
-  userId: string;
-
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Column('varchar')
+  userId: string;
 
   @Column('varchar', { length: 100, nullable: false, default: '' })
   label: string;

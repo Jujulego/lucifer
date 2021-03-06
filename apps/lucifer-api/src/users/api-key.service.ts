@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
@@ -42,7 +42,7 @@ export class ApiKeyService {
 
     // Generate key
     const key = crypto.randomBytes(60).toString('base64');
-    apk.key = await bcrypt.hash(key, 10000);
+    apk.key = await bcrypt.hash(key, 10);
 
     apk = await this.repository.save(apk);
     return { ...apk, key };
@@ -59,6 +59,29 @@ export class ApiKeyService {
 
     if (!apk) {
       throw new NotFoundException(`Api key ${id} not found`);
+    }
+
+    return apk;
+  }
+
+  async check(id: string, key: string): Promise<ApiKey> {
+    // Get api key
+    const apk = await this.repository.findOne({
+      where: { id },
+      relations: ['user']
+    });
+
+    if (!apk) {
+      this.logger.debug(`Use of key ${id} refused (unknown key)`);
+      throw new UnauthorizedException();
+    }
+
+    // Check key
+    const valid = await bcrypt.compare(key, apk.key);
+
+    if (!valid) {
+      this.logger.debug(`Use of key ${id} refused (invalid key)`);
+      throw new UnauthorizedException();
     }
 
     return apk;
