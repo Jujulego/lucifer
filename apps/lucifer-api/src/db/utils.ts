@@ -2,7 +2,7 @@ import { Connection, ConnectionOptions, ConnectionOptionsReader, createConnectio
 import * as path from 'path';
 
 import { env } from '../env';
-import { ApiKey } from '../users/api-key.entity';
+import { ApiKey } from '../projects/api-keys/api-key.entity';
 import { LocalUser } from '../users/local-user.entity';
 import { Project } from '../projects/project.entity';
 import { Variable } from '../projects/variables/variable.entity';

@@ -8,7 +8,7 @@ import { VariablesService } from './variables.service';
 import { VariablesController } from './variables.controller';
 import { ProjectsDataModule } from '../projects-data.module';
 
-// Modules
+// Module
 @Module({
   imports: [
     TypeOrmModule.forFeature([Variable]),

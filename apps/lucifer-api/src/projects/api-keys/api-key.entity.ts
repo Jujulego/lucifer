@@ -3,7 +3,7 @@ import { Exclude } from 'class-transformer';
 
 import { IApiKeyWithKey } from '@lucifer/types';
 
-import { LocalUser } from './local-user.entity';
+import { Project } from '../project.entity';
 
 // Entity
 @Entity()
@@ -13,7 +13,10 @@ export class ApiKey implements IApiKeyWithKey {
   id: string;
 
   @Column('varchar')
-  userId: string;
+  adminId: string;
+
+  @Column('varchar', { length: 100, nullable: false })
+  projectId: string;
 
   @Column('varchar', { length: 100, nullable: false, default: '' })
   label: string;
@@ -24,7 +27,10 @@ export class ApiKey implements IApiKeyWithKey {
   key: string;
 
   // Relations
-  @ManyToOne(() => LocalUser, { nullable: false, onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'userId' })
-  user: Promise<LocalUser>
+  @ManyToOne(() => Project, { nullable: false, onUpdate: 'CASCADE', onDelete: 'CASCADE' })
+  @JoinColumn([
+    { name: 'adminId',   referencedColumnName: 'adminId' },
+    { name: 'projectId', referencedColumnName: 'id' }
+  ])
+  project: Promise<Project>;
 }

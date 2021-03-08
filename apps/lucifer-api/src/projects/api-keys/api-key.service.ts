@@ -1,13 +1,13 @@
 import { Injectable, Logger, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
+import * as crypto from 'crypto';
 import bcrypt from 'bcrypt';
 
 import { IApiKeyWithKey, ICreateApiKey, IUpdateApiKey } from '@lucifer/types';
 
 import { ApiKey } from './api-key.entity';
-import { UsersService } from './users.service';
-import * as crypto from 'crypto';
+import { ProjectsService } from '../projects.service';
 
 // Service
 @Injectable()
@@ -17,27 +17,27 @@ export class ApiKeyService {
 
   // Constructor
   constructor(
-    private readonly users: UsersService,
+    private readonly projects: ProjectsService,
     @InjectRepository(ApiKey) private readonly repository: Repository<ApiKey>
   ) {}
 
   // Methods
-  private async _get(userId: string, id: string): Promise<ApiKey | null> {
+  private async _get(adminId: string, projectId: string, id: string): Promise<ApiKey | null> {
     const apk = await this.repository.findOne({
-      where: { userId, id }
+      where: { adminId, projectId, id }
     });
 
     return apk || null;
   }
 
-  async create(userId: string, data: ICreateApiKey): Promise<IApiKeyWithKey> {
-    // Ensure user exists
-    await this.users.getLocal(userId);
+  async create(adminId: string, projectId: string, data: ICreateApiKey): Promise<IApiKeyWithKey> {
+    // Ensure projects exists
+    await this.projects.get(adminId, projectId);
 
     // Create new api key
     let apk = this.repository.create({
       ...data,
-      userId
+      adminId, projectId
     });
 
     // Generate key
@@ -48,14 +48,14 @@ export class ApiKeyService {
     return { ...apk, key };
   }
 
-  async list(userId: string): Promise<ApiKey[]> {
+  async list(adminId: string, projectId: string): Promise<ApiKey[]> {
     return await this.repository.find({
-      where: { userId }
+      where: { adminId, projectId }
     });
   }
 
-  async get(userId: string, id: string): Promise<ApiKey> {
-    const apk = await this._get(userId, id);
+  async get(adminId: string, projectId: string, id: string): Promise<ApiKey> {
+    const apk = await this._get(adminId, projectId, id);
 
     if (!apk) {
       throw new NotFoundException(`Api key ${id} not found`);
@@ -87,8 +87,8 @@ export class ApiKeyService {
     return apk;
   }
 
-  async update(userId: string, id: string, update: IUpdateApiKey): Promise<ApiKey> {
-    const apk = await this.get(userId, id);
+  async update(adminId: string, projectId: string, id: string, update: IUpdateApiKey): Promise<ApiKey> {
+    const apk = await this.get(adminId, projectId, id);
 
     // Apply update
     apk.label = update.label ?? apk.label;
@@ -96,8 +96,8 @@ export class ApiKeyService {
     return await this.repository.save(apk);
   }
 
-  async delete(userId: string, ids: string[]): Promise<number | null> {
-    const { affected } = await this.repository.delete({ userId, id: In(ids) });
+  async delete(adminId: string, projectId: string, ids: string[]): Promise<number | null> {
+    const { affected } = await this.repository.delete({ adminId, projectId, id: In(ids) });
     return affected ?? null;
   }
 }

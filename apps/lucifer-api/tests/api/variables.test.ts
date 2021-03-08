@@ -53,7 +53,6 @@ const basic = {
   name:    'Basic'
 };
 
-
 beforeEach(async () => {
   jest.resetAllMocks();
   jest.restoreAllMocks();

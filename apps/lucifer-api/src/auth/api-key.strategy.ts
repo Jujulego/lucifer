@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { BasicStrategy } from 'passport-http';
 
-import { ApiKeyService } from '../users/api-key.service';
+import { ApiKeyService } from '../projects/api-keys/api-key.service';
 
 import { AuthUser } from './user.model';
 
