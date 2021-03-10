@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "http://lucifer.herokuapp.com/project-member.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "definitions": {
+    "createProjectMember": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "projectId": { "$ref": "../project/schema.json#/definitions/id" },
+        "userId":    { "type": "string" },
+        "admin":     { "type": "boolean" }
+      },
+      "required": ["projectId", "userId"]
+    },
+    "updateProjectMember": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "admin": { "type": "boolean" }
+      }
+    }
+  },
+  "properties": {
+    "projectId": { "$ref": "../project/schema.json#/definitions/id" },
+    "userId":    { "$ref": "../user/schema.json#/definitions/id" },
+    "admin":     { "type": "boolean" }
+  },
+  "required": ["projectId", "adminId", "admin"]
+}

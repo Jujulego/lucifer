@@ -1,10 +1,7 @@
 // Interface
 export interface IProject {
-  // Id
-  id:      string;
-  adminId: string;
-
-  // Metadata
+  // Attributes
+  id:          string;
   name:        string;
   description: string;
 }
