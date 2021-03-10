@@ -112,7 +112,7 @@ jobs:
         run: yarn run affected:test --scan --base=origin/${{ github.base_ref }} --codeCoverage --coverageReporters=clover,lcovonly,json
 
       - name: Codecov
-        uses: codecov/codecov-action@v1.2.1
+        uses: codecov/codecov-action@v1.2.2
         with:
           flags: unit
 
@@ -196,7 +196,7 @@ jobs:
           CYPRESS_Auth0ClientSecret: ${{ secrets.E2E_AUTH0_CLIENT_SECRET }}
 
       - name: Codecov
-        uses: codecov/codecov-action@v1.2.1
+        uses: codecov/codecov-action@v1.2.2
         with:
           flags: e2e
 
