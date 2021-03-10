@@ -75,14 +75,14 @@ beforeEach(async () => {
     );
 
     projects = await repoPrj.save([
-      repoPrj.create({ adminId: lcu.id, id: 'test-1', name: 'Test #1' }),
-      repoPrj.create({ adminId: lcu.id, id: 'test-2', name: 'Test #2' }),
+      repoPrj.create({ id: 'test-api-api-keys-1', name: 'Test #1' }),
+      repoPrj.create({ id: 'test-api-api-keys-2', name: 'Test #2' }),
     ]);
 
     apiKeys = await repoApk.save([
-      repoApk.create({ adminId: lcu.id, projectId: projects[0].id, label: 'test-01', key: 'test-01' }),
-      repoApk.create({ adminId: lcu.id, projectId: projects[0].id, label: 'test-02', key: 'test-02' }),
-      repoApk.create({ adminId: lcu.id, projectId: projects[1].id, label: 'test-03', key: 'test-03' }),
+      repoApk.create({ projectId: projects[0].id, label: 'test-01', key: 'test-01' }),
+      repoApk.create({ projectId: projects[0].id, label: 'test-02', key: 'test-02' }),
+      repoApk.create({ projectId: projects[1].id, label: 'test-03', key: 'test-03' }),
     ]);
   });
 });
@@ -93,12 +93,12 @@ afterEach(async () => {
   const repoApk = database.getRepository(ApiKey);
 
   await repoApk.delete(apiKeys.map(apk => apk.id));
-  await repoPrj.delete({ adminId: lcu.id, id: In(projects.map(prj => prj.id)) });
+  await repoPrj.delete({ id: In(projects.map(prj => prj.id)) });
   await repoLcu.delete(lcu.id);
 });
 
 // Test suites
-describe('POST /:userId/projects/:projectId/api-keys', () => {
+describe('POST /projects/:projectId/api-keys', () => {
   const data: ICreateApiKey = {
     label: 'Test API Key'
   };
@@ -118,7 +118,7 @@ describe('POST /:userId/projects/:projectId/api-keys', () => {
 
   // Tests
   it('should return created api key', async () => {
-    const rep = await request.post(`/${admin.user_id}/projects/${projects[1].id}/api-keys`)
+    const rep = await request.post(`/projects/${projects[1].id}/api-keys`)
       .set('Authorization', `Bearer ${adminToken}`)
       .send(data)
       .expect(201)
@@ -127,24 +127,6 @@ describe('POST /:userId/projects/:projectId/api-keys', () => {
     apk = rep.body;
     expect(rep.body).toEqual({
       id:        expect.any(String),
-      adminId:   admin.user_id,
-      projectId: projects[1].id,
-      label:     data.label,
-      key:       expect.any(String)
-    });
-  });
-
-  it('should return created api key (me special id)', async () => {
-    const rep = await request.post(`/me/projects/${projects[1].id}/api-keys`)
-      .set('Authorization', `Bearer ${adminToken}`)
-      .send(data)
-      .expect(201)
-      .expect('Content-Type', /json/);
-
-    apk = rep.body;
-    expect(rep.body).toEqual({
-      id:        expect.any(String),
-      adminId:   admin.user_id,
       projectId: projects[1].id,
       label:     data.label,
       key:       expect.any(String)
@@ -152,7 +134,7 @@ describe('POST /:userId/projects/:projectId/api-keys', () => {
   });
 
   it('should return 400 (too long label)', async () => {
-    const rep = await request.post(`/${admin.user_id}/projects/${projects[1].id}/api-keys`)
+    const rep = await request.post(`/projects/${projects[1].id}/api-keys`)
       .set('Authorization', `Bearer ${adminToken}`)
       .send({
         label: 'this-is-a-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-too-long-label'
@@ -166,48 +148,27 @@ describe('POST /:userId/projects/:projectId/api-keys', () => {
   });
 
   it('should return 401 (not authenticated)', async () => {
-    await request.post(`/${admin.user_id}/projects/${projects[1].id}/api-keys`)
+    await request.post(`/projects/${projects[1].id}/api-keys`)
       .expect(401);
   });
 
   it('should return 403 (missing permissions)', async () => {
-    await request.post(`/${admin.user_id}/projects/${projects[1].id}/api-keys`)
+    await request.post(`/projects/${projects[1].id}/api-keys`)
       .set('Authorization', `Bearer ${basicToken}`)
       .expect(403);
   });
 
-  it('should return 404 (unknown user)', async () => {
-    await request.post(`/not-a-user-id/projects/${projects[1].id}/api-keys`)
-      .set('Authorization', `Bearer ${adminToken}`)
-      .send(data)
-      .expect(404);
-  });
-
   it('should return 404 (unknown project)', async () => {
-    await request.post(`/${admin.user_id}/projects/not-a-project-id/api-keys`)
+    await request.post(`/projects/not-a-project-id/api-keys`)
       .set('Authorization', `Bearer ${adminToken}`)
       .send(data)
       .expect(404);
   });
 });
 
-describe('GET /:userId/projects/:projectId/api-keys', () => {
+describe('GET /projects/:projectId/api-keys', () => {
   it('should return all project\'s api keys', async () => {
-    const rep = await request.get(`/${admin.user_id}/projects/${projects[1].id}/api-keys`)
-      .set('Authorization', `Bearer ${adminToken}`)
-      .expect(200)
-      .expect('Content-Type', /json/);
-
-    expect(rep.body).toEqual(expect.arrayContaining(
-      apiKeys.filter(apk => apk.projectId === projects[1].id)
-        .map(apk => expect.objectContaining({
-          id: apk.id
-        }))
-    ));
-  });
-
-  it('should return all project\'s api-keys (me special id)', async () => {
-    const rep = await request.get(`/me/projects/${projects[1].id}/api-keys`)
+    const rep = await request.get(`/projects/${projects[1].id}/api-keys`)
       .set('Authorization', `Bearer ${adminToken}`)
       .expect(200)
       .expect('Content-Type', /json/);
@@ -221,58 +182,44 @@ describe('GET /:userId/projects/:projectId/api-keys', () => {
   });
 
   it('should return 401 (not authenticated)', async () => {
-    await request.get(`/${admin.user_id}/projects/${projects[1].id}/api-keys`)
+    await request.get(`/projects/${projects[1].id}/api-keys`)
       .expect(401);
   });
 
   it('should return 403 (missing permissions)', async () => {
-    await request.get(`/${admin.user_id}/projects/${projects[1].id}/api-keys`)
+    await request.get(`/projects/${projects[1].id}/api-keys`)
       .set('Authorization', `Bearer ${basicToken}`)
       .expect(403);
   });
 });
 
-describe('GET /:userId/projects/:projectId/api-keys/:id', () => {
+describe('GET /projects/:projectId/api-keys/:id', () => {
   it('should return an api key', async () => {
     const apk = apiKeys[0];
 
-    const rep = await request.get(`/${apk.adminId}/projects/${apk.projectId}/api-keys/${apk.id}`)
+    const rep = await request.get(`/projects/${apk.projectId}/api-keys/${apk.id}`)
       .set('Authorization', `Bearer ${adminToken}`)
       .expect(200)
       .expect('Content-Type', /json/);
 
     expect(rep.body).toEqual({
-      adminId:   apk.adminId,
       projectId: apk.projectId,
       id:        apk.id,
       label:     apk.label,
     });
   });
 
-  it('should return an api key (me special id)', async () => {
-    const apk = apiKeys[0];
-
-    const rep = await request.get(`/me/projects/${apk.projectId}/api-keys/${apk.id}`)
-      .set('Authorization', `Bearer ${adminToken}`)
-      .expect(200)
-      .expect('Content-Type', /json/);
-
-    expect(rep.body).toEqual(expect.objectContaining({
-      id: apk.id,
-    }));
-  });
-
   it('should return 401 (not authenticated)', async () => {
     const apk = apiKeys[0];
 
-    await request.get(`/${apk.adminId}/projects/${apk.projectId}/api-keys/${apk.id}`)
+    await request.get(`/projects/${apk.projectId}/api-keys/${apk.id}`)
       .expect(401);
   });
 
   it('should return 403 (missing permissions)', async () => {
     const apk = apiKeys[0];
 
-    await request.get(`/${apk.adminId}/projects/${apk.projectId}/api-keys/${apk.id}`)
+    await request.get(`/projects/${apk.projectId}/api-keys/${apk.id}`)
       .set('Authorization', `Bearer ${basicToken}`)
       .expect(403);
   });
@@ -280,7 +227,7 @@ describe('GET /:userId/projects/:projectId/api-keys/:id', () => {
   it('should return 404 (invalid api key)', async () => {
     const apk = apiKeys[0];
 
-    await request.get(`/${apk.adminId}/projects/${apk.projectId}/api-keys/not-an-api-key-id`)
+    await request.get(`/projects/${apk.projectId}/api-keys/not-an-api-key-id`)
       .set('Authorization', `Bearer ${adminToken}`)
       .expect(404);
   });
@@ -288,15 +235,7 @@ describe('GET /:userId/projects/:projectId/api-keys/:id', () => {
   it('should return 404 (unknown api key)', async () => {
     const apk = apiKeys[0];
 
-    await request.get(`/${apk.adminId}/projects/${apk.projectId}/api-keys/12345678-1234-1234-1234-123456789abc`)
-      .set('Authorization', `Bearer ${adminToken}`)
-      .expect(404);
-  });
-
-  it('should return 404 (unknown api key for user)', async () => {
-    const apk = apiKeys[0];
-
-    await request.get(`/not-a-user-id/projects/${apk.projectId}/api-keys/${apk.id}`)
+    await request.get(`/projects/${apk.projectId}/api-keys/12345678-1234-1234-1234-123456789abc`)
       .set('Authorization', `Bearer ${adminToken}`)
       .expect(404);
   });
@@ -304,13 +243,13 @@ describe('GET /:userId/projects/:projectId/api-keys/:id', () => {
   it('should return 404 (unknown api key for project)', async () => {
     const apk = apiKeys[0];
 
-    await request.get(`/${apk.adminId}/projects/not-a-project-id/api-keys/${apk.id}`)
+    await request.get(`/projects/not-a-project-id/api-keys/${apk.id}`)
       .set('Authorization', `Bearer ${adminToken}`)
       .expect(404);
   });
 });
 
-describe('PUT /:userId/projects/:projectId/api-keys/:id', () => {
+describe('PUT /projects/:projectId/api-keys/:id', () => {
   const data: IUpdateApiKey = {
     label: 'Test API Key'
   };
@@ -323,43 +262,24 @@ describe('PUT /:userId/projects/:projectId/api-keys/:id', () => {
   it('should update api key', async () => {
     const apk = apiKeys[0];
 
-    const rep = await request.put(`/${apk.adminId}/projects/${apk.projectId}/api-keys/${apk.id}`)
+    const rep = await request.put(`/projects/${apk.projectId}/api-keys/${apk.id}`)
       .set('Authorization', `Bearer ${adminToken}`)
       .send(data)
       .expect(200)
       .expect('Content-Type', /json/);
 
     expect(rep.body).toEqual({
-      adminId:   apk.adminId,
       projectId: apk.projectId,
       id:        apk.id,
       label:     data.label,
     });
-    expect(service.update).toBeCalledWith(apk.adminId, apk.projectId, apk.id, data);
-  });
-
-  it('should update project (me special id)', async () => {
-    const apk = apiKeys[0];
-
-    const rep = await request.put(`/me/projects/${apk.projectId}/api-keys/${apk.id}`)
-      .set('Authorization', `Bearer ${adminToken}`)
-      .send(data)
-      .expect(200)
-      .expect('Content-Type', /json/);
-
-    expect(rep.body).toEqual({
-      adminId:   apk.adminId,
-      projectId: apk.projectId,
-      id:        apk.id,
-      label:     data.label,
-    });
-    expect(service.update).toBeCalledWith(apk.adminId, apk.projectId, apk.id, data);
+    expect(service.update).toBeCalledWith(apk.projectId, apk.id, data);
   });
 
   it('should return 400 (too long label)', async () => {
     const apk = apiKeys[0];
 
-    const rep = await request.put(`/me/projects/${apk.projectId}/api-keys/${apk.id}`)
+    const rep = await request.put(`/projects/${apk.projectId}/api-keys/${apk.id}`)
       .set('Authorization', `Bearer ${adminToken}`)
       .send({
         label: 'This as a very very very very very very very very very very very very very very very very very too long label'
@@ -376,7 +296,7 @@ describe('PUT /:userId/projects/:projectId/api-keys/:id', () => {
   it('should return 401 (not authenticated)', async () => {
     const apk = apiKeys[0];
 
-    await request.put(`/${apk.adminId}/projects/${apk.projectId}/api-keys/${apk.id}`)
+    await request.put(`/projects/${apk.projectId}/api-keys/${apk.id}`)
       .expect(401);
 
     expect(service.update).not.toBeCalled();
@@ -385,7 +305,7 @@ describe('PUT /:userId/projects/:projectId/api-keys/:id', () => {
   it('should return 403 (missing permissions)', async () => {
     const apk = apiKeys[0];
 
-    await request.put(`/${apk.adminId}/projects/${apk.projectId}/api-keys/${apk.id}`)
+    await request.put(`/projects/${apk.projectId}/api-keys/${apk.id}`)
       .set('Authorization', `Bearer ${basicToken}`)
       .expect(403);
 
@@ -395,35 +315,25 @@ describe('PUT /:userId/projects/:projectId/api-keys/:id', () => {
   it('should return 404 (unknown api key)', async () => {
     const apk = apiKeys[0];
 
-    await request.put(`/${apk.adminId}/projects/${apk.projectId}/api-keys/12345678-1234-1234-1234-123456789abc`)
+    await request.put(`/projects/${apk.projectId}/api-keys/12345678-1234-1234-1234-123456789abc`)
       .set('Authorization', `Bearer ${adminToken}`)
       .expect(404);
 
-    expect(service.update).toBeCalledWith(apk.adminId, apk.projectId, '12345678-1234-1234-1234-123456789abc', {});
-  });
-
-  it('should return 404 (unknown user)', async () => {
-    const apk = apiKeys[0];
-
-    await request.put(`/not-a-user-id/projects/${apk.projectId}/api-keys/${apk.id}`)
-      .set('Authorization', `Bearer ${adminToken}`)
-      .expect(404);
-
-    expect(service.update).toBeCalledWith('not-a-user-id', apk.projectId, apk.id, {});
+    expect(service.update).toBeCalledWith(apk.projectId, '12345678-1234-1234-1234-123456789abc', {});
   });
 
   it('should return 404 (unknown project)', async () => {
     const apk = apiKeys[0];
 
-    await request.put(`/${apk.adminId}/projects/not-a-project-id/api-keys/${apk.id}`)
+    await request.put(`/projects/not-a-project-id/api-keys/${apk.id}`)
       .set('Authorization', `Bearer ${adminToken}`)
       .expect(404);
 
-    expect(service.update).toBeCalledWith(apk.adminId, 'not-a-project-id', apk.id, {});
+    expect(service.update).toBeCalledWith('not-a-project-id', apk.id, {});
   });
 });
 
-describe('DELETE /:userId/projects/:projectId/api-keys/:id', () => {
+describe('DELETE /projects/:projectId/api-keys/:id', () => {
   beforeEach(() => {
     jest.spyOn(service, 'delete');
   });
@@ -432,29 +342,29 @@ describe('DELETE /:userId/projects/:projectId/api-keys/:id', () => {
   it('should delete project', async () => {
     const apk = apiKeys[0];
 
-    await request.delete(`/${apk.adminId}/projects/${apk.projectId}/api-keys/${apk.id}`)
+    await request.delete(`/projects/${apk.projectId}/api-keys/${apk.id}`)
       .set('Authorization', `Bearer ${adminToken}`)
       .expect(200);
 
     expect(service.delete)
-      .toBeCalledWith(apk.adminId, apk.projectId, [apk.id]);
+      .toBeCalledWith(apk.projectId, [apk.id]);
   });
 
   it('should delete project (me special id)', async () => {
     const apk = apiKeys[0];
 
-    await request.delete(`/me/projects/${apk.projectId}/api-keys/${apk.id}`)
+    await request.delete(`/projects/${apk.projectId}/api-keys/${apk.id}`)
       .set('Authorization', `Bearer ${adminToken}`)
       .expect(200);
 
     expect(service.delete)
-      .toBeCalledWith(apk.adminId, apk.projectId, [apk.id]);
+      .toBeCalledWith(apk.projectId, [apk.id]);
   });
 
   it('should return 401 (not authenticated)', async () => {
     const apk = apiKeys[0];
 
-    await request.delete(`/${apk.adminId}/projects/${apk.projectId}/api-keys/${apk.id}`)
+    await request.delete(`/projects/${apk.projectId}/api-keys/${apk.id}`)
       .expect(401);
 
     expect(service.delete).not.toBeCalled();
@@ -463,7 +373,7 @@ describe('DELETE /:userId/projects/:projectId/api-keys/:id', () => {
   it('should return 403 (missing permissions)', async () => {
     const apk = apiKeys[0];
 
-    await request.delete(`/${apk.adminId}/projects/${apk.projectId}/api-keys/${apk.id}`)
+    await request.delete(`/projects/${apk.projectId}/api-keys/${apk.id}`)
       .set('Authorization', `Bearer ${basicToken}`)
       .expect(403);
 
@@ -471,7 +381,7 @@ describe('DELETE /:userId/projects/:projectId/api-keys/:id', () => {
   });
 });
 
-describe('DELETE /:userId/projects/:projectId/api-keys', () => {
+describe('DELETE /projects/:projectId/api-keys', () => {
   let ids: string[];
 
   beforeEach(() => {
@@ -481,29 +391,19 @@ describe('DELETE /:userId/projects/:projectId/api-keys', () => {
 
   // Tests
   it('should delete project', async () => {
-    await request.delete(`/${admin.user_id}/projects/${projects[0].id}/api-keys`)
+    await request.delete(`/projects/${projects[0].id}/api-keys`)
       .query({ ids: ids })
       .set('Authorization', `Bearer ${adminToken}`)
       .expect(200);
 
     expect(service.delete)
-      .toBeCalledWith(admin.user_id, projects[0].id, ids);
-  });
-
-  it('should delete project (me special id)', async () => {
-    await request.delete(`/me/projects/${projects[0].id}/api-keys`)
-      .query({ ids: ids })
-      .set('Authorization', `Bearer ${adminToken}`)
-      .expect(200);
-
-    expect(service.delete)
-      .toBeCalledWith(admin.user_id, projects[0].id, ids);
+      .toBeCalledWith(projects[0].id, ids);
   });
 
   it('should return 401 (not authenticated)', async () => {
     const apk = apiKeys[0];
 
-    await request.delete(`/${apk.adminId}/projects/${apk.projectId}/api-keys`)
+    await request.delete(`/projects/${apk.projectId}/api-keys`)
       .expect(401);
 
     expect(service.delete).not.toBeCalled();
@@ -512,7 +412,7 @@ describe('DELETE /:userId/projects/:projectId/api-keys', () => {
   it('should return 403 (missing permissions)', async () => {
     const apk = apiKeys[0];
 
-    await request.delete(`/${apk.adminId}/projects/${apk.projectId}/api-keys`)
+    await request.delete(`/projects/${apk.projectId}/api-keys`)
       .set('Authorization', `Bearer ${basicToken}`)
       .expect(403);
 

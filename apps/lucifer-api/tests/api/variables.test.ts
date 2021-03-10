@@ -75,14 +75,14 @@ beforeEach(async () => {
     );
 
     projects = await repoPrj.save([
-      repoPrj.create({ id: 'test-1', adminId: lcu.id, name: 'Test 1' }),
-      repoPrj.create({ id: 'test-2', adminId: lcu.id, name: 'Test 2' }),
+      repoPrj.create({ id: 'test-api-variables-1', name: 'Test 1' }),
+      repoPrj.create({ id: 'test-api-variables-2', name: 'Test 2' }),
     ]);
 
     variables = await repoVrb.save([
-      repoVrb.create({ adminId: lcu.id, projectId: projects[0].id, id: 'test-1', name: 'TEST1', value: '1' }),
-      repoVrb.create({ adminId: lcu.id, projectId: projects[0].id, id: 'test-2', name: 'TEST2', value: '2' }),
-      repoVrb.create({ adminId: lcu.id, projectId: projects[1].id, id: 'test-1', name: 'TEST1', value: '1' }),
+      repoVrb.create({ projectId: projects[0].id, id: 'test-1', name: 'TEST1', value: '1' }),
+      repoVrb.create({ projectId: projects[0].id, id: 'test-2', name: 'TEST2', value: '2' }),
+      repoVrb.create({ projectId: projects[1].id, id: 'test-1', name: 'TEST1', value: '1' }),
     ]);
   });
 });
@@ -92,13 +92,13 @@ afterEach(async () => {
   const repoPrj = database.getRepository(Project);
   const repoVrb = database.getRepository(Variable);
 
-  await repoVrb.delete({ adminId: lcu.id, id: In(variables.map(vrb => vrb.id)) });
-  await repoPrj.delete({ adminId: lcu.id, id: In(projects.map(prj => prj.id)) });
+  await repoVrb.delete({ id: In(variables.map(vrb => vrb.id)) });
+  await repoPrj.delete({ id: In(projects.map(prj => prj.id)) });
   await repoLcu.delete(lcu.id);
 });
 
 // Test suites
-describe('POST /:userId/projects/:projectId/variables', () => {
+describe('POST /projects/:projectId/variables', () => {
   const data: ICreateVariable = {
     id:    'test-2',
     name:  'TEST2',
@@ -116,41 +116,23 @@ describe('POST /:userId/projects/:projectId/variables', () => {
 
   // Tests
   it('should return created variable', async () => {
-    const rep = await request.post(`/${admin.user_id}/projects/${projects[1].id}/variables`)
+    const rep = await request.post(`/projects/${projects[1].id}/variables`)
       .set('Authorization', `Bearer ${adminToken}`)
       .send(data)
       .expect(201)
       .expect('Content-Type', /json/);
 
     expect(rep.body).toEqual({
-      adminId:   admin.user_id,
       projectId: projects[1].id,
       id:        data.id,
       name:      data.name,
       value:     data.value
     });
-    expect(service.create).toBeCalledWith(admin.user_id, projects[1].id, data);
-  });
-
-  it('should return created variable (me special id)', async () => {
-    const rep = await request.post(`/me/projects/${projects[1].id}/variables`)
-      .set('Authorization', `Bearer ${adminToken}`)
-      .send(data)
-      .expect(201)
-      .expect('Content-Type', /json/);
-
-    expect(rep.body).toEqual({
-      adminId:   admin.user_id,
-      projectId: projects[1].id,
-      id:        data.id,
-      name:      data.name,
-      value:     data.value
-    });
-    expect(service.create).toBeCalledWith(admin.user_id, projects[1].id, data);
+    expect(service.create).toBeCalledWith(projects[1].id, data);
   });
 
   it('should return 400 (missing parameters)', async () => {
-    const rep = await request.post(`/${admin.user_id}/projects/${projects[1].id}/variables`)
+    const rep = await request.post(`/projects/${projects[1].id}/variables`)
       .set('Authorization', `Bearer ${adminToken}`)
       .send({})
       .expect(400)
@@ -165,7 +147,7 @@ describe('POST /:userId/projects/:projectId/variables', () => {
   });
 
   it('should return 400 (too long id & name)', async () => {
-    const rep = await request.post(`/${admin.user_id}/projects/${projects[1].id}/variables`)
+    const rep = await request.post(`/projects/${projects[1].id}/variables`)
       .set('Authorization', `Bearer ${adminToken}`)
       .send({
         id:   'this-is-a-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-too-long-id',
@@ -182,7 +164,7 @@ describe('POST /:userId/projects/:projectId/variables', () => {
   });
 
   it('should return 400 (invalid id)', async () => {
-    const rep = await request.post(`/${admin.user_id}/projects/${projects[1].id}/variables`)
+    const rep = await request.post(`/projects/${projects[1].id}/variables`)
       .set('Authorization', `Bearer ${adminToken}`)
       .send({ ...data,
         id:   '!:;,?%*'
@@ -197,69 +179,46 @@ describe('POST /:userId/projects/:projectId/variables', () => {
   });
 
   it('should return 401 (not authenticated)', async () => {
-    await request.post(`/${admin.user_id}/projects/${projects[1].id}/variables`)
+    await request.post(`/projects/${projects[1].id}/variables`)
       .expect(401);
 
     expect(service.create).not.toBeCalled();
   });
 
   it('should return 403 (missing permissions)', async () => {
-    await request.post(`/${admin.user_id}/projects/${projects[1].id}/variables`)
+    await request.post(`/projects/${projects[1].id}/variables`)
       .set('Authorization', `Bearer ${basicToken}`)
       .expect(403);
 
     expect(service.create).not.toBeCalled();
   });
 
-  it('should return 404 (unknown user)', async () => {
-    await request.post(`/wrong-user/projects/${projects[1].id}/variables`)
-      .set('Authorization', `Bearer ${adminToken}`)
-      .send(data)
-      .expect(404);
-
-    expect(service.create).toBeCalledWith('wrong-user', projects[1].id, data);
-  });
-
   it('should return 404 (unknown project)', async () => {
-    await request.post(`/${admin.user_id}/projects/wrong-project/variables`)
+    await request.post(`/projects/wrong-project/variables`)
       .set('Authorization', `Bearer ${adminToken}`)
       .send(data)
       .expect(404);
 
-    expect(service.create).toBeCalledWith(admin.user_id, 'wrong-project', data);
+    expect(service.create).toBeCalledWith('wrong-project', data);
   });
 
   it('should return 409 (project with id already exists)', async () => {
     const vrb = variables[0];
     const data = { id: vrb.id, name: vrb.name, value: vrb.value };
 
-    const rep = await request.post(`/${vrb.adminId}/projects/${vrb.projectId}/variables`)
+    const rep = await request.post(`/projects/${vrb.projectId}/variables`)
       .set('Authorization', `Bearer ${adminToken}`)
       .send(data)
       .expect(409);
 
     expect(rep.body).toEqual(should.be.httpError(409, 'Variable with id test-1 already exists.'));
-    expect(service.create).toBeCalledWith(vrb.adminId, vrb.projectId, data);
+    expect(service.create).toBeCalledWith(vrb.projectId, data);
   });
 });
 
-describe('GET /:userId/projects/:projectId/variables', () => {
+describe('GET /projects/:projectId/variables', () => {
   it('should return all project\'s variables', async () => {
-    const rep = await request.get(`/${admin.user_id}/projects/${projects[0].id}/variables`)
-      .set('Authorization', `Bearer ${adminToken}`)
-      .expect(200)
-      .expect('Content-Type', /json/);
-
-    expect(rep.body).toEqual(
-      variables.filter(vrb => vrb.projectId === projects[0].id)
-        .map(vrb => expect.objectContaining({
-          id: vrb.id
-        }))
-    );
-  });
-
-  it('should return all user\'s projects (me special id)', async () => {
-    const rep = await request.get(`/me/projects/${projects[0].id}/variables`)
+    const rep = await request.get(`/projects/${projects[0].id}/variables`)
       .set('Authorization', `Bearer ${adminToken}`)
       .expect(200)
       .expect('Content-Type', /json/);
@@ -273,18 +232,18 @@ describe('GET /:userId/projects/:projectId/variables', () => {
   });
 
   it('should return 401 (not authenticated)', async () => {
-    await request.get(`/${admin.user_id}/projects/${projects[0].id}/variables`)
+    await request.get(`/projects/${projects[0].id}/variables`)
       .expect(401);
   });
 
   it('should return 403 (missing permissions)', async () => {
-    await request.get(`/${admin.user_id}/projects/${projects[0].id}/variables`)
+    await request.get(`/projects/${projects[0].id}/variables`)
       .set('Authorization', `Bearer ${basicToken}`)
       .expect(403);
   });
 });
 
-describe('PUT /:userId/projects/:projectId/variables/:id', () => {
+describe('PUT /projects/:projectId/variables/:id', () => {
   const data: IUpdateVariable = {
     name:  'UPDATED',
     value: 'updated'
@@ -298,33 +257,20 @@ describe('PUT /:userId/projects/:projectId/variables/:id', () => {
   it('should update variable', async () => {
     const vrb = variables[0];
 
-    const rep = await request.put(`/${vrb.adminId}/projects/${vrb.projectId}/variables/${vrb.id}`)
+    const rep = await request.put(`/projects/${vrb.projectId}/variables/${vrb.id}`)
       .set('Authorization', `Bearer ${adminToken}`)
       .send(data)
       .expect(200)
       .expect('Content-Type', /json/);
 
     expect(rep.body).toEqual({ ...vrb, ...data });
-    expect(service.update).toBeCalledWith(vrb.adminId, vrb.projectId, vrb.id, data);
-  });
-
-  it('should update variable (me special id)', async () => {
-    const vrb = variables[0];
-
-    const rep = await request.put(`/me/projects/${vrb.projectId}/variables/${vrb.id}`)
-      .set('Authorization', `Bearer ${adminToken}`)
-      .send(data)
-      .expect(200)
-      .expect('Content-Type', /json/);
-
-    expect(rep.body).toEqual({ ...vrb, ...data });
-    expect(service.update).toBeCalledWith(vrb.adminId, vrb.projectId, vrb.id, data);
+    expect(service.update).toBeCalledWith(vrb.projectId, vrb.id, data);
   });
 
   it('should return 400 (too long name)', async () => {
     const vrb = variables[0];
 
-    const rep = await request.put(`/me/projects/${vrb.projectId}/variables/${vrb.id}`)
+    const rep = await request.put(`/projects/${vrb.projectId}/variables/${vrb.id}`)
       .set('Authorization', `Bearer ${adminToken}`)
       .send({
         name: 'This as a very very very very very very very very very very very very very very very very very too long name'
@@ -341,7 +287,7 @@ describe('PUT /:userId/projects/:projectId/variables/:id', () => {
   it('should return 401 (not authenticated)', async () => {
     const vrb = variables[0];
 
-    await request.put(`/${vrb.adminId}/projects/${vrb.projectId}/variables/${vrb.id}`)
+    await request.put(`/projects/${vrb.projectId}/variables/${vrb.id}`)
       .expect(401);
 
     expect(service.update).not.toBeCalled();
@@ -350,7 +296,7 @@ describe('PUT /:userId/projects/:projectId/variables/:id', () => {
   it('should return 403 (missing permissions)', async () => {
     const vrb = variables[0];
 
-    await request.put(`/${vrb.adminId}/projects/${vrb.projectId}/variables/${vrb.id}`)
+    await request.put(`/projects/${vrb.projectId}/variables/${vrb.id}`)
       .set('Authorization', `Bearer ${basicToken}`)
       .expect(403);
 
@@ -360,35 +306,25 @@ describe('PUT /:userId/projects/:projectId/variables/:id', () => {
   it('should return 404 (unknown variable)', async () => {
     const vrb = variables[0];
 
-    await request.put(`/${vrb.adminId}/projects/${vrb.projectId}/variables/not-a-variable-id/`)
+    await request.put(`/projects/${vrb.projectId}/variables/not-a-variable-id/`)
       .set('Authorization', `Bearer ${adminToken}`)
       .expect(404);
 
-    expect(service.update).toBeCalledWith(vrb.adminId, vrb.projectId, 'not-a-variable-id', {});
+    expect(service.update).toBeCalledWith(vrb.projectId, 'not-a-variable-id', {});
   });
 
   it('should return 404 (unknown project)', async () => {
     const vrb = variables[0];
 
-    await request.put(`/${vrb.adminId}/projects/not-a-project-id/variables/${vrb.id}`)
+    await request.put(`/projects/not-a-project-id/variables/${vrb.id}`)
       .set('Authorization', `Bearer ${adminToken}`)
       .expect(404);
 
-    expect(service.update).toBeCalledWith(vrb.adminId, 'not-a-project-id', vrb.id, {});
-  });
-
-  it('should return 404 (unknown user)', async () => {
-    const vrb = variables[0];
-
-    await request.put(`/not-a-user-id/projects/${vrb.projectId}/variables/${vrb.id}`)
-      .set('Authorization', `Bearer ${adminToken}`)
-      .expect(404);
-
-    expect(service.update).toBeCalledWith('not-a-user-id', vrb.projectId, vrb.id, {});
+    expect(service.update).toBeCalledWith('not-a-project-id', vrb.id, {});
   });
 });
 
-describe('DELETE /:userId/projects/:projectsId/variables/:id', () => {
+describe('DELETE /projects/:projectsId/variables/:id', () => {
   beforeEach(() => {
     jest.spyOn(service, 'delete');
   });
@@ -397,29 +333,18 @@ describe('DELETE /:userId/projects/:projectsId/variables/:id', () => {
   it('should delete variable', async () => {
     const vrb = variables[0];
 
-    await request.delete(`/${vrb.adminId}/projects/${vrb.projectId}/variables/${vrb.id}`)
+    await request.delete(`/projects/${vrb.projectId}/variables/${vrb.id}`)
       .set('Authorization', `Bearer ${adminToken}`)
       .expect(200);
 
     expect(service.delete)
-      .toBeCalledWith(vrb.adminId, vrb.projectId, [vrb.id]);
-  });
-
-  it('should delete variable (me special id)', async () => {
-    const vrb = variables[0];
-
-    await request.delete(`/me/projects/${vrb.projectId}/variables/${vrb.id}`)
-      .set('Authorization', `Bearer ${adminToken}`)
-      .expect(200);
-
-    expect(service.delete)
-      .toBeCalledWith(vrb.adminId, vrb.projectId, [vrb.id]);
+      .toBeCalledWith(vrb.projectId, [vrb.id]);
   });
 
   it('should return 401 (not authenticated)', async () => {
     const vrb = variables[0];
 
-    await request.delete(`/${vrb.adminId}/projects/${vrb.projectId}/variables/${vrb.id}`)
+    await request.delete(`/projects/${vrb.projectId}/variables/${vrb.id}`)
       .expect(401);
 
     expect(service.delete).not.toBeCalled();
@@ -428,7 +353,7 @@ describe('DELETE /:userId/projects/:projectsId/variables/:id', () => {
   it('should return 403 (missing permissions)', async () => {
     const vrb = variables[0];
 
-    await request.delete(`/${vrb.adminId}/projects/${vrb.projectId}/variables/${vrb.id}`)
+    await request.delete(`/projects/${vrb.projectId}/variables/${vrb.id}`)
       .set('Authorization', `Bearer ${basicToken}`)
       .expect(403);
 
@@ -436,7 +361,7 @@ describe('DELETE /:userId/projects/:projectsId/variables/:id', () => {
   });
 });
 
-describe('DELETE /:userId/projects/:projectsId/variables', () => {
+describe('DELETE /projects/:projectsId/variables', () => {
   let ids: string[];
   let prj: Project;
 
@@ -450,34 +375,24 @@ describe('DELETE /:userId/projects/:projectsId/variables', () => {
 
   // Tests
   it('should delete variable', async () => {
-    await request.delete(`/${prj.adminId}/projects/${prj.id}/variables`)
+    await request.delete(`/projects/${prj.id}/variables`)
       .query({ ids: ids })
       .set('Authorization', `Bearer ${adminToken}`)
       .expect(200);
 
     expect(service.delete)
-      .toBeCalledWith(prj.adminId, prj.id, ids);
-  });
-
-  it('should delete variable (me special id)', async () => {
-    await request.delete(`/me/projects/${prj.id}/variables`)
-      .query({ ids: ids })
-      .set('Authorization', `Bearer ${adminToken}`)
-      .expect(200);
-
-    expect(service.delete)
-      .toBeCalledWith(prj.adminId, prj.id, ids);
+      .toBeCalledWith(prj.id, ids);
   });
 
   it('should return 401 (not authenticated)', async () => {
-    await request.delete(`/${prj.adminId}/projects/${prj.id}/variables`)
+    await request.delete(`/projects/${prj.id}/variables`)
       .expect(401);
 
     expect(service.delete).not.toBeCalled();
   });
 
   it('should return 403 (missing permissions)', async () => {
-    await request.delete(`/${prj.adminId}/projects/${prj.id}/variables`)
+    await request.delete(`/projects/${prj.id}/variables`)
       .set('Authorization', `Bearer ${basicToken}`)
       .expect(403);
 

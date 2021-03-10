@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { Connection, In } from 'typeorm';
+import { Connection } from 'typeorm';
 
 import { DatabaseModule } from '../../db/database.module';
 import { LocalUser } from '../../users/local-user.entity';
@@ -52,14 +52,14 @@ beforeEach(async () => {
     );
 
     projects = await repoPrj.save([
-      repoPrj.create({ adminId: admin.id, id: 'test-1', name: 'Test #1' }),
-      repoPrj.create({ adminId: admin.id, id: 'test-2', name: 'Test #2' }),
+      repoPrj.create({ id: 'test-api-keys-1', name: 'Test #1' }),
+      repoPrj.create({ id: 'test-api-keys-2', name: 'Test #2' }),
     ]);
 
     apiKeys = await repoApk.save([
-      repoApk.create({ adminId: admin.id, projectId: projects[0].id, label: 'test-01', key: 'test-01' }),
-      repoApk.create({ adminId: admin.id, projectId: projects[0].id, label: 'test-02', key: 'test-02' }),
-      repoApk.create({ adminId: admin.id, projectId: projects[1].id, label: 'test-03', key: 'test-03' }),
+      repoApk.create({ projectId: projects[0].id, label: 'test-01', key: 'test-01' }),
+      repoApk.create({ projectId: projects[0].id, label: 'test-02', key: 'test-02' }),
+      repoApk.create({ projectId: projects[1].id, label: 'test-03', key: 'test-03' }),
     ]);
   });
 });
@@ -73,7 +73,7 @@ afterEach(async () => {
   const repoApk = database.getRepository(ApiKey);
 
   await repoApk.delete(apiKeys.map(apk => apk.id));
-  await repoPrj.delete({ adminId: admin.id, id: In(projects.map(prj => prj.id)) });
+  await repoPrj.delete(projects.map(prj => prj.id));
   await repoLcu.delete(admin.id);
 });
 
@@ -86,7 +86,6 @@ describe('ApiKeyService.create', () => {
     try {
       expect(apiKey).toEqual({
         id:        expect.any(String),
-        adminId:   admin.id,
         projectId: projects[1].id,
         key:       expect.any(String),
         label:     'test'
