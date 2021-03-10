@@ -12,9 +12,6 @@ export class ApiKey implements IApiKeyWithKey {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('varchar')
-  adminId: string;
-
   @Column('varchar', { length: 100, nullable: false })
   projectId: string;
 
@@ -28,9 +25,6 @@ export class ApiKey implements IApiKeyWithKey {
 
   // Relations
   @ManyToOne(() => Project, { nullable: false, onUpdate: 'CASCADE', onDelete: 'CASCADE' })
-  @JoinColumn([
-    { name: 'adminId',   referencedColumnName: 'adminId' },
-    { name: 'projectId', referencedColumnName: 'id' }
-  ])
+  @JoinColumn({ name: 'projectId' })
   project: Promise<Project>;
 }

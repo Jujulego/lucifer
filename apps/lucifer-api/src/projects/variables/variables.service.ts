@@ -17,20 +17,20 @@ export class VariablesService {
   ) {}
 
   // Methods
-  private async _get(adminId: string, projectId: string, id: string): Promise<Variable | null> {
+  private async _get(projectId: string, id: string): Promise<Variable | null> {
     const vrb = await this.repository.findOne({
-      where: { adminId, projectId, id }
+      where: { projectId, id }
     });
 
     return vrb || null;
   }
 
-  async create(adminId: string, projectId: string, data: ICreateVariable): Promise<Variable> {
+  async create(projectId: string, data: ICreateVariable): Promise<Variable> {
     // Ensure project exists (throw if it does not exists)
-    await this.projects.get(adminId, projectId);
+    await this.projects.get(projectId);
 
     // Check if id does not exists
-    let vrb = await this._get(adminId, projectId, data.id);
+    let vrb = await this._get(projectId, data.id);
     if (vrb) {
       throw new ConflictException(`Variable with id ${data.id} already exists.`);
     }
@@ -38,20 +38,20 @@ export class VariablesService {
     // Create new variable
     vrb = this.repository.create({
       ...data,
-      adminId, projectId
+      projectId
     });
 
     return await this.repository.save(vrb);
   }
 
-  async list(adminId: string, projectId: string): Promise<Variable[]> {
+  async list(projectId: string): Promise<Variable[]> {
     return await this.repository.find({
-      where: { adminId, projectId }
+      where: { projectId }
     });
   }
 
-  async get(adminId: string, projectId: string, id: string): Promise<Variable> {
-    const vrb = await this._get(adminId, projectId, id);
+  async get(projectId: string, id: string): Promise<Variable> {
+    const vrb = await this._get(projectId, id);
 
     if (!vrb) {
       throw new NotFoundException(`Variable ${id} not found`);
@@ -60,8 +60,8 @@ export class VariablesService {
     return vrb;
   }
 
-  async update(adminId: string, projectId: string, id: string, update: IUpdateVariable): Promise<Variable> {
-    const vrb = await this.get(adminId, projectId, id);
+  async update(projectId: string, id: string, update: IUpdateVariable): Promise<Variable> {
+    const vrb = await this.get(projectId, id);
 
     // Apply update
     vrb.name  = update.name  ?? vrb.name;
@@ -70,8 +70,8 @@ export class VariablesService {
     return await this.repository.save(vrb);
   }
 
-  async delete(adminId: string, projectId: string, ids: string[]): Promise<number | null> {
-    const { affected } = await this.repository.delete({ adminId, projectId, id: In(ids) });
+  async delete(projectId: string, ids: string[]): Promise<number | null> {
+    const { affected } = await this.repository.delete({ projectId, id: In(ids) });
     return affected ?? null;
   }
 }

@@ -73,7 +73,7 @@ afterEach(async () => {
 describe('ProjectsService.create', () => {
   // Tests
   it('should create a new project', async () => {
-    const project = await service.create(admins[1].id, { id: 'test-4', name: 'Test #4' });
+    const project = await service.create({ id: 'test-4', name: 'Test #4' });
 
     try {
       expect(project).toEqual({
@@ -92,7 +92,7 @@ describe('ProjectsService.create', () => {
   });
 
   it('should fail to create a new project', async () => {
-    await expect(service.create(admins[0].id, { id: 'test-1', name: 'Test #1' }))
+    await expect(service.create({ id: 'test-1', name: 'Test #1' }))
       .rejects.toEqual(new ConflictException('Project with id test-1 already exists'))
   });
 });
@@ -103,7 +103,7 @@ describe('ProjectsService.list', () => {
     const adm = admins[0];
 
     // Call
-    await expect(service.list(adm.id))
+    await expect(service.list())
       .resolves.toEqual(
         projects.filter(prj => prj.adminId === adm.id)
       );
@@ -111,7 +111,7 @@ describe('ProjectsService.list', () => {
 
   it('should empty array for unknown user', async () => {
     // Call
-    await expect(service.list('unknown-user'))
+    await expect(service.list())
       .resolves.toEqual([]);
   });
 });
@@ -122,13 +122,13 @@ describe('ProjectsService.get', () => {
     const prj = projects[0];
 
     // Call
-    await expect(service.get(prj.adminId, prj.id))
+    await expect(service.get(prj.id))
       .resolves.toEqual(prj);
   });
 
   it('should throw if project does not exists', async () => {
     // Call
-    await expect(service.get(admins[0].id, 'this-project-does-not-exists'))
+    await expect(service.get('this-project-does-not-exists'))
       .rejects.toEqual(new NotFoundException('Project this-project-does-not-exists not found'));
   });
 
@@ -136,7 +136,7 @@ describe('ProjectsService.get', () => {
     const prj = projects[0];
 
     // Call
-    await expect(service.get(admins[1].id, prj.id))
+    await expect(service.get(prj.id))
       .rejects.toEqual(new NotFoundException(`Project ${prj.id} not found`));
   });
 });
@@ -152,7 +152,7 @@ describe('ProjectsService.update', () => {
     const prj = projects[0];
 
     // Call
-    await expect(service.update(prj.adminId, prj.id, update))
+    await expect(service.update(prj.id, update))
       .resolves.toEqual({
         adminId: prj.adminId,
         id:      prj.id,
@@ -163,7 +163,7 @@ describe('ProjectsService.update', () => {
 
   it('should throw if project does not exists', async () => {
     // Call
-    await expect(service.update(admins[0].id, 'this-project-does-not-exists', update))
+    await expect(service.update('this-project-does-not-exists', update))
       .rejects.toEqual(new NotFoundException('Project this-project-does-not-exists not found'));
   });
 
@@ -171,7 +171,7 @@ describe('ProjectsService.update', () => {
     const prj = projects[0];
 
     // Call
-    await expect(service.update(admins[1].id, prj.id, update))
+    await expect(service.update(prj.id, update))
       .rejects.toEqual(new NotFoundException(`Project ${prj.id} not found`));
   });
 });
@@ -199,7 +199,7 @@ describe('ProjectsService.delete', () => {
 
   // Tests
   it('should delete given project', async () => {
-    await expect(service.delete(prj.adminId, [prj.id]))
+    await expect(service.delete([prj.id]))
       .resolves.toBe(1);
   });
 });

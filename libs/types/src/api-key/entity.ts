@@ -2,7 +2,6 @@
 export interface IApiKey {
   // Attributes
   id:        string;
-  adminId:   string;
   projectId: string;
   label:     string;
 }

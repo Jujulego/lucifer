@@ -17,41 +17,33 @@ export class ProjectsService {
   ) {}
 
   // Methods
-  private async _get(adminId: string, id: string): Promise<Project | null> {
+  private async _get(id: string): Promise<Project | null> {
     const prj = await this.repository.findOne({
-      where: { adminId, id }
+      where: { id }
     });
 
     return prj || null;
   }
 
-  async create(adminId: string, data: ICreateProject): Promise<Project> {
-    // Ensure user exists
-    await this.users.getLocal(adminId);
-
+  async create(data: ICreateProject): Promise<Project> {
     // Check if id does not exists
-    let prj = await this._get(adminId, data.id);
+    let prj = await this._get(data.id);
     if (prj) {
       throw new ConflictException(`Project with id ${data.id} already exists`);
     }
 
     // Create new project
-    prj = this.repository.create({
-      ...data,
-      adminId
-    });
+    prj = this.repository.create(data);
 
     return await this.repository.save(prj);
   }
 
-  async list(adminId: string): Promise<Project[]> {
-    return await this.repository.find({
-      where: { adminId }
-    });
+  async list(): Promise<Project[]> {
+    return await this.repository.find();
   }
 
-  async get(adminId: string, id: string): Promise<Project> {
-    const prj = await this._get(adminId, id);
+  async get(id: string): Promise<Project> {
+    const prj = await this._get(id);
 
     if (!prj) {
       throw new NotFoundException(`Project ${id} not found`);
@@ -60,8 +52,8 @@ export class ProjectsService {
     return prj;
   }
 
-  async update(adminId: string, id: string, update: IUpdateProject): Promise<Project> {
-    const prj = await this.get(adminId, id);
+  async update(id: string, update: IUpdateProject): Promise<Project> {
+    const prj = await this.get(id);
 
     // Apply update
     prj.name        = update.name        ?? prj.name;
@@ -70,8 +62,8 @@ export class ProjectsService {
     return await this.repository.save(prj);
   }
 
-  async delete(adminId: string, ids: string[]): Promise<number | null> {
-    const { affected } = await this.repository.delete({ adminId, id: In(ids) });
+  async delete(ids: string[]): Promise<number | null> {
+    const { affected } = await this.repository.delete({ id: In(ids) });
     return affected ?? null;
   }
 }

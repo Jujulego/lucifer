@@ -8,11 +8,11 @@ import { LocalUser } from '../users/local-user.entity';
 @Entity()
 export class Project implements IProject {
   // Columns
-  @PrimaryColumn('varchar')
-  adminId: string;
-
   @PrimaryColumn('varchar', { length: 100, nullable: false })
   id: string;
+
+  @Column('varchar')
+  adminId: string;
 
   @Column('varchar', { length: 100, nullable: false })
   name: string;

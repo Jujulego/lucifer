@@ -2,17 +2,16 @@ import { Body, Controller, Delete, Get, Param, ParseArrayPipe, Post, Put, Query,
 import { AuthGuard } from '@nestjs/passport';
 
 import { createProjectSchema, ICreateProject, IUpdateProject, updateProjectSchema } from '@lucifer/types';
-import { AllowIf, ScopeGuard, Scopes } from '../auth/scope.guard';
-import { UserId } from '../users/user-id.param';
+import { ScopeGuard, Scopes } from '../auth/scope.guard';
 import { YupPipe } from '../utils/yup.pipe';
 
 import { Project } from './project.entity';
 import { ProjectsService } from './projects.service';
 
 // Controller
-@Controller('/:userId/projects')
+@Controller('/projects')
 @UseGuards(AuthGuard('jwt'), ScopeGuard)
-@AllowIf((req, token) => [token.sub, 'me'].includes(req.params.userId))
+//@AllowIf((req, token) => [token.sub, 'me'].includes(req.params.userId))
 export class ProjectsController {
   // Constructor
   constructor(
@@ -23,54 +22,47 @@ export class ProjectsController {
   @Post('/')
   @Scopes('create:projects')
   async create(
-    @UserId('userId') userId: string,
     @Body(new YupPipe(createProjectSchema)) data: ICreateProject
   ): Promise<Project> {
-    return await this.projects.create(userId, data);
+    return await this.projects.create(data);
   }
 
   @Get('/')
   @Scopes('read:projects')
-  async list(
-    @UserId('userId') userId: string,
-  ): Promise<Project[]> {
-    return await this.projects.list(userId);
+  async list(): Promise<Project[]> {
+    return await this.projects.list();
   }
 
   @Get('/:id')
   @Scopes('read:projects')
   async get(
-    @UserId('userId') userId: string,
     @Param('id') id: string,
   ): Promise<Project> {
-    return await this.projects.get(userId, id);
+    return await this.projects.get(id);
   }
 
   @Put('/:id')
   @Scopes('update:projects')
   async update(
-    @UserId('userId') userId: string,
     @Param('id') id: string,
     @Body(new YupPipe(updateProjectSchema)) update: IUpdateProject
   ): Promise<Project> {
-    return await this.projects.update(userId, id, update);
+    return await this.projects.update(id, update);
   }
 
   @Delete('/:id')
   @Scopes('delete:projects')
   async delete(
-    @UserId('userId') userId: string,
     @Param('id') id: string,
   ): Promise<number | null> {
-    return await this.projects.delete(userId, [id]);
+    return await this.projects.delete([id]);
   }
 
   @Delete('/')
   @Scopes('delete:projects')
   async bulkDelete(
-    @UserId('userId') userId: string,
     @Query('ids', ParseArrayPipe) ids: string[],
   ): Promise<number | null> {
-    return await this.projects.delete(userId, ids);
+    return await this.projects.delete(ids);
   }
 }

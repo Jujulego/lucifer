@@ -22,22 +22,22 @@ export class ApiKeyService {
   ) {}
 
   // Methods
-  private async _get(adminId: string, projectId: string, id: string): Promise<ApiKey | null> {
+  private async _get(projectId: string, id: string): Promise<ApiKey | null> {
     const apk = await this.repository.findOne({
-      where: { adminId, projectId, id }
+      where: { projectId, id }
     });
 
     return apk || null;
   }
 
-  async create(adminId: string, projectId: string, data: ICreateApiKey): Promise<IApiKeyWithKey> {
+  async create(projectId: string, data: ICreateApiKey): Promise<IApiKeyWithKey> {
     // Ensure projects exists
-    await this.projects.get(adminId, projectId);
+    await this.projects.get(projectId);
 
     // Create new api key
     let apk = this.repository.create({
       ...data,
-      adminId, projectId
+      projectId
     });
 
     // Generate key
@@ -48,14 +48,14 @@ export class ApiKeyService {
     return { ...apk, key };
   }
 
-  async list(adminId: string, projectId: string): Promise<ApiKey[]> {
+  async list(projectId: string): Promise<ApiKey[]> {
     return await this.repository.find({
-      where: { adminId, projectId }
+      where: { projectId }
     });
   }
 
-  async get(adminId: string, projectId: string, id: string): Promise<ApiKey> {
-    const apk = await this._get(adminId, projectId, id);
+  async get(projectId: string, id: string): Promise<ApiKey> {
+    const apk = await this._get(projectId, id);
 
     if (!apk) {
       throw new NotFoundException(`Api key ${id} not found`);
@@ -87,8 +87,8 @@ export class ApiKeyService {
     return apk;
   }
 
-  async update(adminId: string, projectId: string, id: string, update: IUpdateApiKey): Promise<ApiKey> {
-    const apk = await this.get(adminId, projectId, id);
+  async update(projectId: string, id: string, update: IUpdateApiKey): Promise<ApiKey> {
+    const apk = await this.get(projectId, id);
 
     // Apply update
     apk.label = update.label ?? apk.label;
@@ -96,8 +96,8 @@ export class ApiKeyService {
     return await this.repository.save(apk);
   }
 
-  async delete(adminId: string, projectId: string, ids: string[]): Promise<number | null> {
-    const { affected } = await this.repository.delete({ adminId, projectId, id: In(ids) });
+  async delete(projectId: string, ids: string[]): Promise<number | null> {
+    const { affected } = await this.repository.delete({ projectId, id: In(ids) });
     return affected ?? null;
   }
 }

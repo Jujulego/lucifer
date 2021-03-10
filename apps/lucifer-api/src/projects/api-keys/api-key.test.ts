@@ -81,7 +81,7 @@ afterEach(async () => {
 describe('ApiKeyService.create', () => {
   // Tests
   it('should create a new api key', async () => {
-    const apiKey = await service.create(admin.id, projects[1].id, { label: 'test' });
+    const apiKey = await service.create(projects[1].id, { label: 'test' });
 
     try {
       expect(apiKey).toEqual({

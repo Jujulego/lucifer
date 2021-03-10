@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, ParseArrayPipe, Post, Put, Query,
 import { AuthGuard } from '@nestjs/passport';
 
 import { createVariableSchema, ICreateVariable, IUpdateVariable, updateVariableSchema } from '@lucifer/types';
-import { AllowIf, ScopeGuard, Scopes } from '../../auth/scope.guard';
+import { ScopeGuard, Scopes } from '../../auth/scope.guard';
 import { UserId } from '../../users/user-id.param';
 import { YupPipe } from '../../utils/yup.pipe';
 
@@ -10,9 +10,9 @@ import { Variable } from './variable.entity';
 import { VariablesService } from './variables.service';
 
 // Controller
-@Controller('/:userId/projects/:projectId/variables')
+@Controller('/projects/:projectId/variables')
 @UseGuards(AuthGuard('jwt'), ScopeGuard)
-@AllowIf((req, token) => [token.sub, 'me'].includes(req.params.userId))
+//@AllowIf((req, token) => [token.sub, 'me'].includes(req.params.userId))
 export class VariablesController {
   // Constructor
   constructor(
@@ -23,41 +23,37 @@ export class VariablesController {
   @Post('/')
   @Scopes('create:variables')
   async create(
-    @UserId('userId') userId: string,
     @Param('projectId') projectId: string,
     @Body(new YupPipe(createVariableSchema)) data: ICreateVariable
   ): Promise<Variable> {
-    return await this.variables.create(userId, projectId, data);
+    return await this.variables.create(projectId, data);
   }
 
   @Get('/')
   @Scopes('read:variables')
   async list(
-    @UserId('userId') userId: string,
     @Param('projectId') projectId: string,
   ): Promise<Variable[]> {
-    return await this.variables.list(userId, projectId);
+    return await this.variables.list(projectId);
   }
 
   @Put('/:id')
   @Scopes('update:variables')
   async update(
-    @UserId('userId') userId: string,
     @Param('projectId') projectId: string,
     @Param('id') id: string,
     @Body(new YupPipe(updateVariableSchema)) update: IUpdateVariable
   ): Promise<Variable> {
-    return await this.variables.update(userId, projectId, id, update);
+    return await this.variables.update(projectId, id, update);
   }
 
   @Delete('/:id')
   @Scopes('delete:variables')
   async delete(
-    @UserId('userId') userId: string,
     @Param('projectId') projectId: string,
     @Param('id') id: string,
   ): Promise<number | null> {
-    return await this.variables.delete(userId, projectId, [id]);
+    return await this.variables.delete(projectId, [id]);
   }
 
   @Delete('/')
@@ -67,6 +63,6 @@ export class VariablesController {
     @Param('projectId') projectId: string,
     @Query('ids', ParseArrayPipe) ids: string[],
   ): Promise<number | null> {
-    return await this.variables.delete(userId, projectId, ids);
+    return await this.variables.delete(projectId, ids);
   }
 }
