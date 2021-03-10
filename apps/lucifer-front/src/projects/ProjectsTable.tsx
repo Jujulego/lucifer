@@ -68,7 +68,7 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
   const isAdmin = useNeedRole('admin', usr => usr?.id === adminId) ?? false;
 
   // API
-  const { projects = [], loading, reload, create, bulkDelete } = useProjects(adminId);
+  const { projects = [], loading, reload, create, bulkDelete } = useProjects();
 
   // Callbacks
   const handleDelete = useCallback(async (projects: IProject[]) => {

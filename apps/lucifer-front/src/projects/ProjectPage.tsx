@@ -30,10 +30,10 @@ export const ProjectPage: FC = () => {
   const { userId, id, page } = useParams<ProjectParams>();
 
   // API
-  const { project, loading, reload, update, remove } = useProject(userId, id);
+  const { project, loading, reload, update, remove } = useProject(id);
 
   // Auth
-  const isAdmin = useNeedRole('admin', usr => project?.adminId === usr?.id) ?? false;
+  const isAdmin = useNeedRole('admin'/*, usr => project?.adminId === usr?.id*/) ?? false;
 
   // State
   const [isRemoving, setRemoving] = useState(false);
