@@ -89,7 +89,7 @@
     "@nrwl/cli": "11.4.0",
     "@nrwl/cypress": "11.4.0",
     "@nrwl/devkit": "11.4.0",
-    "@nrwl/eslint-plugin-nx": "11.4.0",
+    "@nrwl/eslint-plugin-nx": "11.5.1",
     "@nrwl/jest": "11.4.0",
     "@nrwl/nest": "11.4.0",
     "@nrwl/node": "11.4.0",
