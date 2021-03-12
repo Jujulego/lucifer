@@ -2,7 +2,9 @@ import React, { FC } from 'react';
 import axios from 'axios';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ApiCache, useAPI } from '@lucifer/react-api';
+
+import { ApiCache } from './ApiCache';
+import { useAPI } from './api.hooks';
 
 // Types
 interface TestGetProps {

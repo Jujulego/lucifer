@@ -12,7 +12,7 @@ export interface ApiCacheProps {
 }
 
 // Component
-const ApiCache = (props: ApiCacheProps) => {
+export const ApiCache = (props: ApiCacheProps) => {
   const { children } = props;
 
   // State
@@ -32,5 +32,3 @@ const ApiCache = (props: ApiCacheProps) => {
     </CacheContext.Provider>
   );
 };
-
-export default ApiCache;

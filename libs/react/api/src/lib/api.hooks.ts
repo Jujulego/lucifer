@@ -236,7 +236,7 @@ export function useAPIPatch<B, R = unknown, P extends APIParams = APIParams> (ur
 }
 
 // Namespaces
-const useAPI = {
+export const useAPI = {
   get:     useAPIGet,
   delete:  useAPIDelete,
   head:    useAPIHead,
@@ -245,5 +245,3 @@ const useAPI = {
   put:     useAPIPut,
   patch:   useAPIPatch
 };
-
-export default useAPI;
