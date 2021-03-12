@@ -2441,6 +2441,11 @@
     consola "^2.15.0"
     node-fetch "^2.6.1"
 
+"@panva/asn1.js@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@panva/asn1.js/-/asn1.js-1.0.0.tgz#dd55ae7b8129e02049f009408b97c61ccf9032f6"
+  integrity sha512-UdkG3mLEqXgnlKsWanWcgb6dOjUzJ+XC5f+aWw30qrtjxeNUSfKX1cd5FBzOaXQumoe9nIqeZUvrRJS03HCCtw==
+
 "@pmmmwh/react-refresh-webpack-plugin@^0.4.2":
   version "0.4.3"
   resolved "https://registry.yarnpkg.com/@pmmmwh/react-refresh-webpack-plugin/-/react-refresh-webpack-plugin-0.4.3.tgz#1eec460596d200c0236bf195b078a5d1df89b766"
@@ -11380,6 +11385,13 @@ joi@^17.3.0:
     "@sideway/formula" "^3.0.0"
     "@sideway/pinpoint" "^2.0.0"
 
+jose@^2.0.2:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-2.0.4.tgz#7838354d28f64466db9fc7f275aa8a96db656f37"
+  integrity sha512-EArN9f6aq1LT/fIGGsfghOnNXn4noD+3dG5lL/ljY3LcRjw1u9w+4ahu/4ahsN6N0kRLyyW6zqdoYk7LNx3+YQ==
+  dependencies:
+    "@panva/asn1.js" "^1.0.0"
+
 js-levenshtein@^1.1.3:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/js-levenshtein/-/js-levenshtein-1.1.6.tgz#c6cee58eb3550372df8deb85fad5ce66ce01d59d"
@@ -11678,7 +11690,7 @@ jwa@^1.4.1:
     ecdsa-sig-formatter "1.0.11"
     safe-buffer "^5.0.1"
 
-jwks-rsa@^1.10.0, jwks-rsa@^1.12.3:
+jwks-rsa@^1.10.0:
   version "1.12.3"
   resolved "https://registry.yarnpkg.com/jwks-rsa/-/jwks-rsa-1.12.3.tgz#40232f85d16734cb82837f38bb3e350a34435400"
   integrity sha512-cFipFDeYYaO9FhhYJcZWX/IyZgc0+g316rcHnDpT2dNRNIE/lMOmWKKqp09TkJoYlNFzrEVODsR4GgXJMgWhnA==
@@ -11693,6 +11705,17 @@ jwks-rsa@^1.10.0, jwks-rsa@^1.12.3:
     lru-memoizer "^2.1.2"
     ms "^2.1.2"
     proxy-from-env "^1.1.0"
+
+jwks-rsa@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/jwks-rsa/-/jwks-rsa-2.0.0.tgz#3161bf4aec04c234f03217e786973d01024140fd"
+  integrity sha512-OJmDBWfG0FVSFpKxrtfK4/rrKM8n/ALv0TFYpa92qhPV6/sLJDlxE5OBoVjRYXdGkQHvi08t1s5uagzTdctCKA==
+  dependencies:
+    "@types/express-jwt" "0.0.42"
+    debug "^4.1.0"
+    jose "^2.0.2"
+    limiter "^1.1.5"
+    lru-memoizer "^2.1.2"
 
 jws@^3.2.2:
   version "3.2.2"
