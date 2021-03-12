@@ -5,7 +5,7 @@ import { Link, Paper, TableCell, TableContainer, TableHead, Tooltip } from '@mat
 import { Check as CheckIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { RefreshButton, RelativeDate } from '@lucifer/react/basics';
+import { RefreshButton, RelativeDate } from '@lucifer/react-basics';
 import { Table, TableBody, TableRow, TableSortCell, TableToolbar } from '@lucifer/react/table';
 import { IUser } from '@lucifer/types';
 

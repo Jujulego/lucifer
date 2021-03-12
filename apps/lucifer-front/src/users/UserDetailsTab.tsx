@@ -7,7 +7,7 @@ import { Chip, CircularProgress, Fab, Grid, TextField, Tooltip, Typography, Zoom
 import { Check as CheckIcon, Save as SaveIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { LabelledText, RelativeDate } from '@lucifer/react/basics';
+import { LabelledText, RelativeDate } from '@lucifer/react-basics';
 import { ChipSelect } from '@lucifer/react/fields';
 import { IUpdateUser, IUser, ROLES, updateUserSchema } from '@lucifer/types';
 
