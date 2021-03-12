@@ -2003,10 +2003,10 @@
   resolved "https://registry.yarnpkg.com/@nestjs/passport/-/passport-7.1.5.tgz#b32fc0492008d73ebae4327fbc0012a738a83664"
   integrity sha512-Hu9hPxTdBZA0C4GrWTsSflzwsJ99oAk9jqAwpcszdFNqfjMjkPGuCM9QsVZbBP2bE8fxrVrPsNOILS6puY8e/A==
 
-"@nestjs/platform-express@^7.6.12":
-  version "7.6.13"
-  resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-7.6.13.tgz#6154bff51cc33ac16080922975ae10ccf6e91177"
-  integrity sha512-o9h6MJJccr+yR9FoAX4Cz/GrxNTeQAfHGSHkzPxElhph5QR23tWuwy9jvgUOCfxaH7T5hgg50R025b5XuGhozg==
+"@nestjs/platform-express@^7.6.14":
+  version "7.6.14"
+  resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-7.6.14.tgz#b16de114421492b719d924a8abf408071c75898e"
+  integrity sha512-0e+byDx6Ak3avSkhMlZfs65vqzjqn/kdpR6EdtifIpIsJWYo0ZapbCNBqyQ2RLFq/IBjP6Y9nWO6HNSOOM60Kw==
   dependencies:
     body-parser "1.19.0"
     cors "2.8.5"
@@ -3310,10 +3310,12 @@
   resolved "https://registry.yarnpkg.com/@types/braces/-/braces-3.0.0.tgz#7da1c0d44ff1c7eb660a36ec078ea61ba7eb42cb"
   integrity sha512-TbH79tcyi9FHwbyboOKeRachRq63mSuWYXOflsNO9ZyE5ClQ/JaozNKl+aWUq87qPNsXasXxi2AbgfwIJ+8GQw==
 
-"@types/ci-info@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@types/ci-info/-/ci-info-2.0.0.tgz#51848cc0f5c30c064f4b25f7f688bf35825b3971"
-  integrity sha512-5R2/MHILQLDCzTuhs1j4Qqq8AaKUf7Ma4KSSkCtc12+fMs47zfa34qhto9goxpyX00tQK1zxB885VCiawZ5Qhg==
+"@types/ci-info@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@types/ci-info/-/ci-info-3.1.0.tgz#67d020c9fe699ed51fca4f224ad1a5ab91ccd5eb"
+  integrity sha512-WaGXxKsXDGEWoV4T0WMNQ9hflr5PxbZYocxVH8Shee8F1Gfoj5ZL0xuFlUbHn5KDGotJMnGDIjNUbHXVu7TR9g==
+  dependencies:
+    ci-info "*"
 
 "@types/connect@*":
   version "3.4.34"
@@ -6281,15 +6283,15 @@ chrome-trace-event@^1.0.2:
   dependencies:
     tslib "^1.9.0"
 
+ci-info@*, ci-info@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-3.1.1.tgz#9a32fcefdf7bcdb6f0a7e1c0f8098ec57897b80a"
+  integrity sha512-kdRWLBIJwdsYJWYJFtAFFYxybguqeF91qpZaggjG5Nf8QKdizFG2hjqvaTXbxFIcYbSaD74KpAXv6BSm17DHEQ==
+
 ci-info@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-2.0.0.tgz#67a9e964be31a51e15e5010d58e6f12834002f46"
   integrity sha512-5tK7EtrZ0N+OLFMthtqOj4fI2Jeb88C4CAZPu25LDVUgXJ0A3Js4PMGqrn0JU1W0Mh1/Z8wZzYPxqUrXeBboCQ==
-
-ci-info@^3.1.1:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-3.1.1.tgz#9a32fcefdf7bcdb6f0a7e1c0f8098ec57897b80a"
-  integrity sha512-kdRWLBIJwdsYJWYJFtAFFYxybguqeF91qpZaggjG5Nf8QKdizFG2hjqvaTXbxFIcYbSaD74KpAXv6BSm17DHEQ==
 
 cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
   version "1.0.4"
