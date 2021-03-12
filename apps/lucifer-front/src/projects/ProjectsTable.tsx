@@ -13,7 +13,7 @@ import {
 import { Add as AddIcon, Delete as DeleteIcon } from '@material-ui/icons';
 
 import { ConfirmDialog, RefreshButton, useConfirm } from '@lucifer/react-basics';
-import { Table, TableAction, TableBody, TableRow, TableSortCell, TableToolbar } from '@lucifer/react/table';
+import { Table, TableAction, TableBody, TableRow, TableSortCell, TableToolbar } from '@lucifer/react-table';
 import { IProject } from '@lucifer/types';
 
 import { useNeedRole } from '../auth/auth.hooks';
