@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@lucifer/react-utils": "^1.0.0",
+    "@lucifer/react-utils": "^1.0.0"
+  },
+  "peerDependencies": {
     "axios": "^0.21.1",
     "react": "^16.14.0"
   },
@@ -12,6 +14,7 @@
     "@babel/preset-env": "^7.13.10",
     "@babel/preset-react": "^7.12.13",
     "@babel/preset-typescript": "^7.13.0",
+    "@testing-library/dom": "^7.30.0",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.3",
