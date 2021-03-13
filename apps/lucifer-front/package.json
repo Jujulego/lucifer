@@ -5,6 +5,12 @@
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.13.6",
     "@hookform/resolvers": "^1.3.5",
+    "@lucifer/react-api": "^1.0.0",
+    "@lucifer/react-basics": "^1.0.0",
+    "@lucifer/react-fields": "^1.0.0",
+    "@lucifer/react-table": "^1.0.0",
+    "@lucifer/utils": "^1.0.0",
+    "@lucifer/types": "^1.0.0",
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
