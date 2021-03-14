@@ -1,7 +1,8 @@
 import { Body, Controller, Delete, Get, Param, ParseArrayPipe, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-import { createVariableSchema, ICreateVariable, IUpdateVariable, updateVariableSchema } from '@lucifer/types';
+import type { ICreateVariable, IUpdateVariable } from '@lucifer/types';
+import { createVariableSchema, updateVariableSchema } from '@lucifer/types';
 import { AllowIf, ScopeGuard, Scopes } from '../../auth/scope.guard';
 import { UserId } from '../../users/user-id.param';
 import { YupPipe } from '../../utils/yup.pipe';

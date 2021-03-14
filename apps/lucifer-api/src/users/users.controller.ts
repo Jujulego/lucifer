@@ -1,7 +1,8 @@
 import { Body, Controller, Get, Put, UseFilters, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-import { IUpdateUser, updateUserSchema, User } from '@lucifer/types';
+import type { IUpdateUser } from '@lucifer/types';
+import { updateUserSchema, User } from '@lucifer/types';
 import { AllowIf, ScopeGuard, Scopes } from '../auth/scope.guard';
 import { Context, Ctx } from '../context';
 import { YupPipe } from '../utils/yup.pipe';
