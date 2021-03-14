@@ -2,9 +2,11 @@
   "name": "@lucifer/react-fields",
   "version": "1.0.0",
   "private": true,
-  "peerDependencies": {
+  "dependencies": {
     "@material-ui/core": "^4.11.3",
-    "@material-ui/icons": "^4.11.2",
+    "@material-ui/icons": "^4.11.2"
+  },
+  "peerDependencies": {
     "react": "^16.14.0"
   },
   "devDependencies": {
@@ -21,6 +23,7 @@
     "@types/react": "^16.14.5",
     "babel-jest": "^26.6.3",
     "jest": "^26.6.3",
+    "react": "^16.14.0",
     "typescript": "~4.2.3"
   }
 }
