@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { APIParams, useAPI } from '@lucifer/react/api';
+import { APIParams, useAPI } from '@lucifer/react-api';
 import { ICreateVariable, IUpdateVariable, IVariable } from '@lucifer/types';
 
 // Types

@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import { makeStyles } from '@material-ui/core';
 
 import { usePageLayout } from './page-layout.context';
-import { StyledProps } from '@lucifer/react/utils';
+import { StyledProps } from '@lucifer/react-utils';
 
 // Types
 export type PageToolbarClassKey = 'toolbar';

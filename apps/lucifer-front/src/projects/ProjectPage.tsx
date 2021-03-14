@@ -2,7 +2,7 @@ import React, { FC, useCallback, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
 
 import { Delete as DeleteIcon } from '@material-ui/icons';
-import { RefreshButton, ToolbarAction } from '@lucifer/react/basics';
+import { RefreshButton, ToolbarAction } from '@lucifer/react-basics';
 
 import { useNeedRole } from '../auth/auth.hooks';
 
