@@ -123,9 +123,6 @@ describe('useAPI.get', () => {
 
     userEvent.click(reload);
 
-    expect(loading).toHaveTextContent('loading');
-    expect(response).toHaveTextContent('get');
-
     // Wait for reload answer
     await waitFor(() => {
       expect(loading).toHaveTextContent('loaded');
@@ -260,9 +257,6 @@ describe('useAPI.head', () => {
 
     userEvent.click(reload);
 
-    expect(loading).toHaveTextContent('loading');
-    expect(response).toHaveTextContent('head');
-
     // Wait for reload answer
     await waitFor(() => {
       expect(loading).toHaveTextContent('loaded');
@@ -396,9 +390,6 @@ describe('useAPI.options', () => {
       .mockResolvedValue({ data: 'cache' });
 
     userEvent.click(reload);
-
-    expect(loading).toHaveTextContent('loading');
-    expect(response).toHaveTextContent('options');
 
     // Wait for reload answer
     await waitFor(() => {
