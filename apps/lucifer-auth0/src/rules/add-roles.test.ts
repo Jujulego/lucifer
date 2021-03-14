@@ -10,7 +10,7 @@ describe('AddRoles', () => {
   const user: RuleUser = {};
   const ctx = {
     accessToken: {},
-    idToken: {}
+    idToken: {},
   } as RuleContext;
 
   // Tests
@@ -18,29 +18,33 @@ describe('AddRoles', () => {
     AddRoles(user, { ...ctx, authorization: { roles: ['test'] } }, callback);
 
     expect(callback).toBeCalledWith(
-      null, user,
+      null,
+      user,
       expect.objectContaining({
         accessToken: expect.objectContaining({
           'https://lucifer-front/roles': ['test'],
         }),
         idToken: expect.objectContaining({
           'https://lucifer-front/roles': ['test'],
-        })
-      }))
+        }),
+      })
+    );
   });
 
   it('should add empty array as roles if authorization is missing', () => {
     AddRoles(user, { ...ctx, authorization: undefined }, callback);
 
     expect(callback).toBeCalledWith(
-      null, user,
+      null,
+      user,
       expect.objectContaining({
         accessToken: expect.objectContaining({
           'https://lucifer-front/roles': [],
         }),
         idToken: expect.objectContaining({
           'https://lucifer-front/roles': [],
-        })
-      }))
+        }),
+      })
+    );
   });
 });

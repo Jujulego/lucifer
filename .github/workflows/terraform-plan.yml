@@ -5,7 +5,7 @@ on:
     branches: [ master ]
     paths:
       - 'res/**'
-      - 'apps/auth0/**'
+      - 'apps/lucifer-auth0/**'
 
 env:
   NX_BRANCH: ${{ github.event.number }}
@@ -42,7 +42,7 @@ jobs:
           yarn run build:tools
 
       - name: Build
-        run: yarn run nx run auth0:build
+        run: yarn run nx run lucifer-auth0:build
 
       - name: Archive rules artifacts
         uses: actions/upload-artifact@v2
