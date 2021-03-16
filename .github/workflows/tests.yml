@@ -189,6 +189,7 @@ jobs:
           AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
 
       - name: E2E Tests
+        if: github.actor != 'dependabot[bot]'
         run: |
           echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
           yarn run nx affected:e2e --scan --base=origin/${{ github.base_ref }}
