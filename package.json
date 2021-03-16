@@ -155,6 +155,6 @@
     "wait-on": "^5.2.1",
     "webpack": "^4.46.0",
     "webpack-dev-server": "^3.11.2",
-    "yaml": "^1.10.0"
+    "yaml": "^1.10.2"
   }
 }
