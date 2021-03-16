@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import axios from 'axios';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ApiCache, useAPI } from '@lucifer/react/api';
+import { ApiCache, useAPI } from '@lucifer/react-api';
 
 // Types
 interface TestGetProps {
@@ -122,9 +122,6 @@ describe('useAPI.get', () => {
       .mockResolvedValue({ data: 'cache' });
 
     userEvent.click(reload);
-
-    expect(loading).toHaveTextContent('loading');
-    expect(response).toHaveTextContent('get');
 
     // Wait for reload answer
     await waitFor(() => {
@@ -260,9 +257,6 @@ describe('useAPI.head', () => {
 
     userEvent.click(reload);
 
-    expect(loading).toHaveTextContent('loading');
-    expect(response).toHaveTextContent('head');
-
     // Wait for reload answer
     await waitFor(() => {
       expect(loading).toHaveTextContent('loaded');
@@ -396,9 +390,6 @@ describe('useAPI.options', () => {
       .mockResolvedValue({ data: 'cache' });
 
     userEvent.click(reload);
-
-    expect(loading).toHaveTextContent('loading');
-    expect(response).toHaveTextContent('options');
 
     // Wait for reload answer
     await waitFor(() => {

@@ -1,6 +1,6 @@
 module.exports = {
   projects: [
-    '<rootDir>/apps/auth0',
+    '<rootDir>/apps/lucifer-auth0',
     '<rootDir>/apps/lucifer-api',
     '<rootDir>/apps/lucifer-cli',
     '<rootDir>/apps/lucifer-front',

@@ -3,7 +3,7 @@ import React, { FC, FormEventHandler } from 'react';
 import { Button, CircularProgress, Dialog, DialogActions, DialogContent } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
 
-import { ClosableDialogTitle } from '@lucifer/react/basics';
+import { ClosableDialogTitle } from '@lucifer/react-basics';
 
 // Types
 export interface FormDialogProps {

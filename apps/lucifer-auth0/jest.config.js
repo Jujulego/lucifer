@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'auth0',
+  displayName: 'lucifer-auth0',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -10,9 +10,6 @@ module.exports = {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/apps/auth0',
-  collectCoverageFrom: [
-    "src/**/*.ts",
-    "!**/*.test.ts"
-  ]
+  coverageDirectory: '../../coverage/apps/lucifer-auth0',
+  collectCoverageFrom: ['src/**/*.ts', '!**/*.test.ts'],
 };

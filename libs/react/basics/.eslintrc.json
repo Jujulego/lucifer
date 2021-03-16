@@ -1,11 +1,21 @@
 {
-  "extends": [
-    "plugin:@nrwl/nx/react",
-    "../../../.eslintrc.json"
-  ],
-  "ignorePatterns": [
-    "!**/*",
-    ".storybook/*",
-    "setup-tests.js"
+  "extends": ["plugin:@nrwl/nx/react", "../../../.eslintrc.json"],
+  "ignorePatterns": ["!**/*", ".storybook/*", "setup-tests.js"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "parserOptions": {
+        "project": ["libs/react/basics/tsconfig.*?.json"]
+      },
+      "rules": {}
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "rules": {}
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "rules": {}
+    }
   ]
 }

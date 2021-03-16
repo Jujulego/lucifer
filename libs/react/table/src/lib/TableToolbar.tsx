@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { StyledProps } from '@lucifer/react/utils';
+import { StyledProps } from '@lucifer/react-utils';
 
 import { useTable } from './table.context';
 

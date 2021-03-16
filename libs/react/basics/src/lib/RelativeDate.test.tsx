@@ -1,12 +1,12 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import { render } from '@testing-library/react';
-import { useInterval } from '@lucifer/react/utils';
+import { useInterval } from '@lucifer/react-utils';
 
 import RelativeDate from '../lib/RelativeDate';
 
 // Mocks
-jest.mock('@lucifer/react/utils');
+jest.mock('@lucifer/react-utils');
 
 // Setup
 beforeEach(() => {

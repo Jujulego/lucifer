@@ -16,7 +16,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 
 import { Filter, OrderByField, toPredicate } from '@lucifer/utils';
-import { StyledProps } from '@lucifer/react/utils';
+import { StyledProps } from '@lucifer/react-utils';
 
 import { Document } from './document';
 import { Order, Ordering, Paginator, SelectState, TableContext } from './table.context';

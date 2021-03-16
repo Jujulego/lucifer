@@ -4,7 +4,7 @@ import { Route, Router, Switch } from 'react-router';
 import { CssBaseline } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 
-import { ApiCache } from '@lucifer/react/api';
+import { ApiCache } from '@lucifer/react-api';
 
 import history from '../app.history';
 import createTheme from '../app.theme';

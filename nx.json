@@ -1,9 +1,14 @@
 {
   "npmScope": "lucifer",
-  "affected": { "defaultBase": "master" },
+  "affected": {
+    "defaultBase": "master"
+  },
   "implicitDependencies": {
     "workspace.json": "*",
-    "package.json": { "dependencies": "*", "devDependencies": "*" },
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
     "tsconfig.base.json": "*",
     "tslint.json": "*",
     ".eslintrc.json": "*",
@@ -27,24 +32,46 @@
     }
   },
   "projects": {
-    "auth0": { "tags": [] },
-    "lucifer-api": { "tags": [] },
-    "lucifer-cli": { "tags": [] },
+    "lucifer-api": {
+      "tags": []
+    },
+    "lucifer-cli": {
+      "tags": []
+    },
     "lucifer-e2e": {
       "tags": [],
       "implicitDependencies": ["lucifer-front", "lucifer-api"]
     },
-    "lucifer-front": { "tags": [] },
-    "react-api": { "tags": [] },
-    "react-basics": { "tags": [] },
-    "react-fields": { "tags": [] },
-    "react-table": { "tags": [] },
-    "react-utils": { "tags": [] },
+    "lucifer-front": {
+      "tags": []
+    },
+    "react-api": {
+      "tags": []
+    },
+    "react-basics": {
+      "tags": []
+    },
+    "react-fields": {
+      "tags": []
+    },
+    "react-table": {
+      "tags": []
+    },
+    "react-utils": {
+      "tags": []
+    },
     "storybook": {
       "tags": [],
       "implicitDependencies": ["react-basics", "react-fields"]
     },
-    "types": { "tags": [] },
-    "utils": { "tags": [] }
+    "types": {
+      "tags": []
+    },
+    "utils": {
+      "tags": []
+    },
+    "lucifer-auth0": {
+      "tags": []
+    }
   }
 }

@@ -3,7 +3,7 @@ import React from 'react';
 import { Chip, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { CopyButton, LabelledText } from '@lucifer/react/basics';
+import { CopyButton, LabelledText } from '@lucifer/react-basics';
 
 import { useAuth } from '../auth/auth.context';
 import { useAuthToken } from '../auth/auth.hooks';

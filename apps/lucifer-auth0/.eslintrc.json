@@ -1,11 +1,12 @@
 {
-  "extends": ["plugin:@nrwl/nx/react", "../../.eslintrc.json"],
-  "ignorePatterns": ["!**/*", "*.config.js", "setup-tests.js"],
+  "extends": "../../.eslintrc.json",
+  "ignorePatterns": ["!**/*", "*.config.js"],
+  "rules": {},
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "parserOptions": {
-        "project": ["apps/lucifer-front/tsconfig.*?.json"]
+        "project": ["apps/auth0/tsconfig.*?.json"]
       },
       "rules": {}
     },

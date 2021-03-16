@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { useParams } from 'react-router';
 
 import { Paper, Tabs } from '@material-ui/core';
-import { LinkTab } from '@lucifer/react/basics';
+import { LinkTab } from '@lucifer/react-basics';
 
 import { usePageLayout } from './page-layout.context';
 

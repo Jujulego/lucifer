@@ -1,7 +1,8 @@
 import { Body, Controller, Delete, Get, Param, ParseArrayPipe, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-import { createProjectSchema, ICreateProject, IUpdateProject, updateProjectSchema } from '@lucifer/types';
+import type { ICreateProject, IUpdateProject } from '@lucifer/types';
+import { createProjectSchema, updateProjectSchema } from '@lucifer/types';
 import { ScopeGuard, Scopes } from '../auth/scope.guard';
 import { YupPipe } from '../utils/yup.pipe';
 

@@ -1,9 +1,9 @@
 {
   "version": 1,
   "projects": {
-    "auth0": {
-      "root": "apps/auth0",
-      "sourceRoot": "apps/auth0/src",
+    "lucifer-auth0": {
+      "root": "apps/lucifer-auth0",
+      "sourceRoot": "apps/lucifer-auth0/src",
       "projectType": "application",
       "prefix": "auth0",
       "architect": {
@@ -11,31 +11,31 @@
           "builder": ".:tsc-build",
           "outputs": ["res/rules"],
           "options": {
-            "tsConfig": "apps/auth0/tsconfig.app.json"
+            "tsConfig": "apps/lucifer-auth0/tsconfig.app.json"
           }
         },
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/auth0/**/*.ts"]
+            "lintFilePatterns": ["apps/lucifer-auth0/**/*.ts"]
           }
         },
         "test": {
           "builder": "@angular-devkit/architect:concat",
-          "outputs": ["coverage/apps/auth0"],
+          "outputs": ["coverage/apps/lucifer-auth0"],
           "options": {
             "builders": [
               {
                 "builder": ".:tsc-build",
                 "options": {
-                  "tsConfig": "apps/auth0/tsconfig.app.json",
-                  "outDir": "apps/auth0/src"
+                  "tsConfig": "apps/lucifer-auth0/tsconfig.app.json",
+                  "outDir": "apps/lucifer-auth0/src"
                 }
               },
               {
                 "builder": "@nrwl/jest:jest",
                 "options": {
-                  "jestConfig": "apps/auth0/jest.config.js",
+                  "jestConfig": "apps/lucifer-auth0/jest.config.js",
                   "passWithNoTests": true
                 }
               }
