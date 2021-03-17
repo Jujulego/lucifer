@@ -4,6 +4,7 @@ import { AuthGuard } from '@nestjs/passport';
 import type { ICreateProject, IUpdateProject } from '@lucifer/types';
 import { createProjectSchema, updateProjectSchema } from '@lucifer/types';
 import { ScopeGuard, Scopes } from '../auth/scope.guard';
+import { Context, Ctx } from '../context';
 import { YupPipe } from '../utils/yup.pipe';
 
 import { Project } from './project.entity';
@@ -23,9 +24,10 @@ export class ProjectsController {
   @Post('/')
   @Scopes('create:projects')
   async create(
+    @Ctx() ctx: Context,
     @Body(new YupPipe(createProjectSchema)) data: ICreateProject
   ): Promise<Project> {
-    return await this.projects.create(data);
+    return await this.projects.create(ctx, data);
   }
 
   @Get('/')

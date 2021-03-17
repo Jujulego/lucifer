@@ -3,9 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 
 import { ICreateProject, IUpdateProject } from '@lucifer/types';
+import { Context } from '../context';
 import { UsersService } from '../users/users.service';
 
 import { Project } from './project.entity';
+import { ProjectMemberService } from './project-member.service';
 
 // Service
 @Injectable()
@@ -13,6 +15,7 @@ export class ProjectsService {
   // Constructor
   constructor(
     private users: UsersService,
+    private members: ProjectMemberService,
     @InjectRepository(Project) private repository: Repository<Project>
   ) {}
 
@@ -25,7 +28,7 @@ export class ProjectsService {
     return prj || null;
   }
 
-  async create(data: ICreateProject): Promise<Project> {
+  async create(ctx: Context, data: ICreateProject): Promise<Project> {
     // Check if id does not exists
     let prj = await this._get(data.id);
     if (prj) {
@@ -33,9 +36,14 @@ export class ProjectsService {
     }
 
     // Create new project
-    prj = this.repository.create(data);
+    prj = await this.repository.save(
+      this.repository.create(data)
+    );
 
-    return await this.repository.save(prj);
+    // Add current user as admin
+    await this.members.add(prj.id, ctx.user.sub, true);
+
+    return prj;
   }
 
   async list(): Promise<Project[]> {
