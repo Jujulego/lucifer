@@ -14,7 +14,8 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-import { createApiKeySchema, IApiKeyWithKey, ICreateApiKey, IUpdateApiKey, updateApiKeySchema } from '@lucifer/types';
+import type { IApiKeyWithKey, ICreateApiKey, IUpdateApiKey } from '@lucifer/types';
+import { createApiKeySchema, updateApiKeySchema } from '@lucifer/types';
 import { ScopeGuard, Scopes } from '../../auth/scope.guard';
 import { YupPipe } from '../../utils/yup.pipe';
 

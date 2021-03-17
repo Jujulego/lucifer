@@ -16,12 +16,12 @@ export class ApiKeyStrategy extends PassportStrategy(BasicStrategy, 'api-key') {
 
   // Methods
   // noinspection JSUnusedGlobalSymbols
-  async validate(id: string, key: string): Promise<AuthUser> {
+  async validate(id: string, key: string)/*: Promise<AuthUser>*/ {
     const apk = await this.apiKeys.check(id, key);
 
-    return {
-      sub: apk.userId,
-      permissions: []
-    };
+    // return {
+    //   sub: apk.userId,
+    //   permissions: []
+    // };
   }
 }
