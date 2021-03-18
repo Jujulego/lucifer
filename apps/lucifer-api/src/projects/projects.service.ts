@@ -1,13 +1,14 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 
-import { ICreateProject, IUpdateProject } from '@lucifer/types';
+import { ICreateProject, IProjectFilters, IUpdateProject } from '@lucifer/types';
 import { Context } from '../context';
 import { UsersService } from '../users/users.service';
 
 import { Project } from './project.entity';
 import { ProjectMemberService } from './project-member.service';
+import { ProjectMember } from './project-member.entity';
 
 // Service
 @Injectable()
@@ -22,7 +23,8 @@ export class ProjectsService {
   // Methods
   private async _get(id: string): Promise<Project | null> {
     const prj = await this.repository.findOne({
-      where: { id }
+      where: { id },
+      relations: ['members']
     });
 
     return prj || null;
@@ -46,8 +48,31 @@ export class ProjectsService {
     return prj;
   }
 
-  async list(): Promise<Project[]> {
-    return await this.repository.find();
+  async list(ctx: Context, filters: IProjectFilters): Promise<Project[]> {
+    // Filters
+    if (filters.member === 'me') {
+      filters.member = ctx.user.sub;
+    }
+    // Query builder
+    const qb = this.repository.createQueryBuilder('project');
+    qb.leftJoinAndSelect('project.members', 'member');
+
+    // Filters
+    if (!ctx.has('read:projects')) {
+      qb.innerJoin(ProjectMember, 'mmb1',
+        'project.id = mmb1.projectId and mmb1.userId = :self',
+        { self: ctx.user.sub }
+      );
+    }
+
+    if (filters.member) {
+      qb.innerJoin(ProjectMember, 'mmb2',
+        'project.id = mmb2.projectId and mmb2.userId = :member',
+        { member: filters.member }
+      );
+    }
+
+    return await qb.getMany();
   }
 
   async get(id: string): Promise<Project> {

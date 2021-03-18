@@ -1,6 +1,8 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 
 import { IProject } from '@lucifer/types';
+
+import { ProjectMember } from './project-member.entity';
 
 // Entity
 @Entity()
@@ -14,4 +16,8 @@ export class Project implements IProject {
 
   @Column('text', { default: '', nullable: false })
   description: string;
+
+  // Relations
+  @OneToMany(() => ProjectMember, mmb => mmb.project)
+  members: ProjectMember[];
 }

@@ -5,7 +5,7 @@
   "database": "postgres",
   "username": "root",
   "password": "root",
-  "logging": false,
+  "logging": true,
 
   "entities": [
     "src/**/*.entity.ts"

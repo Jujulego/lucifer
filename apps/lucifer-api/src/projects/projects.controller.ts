@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Get, Param, ParseArrayPipe, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-import type { ICreateProject, IUpdateProject } from '@lucifer/types';
-import { createProjectSchema, updateProjectSchema } from '@lucifer/types';
+import type { ICreateProject, IProjectFilters, IUpdateProject } from '@lucifer/types';
+import { createProjectSchema, projectFiltersSchema, updateProjectSchema } from '@lucifer/types';
 import { ScopeGuard, Scopes } from '../auth/scope.guard';
 import { Context, Ctx } from '../context';
 import { YupPipe } from '../utils/yup.pipe';
@@ -32,8 +32,11 @@ export class ProjectsController {
 
   @Get('/')
   @Scopes('read:projects')
-  async list(): Promise<Project[]> {
-    return await this.projects.list();
+  async list(
+    @Ctx() ctx: Context,
+    @Query(new YupPipe(projectFiltersSchema)) filters: IProjectFilters
+  ): Promise<Project[]> {
+    return await this.projects.list(ctx, filters);
   }
 
   @Get('/:id')
