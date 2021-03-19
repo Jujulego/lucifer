@@ -52,7 +52,7 @@ export const UserPage = () => {
         <UserDetailsTab user={user} onUpdate={put} />
       </PageTab>
       <PageTab label="Projets" value="projects" keepMounted disabled={!isAllowed}>
-        <ProjectsTable adminId={id} inUserPage />
+        <ProjectsTable adminId={id} inUserPage filters={{ member: id }} />
       </PageTab>
     </PageLayout>
   );

@@ -7,7 +7,7 @@ import { useCache } from './cache.context';
 import { Updator } from './types';
 
 // Types
-export type APIParams = Record<string, unknown>;
+export type APIParams = Record<string, any>;
 export type APIState<R> = { data?: R, loading: boolean };
 export type APIPromise<R> = Promise<R> & { cancel: () => void };
 

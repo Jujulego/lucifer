@@ -4,8 +4,6 @@ import { useHistory, useParams } from 'react-router';
 import { Delete as DeleteIcon } from '@material-ui/icons';
 import { RefreshButton, ToolbarAction } from '@lucifer/react-basics';
 
-import { useNeedRole } from '../auth/auth.hooks';
-
 import { useProject } from './projects.hooks';
 import { ProjectHeader } from './ProjectHeader';
 import { ProjectDetailsTab } from './ProjectDetailsTab';
@@ -18,7 +16,6 @@ import { Fade } from '@material-ui/core';
 
 // Types
 interface ProjectParams {
-  userId: string;
   id: string;
   page: string;
 }
@@ -27,13 +24,10 @@ interface ProjectParams {
 export const ProjectPage: FC = () => {
   // Router
   const history = useHistory();
-  const { userId, id, page } = useParams<ProjectParams>();
+  const { id, page } = useParams<ProjectParams>();
 
   // API
   const { project, loading, reload, update, remove } = useProject(id);
-
-  // Auth
-  const isAdmin = useNeedRole('admin'/*, usr => project?.adminId === usr?.id*/) ?? false;
 
   // State
   const [isRemoving, setRemoving] = useState(false);
@@ -54,7 +48,7 @@ export const ProjectPage: FC = () => {
           actions={(
             <PageToolbar>
               <Fade in={page === 'details'}>
-                <ToolbarAction disabled={!isAdmin || isRemoving} tooltip="Supprimer le projet" onClick={handleDelete}>
+                <ToolbarAction disabled={isRemoving} tooltip="Supprimer le projet" onClick={handleDelete}>
                   <DeleteIcon />
                 </ToolbarAction>
               </Fade>
@@ -69,7 +63,7 @@ export const ProjectPage: FC = () => {
         <ProjectDetailsTab project={project} isRemoving={isRemoving} onUpdate={update} />
       </PageTab>
       <PageTab value="variables" label="Variables" keepMounted>
-        <VariablesTable adminId={userId} projectId={id} />
+        <VariablesTable projectId={id} />
       </PageTab>
     </PageLayout>
   );

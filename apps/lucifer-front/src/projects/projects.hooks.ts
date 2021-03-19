@@ -1,11 +1,11 @@
 import { useCallback } from 'react';
 
 import { useAPI } from '@lucifer/react-api';
-import { ICreateProject, IProject, IUpdateProject } from '@lucifer/types';
+import { ICreateProject, IProject, IProjectFilters, IUpdateProject } from '@lucifer/types';
 
 // Namespace
 export const useProjectsAPI = {
-  all: () => useAPI.get<IProject[]>(`/api/projects`),
+  all: (filters?: IProjectFilters) => useAPI.get<IProject[], IProjectFilters>(`/api/projects`, filters),
   create: () => useAPI.post<ICreateProject, IProject>(`/api/projects`),
   bulkDelete: () => useAPI.delete<number | null>(`/api/projects`),
 
@@ -15,8 +15,8 @@ export const useProjectsAPI = {
 };
 
 // Hooks
-export function useProjects() {
-  const { data: projects, loading, reload, update } = useProjectsAPI.all();
+export function useProjects(filters?: IProjectFilters) {
+  const { data: projects, loading, reload, update } = useProjectsAPI.all(filters);
   const { send: create } = useProjectsAPI.create();
   const { send: bulkDelete } = useProjectsAPI.bulkDelete();
 

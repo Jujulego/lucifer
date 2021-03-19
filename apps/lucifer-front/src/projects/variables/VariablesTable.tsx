@@ -18,7 +18,6 @@ import { ConfirmDialog, RefreshButton, useConfirm } from '@lucifer/react-basics'
 import { Table, TableAction, TableBody, TableRow, TableSortCell } from '@lucifer/react-table';
 import { IVariable } from '@lucifer/types';
 
-import { useNeedRole } from '../../auth/auth.hooks';
 import { PageActions } from '../../layout/PageActions';
 import { usePageTab } from '../../layout/page-tab.context';
 
@@ -28,7 +27,6 @@ import { UpdateVariableDialog } from './UpdateVariableDialog';
 
 // Types
 export interface VariablesTableProps {
-  adminId: string;
   projectId: string;
 }
 
@@ -51,7 +49,7 @@ const useStyles = makeStyles(({ spacing }) => ({
 
 // Component
 export const VariablesTable: FC<VariablesTableProps> = (props) => {
-  const { adminId, projectId } = props;
+  const { projectId } = props;
 
   // Context
   const { open } = usePageTab();
@@ -61,11 +59,8 @@ export const VariablesTable: FC<VariablesTableProps> = (props) => {
   const [updating, setUpdating] = useState<IVariable | undefined>();
   const { state: deleteState, confirm: confirmDelete } = useConfirm<IVariable[]>([]);
 
-  // Auth
-  const isAdmin = useNeedRole('admin', usr => usr?.id === adminId) ?? false;
-
   // API
-  const { variables = [], create, loading, reload, updateCache, bulkDelete } = useVariables(adminId, projectId);
+  const { variables = [], create, loading, reload, updateCache, bulkDelete } = useVariables(projectId);
 
   // Callbacks
   const handleUpdated = useCallback((vrb: IVariable) => {
@@ -121,12 +116,12 @@ export const VariablesTable: FC<VariablesTableProps> = (props) => {
             </TableBody>
           </Table>
           <AddVariableDialog
-            open={isAdmin && creating}
+            open={creating}
             onAdd={create}
             onClose={() => setCreating(false)}
           />
           <UpdateVariableDialog
-            open={isAdmin && !!updating}
+            open={!!updating}
             variable={updating}
             onUpdated={handleUpdated}
             onClose={() => setUpdating(undefined)}
@@ -149,17 +144,15 @@ export const VariablesTable: FC<VariablesTableProps> = (props) => {
           </ConfirmDialog>
         </TableContainer>
       ) }
-      { isAdmin && (
-        <Zoom in={open}>
-          <Fab
-            className={styles.fab} color="primary"
-            aria-label="add variable"
-            onClick={() => setCreating(true)}
-          >
-            <AddIcon />
-          </Fab>
-        </Zoom>
-      ) }
+      <Zoom in={open}>
+        <Fab
+          className={styles.fab} color="primary"
+          aria-label="add variable"
+          onClick={() => setCreating(true)}
+        >
+          <AddIcon />
+        </Fab>
+      </Zoom>
     </>
   );
 };

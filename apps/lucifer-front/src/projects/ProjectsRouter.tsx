@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router';
 
 import { useAuth } from '../auth/auth.context';
-import { RoleRoute } from '../auth/RoleRoute';
 
 import { ProjectPage } from './ProjectPage';
 import { ProjectsTable } from './ProjectsTable';
@@ -18,13 +17,9 @@ export const ProjectsRouter: FC = () => {
   // Render
   return (
     <Switch>
-      <RoleRoute
-        roles={['admin', 'reader']}
-        allow={(user, { userId }) => userId === user?.id}
-        path={[`${path}/:userId/:id/:page`, `${path}/:userId/:id`]}
-      >
+      <Route path={[`${path}/:id/:page`, `${path}/:id`]}>
         <ProjectPage />
-      </RoleRoute>
+      </Route>
       <Route path={path} exact>
         { user && (
           <ProjectsTable adminId={user.sub} />
