@@ -3,8 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 
 import type { ICreateVariable, IUpdateVariable } from '@lucifer/types';
 import { createVariableSchema, updateVariableSchema } from '@lucifer/types';
-import { ScopeGuard, Scopes } from '../../auth/scope.guard';
-import { UserId } from '../../users/user-id.param';
+import { ProjectIdParam, ScopeGuard, Scopes } from '../../auth/scope.guard';
 import { YupPipe } from '../../utils/yup.pipe';
 
 import { Variable } from './variable.entity';
@@ -13,7 +12,7 @@ import { VariablesService } from './variables.service';
 // Controller
 @Controller('/projects/:projectId/variables')
 @UseGuards(AuthGuard('jwt'), ScopeGuard)
-//@AllowIf((req, token) => [token.sub, 'me'].includes(req.params.userId))
+@ProjectIdParam('projectId')
 export class VariablesController {
   // Constructor
   constructor(
@@ -60,7 +59,6 @@ export class VariablesController {
   @Delete('/')
   @Scopes('delete:variables')
   async bulkDelete(
-    @UserId('userId') userId: string,
     @Param('projectId') projectId: string,
     @Query('ids', ParseArrayPipe) ids: string[],
   ): Promise<number | null> {

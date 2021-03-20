@@ -1,7 +1,12 @@
 import type { Permission } from '@lucifer/types';
 
-// Model
-export interface AuthUser {
+// Models
+export interface JwtToken {
   sub: string;
+  permissions: Permission[];
+}
+
+export interface AuthUser {
+  id: string;
   permissions: Permission[];
 }

@@ -16,7 +16,7 @@ import { AuthGuard } from '@nestjs/passport';
 
 import type { IApiKeyWithKey, ICreateApiKey, IUpdateApiKey } from '@lucifer/types';
 import { createApiKeySchema, updateApiKeySchema } from '@lucifer/types';
-import { ScopeGuard, Scopes } from '../../auth/scope.guard';
+import { ProjectIdParam, ScopeGuard, Scopes } from '../../auth/scope.guard';
 import { YupPipe } from '../../utils/yup.pipe';
 
 import { ApiKeyService } from './api-key.service';
@@ -25,7 +25,7 @@ import { ApiKey } from './api-key.entity';
 // Controller
 @Controller('/projects/:projectId/api-keys')
 @UseGuards(AuthGuard('jwt'), ScopeGuard)
-//@AllowIf((req, token) => [token.sub, 'me'].includes(req.params.userId))
+@ProjectIdParam('projectId')
 export class ApiKeyController {
   // Constructor
   constructor(

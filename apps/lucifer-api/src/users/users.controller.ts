@@ -30,14 +30,14 @@ export class UsersController {
 
   @Get('/:id')
   @Scopes('read:users')
-  @AllowIf((req, token) => [token.sub, 'me'].includes(req.params.id))
+  @AllowIf((req, token) => [token.id, 'me'].includes(req.params.id))
   async get(@UserId('id') id: string): Promise<User> {
     return await this.users.get(id);
   }
 
   @Put('/:id')
   @Scopes('update:users')
-  @AllowIf((req, token) => [token.sub, 'me'].includes(req.params.id))
+  @AllowIf((req, token) => [token.id, 'me'].includes(req.params.id))
   async update(
     @Ctx() ctx: Context,
     @UserId('id') id: string,

@@ -27,7 +27,7 @@ export async function initTestingApp(): Promise<INestApplication> {
 }
 
 export const generateTestUser = (user: string, permissions: Permission[] = []): AuthUser => ({
-  sub: user,
+  id: user,
   permissions,
 })
 

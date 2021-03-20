@@ -1,6 +1,6 @@
 import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
+import { FindConditions, In, Repository } from 'typeorm';
 
 import { ICreateProject, IProjectFilters, IUpdateProject } from '@lucifer/types';
 import { Context } from '../context';
@@ -43,7 +43,7 @@ export class ProjectsService {
     );
 
     // Add current user as admin
-    await this.members.add(prj.id, ctx.user.sub, true);
+    await this.members.add(prj.id, ctx.user.id, true);
 
     return prj;
   }
@@ -51,8 +51,9 @@ export class ProjectsService {
   async list(ctx: Context, filters: IProjectFilters): Promise<Project[]> {
     // Filters
     if (filters.member === 'me') {
-      filters.member = ctx.user.sub;
+      filters.member = ctx.user.id;
     }
+
     // Query builder
     const qb = this.repository.createQueryBuilder('project');
     qb.leftJoinAndSelect('project.members', 'member');
@@ -61,7 +62,7 @@ export class ProjectsService {
     if (!ctx.has('read:projects')) {
       qb.innerJoin(ProjectMember, 'mmb1',
         'project.id = mmb1.projectId and mmb1.userId = :self',
-        { self: ctx.user.sub }
+        { self: ctx.user.id }
       );
     }
 
@@ -96,6 +97,7 @@ export class ProjectsService {
   }
 
   async delete(ids: string[]): Promise<number | null> {
+    // Delete
     const { affected } = await this.repository.delete({ id: In(ids) });
     return affected ?? null;
   }

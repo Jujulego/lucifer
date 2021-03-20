@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { UsersModule } from '../users/users.module';
+import { UsersDataModule } from '../users/users-data.module';
 
 import { Project } from './project.entity';
 import { ProjectMember } from './project-member.entity';
@@ -12,14 +12,15 @@ import { ProjectMemberService } from './project-member.service';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Project, ProjectMember]),
-    UsersModule,
+    UsersDataModule,
   ],
   providers: [
     ProjectsService,
     ProjectMemberService
   ],
   exports: [
-    ProjectsService
+    ProjectsService,
+    ProjectMemberService
   ]
 })
 export class ProjectsDataModule {}

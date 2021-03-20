@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 
 import type { ICreateProject, IProjectFilters, IUpdateProject } from '@lucifer/types';
 import { createProjectSchema, projectFiltersSchema, updateProjectSchema } from '@lucifer/types';
-import { ScopeGuard, Scopes } from '../auth/scope.guard';
+import { ProjectIdParam, ScopeGuard, Scopes } from '../auth/scope.guard';
 import { Context, Ctx } from '../context';
 import { YupPipe } from '../utils/yup.pipe';
 
@@ -13,7 +13,6 @@ import { ProjectsService } from './projects.service';
 // Controller
 @Controller('/projects')
 @UseGuards(AuthGuard('jwt'), ScopeGuard)
-//@AllowIf((req, token) => [token.sub, 'me'].includes(req.params.userId))
 export class ProjectsController {
   // Constructor
   constructor(
@@ -31,7 +30,6 @@ export class ProjectsController {
   }
 
   @Get('/')
-  @Scopes('read:projects')
   async list(
     @Ctx() ctx: Context,
     @Query(new YupPipe(projectFiltersSchema)) filters: IProjectFilters
@@ -41,6 +39,7 @@ export class ProjectsController {
 
   @Get('/:id')
   @Scopes('read:projects')
+  @ProjectIdParam('id')
   async get(
     @Param('id') id: string,
   ): Promise<Project> {
@@ -49,6 +48,7 @@ export class ProjectsController {
 
   @Put('/:id')
   @Scopes('update:projects')
+  @ProjectIdParam('id')
   async update(
     @Param('id') id: string,
     @Body(new YupPipe(updateProjectSchema)) update: IUpdateProject
@@ -58,6 +58,7 @@ export class ProjectsController {
 
   @Delete('/:id')
   @Scopes('delete:projects')
+  @ProjectIdParam('id')
   async delete(
     @Param('id') id: string,
   ): Promise<number | null> {
