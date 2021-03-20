@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
 import { IUpdateUser, IUser } from '@lucifer/types';
-import { useAPI } from '@lucifer/react/api';
+import { useAPI } from '@lucifer/react-api';
 
 // Namespace
 export const useUsersAPI = {

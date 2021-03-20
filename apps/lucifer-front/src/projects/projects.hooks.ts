@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { useAPI } from '@lucifer/react/api';
+import { useAPI } from '@lucifer/react-api';
 import { ICreateProject, IProject, IUpdateProject } from '@lucifer/types';
 
 // Namespace

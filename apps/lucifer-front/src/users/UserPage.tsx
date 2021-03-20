@@ -3,7 +3,7 @@ import { useParams } from 'react-router';
 
 import { Fade } from '@material-ui/core';
 
-import { RefreshButton } from '@lucifer/react/basics';
+import { RefreshButton } from '@lucifer/react-basics';
 
 import { useNeedRole } from '../auth/auth.hooks';
 import { PageHeader } from '../layout/PageHeader';

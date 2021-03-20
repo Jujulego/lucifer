@@ -14,8 +14,8 @@ import {
 } from '@material-ui/core';
 import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from '@material-ui/icons';
 
-import { ConfirmDialog, RefreshButton, useConfirm } from '@lucifer/react/basics';
-import { Table, TableAction, TableBody, TableRow, TableSortCell } from '@lucifer/react/table';
+import { ConfirmDialog, RefreshButton, useConfirm } from '@lucifer/react-basics';
+import { Table, TableAction, TableBody, TableRow, TableSortCell } from '@lucifer/react-table';
 import { IVariable } from '@lucifer/types';
 
 import { useNeedRole } from '../../auth/auth.hooks';

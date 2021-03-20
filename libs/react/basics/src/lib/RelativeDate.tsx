@@ -2,7 +2,7 @@ import React, { FC, useMemo } from 'react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
-import { useInterval } from '@lucifer/react/utils';
+import { useInterval } from '@lucifer/react-utils';
 
 dayjs.extend(relativeTime);
 

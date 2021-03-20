@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse, CancelTokenSource } from 'axios';
 import { useCallback, useDebugValue, useEffect, useState } from 'react';
 
-import { useChanged } from '@lucifer/react/utils';
+import { useChanged } from '@lucifer/react-utils';
 
 import { useCache } from './cache.context';
 import { Updator } from './types';

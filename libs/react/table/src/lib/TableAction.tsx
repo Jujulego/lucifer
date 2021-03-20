@@ -4,8 +4,8 @@ import { ExtendButtonBaseTypeMap, Fade } from '@material-ui/core';
 import { OverrideProps } from '@material-ui/core/OverridableComponent';
 import { TransitionProps } from '@material-ui/core/transitions';
 
-import { ToolbarAction, ToolbarActionTypeMap, ToolbarActionClassKey } from '@lucifer/react/basics';
-import { ExtendMatButton } from '@lucifer/react/utils';
+import { ToolbarAction, ToolbarActionTypeMap, ToolbarActionClassKey } from '@lucifer/react-basics';
+import { ExtendMatButton } from '@lucifer/react-utils';
 import { Document } from './document';
 import { useTable } from './table.context';
 

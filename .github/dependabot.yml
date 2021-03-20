@@ -12,9 +12,3 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-
-  # Maintain dependencies for terraform
-  - package-ecosystem: "terraform"
-    directory: "/res"
-    schedule:
-      interval: "daily"

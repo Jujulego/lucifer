@@ -7,7 +7,7 @@ import { CircularProgress, Fab, Grid, TextField, Typography, Zoom } from '@mater
 import { Save as SaveIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { LabelledText } from '@lucifer/react/basics';
+import { LabelledText } from '@lucifer/react-basics';
 import { IProject, IUpdateProject, updateProjectSchema } from '@lucifer/types';
 
 import { useNeedRole } from '../auth/auth.hooks';

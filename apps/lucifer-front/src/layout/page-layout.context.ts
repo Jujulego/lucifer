@@ -1,6 +1,6 @@
 import { createContext, MutableRefObject, useContext } from 'react';
 
-import { LinkTabProps } from '@lucifer/react/basics';
+import { LinkTabProps } from '@lucifer/react-basics';
 
 // Types
 export interface PageTab {
