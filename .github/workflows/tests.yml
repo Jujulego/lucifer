@@ -187,10 +187,10 @@ jobs:
         env:
           PORT: 3333
 
-          AUTH0_DOMAIN: 'seed-domain'
-          AUTH0_AUDIENCE: 'seed-audience'
-          AUTH0_CLIENT_ID: 'seed-client-id'
-          AUTH0_CLIENT_SECRET: 'seed-secret'
+          AUTH0_DOMAIN: jujulego.eu.auth0.com
+          AUTH0_AUDIENCE: 'https://lucifer-api.herokuapp.com/'
+          AUTH0_CLIENT_ID: Ni7eCeRfTINTJeDBlXyxtavguBCQR6iH
+          AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
 
       - name: E2E Tests
         if: github.actor != 'dependabot[bot]'
