@@ -1,4 +1,4 @@
-name: Pull Requests
+name: Tests
 
 on:
   pull_request:
@@ -33,12 +33,14 @@ jobs:
 
       - uses: actions/cache@v2.1.4
         with:
-          path: ${{ steps.setup-cache.outputs.yarn-cache }}
+          path: |
+            ${{ steps.setup-cache.outputs.yarn-cache }}
+            ~/.cache/Cypress
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-
 
       - name: Install dependencies
-        run: yarn install --pure-lockfile
+        run: yarn install --frozen-lockfile
 
       - name: Lint
         run: yarn run affected:lint --scan --base=origin/${{ github.base_ref }}
@@ -96,13 +98,15 @@ jobs:
 
       - uses: actions/cache@v2.1.4
         with:
-          path: ${{ steps.setup-cache.outputs.yarn-cache }}
+          path: |
+            ${{ steps.setup-cache.outputs.yarn-cache }}
+            ~/.cache/Cypress
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-
 
       - name: Install dependencies
         run: |
-          yarn install --pure-lockfile
+          yarn install --frozen-lockfile
           yarn run build:tools
 
       - name: Migrate
@@ -169,7 +173,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          yarn install --pure-lockfile
+          yarn install --frozen-lockfile
           yarn run build:tools
 
       - name: Migrate
@@ -225,13 +229,15 @@ jobs:
 
       - uses: actions/cache@v2.1.4
         with:
-          path: ${{ steps.setup-cache.outputs.yarn-cache }}
+          path: |
+            ${{ steps.setup-cache.outputs.yarn-cache }}
+            ~/.cache/Cypress
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-
 
       - name: Install dependencies
         run: |
-          yarn install --pure-lockfile
+          yarn install --frozen-lockfile
           yarn run build:tools
 
       - name: Build
