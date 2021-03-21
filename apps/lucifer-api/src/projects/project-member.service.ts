@@ -11,12 +11,14 @@ import { ProjectMember } from './project-member.entity';
 export class ProjectMemberService {
   // Constructor
   constructor(
-    private users: UsersService,
-    @InjectRepository(ProjectMember) private repository: Repository<ProjectMember>
+    private readonly users: UsersService,
+    @InjectRepository(ProjectMember) private readonly repository: Repository<ProjectMember>
   ) {}
 
   // Methods
   async add(projectId: string, userId: string, admin = false): Promise<ProjectMember> {
+    await this.users.getLocal(userId);
+
     // Create project member
     const mmb = this.repository.create({
       projectId,

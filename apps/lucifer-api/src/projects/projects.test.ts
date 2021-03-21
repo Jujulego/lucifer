@@ -7,10 +7,13 @@ import { DatabaseModule } from '../db/database.module';
 import { UsersService } from '../users/users.service';
 import { LocalUser } from '../users/local-user.entity';
 import { UsersServiceMock } from '../../mocks/users-service.mock';
+import { generateTestContext } from '../../tests/utils';
 
 import { ProjectsModule } from './projects.module';
 import { ProjectsService } from './projects.service';
+import { ProjectMemberService } from './project-member.service';
 import { Project } from './project.entity';
+import { ProjectMember } from './project-member.entity';
 
 // Load services
 let app: TestingModule;
@@ -51,9 +54,9 @@ beforeEach(async () => {
     ]);
 
     projects = await repoPrj.save([
-      repoPrj.create({ id: 'test-projects-1', name: 'Test #1' }),
-      repoPrj.create({ id: 'test-projects-2', name: 'Test #2' }),
-      repoPrj.create({ id: 'test-projects-3', name: 'Test #3' })
+      repoPrj.create({ id: 'test-projects-1', name: 'Test #1', members: [] }),
+      repoPrj.create({ id: 'test-projects-2', name: 'Test #2', members: [] }),
+      repoPrj.create({ id: 'test-projects-3', name: 'Test #3', members: [] })
     ]);
   });
 });
@@ -71,9 +74,18 @@ afterEach(async () => {
 
 // Tests suites
 describe('ProjectsService.create', () => {
+  let members: ProjectMemberService;
+
+  beforeEach(() => {
+    members = app.get(ProjectMemberService);
+
+    jest.spyOn(members, 'add')
+      .mockImplementation(async (userId: string, projectId: string, admin = false) => ({ userId, projectId, admin }) as ProjectMember)
+  });
+
   // Tests
   it('should create a new project', async () => {
-    const project = await service.create({ id: 'test-projects-4', name: 'Test #4' });
+    const project = await service.create(generateTestContext('test-projects'), { id: 'test-projects-4', name: 'Test #4' });
 
     try {
       expect(project).toEqual({
@@ -88,7 +100,7 @@ describe('ProjectsService.create', () => {
   });
 
   it('should fail to create a new project', async () => {
-    await expect(service.create({ id: 'test-projects-1', name: 'Test #1' }))
+    await expect(service.create(generateTestContext('test-projects'),{ id: 'test-projects-1', name: 'Test #1' }))
       .rejects.toEqual(new ConflictException('Project with id test-projects-1 already exists'))
   });
 });
@@ -96,8 +108,8 @@ describe('ProjectsService.create', () => {
 describe('ProjectsService.list', () => {
   // Tests
   it('should return all projects', async () => {
-    await expect(service.list())
-      .resolves.toEqual(projects);
+    await expect(service.list(generateTestContext('test-projects', ['read:projects']), {}))
+      .resolves.toEqual(expect.arrayContaining(projects));
   });
 });
 
@@ -133,7 +145,8 @@ describe('ProjectsService.update', () => {
       .resolves.toEqual({
         id:          prj.id,
         name:        update.name,
-        description: update.description
+        description: update.description,
+        members:     []
       });
   });
 
