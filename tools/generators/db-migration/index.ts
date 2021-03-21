@@ -1,5 +1,6 @@
 import { Rule, SchematicsException, Tree } from '@angular-devkit/schematics';
 import { virtualFs, workspaces } from '@angular-devkit/core';
+import { ConnectionOptionsReader, createConnection } from 'typeorm';
 
 // Schema
 interface Schema {
@@ -32,7 +33,6 @@ function createHost(tree: Tree): workspaces.WorkspaceHost {
   };
 }
 
-
 // Factory
 export function dbMigration(options: Schema): Rule {
   return async (tree: Tree) => {
@@ -45,6 +45,18 @@ export function dbMigration(options: Schema): Rule {
       options.project = workspace.extensions.defaultProject as string;
     }
 
+    const project = workspace.projects.get(options.project);
 
+    if (!project) {
+      throw new SchematicsException(`Project ${options.project} not found`);
+    }
+
+    // Read typeorm config
+    const reader = new ConnectionOptionsReader({ root: project.sourceRoot });
+    const config = await reader.get(options.database || 'default');
+
+    // Generate sql
+    const connection = await createConnection(config);
+    const sql = await connection.driver.createSchemaBuilder().log();
   }
 }
