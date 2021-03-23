@@ -119,7 +119,7 @@
     "@types/node": "^14.14.35",
     "@types/passport-jwt": "3.0.5",
     "@types/react": "^16.14.5",
-    "@types/react-dom": "^17.0.2",
+    "@types/react-dom": "^17.0.3",
     "@types/react-router": "^5.1.12",
     "@types/react-router-dom": "^5.1.7",
     "@types/rewire": "^2.5.28",
