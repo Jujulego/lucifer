@@ -1,6 +1,17 @@
-import { Rule, SchematicsException, Tree } from '@angular-devkit/schematics';
-import { virtualFs, workspaces } from '@angular-devkit/core';
+import {
+  apply,
+  applyTemplates,
+  chain,
+  mergeWith,
+  move,
+  Rule, SchematicContext,
+  SchematicsException,
+  Tree,
+  url
+} from '@angular-devkit/schematics';
+import { normalize, strings, virtualFs, workspaces } from '@angular-devkit/core';
 import { ConnectionOptionsReader, createConnection } from 'typeorm';
+import * as path from 'path';
 
 // Schema
 interface Schema {
@@ -35,7 +46,7 @@ function createHost(tree: Tree): workspaces.WorkspaceHost {
 
 // Factory
 export function dbMigration(options: Schema): Rule {
-  return async (tree: Tree) => {
+  return async (tree: Tree, context: SchematicContext) => {
     // Load workspace
     const host = createHost(tree);
     const { workspace } = await workspaces.readWorkspace('/', host);
@@ -52,11 +63,33 @@ export function dbMigration(options: Schema): Rule {
     }
 
     // Read typeorm config
-    const reader = new ConnectionOptionsReader({ root: project.sourceRoot });
+    const reader = new ConnectionOptionsReader({ root: path.resolve(project.root) });
     const config = await reader.get(options.database || 'default');
+    Object.assign(config, {
+      entities: config.entities?.map(ent => typeof ent === 'string' ? path.join(path.resolve(project.root), ent) : ent)
+    });
 
     // Generate sql
     const connection = await createConnection(config);
     const sql = await connection.driver.createSchemaBuilder().log();
+
+    if (sql.upQueries.length === 0) {
+      context.logger.info('No missing migration');
+      return;
+    }
+
+    const template = apply(url('./files'), [
+      applyTemplates({
+        classify: strings.classify,
+        dasherize: strings.dasherize,
+        name: options.name,
+        filename: options.name,
+      }),
+      move(normalize(path.join(project.root, config.cli!.migrationsDir!)))
+    ]);
+
+    return chain([
+      mergeWith(template)
+    ]);
   }
 }

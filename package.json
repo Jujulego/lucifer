@@ -4,6 +4,7 @@
   "license": "MIT",
   "private": true,
   "builders": "./tools/executors/executors.json",
+  "schematics": "./tools/generators/collection.json",
   "engines": {
     "node": "14.x"
   },
