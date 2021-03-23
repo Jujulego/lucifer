@@ -47,6 +47,7 @@ beforeEach(async () => {
   await database.transaction(async manager => {
     const repoLcu = manager.getRepository(LocalUser);
     const repoPrj = manager.getRepository(Project);
+    const repoMmb = manager.getRepository(ProjectMember);
 
     admins = await repoLcu.save([
       repoLcu.create({ id: 'tests|projects-01' }),
@@ -57,6 +58,19 @@ beforeEach(async () => {
       repoPrj.create({ id: 'test-projects-1', name: 'Test #1', members: [] }),
       repoPrj.create({ id: 'test-projects-2', name: 'Test #2', members: [] }),
       repoPrj.create({ id: 'test-projects-3', name: 'Test #3', members: [] })
+    ]);
+
+    projects[0].members = await repoMmb.save([
+      repoMmb.create({ userId: admins[0].id, projectId: projects[0].id }),
+      repoMmb.create({ userId: admins[1].id, projectId: projects[0].id }),
+    ]);
+
+    projects[1].members = await repoMmb.save([
+      repoMmb.create({ userId: admins[0].id, projectId: projects[1].id }),
+    ]);
+
+    projects[2].members = await repoMmb.save([
+      repoMmb.create({ userId: admins[1].id, projectId: projects[2].id }),
     ]);
   });
 });
@@ -74,9 +88,11 @@ afterEach(async () => {
 
 // Tests suites
 describe('ProjectsService.create', () => {
+  let admin: LocalUser;
   let members: ProjectMemberService;
 
   beforeEach(() => {
+    admin = admins[0];
     members = app.get(ProjectMemberService);
 
     jest.spyOn(members, 'add')
@@ -85,7 +101,7 @@ describe('ProjectsService.create', () => {
 
   // Tests
   it('should create a new project', async () => {
-    const project = await service.create(generateTestContext('test-projects'), { id: 'test-projects-4', name: 'Test #4' });
+    const project = await service.create(generateTestContext(admin.id), { id: 'test-projects-4', name: 'Test #4' });
 
     try {
       expect(project).toEqual({
@@ -93,6 +109,9 @@ describe('ProjectsService.create', () => {
         name:        'Test #4',
         description: ''
       });
+
+      expect(members.add)
+        .toHaveBeenCalledWith('test-projects-4', admin.id, true);
     } finally {
       const repo = database.getRepository(Project);
       await repo.delete(project.id);
@@ -106,10 +125,56 @@ describe('ProjectsService.create', () => {
 });
 
 describe('ProjectsService.list', () => {
+  let admin: LocalUser;
+
+  beforeEach(() => {
+    admin = admins[0];
+  });
+
   // Tests
   it('should return all projects', async () => {
-    await expect(service.list(generateTestContext('test-projects', ['read:projects']), {}))
-      .resolves.toEqual(expect.arrayContaining(projects));
+    await expect(service.list(generateTestContext(admin.id, ['read:projects']), {}))
+      .resolves.toEqual(expect.arrayContaining(projects.map(prj => ({
+        ...prj,
+        members: expect.arrayContaining(prj.members)
+      }))));
+  });
+
+  it('should return user\'s projects', async () => {
+    await expect(service.list(generateTestContext(admin.id, []), {}))
+      .resolves.toEqual(expect.arrayContaining(
+        projects.filter(prj => prj.members.some(mmb => mmb.userId === admin.id))
+          .map(prj => ({
+            ...prj,
+            members: expect.arrayContaining(prj.members)
+          }))
+      ));
+  });
+
+  it('should return user\'s projects', async () => {
+    await expect(service.list(generateTestContext(admin.id, ['read:projects']), {
+      member: 'me'
+    }))
+      .resolves.toEqual(expect.arrayContaining(
+        projects.filter(prj => prj.members.some(mmb => mmb.userId === admin.id))
+          .map(prj => ({
+            ...prj,
+            members: expect.arrayContaining(prj.members)
+          }))
+      ));
+  });
+
+  it('should return user\'s projects', async () => {
+    await expect(service.list(generateTestContext(admin.id, ['read:projects']), {
+      member: admins[1].id
+    }))
+      .resolves.toEqual(expect.arrayContaining(
+        projects.filter(prj => prj.members.some(mmb => mmb.userId === admins[1].id))
+          .map(prj => ({
+            ...prj,
+            members: expect.arrayContaining(prj.members)
+          }))
+      ));
   });
 });
 
@@ -146,7 +211,7 @@ describe('ProjectsService.update', () => {
         id:          prj.id,
         name:        update.name,
         description: update.description,
-        members:     []
+        members:     prj.members
       });
   });
 
