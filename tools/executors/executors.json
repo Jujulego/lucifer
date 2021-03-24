@@ -10,11 +10,6 @@
       "schema": "./db-migrate/schema.json",
       "description": "Runs typeorm's migrations."
     },
-    "gen-migration": {
-      "implementation": "./gen-migration",
-      "schema": "./gen-migration/schema.json",
-      "description": "Generates typeorm's migrations."
-    },
     "tsc-build": {
       "implementation": "./tsc-build",
       "schema": "./tsc-build/schema.json",
