@@ -1,4 +1,4 @@
-name: Pre-deploy
+name: Prod
 
 on:
   push:
@@ -26,12 +26,14 @@ jobs:
 
       - uses: actions/cache@v2.1.4
         with:
-          path: ${{ steps.setup-cache.outputs.yarn-cache }}
+          path: |
+            ${{ steps.setup-cache.outputs.yarn-cache }}
+            ~/.cache/Cypress
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-
 
       - name: Install dependencies
-        run: yarn install --pure-lockfile
+        run: yarn install --frozen-lockfile
 
       - name: Lint
         run: yarn run nx run-many --all --target=lint --scan
@@ -82,13 +84,15 @@ jobs:
 
       - uses: actions/cache@v2.1.4
         with:
-          path: ${{ steps.setup-cache.outputs.yarn-cache }}
+          path: |
+            ${{ steps.setup-cache.outputs.yarn-cache }}
+            ~/.cache/Cypress
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-
 
       - name: Install dependencies
         run: |
-          yarn install --pure-lockfile
+          yarn install --frozen-lockfile
           yarn run build:tools
 
       - name: Migrate
@@ -98,7 +102,7 @@ jobs:
         run: yarn run nx run-many --all --target=test --scan --codeCoverage --coverageReporters=clover,lcovonly,json
 
       - name: Codecov
-        uses: codecov/codecov-action@v1.2.2
+        uses: codecov/codecov-action@v1.3.1
         with:
           flags: unit
 
@@ -120,13 +124,15 @@ jobs:
 
       - uses: actions/cache@v2.1.4
         with:
-          path: ${{ steps.setup-cache.outputs.yarn-cache }}
+          path: |
+            ${{ steps.setup-cache.outputs.yarn-cache }}
+            ~/.cache/Cypress
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-
 
       - name: Install dependencies
         run: |
-          yarn install --pure-lockfile
+          yarn install --frozen-lockfile
           yarn run build:tools
 
       - name: Build
@@ -277,13 +283,15 @@ jobs:
 
       - uses: actions/cache@v2.1.4
         with:
-          path: ${{ steps.setup-cache.outputs.yarn-cache }}
+          path: |
+            ${{ steps.setup-cache.outputs.yarn-cache }}
+            ~/.cache/Cypress
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-
 
       - name: Install dependencies
         run: |
-          yarn install --pure-lockfile
+          yarn install --frozen-lockfile
           yarn run build:tools
 
       - name: Migrate
@@ -310,7 +318,7 @@ jobs:
           CYPRESS_Auth0ClientSecret: ${{ secrets.E2E_AUTH0_CLIENT_SECRET }}
 
       - name: Codecov
-        uses: codecov/codecov-action@v1.2.2
+        uses: codecov/codecov-action@v1.3.1
         with:
           flags: e2e
 

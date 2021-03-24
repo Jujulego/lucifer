@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import yaml from 'yaml';
 
-import { ICreateProject, ICreateVariable, IProject, IUser } from '@lucifer/types';
+import { ICreateProject, ICreateVariable, IUser } from '@lucifer/types';
 
 import { DatabaseUtils } from '../src/db/utils';
 import { LocalUser } from '../src/users/local-user.entity';
