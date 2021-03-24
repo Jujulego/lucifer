@@ -1,0 +1,13 @@
+import { MigrationInterface, QueryRunner } from 'typeorm';
+
+export class <%= classify(name + '-' + number) %>Migration implements MigrationInterface {
+  name = '<%= classify(name + '-' + number) %>'
+
+  public async up(queryRunner: QueryRunner): Promise<void> {<% for (const { query } of sql.upQueries) { %>
+    await queryRunner.query(`<%= query %>`);
+  <% } %>}
+
+  public async down(queryRunner: QueryRunner): Promise<void> {<% for (const { query } of sql.downQueries) { %>
+    await queryRunner.query(`<%= query %>`);
+  <% } %>}
+}

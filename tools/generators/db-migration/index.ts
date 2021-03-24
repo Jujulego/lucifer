@@ -2,9 +2,11 @@ import {
   apply,
   applyTemplates,
   chain,
+  MergeStrategy,
   mergeWith,
   move,
-  Rule, SchematicContext,
+  Rule,
+  SchematicContext,
   SchematicsException,
   Tree,
   url
@@ -12,6 +14,10 @@ import {
 import { normalize, strings, virtualFs, workspaces } from '@angular-devkit/core';
 import { ConnectionOptionsReader, createConnection } from 'typeorm';
 import * as path from 'path';
+import * as tsnode from 'ts-node';
+
+// Constants
+const TSCONFIG_PATH = path.join(__dirname, '../../tsconfig.tools.json');
 
 // Schema
 interface Schema {
@@ -69,6 +75,12 @@ export function dbMigration(options: Schema): Rule {
       entities: config.entities?.map(ent => typeof ent === 'string' ? path.join(path.resolve(project.root), ent) : ent)
     });
 
+    // Setup tsnode
+    tsnode.register({
+      project: TSCONFIG_PATH,
+      transpileOnly: true
+    });
+
     // Generate sql
     const connection = await createConnection(config);
     const sql = await connection.driver.createSchemaBuilder().log();
@@ -78,18 +90,39 @@ export function dbMigration(options: Schema): Rule {
       return;
     }
 
+    // Parse existing migration files
+    const migrationsDir = path.join(project.root, config.cli!.migrationsDir!);
+    const migrations = tree.getDir(migrationsDir).subfiles
+      .filter(file => file.endsWith('.migration.ts'))
+      .map((file: string) => {
+        // Parse name
+        file = file.replace(/\.migration\.ts$/, '');
+
+        const dash = file.indexOf('-');
+        const number = file.substr(0, dash);
+        const name = file.substr(dash + 1);
+
+        return { number, name };
+      });
+
+    let number = (migrations.length + 1).toString();
+    while (number.length < 4) number = '0' + number;
+
+    // Generate migration
     const template = apply(url('./files'), [
       applyTemplates({
         classify: strings.classify,
         dasherize: strings.dasherize,
+        number,
         name: options.name,
-        filename: options.name,
+        sql,
+        migrations
       }),
-      move(normalize(path.join(project.root, config.cli!.migrationsDir!)))
+      move(normalize(migrationsDir))
     ]);
 
     return chain([
-      mergeWith(template)
+      mergeWith(template, MergeStrategy.Overwrite)
     ]);
   }
 }
