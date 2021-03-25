@@ -14,6 +14,7 @@ import { ApiKeyService } from './api-key.service';
 import { ApiKey } from './api-key.entity';
 import { ApiKeyModule } from './api-key.module';
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { IUpdateApiKey } from '@lucifer/types';
 
 // Load services
 let app: TestingModule;
@@ -161,5 +162,46 @@ describe('ApiKeyService.check', () => {
 
     await expect(service.check(apk.id, 'wrong-secret'))
       .rejects.toEqual(new UnauthorizedException());
+  });
+});
+
+describe('ApiKeyService.update', () => {
+  const update: IUpdateApiKey = {
+    label: 'label'
+  };
+
+  // Tests
+  it('should update an api-key', async () => {
+    const apk = apiKeys[0];
+
+    await expect(service.update(apk.projectId, apk.id, update))
+      .resolves.toEqual(expect.objectContaining({
+        id:    apk.id,
+        label: update.label
+      }));
+  });
+
+  it('should throw if wrong project', async () => {
+    const apk = apiKeys[0];
+
+    await expect(service.update('not-a-project-id', apk.id, update))
+      .rejects.toEqual(new NotFoundException(`Api key ${apk.id} not found`));
+  });
+
+  it('should throw if wrong id', async () => {
+    const apk = apiKeys[0];
+
+    await expect(service.update(apk.projectId, '00000000-0000-0000-0000-000000000000', update))
+      .rejects.toEqual(new NotFoundException('Api key 00000000-0000-0000-0000-000000000000 not found'));
+  });
+});
+
+describe('ApiKeyService.delete', () => {
+  // Tests
+  it('should delete an api key', async () => {
+    const apk = apiKeys[0];
+
+    await expect(service.delete(apk.projectId, [apk.id]))
+      .resolves.toEqual(1);
   });
 });
