@@ -1,6 +1,6 @@
 import {MigrationInterface, QueryRunner} from "typeorm";
 
-export class NoProjectAdminFK1615398069111 implements MigrationInterface {
+export class NoProjectAdminFK0005Migration implements MigrationInterface {
   name = 'NoProjectAdminFK1615398069111'
 
   public async up(queryRunner: QueryRunner): Promise<void> {
