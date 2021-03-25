@@ -1,6 +1,6 @@
-import {MigrationInterface, QueryRunner} from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class LocalUser1607694957476 implements MigrationInterface {
+export class LocalUser0001Migration implements MigrationInterface {
     name = 'LocalUser1607694957476'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
