@@ -67,8 +67,7 @@ export class ApiKeyService {
   async check(id: string, key: string): Promise<ApiKey> {
     // Get api key
     const apk = await this.repository.findOne({
-      where: { id },
-      relations: ['user']
+      where: { id }
     });
 
     if (!apk) {
@@ -80,7 +79,7 @@ export class ApiKeyService {
     const valid = await bcrypt.compare(key, apk.key);
 
     if (!valid) {
-      this.logger.debug(`Use of key ${id} refused (invalid key)`);
+      this.logger.debug(`Use of key ${id} refused (invalid key secret)`);
       throw new UnauthorizedException();
     }
 
