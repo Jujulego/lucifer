@@ -56,14 +56,14 @@ beforeEach(async () => {
     );
 
     projects = await repoPrj.save([
-      repoPrj.create({ adminId: admin.id, id: 'test-1', name: 'Test #1' }),
-      repoPrj.create({ adminId: admin.id, id: 'test-2', name: 'Test #2' }),
+      repoPrj.create({ id: 'test-variables-1', name: 'Test #1' }),
+      repoPrj.create({ id: 'test-variables-2', name: 'Test #2' }),
     ]);
 
     variables = await repoVrb.save([
-      repoVrb.create({ adminId: admin.id, projectId: projects[0].id, id: 'test-1', name: 'TEST1', value: '1' }),
-      repoVrb.create({ adminId: admin.id, projectId: projects[0].id, id: 'test-2', name: 'TEST2', value: '2' }),
-      repoVrb.create({ adminId: admin.id, projectId: projects[1].id, id: 'test-1', name: 'TEST1', value: '1' }),
+      repoVrb.create({ projectId: projects[0].id, id: 'test-1', name: 'TEST1', value: '1' }),
+      repoVrb.create({ projectId: projects[0].id, id: 'test-2', name: 'TEST2', value: '2' }),
+      repoVrb.create({ projectId: projects[1].id, id: 'test-1', name: 'TEST1', value: '1' }),
     ]);
   });
 });
@@ -74,8 +74,8 @@ afterEach(async () => {
   const repoPrj = database.getRepository(Project);
   const repoVrb = database.getRepository(Variable);
 
-  await repoVrb.delete({ adminId: admin.id, id: In(variables.map(vrb => vrb.id)) });
-  await repoPrj.delete({ adminId: admin.id, id: In(projects.map(obj => obj.id)) });
+  await repoVrb.delete({ projectId: In(projects.map(obj => obj.id)), id: In(variables.map(vrb => vrb.id)) });
+  await repoPrj.delete(projects.map(obj => obj.id));
   await repoLcu.delete(admin.id);
 });
 
@@ -89,11 +89,10 @@ describe('VariablesService.create', () => {
       value: '2'
     };
 
-    const vrb = await service.create(admin.id, projects[1].id, data);
+    const vrb = await service.create(projects[1].id, data);
 
     try {
       expect(vrb).toEqual({
-        adminId:   admin.id,
         projectId: projects[1].id,
         id:        data.id,
         name:      data.name,
@@ -101,7 +100,7 @@ describe('VariablesService.create', () => {
       });
     } finally {
       const repo = database.getRepository(Variable);
-      await repo.delete({ adminId: vrb.adminId, projectId: vrb.projectId, id: vrb.id });
+      await repo.delete({ projectId: vrb.projectId, id: vrb.id });
     }
   });
 
@@ -112,7 +111,7 @@ describe('VariablesService.create', () => {
       value: '1'
     };
 
-    await expect(service.create(admin.id, 'this-project-does-not-exists', data))
+    await expect(service.create('this-project-does-not-exists', data))
       .rejects.toEqual(new NotFoundException('Project this-project-does-not-exists not found'));
   });
 
@@ -123,7 +122,7 @@ describe('VariablesService.create', () => {
       value: '1'
     };
 
-    await expect(service.create(admin.id, projects[1].id, data))
+    await expect(service.create(projects[1].id, data))
       .rejects.toEqual(new ConflictException(`Variable with id ${data.id} already exists.`));
   });
 });
@@ -134,23 +133,15 @@ describe('VariablesService.list', () => {
     const prj = projects[0];
 
     // Call
-    await expect(service.list(prj.adminId, prj.id))
+    await expect(service.list(prj.id))
       .resolves.toEqual(
         variables.filter(vrb => vrb.projectId === prj.id)
       );
   });
 
-  it('should empty array for unknown user', async () => {
-    const prj = projects[0];
-
-    // Call
-    await expect(service.list('unknown-user', prj.id))
-      .resolves.toEqual([]);
-  });
-
   it('should empty array for unknown project', async () => {
     // Call
-    await expect(service.list(admin.id, 'unknown-project'))
+    await expect(service.list('unknown-project'))
       .resolves.toEqual([]);
   });
 });
@@ -161,7 +152,7 @@ describe('VariablesService.get', () => {
     const vrb = variables[0];
 
     // Call
-    await expect(service.get(vrb.adminId, vrb.projectId, vrb.id))
+    await expect(service.get(vrb.projectId, vrb.id))
       .resolves.toEqual(vrb);
   });
 
@@ -169,7 +160,7 @@ describe('VariablesService.get', () => {
     const vrb = variables[0];
 
     // Call
-    await expect(service.get(vrb.adminId,  vrb.projectId, 'this-variable-does-not-exists'))
+    await expect(service.get(vrb.projectId, 'this-variable-does-not-exists'))
       .rejects.toEqual(new NotFoundException('Variable this-variable-does-not-exists not found'));
   });
 
@@ -177,15 +168,7 @@ describe('VariablesService.get', () => {
     const vrb = variables[0];
 
     // Call
-    await expect(service.get(vrb.adminId, 'wrong-project-id', vrb.id))
-      .rejects.toEqual(new NotFoundException(`Variable ${vrb.id} not found`));
-  });
-
-  it('should throw if wrong admin', async () => {
-    const vrb = variables[0];
-
-    // Call
-    await expect(service.get('wrong-admin-id', vrb.projectId, vrb.id))
+    await expect(service.get('wrong-project-id', vrb.id))
       .rejects.toEqual(new NotFoundException(`Variable ${vrb.id} not found`));
   });
 });
@@ -201,9 +184,8 @@ describe('VariablesService.update', () => {
     const vrb = variables[0];
 
     // Call
-    await expect(service.update(vrb.adminId, vrb.projectId, vrb.id, update))
+    await expect(service.update(vrb.projectId, vrb.id, update))
       .resolves.toEqual({
-        adminId:   vrb.adminId,
         projectId: vrb.projectId,
         id:        vrb.id,
         name:      update.name,
@@ -215,7 +197,7 @@ describe('VariablesService.update', () => {
     const vrb = variables[0];
 
     // Call
-    await expect(service.update(vrb.adminId,  vrb.projectId, 'this-variable-does-not-exists', update))
+    await expect(service.update(vrb.projectId, 'this-variable-does-not-exists', update))
       .rejects.toEqual(new NotFoundException('Variable this-variable-does-not-exists not found'));
   });
 
@@ -223,15 +205,7 @@ describe('VariablesService.update', () => {
     const vrb = variables[0];
 
     // Call
-    await expect(service.update(vrb.adminId, 'wrong-project-id', vrb.id, update))
-      .rejects.toEqual(new NotFoundException(`Variable ${vrb.id} not found`));
-  });
-
-  it('should throw if wrong admin', async () => {
-    const vrb = variables[0];
-
-    // Call
-    await expect(service.update('wrong-admin-id', vrb.projectId, vrb.id, update))
+    await expect(service.update('wrong-project-id', vrb.id, update))
       .rejects.toEqual(new NotFoundException(`Variable ${vrb.id} not found`));
   });
 });
@@ -241,7 +215,7 @@ describe('VariablesService.delete', () => {
   it('should delete given variable', async () => {
     const vrb = variables[0];
 
-    await expect(service.delete(vrb.adminId, vrb.projectId, [vrb.id]))
+    await expect(service.delete(vrb.projectId, [vrb.id]))
       .resolves.toBe(1);
   });
 });

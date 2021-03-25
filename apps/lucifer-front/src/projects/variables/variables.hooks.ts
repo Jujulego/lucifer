@@ -10,20 +10,20 @@ interface IBulkDelete extends APIParams {
 
 // Namespace
 export const useVariablesAPI = {
-  all: (adminId: string, projectId: string) => useAPI.get<IVariable[]>(`/api/${adminId}/projects/${projectId}/variables`),
-  create: (adminId: string, projectId: string) => useAPI.post<ICreateVariable, IVariable>(`/api/${adminId}/projects/${projectId}/variables`),
-  bulkDelete: (adminId: string, projectId: string) => useAPI.delete<number | null, IBulkDelete>(`/api/${adminId}/projects/${projectId}/variables`),
+  all: (projectId: string) => useAPI.get<IVariable[]>(`/api/projects/${projectId}/variables`),
+  create: (projectId: string) => useAPI.post<ICreateVariable, IVariable>(`/api/projects/${projectId}/variables`),
+  bulkDelete: (projectId: string) => useAPI.delete<number | null, IBulkDelete>(`/api/projects/${projectId}/variables`),
 
-  get: (adminId: string, projectId: string, id: string) => useAPI.get<IVariable>(`/api/${adminId}/projects/${projectId}/variables/${id}`),
-  put: (adminId: string, projectId: string, id: string) => useAPI.put<IUpdateVariable, IVariable>(`/api/${adminId}/projects/${projectId}/variables/${id}`),
-  delete: (adminId: string, projectId: string, id: string) => useAPI.delete<IVariable>(`/api/${adminId}/projects/${projectId}/variables/${id}`),
+  get: (projectId: string, id: string) => useAPI.get<IVariable>(`/api/projects/${projectId}/variables/${id}`),
+  put: (projectId: string, id: string) => useAPI.put<IUpdateVariable, IVariable>(`/api/projects/${projectId}/variables/${id}`),
+  delete: (projectId: string, id: string) => useAPI.delete<number | null>(`/api/projects/${projectId}/variables/${id}`),
 };
 
 // Hooks
-export function useVariables(adminId: string, projectId: string) {
-  const { data: variables, loading, reload, update } = useVariablesAPI.all(adminId, projectId);
-  const { send: create } = useVariablesAPI.create(adminId, projectId);
-  const { send: bulkDelete } = useVariablesAPI.bulkDelete(adminId, projectId);
+export function useVariables(projectId: string) {
+  const { data: variables, loading, reload, update } = useVariablesAPI.all(projectId);
+  const { send: create } = useVariablesAPI.create(projectId);
+  const { send: bulkDelete } = useVariablesAPI.bulkDelete(projectId);
 
   return {
     variables, loading, reload, updateCache: update,

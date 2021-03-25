@@ -8,9 +8,6 @@ import { Project } from '../project.entity';
 @Entity()
 export class Variable implements IVariable {
   // Columns
-  @PrimaryColumn('varchar')
-  adminId: string;
-
   @PrimaryColumn('varchar', { length: 100, nullable: false })
   projectId: string;
 
@@ -25,9 +22,6 @@ export class Variable implements IVariable {
 
   // Relations
   @ManyToOne(() => Project, { nullable: false, onUpdate: 'CASCADE', onDelete: 'CASCADE' })
-  @JoinColumn([
-    { name: 'adminId',   referencedColumnName: 'adminId' },
-    { name: 'projectId', referencedColumnName: 'id' }
-  ])
+  @JoinColumn( { name: 'projectId' })
   project: Promise<Project>;
 }

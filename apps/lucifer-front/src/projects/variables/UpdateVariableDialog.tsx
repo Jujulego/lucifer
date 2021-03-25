@@ -38,9 +38,7 @@ export const UpdateVariableDialog: FC<UpdateVariableDialogProps> = (props) => {
   });
 
   // API
-  const { send: update } = useVariablesAPI.put(
-    variable?.adminId || '', variable?.projectId || '', variable?.id || ''
-  );
+  const { send: update } = useVariablesAPI.put(variable?.projectId || '', variable?.id || '');
 
   // Effects
   useEffect(() => {

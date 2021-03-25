@@ -34,13 +34,18 @@ export class Context {
   }
 
   // Methods
-  need(scopes: Permission | Permission[]) {
+  has(scopes: Permission | Permission[]) {
     if (typeof scopes === 'string') {
       scopes = [scopes];
     }
 
     // Test if has scopes
-    if (scopes.every(scope => !this.user.permissions.includes(scope))) {
+    return scopes.some(scope => this.user.permissions.includes(scope));
+  }
+
+  need(scopes: Permission | Permission[]) {
+    // Assert if has scopes
+    if (!this.has(scopes)) {
       throw new ForbiddenException();
     }
   }

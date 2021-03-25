@@ -14,9 +14,8 @@ import { Add as AddIcon, Delete as DeleteIcon } from '@material-ui/icons';
 
 import { ConfirmDialog, RefreshButton, useConfirm } from '@lucifer/react-basics';
 import { Table, TableAction, TableBody, TableRow, TableSortCell, TableToolbar } from '@lucifer/react-table';
-import { IProject } from '@lucifer/types';
+import { IProject, IProjectFilters } from '@lucifer/types';
 
-import { useNeedRole } from '../auth/auth.hooks';
 import { usePageTab } from '../layout/page-tab.context';
 import { PageActions } from '../layout/PageActions';
 
@@ -26,6 +25,7 @@ import { AddProjectDialog } from './AddProjectDialog';
 // Types
 export interface ProjectsTableProps {
   adminId: string;
+  filters?: IProjectFilters;
   inUserPage?: boolean;
 }
 
@@ -53,7 +53,7 @@ const useStyles = makeStyles(({ spacing }) => ({
 export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
   // Props
   const {
-    adminId,
+    filters,
     inUserPage = false
   } = props;
 
@@ -64,11 +64,8 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
   const [creating, setCreating] = useState(false);
   const { state: deleteState, confirm: confirmDelete } = useConfirm<IProject[]>([]);
 
-  // Auth
-  const isAdmin = useNeedRole('admin', usr => usr?.id === adminId) ?? false;
-
   // API
-  const { projects = [], loading, reload, create, bulkDelete } = useProjects(adminId);
+  const { projects = [], loading, reload, create, bulkDelete } = useProjects(filters);
 
   // Callbacks
   const handleDelete = useCallback(async (projects: IProject[]) => {
@@ -86,7 +83,7 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
     <PageActions>
       { open && (
         <TableAction
-          tooltip="Supprimer des projets" when="some" disabled={!isAdmin}
+          tooltip="Supprimer des projets" when="some"
           aria-label="delete projects"
           onActivate={(selection: IProject[]) => handleDelete(selection)}
         >
@@ -100,7 +97,7 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
   ) : (
     <Paper square>
       <TableToolbar title="Projets">
-        { (open && isAdmin) && (
+        { open && (
           <TableAction
             tooltip="Supprimer des projets" when="some"
             onActivate={handleDelete}
@@ -130,7 +127,7 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
               { (prj: IProject) => (
                 <TableRow key={prj.id} doc={prj}>
                   <TableCell>
-                    <Link component={RouterLink} to={`/projects/${adminId}/${prj.id}`}>
+                    <Link component={RouterLink} to={`/projects/${prj.id}`}>
                       { prj.name }
                     </Link>
                   </TableCell>
@@ -142,7 +139,7 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
             </TableBody>
           </Table>
           <AddProjectDialog
-            open={isAdmin && creating}
+            open={creating}
             onAdd={create}
             onClose={() => setCreating(false)}
           />
@@ -164,17 +161,15 @@ export const ProjectsTable: FC<ProjectsTableProps> = (props) => {
           </ConfirmDialog>
         </TableContainer>
       ) }
-      { isAdmin && (
-        <Zoom in={open}>
-          <Fab
-            className={styles.fab} color="primary"
-            aria-label="add project"
-            onClick={() => setCreating(true)}
-          >
-            <AddIcon />
-          </Fab>
-        </Zoom>
-      ) }
+      <Zoom in={open}>
+        <Fab
+          className={styles.fab} color="primary"
+          aria-label="add project"
+          onClick={() => setCreating(true)}
+        >
+          <AddIcon />
+        </Fab>
+      </Zoom>
     </>
   );
 }

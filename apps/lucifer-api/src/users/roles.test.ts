@@ -4,7 +4,7 @@ import { ManagementClient } from 'auth0';
 
 import { DatabaseModule } from '../db/database.module';
 import { ManagementClientMock } from '../../mocks/management-client.mock';
-import { generateTextContext } from '../../tests/utils';
+import { generateTestContext } from '../../tests/utils';
 
 import { UsersModule } from './users.module';
 import { RolesService } from './roles.service';
@@ -60,7 +60,7 @@ describe('RolesService.getUserRoles', () => {
 });
 
 describe('RolesService.updateUserRoles', () => {
-  const ctx = generateTextContext('test', ['update:roles']);
+  const ctx = generateTestContext('test', ['update:roles']);
 
   beforeEach(() => {
     jest.spyOn(mgmtClient, 'getRoles')
@@ -108,7 +108,7 @@ describe('RolesService.updateUserRoles', () => {
   });
 
   it('should throw forbidden', async () => {
-    const ctx = generateTextContext('test', []);
+    const ctx = generateTestContext('test', []);
 
     const spyA = jest.spyOn(mgmtClient, 'assignRolestoUser');
     const spyR = jest.spyOn(mgmtClient, 'removeRolesFromUser');

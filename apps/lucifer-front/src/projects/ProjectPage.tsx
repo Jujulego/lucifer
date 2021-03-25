@@ -4,8 +4,6 @@ import { useHistory, useParams } from 'react-router';
 import { Delete as DeleteIcon } from '@material-ui/icons';
 import { RefreshButton, ToolbarAction } from '@lucifer/react-basics';
 
-import { useNeedRole } from '../auth/auth.hooks';
-
 import { useProject } from './projects.hooks';
 import { ProjectHeader } from './ProjectHeader';
 import { ProjectDetailsTab } from './ProjectDetailsTab';
@@ -15,10 +13,10 @@ import { PageToolbar } from '../layout/PageToolbar';
 import { PageHeader } from '../layout/PageHeader';
 import { PageTab } from '../layout/PageTab';
 import { Fade } from '@material-ui/core';
+import { ApiKeysTable } from './api-keys/ApiKeysTable';
 
 // Types
 interface ProjectParams {
-  userId: string;
   id: string;
   page: string;
 }
@@ -27,13 +25,10 @@ interface ProjectParams {
 export const ProjectPage: FC = () => {
   // Router
   const history = useHistory();
-  const { userId, id, page } = useParams<ProjectParams>();
+  const { id, page } = useParams<ProjectParams>();
 
   // API
-  const { project, loading, reload, update, remove } = useProject(userId, id);
-
-  // Auth
-  const isAdmin = useNeedRole('admin', usr => project?.adminId === usr?.id) ?? false;
+  const { project, loading, reload, update, remove } = useProject(id);
 
   // State
   const [isRemoving, setRemoving] = useState(false);
@@ -54,7 +49,7 @@ export const ProjectPage: FC = () => {
           actions={(
             <PageToolbar>
               <Fade in={page === 'details'}>
-                <ToolbarAction disabled={!isAdmin || isRemoving} tooltip="Supprimer le projet" onClick={handleDelete}>
+                <ToolbarAction disabled={isRemoving} tooltip="Supprimer le projet" onClick={handleDelete}>
                   <DeleteIcon />
                 </ToolbarAction>
               </Fade>
@@ -68,8 +63,11 @@ export const ProjectPage: FC = () => {
       <PageTab value="details" label="Détails" keepMounted>
         <ProjectDetailsTab project={project} isRemoving={isRemoving} onUpdate={update} />
       </PageTab>
+      <PageTab value="api-keys" label="Clé api">
+        <ApiKeysTable projectId={id} />
+      </PageTab>
       <PageTab value="variables" label="Variables" keepMounted>
-        <VariablesTable adminId={userId} projectId={id} />
+        <VariablesTable projectId={id} />
       </PageTab>
     </PageLayout>
   );

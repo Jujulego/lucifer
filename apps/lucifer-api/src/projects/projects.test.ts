@@ -1,16 +1,19 @@
 import { ConflictException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { Connection, In } from 'typeorm';
+import { Connection } from 'typeorm';
 
 import { IUpdateProject } from '@lucifer/types';
 import { DatabaseModule } from '../db/database.module';
 import { UsersService } from '../users/users.service';
 import { LocalUser } from '../users/local-user.entity';
 import { UsersServiceMock } from '../../mocks/users-service.mock';
+import { generateTestContext } from '../../tests/utils';
 
 import { ProjectsModule } from './projects.module';
 import { ProjectsService } from './projects.service';
+import { ProjectMemberService } from './project-member.service';
 import { Project } from './project.entity';
+import { ProjectMember } from './project-member.entity';
 
 // Load services
 let app: TestingModule;
@@ -44,6 +47,7 @@ beforeEach(async () => {
   await database.transaction(async manager => {
     const repoLcu = manager.getRepository(LocalUser);
     const repoPrj = manager.getRepository(Project);
+    const repoMmb = manager.getRepository(ProjectMember);
 
     admins = await repoLcu.save([
       repoLcu.create({ id: 'tests|projects-01' }),
@@ -51,9 +55,22 @@ beforeEach(async () => {
     ]);
 
     projects = await repoPrj.save([
-      repoPrj.create({ adminId: admins[0].id, id: 'test-1', name: 'Test #1' }),
-      repoPrj.create({ adminId: admins[0].id, id: 'test-2', name: 'Test #2' }),
-      repoPrj.create({ adminId: admins[1].id, id: 'test-3', name: 'Test #3' })
+      repoPrj.create({ id: 'test-projects-1', name: 'Test #1', members: [] }),
+      repoPrj.create({ id: 'test-projects-2', name: 'Test #2', members: [] }),
+      repoPrj.create({ id: 'test-projects-3', name: 'Test #3', members: [] })
+    ]);
+
+    projects[0].members = await repoMmb.save([
+      repoMmb.create({ userId: admins[0].id, projectId: projects[0].id }),
+      repoMmb.create({ userId: admins[1].id, projectId: projects[0].id }),
+    ]);
+
+    projects[1].members = await repoMmb.save([
+      repoMmb.create({ userId: admins[0].id, projectId: projects[1].id }),
+    ]);
+
+    projects[2].members = await repoMmb.save([
+      repoMmb.create({ userId: admins[1].id, projectId: projects[2].id }),
     ]);
   });
 });
@@ -65,54 +82,102 @@ afterEach(async () => {
   const repoLcu = database.getRepository(LocalUser);
   const repoPrj = database.getRepository(Project);
 
-  await repoPrj.delete({ adminId: In(admins.map(adm => adm.id)), id: In(projects.map(prj => prj.id)) });
+  await repoPrj.delete(projects.map(prj => prj.id));
   await repoLcu.delete(admins.map(adm => adm.id));
 });
 
 // Tests suites
 describe('ProjectsService.create', () => {
+  let admin: LocalUser;
+  let members: ProjectMemberService;
+
+  beforeEach(() => {
+    admin = admins[0];
+    members = app.get(ProjectMemberService);
+
+    jest.spyOn(members, 'add')
+      .mockImplementation(async (projectId: string, userId: string, admin = false) => ({ userId, projectId, admin }) as ProjectMember)
+  });
+
   // Tests
   it('should create a new project', async () => {
-    const project = await service.create(admins[1].id, { id: 'test-4', name: 'Test #4' });
+    const project = await service.create(generateTestContext(admin.id), { id: 'test-projects-4', name: 'Test #4' });
 
     try {
       expect(project).toEqual({
-        adminId: admins[1].id,
-        id:      'test-4',
-        name:    'Test #4',
-        description: ''
+        id:          'test-projects-4',
+        name:        'Test #4',
+        description: '',
+        members: [
+          { userId: admin.id, projectId: 'test-projects-4', admin: true }
+        ]
       });
+
+      expect(members.add)
+        .toHaveBeenCalledWith('test-projects-4', admin.id, true);
     } finally {
       const repo = database.getRepository(Project);
-      await repo.delete({
-        adminId: project.adminId,
-        id: project.id
-      });
+      await repo.delete(project.id);
     }
   });
 
   it('should fail to create a new project', async () => {
-    await expect(service.create(admins[0].id, { id: 'test-1', name: 'Test #1' }))
-      .rejects.toEqual(new ConflictException('Project with id test-1 already exists'))
+    await expect(service.create(generateTestContext('test-projects'),{ id: 'test-projects-1', name: 'Test #1' }))
+      .rejects.toEqual(new ConflictException('Project with id test-projects-1 already exists'))
   });
 });
 
 describe('ProjectsService.list', () => {
-  // Tests
-  it('should return all admin\'s projects', async () => {
-    const adm = admins[0];
+  let admin: LocalUser;
 
-    // Call
-    await expect(service.list(adm.id))
-      .resolves.toEqual(
-        projects.filter(prj => prj.adminId === adm.id)
-      );
+  beforeEach(() => {
+    admin = admins[0];
   });
 
-  it('should empty array for unknown user', async () => {
-    // Call
-    await expect(service.list('unknown-user'))
-      .resolves.toEqual([]);
+  // Tests
+  it('should return all projects', async () => {
+    await expect(service.list(generateTestContext(admin.id, ['read:projects']), {}))
+      .resolves.toEqual(expect.arrayContaining(projects.map(prj => ({
+        ...prj,
+        members: expect.arrayContaining(prj.members)
+      }))));
+  });
+
+  it('should return user\'s projects', async () => {
+    await expect(service.list(generateTestContext(admin.id, []), {}))
+      .resolves.toEqual(expect.arrayContaining(
+        projects.filter(prj => prj.members.some(mmb => mmb.userId === admin.id))
+          .map(prj => ({
+            ...prj,
+            members: expect.arrayContaining(prj.members)
+          }))
+      ));
+  });
+
+  it('should return user\'s projects', async () => {
+    await expect(service.list(generateTestContext(admin.id, ['read:projects']), {
+      member: 'me'
+    }))
+      .resolves.toEqual(expect.arrayContaining(
+        projects.filter(prj => prj.members.some(mmb => mmb.userId === admin.id))
+          .map(prj => ({
+            ...prj,
+            members: expect.arrayContaining(prj.members)
+          }))
+      ));
+  });
+
+  it('should return user\'s projects', async () => {
+    await expect(service.list(generateTestContext(admin.id, ['read:projects']), {
+      member: admins[1].id
+    }))
+      .resolves.toEqual(expect.arrayContaining(
+        projects.filter(prj => prj.members.some(mmb => mmb.userId === admins[1].id))
+          .map(prj => ({
+            ...prj,
+            members: expect.arrayContaining(prj.members)
+          }))
+      ));
   });
 });
 
@@ -122,22 +187,14 @@ describe('ProjectsService.get', () => {
     const prj = projects[0];
 
     // Call
-    await expect(service.get(prj.adminId, prj.id))
+    await expect(service.get(prj.id))
       .resolves.toEqual(prj);
   });
 
   it('should throw if project does not exists', async () => {
     // Call
-    await expect(service.get(admins[0].id, 'this-project-does-not-exists'))
-      .rejects.toEqual(new NotFoundException('Project this-project-does-not-exists not found'));
-  });
-
-  it('should throw if project exists in another user', async () => {
-    const prj = projects[0];
-
-    // Call
-    await expect(service.get(admins[1].id, prj.id))
-      .rejects.toEqual(new NotFoundException(`Project ${prj.id} not found`));
+    await expect(service.get('not-a-project-id'))
+      .rejects.toEqual(new NotFoundException('Project not-a-project-id not found'));
   });
 });
 
@@ -152,27 +209,19 @@ describe('ProjectsService.update', () => {
     const prj = projects[0];
 
     // Call
-    await expect(service.update(prj.adminId, prj.id, update))
+    await expect(service.update(prj.id, update))
       .resolves.toEqual({
-        adminId: prj.adminId,
-        id:      prj.id,
-        name:    update.name,
-        description: update.description
+        id:          prj.id,
+        name:        update.name,
+        description: update.description,
+        members:     prj.members
       });
   });
 
   it('should throw if project does not exists', async () => {
     // Call
-    await expect(service.update(admins[0].id, 'this-project-does-not-exists', update))
-      .rejects.toEqual(new NotFoundException('Project this-project-does-not-exists not found'));
-  });
-
-  it('should throw if project exists in another user', async () => {
-    const prj = projects[0];
-
-    // Call
-    await expect(service.update(admins[1].id, prj.id, update))
-      .rejects.toEqual(new NotFoundException(`Project ${prj.id} not found`));
+    await expect(service.update('not-a-project-id', update))
+      .rejects.toEqual(new NotFoundException('Project not-a-project-id not found'));
   });
 });
 
@@ -184,22 +233,19 @@ describe('ProjectsService.delete', () => {
     const repo = database.getRepository(Project);
 
     prj = await repo.save(
-      repo.create({ adminId: admins[1].id, id: 'test-delete', name: 'Test delete' })
+      repo.create({ id: 'test-projects-delete', name: 'Test delete' })
     );
   });
 
   afterEach(async () => {
     const repo = database.getRepository(Project);
 
-    await repo.delete({
-      adminId: prj.adminId,
-      id: prj.id
-    });
+    await repo.delete(prj.id);
   });
 
   // Tests
   it('should delete given project', async () => {
-    await expect(service.delete(prj.adminId, [prj.id]))
+    await expect(service.delete([prj.id]))
       .resolves.toBe(1);
   });
 });

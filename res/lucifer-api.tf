@@ -36,6 +36,22 @@ resource "auth0_resource_server" "lucifer-api" {
   }
 
   scopes {
+    value = "create:api-keys"
+  }
+
+  scopes {
+    value = "read:api-keys"
+  }
+
+  scopes {
+    value = "update:api-keys"
+  }
+
+  scopes {
+    value = "delete:api-keys"
+  }
+
+  scopes {
     value = "create:projects"
   }
 

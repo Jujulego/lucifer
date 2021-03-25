@@ -20,6 +20,11 @@ resource "auth0_role" "reader" {
   }
 
   permissions {
+    name                       = "read:api-keys"
+    resource_server_identifier = auth0_resource_server.lucifer-api.identifier
+  }
+
+  permissions {
     name                       = "read:roles"
     resource_server_identifier = auth0_resource_server.lucifer-api.identifier
   }

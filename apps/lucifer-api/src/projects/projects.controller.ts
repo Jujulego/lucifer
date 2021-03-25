@@ -1,19 +1,18 @@
 import { Body, Controller, Delete, Get, Param, ParseArrayPipe, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-import type { ICreateProject, IUpdateProject } from '@lucifer/types';
-import { createProjectSchema, updateProjectSchema } from '@lucifer/types';
-import { AllowIf, ScopeGuard, Scopes } from '../auth/scope.guard';
-import { UserId } from '../users/user-id.param';
+import type { ICreateProject, IProjectFilters, IUpdateProject } from '@lucifer/types';
+import { createProjectSchema, projectFiltersSchema, updateProjectSchema } from '@lucifer/types';
+import { ProjectIdParam, ScopeGuard, Scopes } from '../auth/scope.guard';
+import { Context, Ctx } from '../context';
 import { YupPipe } from '../utils/yup.pipe';
 
 import { Project } from './project.entity';
 import { ProjectsService } from './projects.service';
 
 // Controller
-@Controller('/:userId/projects')
+@Controller('/projects')
 @UseGuards(AuthGuard('jwt'), ScopeGuard)
-@AllowIf((req, token) => [token.sub, 'me'].includes(req.params.userId))
 export class ProjectsController {
   // Constructor
   constructor(
@@ -24,54 +23,53 @@ export class ProjectsController {
   @Post('/')
   @Scopes('create:projects')
   async create(
-    @UserId('userId') userId: string,
+    @Ctx() ctx: Context,
     @Body(new YupPipe(createProjectSchema)) data: ICreateProject
   ): Promise<Project> {
-    return await this.projects.create(userId, data);
+    return await this.projects.create(ctx, data);
   }
 
   @Get('/')
-  @Scopes('read:projects')
   async list(
-    @UserId('userId') userId: string,
+    @Ctx() ctx: Context,
+    @Query(new YupPipe(projectFiltersSchema)) filters: IProjectFilters
   ): Promise<Project[]> {
-    return await this.projects.list(userId);
+    return await this.projects.list(ctx, filters);
   }
 
   @Get('/:id')
   @Scopes('read:projects')
+  @ProjectIdParam('id')
   async get(
-    @UserId('userId') userId: string,
     @Param('id') id: string,
   ): Promise<Project> {
-    return await this.projects.get(userId, id);
+    return await this.projects.get(id);
   }
 
   @Put('/:id')
   @Scopes('update:projects')
+  @ProjectIdParam('id')
   async update(
-    @UserId('userId') userId: string,
     @Param('id') id: string,
     @Body(new YupPipe(updateProjectSchema)) update: IUpdateProject
   ): Promise<Project> {
-    return await this.projects.update(userId, id, update);
+    return await this.projects.update(id, update);
   }
 
   @Delete('/:id')
   @Scopes('delete:projects')
+  @ProjectIdParam('id')
   async delete(
-    @UserId('userId') userId: string,
     @Param('id') id: string,
   ): Promise<number | null> {
-    return await this.projects.delete(userId, [id]);
+    return await this.projects.delete([id]);
   }
 
   @Delete('/')
   @Scopes('delete:projects')
   async bulkDelete(
-    @UserId('userId') userId: string,
     @Query('ids', ParseArrayPipe) ids: string[],
   ): Promise<number | null> {
-    return await this.projects.delete(userId, ids);
+    return await this.projects.delete(ids);
   }
 }

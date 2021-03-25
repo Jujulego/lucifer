@@ -1,22 +1,26 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { UsersModule } from '../users/users.module';
+import { UsersDataModule } from '../users/users-data.module';
 
 import { Project } from './project.entity';
+import { ProjectMember } from './project-member.entity';
 import { ProjectsService } from './projects.service';
+import { ProjectMemberService } from './project-member.service';
 
 // Modules
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Project]),
-    UsersModule,
+    TypeOrmModule.forFeature([Project, ProjectMember]),
+    UsersDataModule,
   ],
   providers: [
-    ProjectsService
+    ProjectsService,
+    ProjectMemberService
   ],
   exports: [
-    ProjectsService
+    ProjectsService,
+    ProjectMemberService
   ]
 })
 export class ProjectsDataModule {}

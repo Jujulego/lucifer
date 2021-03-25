@@ -2,10 +2,13 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 
-import { ICreateProject, IUpdateProject } from '@lucifer/types';
+import { ICreateProject, IProjectFilters, IUpdateProject } from '@lucifer/types';
+import { Context } from '../context';
 import { UsersService } from '../users/users.service';
 
 import { Project } from './project.entity';
+import { ProjectMemberService } from './project-member.service';
+import { ProjectMember } from './project-member.entity';
 
 // Service
 @Injectable()
@@ -13,45 +16,70 @@ export class ProjectsService {
   // Constructor
   constructor(
     private users: UsersService,
+    private members: ProjectMemberService,
     @InjectRepository(Project) private repository: Repository<Project>
   ) {}
 
   // Methods
-  private async _get(adminId: string, id: string): Promise<Project | null> {
+  private async _get(id: string): Promise<Project | null> {
     const prj = await this.repository.findOne({
-      where: { adminId, id }
+      where: { id },
+      relations: ['members']
     });
 
     return prj || null;
   }
 
-  async create(adminId: string, data: ICreateProject): Promise<Project> {
-    // Ensure user exists
-    await this.users.getLocal(adminId);
-
+  async create(ctx: Context, data: ICreateProject): Promise<Project> {
     // Check if id does not exists
-    let prj = await this._get(adminId, data.id);
+    let prj = await this._get(data.id);
     if (prj) {
       throw new ConflictException(`Project with id ${data.id} already exists`);
     }
 
     // Create new project
-    prj = this.repository.create({
-      ...data,
-      adminId
-    });
+    prj = await this.repository.save(
+      this.repository.create(data)
+    );
 
-    return await this.repository.save(prj);
+    // Add current user as admin
+    prj.members = [
+      await this.members.add(prj.id, ctx.user.id, true)
+    ];
+
+    return prj;
   }
 
-  async list(adminId: string): Promise<Project[]> {
-    return await this.repository.find({
-      where: { adminId }
-    });
+  async list(ctx: Context, filters: IProjectFilters): Promise<Project[]> {
+    // Filters
+    if (filters.member === 'me') {
+      filters.member = ctx.user.id;
+    }
+
+    // Query builder
+    const qb = this.repository.createQueryBuilder('project');
+    qb.leftJoinAndSelect('project.members', 'member');
+
+    // Filters
+    if (!ctx.has('read:projects')) {
+      qb.innerJoin(ProjectMember, 'mmb1',
+        'project.id = mmb1.projectId and mmb1.userId = :self',
+        { self: ctx.user.id }
+      );
+    }
+
+    if (filters.member) {
+      qb.innerJoin(ProjectMember, 'mmb2',
+        'project.id = mmb2.projectId and mmb2.userId = :member',
+        { member: filters.member }
+      );
+    }
+
+    return await qb.getMany();
   }
 
-  async get(adminId: string, id: string): Promise<Project> {
-    const prj = await this._get(adminId, id);
+  async get(id: string): Promise<Project> {
+    const prj = await this._get(id);
 
     if (!prj) {
       throw new NotFoundException(`Project ${id} not found`);
@@ -60,8 +88,8 @@ export class ProjectsService {
     return prj;
   }
 
-  async update(adminId: string, id: string, update: IUpdateProject): Promise<Project> {
-    const prj = await this.get(adminId, id);
+  async update(id: string, update: IUpdateProject): Promise<Project> {
+    const prj = await this.get(id);
 
     // Apply update
     prj.name        = update.name        ?? prj.name;
@@ -70,8 +98,9 @@ export class ProjectsService {
     return await this.repository.save(prj);
   }
 
-  async delete(adminId: string, ids: string[]): Promise<number | null> {
-    const { affected } = await this.repository.delete({ adminId, id: In(ids) });
+  async delete(ids: string[]): Promise<number | null> {
+    // Delete
+    const { affected } = await this.repository.delete({ id: In(ids) });
     return affected ?? null;
   }
 }
