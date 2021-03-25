@@ -5,8 +5,10 @@ import supertest from 'supertest';
 
 import { ICreateProject, IUpdateProject } from '@lucifer/types';
 import { should } from '@lucifer/utils';
+
 import { LocalUser } from '../../src/users/local-user.entity';
 import { Project } from '../../src/projects/project.entity';
+import { ProjectMember } from '../../src/projects/project-member.entity';
 import { ProjectsService } from '../../src/projects/projects.service';
 
 import { generateTestToken, initTestingApp } from '../utils';
@@ -66,14 +68,19 @@ beforeEach(async () => {
   await database.transaction(async (manager) => {
     const repoLcu = manager.getRepository(LocalUser);
     const repoPrj = manager.getRepository(Project);
+    const repoMmb = manager.getRepository(ProjectMember);
 
     lcu = await repoLcu.save(
       repoLcu.create({ id: admin.user_id })
     );
 
     projects = await repoPrj.save([
-      repoPrj.create({ id: 'test-api-projects-1', name: 'Test 1' }),
-      repoPrj.create({ id: 'test-api-projects-2', name: 'Test 2' }),
+      repoPrj.create({ id: 'test-api-projects-1', name: 'Test 1', members: [] }),
+      repoPrj.create({ id: 'test-api-projects-2', name: 'Test 2', members: [] }),
+    ]);
+
+    projects[0].members = await repoMmb.save([
+      repoMmb.create({ userId: admin.user_id, projectId: projects[0].id, admin: true })
     ]);
   });
 });
@@ -109,7 +116,10 @@ describe('POST /projects', () => {
     expect(rep.body).toEqual({
       id:          data.id,
       name:        data.name,
-      description: ''
+      description: '',
+      members: [
+        { userId: admin.user_id, projectId: data.id, admin: true }
+      ]
     });
   });
 
@@ -196,12 +206,6 @@ describe('GET /projects', () => {
     await request.get('/projects')
       .expect(401);
   });
-
-  it('should return 403 (missing permissions)', async () => {
-    await request.get('/projects')
-      .set('Authorization', `Bearer ${basicToken}`)
-      .expect(403);
-  });
 });
 
 describe('GET /projects/:id', () => {
@@ -216,7 +220,8 @@ describe('GET /projects/:id', () => {
     expect(rep.body).toEqual({
       id:          prj.id,
       name:        prj.name,
-      description: prj.description
+      description: prj.description,
+      members:     prj.members
     });
   });
 

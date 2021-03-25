@@ -1,6 +1,6 @@
-import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindConditions, In, Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 
 import { ICreateProject, IProjectFilters, IUpdateProject } from '@lucifer/types';
 import { Context } from '../context';
@@ -43,7 +43,9 @@ export class ProjectsService {
     );
 
     // Add current user as admin
-    await this.members.add(prj.id, ctx.user.id, true);
+    prj.members = [
+      await this.members.add(prj.id, ctx.user.id, true)
+    ];
 
     return prj;
   }

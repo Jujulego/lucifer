@@ -7,7 +7,7 @@ import { Permission } from '@lucifer/types';
 import { Context } from '../src/context';
 import { env } from '../src/env';
 import { JWT_KEY } from '../src/auth/jwt.strategy';
-import { AuthUser } from '../src/auth/user.model';
+import { AuthUser, JwtToken } from '../src/auth/user.model';
 import { AppModule } from '../src/app.module';
 
 import { ManagementClientMock } from '../mocks/management-client.mock';
@@ -35,8 +35,11 @@ export async function generateTestToken(user: string, permissions?: Permission[]
   const iat = Math.floor(Date.now() / 1000);
   const exp = iat + 5 * 60;
 
+  const usr = generateTestUser(user, permissions);
+
   return jwt.sign({
-    ...generateTestUser(user, permissions),
+    sub: usr.id,
+    permissions: usr.permissions,
     iss: `https://${env.AUTH0_DOMAIN}/`,
     aud: env.AUTH0_AUDIENCE,
     iat, exp

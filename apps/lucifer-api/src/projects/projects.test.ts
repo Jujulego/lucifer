@@ -96,7 +96,7 @@ describe('ProjectsService.create', () => {
     members = app.get(ProjectMemberService);
 
     jest.spyOn(members, 'add')
-      .mockImplementation(async (userId: string, projectId: string, admin = false) => ({ userId, projectId, admin }) as ProjectMember)
+      .mockImplementation(async (projectId: string, userId: string, admin = false) => ({ userId, projectId, admin }) as ProjectMember)
   });
 
   // Tests
@@ -107,7 +107,10 @@ describe('ProjectsService.create', () => {
       expect(project).toEqual({
         id:          'test-projects-4',
         name:        'Test #4',
-        description: ''
+        description: '',
+        members: [
+          { userId: admin.id, projectId: 'test-projects-4', admin: true }
+        ]
       });
 
       expect(members.add)
