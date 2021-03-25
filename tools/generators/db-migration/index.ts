@@ -13,7 +13,7 @@ import {
 } from '@angular-devkit/schematics';
 import { normalize, strings, virtualFs, workspaces } from '@angular-devkit/core';
 import { ConnectionOptionsReader, createConnection } from 'typeorm';
-import * as path from 'path';
+import path from 'path';
 import * as tsnode from 'ts-node';
 
 // Constants
