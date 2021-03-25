@@ -4,6 +4,7 @@
   "license": "MIT",
   "private": true,
   "builders": "./tools/executors/executors.json",
+  "schematics": "./tools/generators/collection.json",
   "engines": {
     "node": "14.x"
   },
@@ -80,7 +81,9 @@
     "yup": "^0.32.9"
   },
   "devDependencies": {
-    "@angular-devkit/architect": "^0.1102.5",
+    "@angular-devkit/architect": "^0.1102.6",
+    "@angular-devkit/core": "^11.2.6",
+    "@angular-devkit/schematics": "^11.2.6",
     "@babel/core": "^7.13.10",
     "@babel/preset-env": "^7.13.12",
     "@babel/preset-react": "^7.12.13",
@@ -134,6 +137,7 @@
     "axios-debug-log": "^0.8.2",
     "babel-jest": "^26.6.3",
     "babel-loader": "^8.2.2",
+    "chalk": "^4.1.0",
     "ci-info": "^3.1.1",
     "cypress": "^6.7.1",
     "eslint": "^7.22.0",
@@ -147,6 +151,7 @@
     "jest": "^26.6.3",
     "jsonwebtoken": "^8.5.1",
     "lodash.clonedeep": "^4.5.0",
+    "ora": "^5.4.0",
     "pinst": "^2.1.6",
     "prettier": "^2.2.1",
     "rewire": "^5.0.0",
