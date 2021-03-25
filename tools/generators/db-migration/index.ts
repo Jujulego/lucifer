@@ -12,12 +12,9 @@ import {
   url
 } from '@angular-devkit/schematics';
 import { normalize, strings, virtualFs, workspaces } from '@angular-devkit/core';
-import { ConnectionOptionsReader, createConnection } from 'typeorm';
 import path from 'path';
-import * as tsnode from 'ts-node';
 
-// Constants
-const TSCONFIG_PATH = path.join(__dirname, '../../tsconfig.tools.json');
+import { createConnection, getConnectionOptions } from '../../utils/typeorm';
 
 // Schema
 interface Schema {
@@ -69,29 +66,11 @@ export function dbMigration(options: Schema): Rule {
     }
 
     // Read typeorm config
-    if (!options.database) {
-      options.database = 'default';
-    }
-
-    const reader = new ConnectionOptionsReader({ root: path.resolve(project.root) });
-    const config = await reader.get(options.database);
+    const config = await getConnectionOptions(path.resolve(project.root), options.database);
 
     if (!config.cli?.migrationsDir) {
       throw new SchematicsException(`Missing cli.migrationsDir in ormconfig for ${options.database}`);
     }
-
-    // Prefix entities, migrations & subscribers paths
-    Object.assign(config, {
-      entities: config.entities?.map(ent => typeof ent === 'string' ? path.join(path.resolve(project.root), ent) : ent),
-      migrations: config.migrations?.map(mig => typeof mig === 'string' ? path.join(path.resolve(project.root), mig) : mig),
-      subscribers: config.subscribers?.map(sub => typeof sub === 'string' ? path.join(path.resolve(project.root), sub) : sub)
-    });
-
-    // Setup tsnode
-    tsnode.register({
-      project: TSCONFIG_PATH,
-      transpileOnly: true
-    });
 
     // Generate sql
     const connection = await createConnection(config);
