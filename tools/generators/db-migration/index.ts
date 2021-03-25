@@ -69,10 +69,22 @@ export function dbMigration(options: Schema): Rule {
     }
 
     // Read typeorm config
+    if (!options.database) {
+      options.database = 'default';
+    }
+
     const reader = new ConnectionOptionsReader({ root: path.resolve(project.root) });
-    const config = await reader.get(options.database || 'default');
+    const config = await reader.get(options.database);
+
+    if (!config.cli?.migrationsDir) {
+      throw new SchematicsException(`Missing cli.migrationsDir in ormconfig for ${options.database}`);
+    }
+
+    // Prefix entities, migrations & subscribers paths
     Object.assign(config, {
-      entities: config.entities?.map(ent => typeof ent === 'string' ? path.join(path.resolve(project.root), ent) : ent)
+      entities: config.entities?.map(ent => typeof ent === 'string' ? path.join(path.resolve(project.root), ent) : ent),
+      migrations: config.migrations?.map(mig => typeof mig === 'string' ? path.join(path.resolve(project.root), mig) : mig),
+      subscribers: config.subscribers?.map(sub => typeof sub === 'string' ? path.join(path.resolve(project.root), sub) : sub)
     });
 
     // Setup tsnode
@@ -91,7 +103,7 @@ export function dbMigration(options: Schema): Rule {
     }
 
     // Parse existing migration files
-    const migrationsDir = path.join(project.root, config.cli!.migrationsDir!);
+    const migrationsDir = path.join(project.root, config.cli.migrationsDir);
     const migrations = tree.getDir(migrationsDir).subfiles
       .filter(file => file.endsWith('.migration.ts'))
       .map((file: string) => {
