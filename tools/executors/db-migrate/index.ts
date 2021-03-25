@@ -14,7 +14,7 @@ interface Options extends json.JsonObject {
 // Builder
 export default createBuilder(async (options: Options, ctx: BuilderContext) => {
   const spinner = ora({
-    prefixText: chalk.grey(`[${options.database}]`),
+    prefixText: chalk`{grey [${options.database}]}`,
     text: `Migrating database ...`
   }).start();
 
