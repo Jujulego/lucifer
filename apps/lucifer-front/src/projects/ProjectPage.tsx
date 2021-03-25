@@ -13,6 +13,7 @@ import { PageToolbar } from '../layout/PageToolbar';
 import { PageHeader } from '../layout/PageHeader';
 import { PageTab } from '../layout/PageTab';
 import { Fade } from '@material-ui/core';
+import { ApiKeysTable } from './api-keys/ApiKeysTable';
 
 // Types
 interface ProjectParams {
@@ -61,6 +62,9 @@ export const ProjectPage: FC = () => {
       </PageHeader>
       <PageTab value="details" label="Détails" keepMounted>
         <ProjectDetailsTab project={project} isRemoving={isRemoving} onUpdate={update} />
+      </PageTab>
+      <PageTab value="api-keys" label="Clé api">
+        <ApiKeysTable projectId={id} />
       </PageTab>
       <PageTab value="variables" label="Variables" keepMounted>
         <VariablesTable projectId={id} />

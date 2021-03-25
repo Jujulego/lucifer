@@ -49,7 +49,7 @@ export const ProjectDetailsTab: FC<ProjectDetailsProps> = (props) => {
   const { open } = usePageTab();
 
   // Auth
-  const isAdmin = useNeedRole('admin', usr => project?.adminId === usr?.id) ?? false;
+  const isAdmin = useNeedRole('admin'/*, usr => project?.adminId === usr?.id*/) ?? false;
 
   // Form
   const { errors, register, reset, handleSubmit, formState } = useForm<IUpdateProject>({

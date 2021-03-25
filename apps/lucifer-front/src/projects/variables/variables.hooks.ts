@@ -16,7 +16,7 @@ export const useVariablesAPI = {
 
   get: (projectId: string, id: string) => useAPI.get<IVariable>(`/api/projects/${projectId}/variables/${id}`),
   put: (projectId: string, id: string) => useAPI.put<IUpdateVariable, IVariable>(`/api/projects/${projectId}/variables/${id}`),
-  delete: (projectId: string, id: string) => useAPI.delete<IVariable>(`/api/projects/${projectId}/variables/${id}`),
+  delete: (projectId: string, id: string) => useAPI.delete<number | null>(`/api/projects/${projectId}/variables/${id}`),
 };
 
 // Hooks
