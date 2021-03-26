@@ -127,7 +127,7 @@ export const VariablesTable: FC<VariablesTableProps> = (props) => {
             onClose={() => setUpdating(undefined)}
           />
           <ConfirmDialog state={deleteState}>
-            { (variables) => (
+            { (variables: IVariable[]) => (
               <>
                 <DialogTitle>Supprimer { variables.length } variables ?</DialogTitle>
                 <DialogContent className={styles.confirmContent} dividers>
