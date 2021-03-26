@@ -4,14 +4,14 @@ import {
   DialogContent,
   DialogTitle,
   Fab,
-  Fade, List, ListItem, ListItemText,
+  Fade, IconButton, List, ListItem, ListItemText,
   makeStyles,
   TableCell,
   TableContainer,
   TableHead,
   Zoom
 } from '@material-ui/core';
-import { Add as AddIcon, Delete as DeleteIcon } from '@material-ui/icons';
+import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from '@material-ui/icons';
 
 import { ConfirmDialog, RefreshButton, useConfirm } from '@lucifer/react-basics';
 import { Table, TableAction, TableBody, TableRow, TableSortCell } from '@lucifer/react-table';
@@ -22,6 +22,7 @@ import { usePageTab } from '../../layout/page-tab.context';
 
 import { useApiKeys } from './api-keys.hooks';
 import { AddApiKeyDialog } from './AddApiKeyDialog';
+import { UpdateApiKeyDialog } from './UpdateApiKeyDialog';
 
 // Types
 export interface ApiKeysTableProps {
@@ -30,6 +31,11 @@ export interface ApiKeysTableProps {
 
 // Styles
 const useStyles = makeStyles(({ spacing }) => ({
+  actions: {
+    width: 0,
+    padding: 0,
+    textAlign: 'right'
+  },
   confirmContent: {
     padding: 0,
   },
@@ -49,12 +55,17 @@ export const ApiKeysTable: FC<ApiKeysTableProps> = (props) => {
 
   // State
   const [creating, setCreating] = useState(false);
+  const [updating, setUpdating] = useState<IApiKey | undefined>();
   const { state: deleteState, confirm: confirmDelete } = useConfirm<IApiKey[]>([]);
 
   // API
-  const { apiKeys = [], create, loading, reload, bulkDelete } = useApiKeys(projectId);
+  const { apiKeys = [], create, loading, reload, updateCache, bulkDelete } = useApiKeys(projectId);
 
   // Callbacks
+  const handleUpdated = useCallback(async (apk: IApiKey) => {
+    updateCache((old = []) => old.map(a => a.id === apk.id ? apk : a));
+  }, [updateCache]);
+
   const handleDelete = useCallback(async (apiKeys: IApiKey[]) => {
     const ids = apiKeys.map(apk => apk.id);
 
@@ -90,14 +101,20 @@ export const ApiKeysTable: FC<ApiKeysTableProps> = (props) => {
                 <TableSortCell<IApiKey> field="label">Label</TableSortCell>
                 <TableSortCell<IApiKey> field="id">Identifiant</TableSortCell>
                 { asKey && <TableCell>Clé</TableCell> }
+                <TableCell />
               </TableRow>
             </TableHead>
             <TableBody>
               { (apk: IApiKey) => (
-                <TableRow key={apk.id} doc={apk}>
+                <TableRow key={apk.id} doc={apk} hover>
                   <TableCell>{ apk.label }</TableCell>
                   <TableCell>{ apk.id }</TableCell>
                   { asKey && <TableCell>{ (apk as IApiKeyWithKey).key }</TableCell> }
+                  <TableCell className={styles.actions} onClick={event => event.stopPropagation()}>
+                    <IconButton onClick={() => setUpdating(apk)}>
+                      <EditIcon />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
               ) }
             </TableBody>
@@ -106,6 +123,12 @@ export const ApiKeysTable: FC<ApiKeysTableProps> = (props) => {
             open={creating}
             onAdd={create}
             onClose={() => setCreating(false)}
+          />
+          <UpdateApiKeyDialog
+            open={!!updating}
+            apiKey={updating}
+            onUpdated={handleUpdated}
+            onClose={() => setUpdating(undefined)}
           />
           <ConfirmDialog state={deleteState}>
             { (apiKeys: IApiKey[]) => (

@@ -75,7 +75,7 @@ export const UpdateVariableDialog: FC<UpdateVariableDialogProps> = (props) => {
   return (
     <FormDialog
       open={open}
-      title="Editer variable"
+      title="Editer une variable"
       submitText="Sauver"
       isSubmitting={formState.isSubmitting}
       isValid={formState.isValid}

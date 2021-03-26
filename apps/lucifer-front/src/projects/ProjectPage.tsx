@@ -63,7 +63,7 @@ export const ProjectPage: FC = () => {
       <PageTab value="details" label="Détails" keepMounted>
         <ProjectDetailsTab project={project} isRemoving={isRemoving} onUpdate={update} />
       </PageTab>
-      <PageTab value="api-keys" label="Clés API" keepMounted>
+      <PageTab value="api-keys" label="Clés d'API" keepMounted>
         <ApiKeysTable projectId={id} />
       </PageTab>
       <PageTab value="variables" label="Variables" keepMounted>

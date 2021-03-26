@@ -103,7 +103,7 @@ export const VariablesTable: FC<VariablesTableProps> = (props) => {
             </TableHead>
             <TableBody>
               { (vrb: IVariable) => (
-                <TableRow key={vrb.id} doc={vrb}>
+                <TableRow key={vrb.id} doc={vrb} hover>
                   <TableCell>{ vrb.name }</TableCell>
                   <TableCell>{ vrb.value }</TableCell>
                   <TableCell className={styles.actions} onClick={event => event.stopPropagation()}>

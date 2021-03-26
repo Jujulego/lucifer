@@ -15,7 +15,7 @@ import { handleAPIErrors } from '../../utils/form';
 // Types
 export interface AddVariableDialogProps {
   open: boolean;
-  onAdd: (data: ICreateVariable) => void;
+  onAdd: (data: ICreateVariable) => Promise<unknown> | unknown;
   onClose: () => void;
 }
 
