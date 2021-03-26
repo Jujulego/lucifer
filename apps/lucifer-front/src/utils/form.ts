@@ -4,7 +4,7 @@ import { FieldName, FieldValues, UseFormMethods } from 'react-hook-form';
 import { ValidationError } from '@lucifer/types';
 
 // Utils
-export function handleAPIErrors<T extends FieldValues>(error: AxiosError, idField: FieldName<T>, setError: UseFormMethods<T>['setError']) {
+export function handleAPIErrors<T extends FieldValues>(error: AxiosError, idField: FieldName<T> | null, setError: UseFormMethods<T>['setError']) {
   const res = error.response;
 
   switch (res?.status) {
@@ -16,7 +16,11 @@ export function handleAPIErrors<T extends FieldValues>(error: AxiosError, idFiel
       break;
 
     case 409: // Conflict
-      setError(idField, { type: 'conflict', message: res.data.message, shouldFocus: true });
+      if (idField) {
+        setError(idField, { type: 'conflict', message: res.data.message, shouldFocus: true });
+      } else {
+        throw error;
+      }
 
       break;
 

@@ -1,6 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 
-import { Fade, TableCell, TableContainer, TableHead } from '@material-ui/core';
+import { Fab, Fade, makeStyles, TableCell, TableContainer, TableHead, Zoom } from '@material-ui/core';
+import { Add as AddIcon } from '@material-ui/icons';
 
 import { RefreshButton } from '@lucifer/react-basics';
 import { Table, TableBody, TableRow, TableSortCell } from '@lucifer/react-table';
@@ -10,11 +11,21 @@ import { PageActions } from '../../layout/PageActions';
 import { usePageTab } from '../../layout/page-tab.context';
 
 import { useApiKeys } from './api-keys.hooks';
+import { AddApiKeyDialog } from './AddApiKeyDialog';
 
 // Types
 export interface ApiKeysTableProps {
   projectId: string;
 }
+
+// Styles
+const useStyles = makeStyles(({ spacing }) => ({
+  fab: {
+    position: 'absolute',
+    bottom: spacing(2),
+    right: spacing(2)
+  }
+}));
 
 // Component
 export const ApiKeysTable: FC<ApiKeysTableProps> = (props) => {
@@ -23,10 +34,15 @@ export const ApiKeysTable: FC<ApiKeysTableProps> = (props) => {
   // Context
   const { open } = usePageTab();
 
+  // State
+  const [creating, setCreating] = useState(false);
+
   // API
-  const { apiKeys = [], loading, reload } = useApiKeys(projectId);
+  const { apiKeys = [], create, loading, reload } = useApiKeys(projectId);
 
   // Render
+  const styles = useStyles();
+
   const toolbar = (
     <PageActions>
       <Fade in={open}>
@@ -55,8 +71,22 @@ export const ApiKeysTable: FC<ApiKeysTableProps> = (props) => {
               ) }
             </TableBody>
           </Table>
+          <AddApiKeyDialog
+            open={creating}
+            onAdd={create}
+            onClose={() => setCreating(false)}
+          />
         </TableContainer>
       ) }
+      <Zoom in={open}>
+        <Fab
+          className={styles.fab} color="primary"
+          aria-label="add api-key"
+          onClick={() => setCreating(true)}
+        >
+          <AddIcon />
+        </Fab>
+      </Zoom>
     </>
   );
 };
