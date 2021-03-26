@@ -5077,10 +5077,10 @@ atob@^2.1.2:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-auth0@^2.33.0:
-  version "2.33.0"
-  resolved "https://registry.yarnpkg.com/auth0/-/auth0-2.33.0.tgz#1284ad691fa841b19b96e8a0a8df44f536d25372"
-  integrity sha512-q9xCKE+WC9FKnPdsOis6K9zHGGZBviNN39ltIJvawkUT8N2/q95T1WeS1oVVmVrBxtSOag4G5VC1mfeD7fLBaQ==
+auth0@^2.34.0:
+  version "2.34.0"
+  resolved "https://registry.yarnpkg.com/auth0/-/auth0-2.34.0.tgz#08780ea96a026c1f97ed33d19fb7437d48a9900e"
+  integrity sha512-IiA3BxMTY48ffv2Tn/E3sAByC08xLz6om4AbXB8RSToe02alwK+h0feoy6+krazdcTN+UrI7fbk96y1HI3NkDg==
   dependencies:
     axios "^0.21.1"
     es6-promisify "^6.1.1"
