@@ -1,11 +1,11 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 
 import { Fab, Fade, makeStyles, TableCell, TableContainer, TableHead, Zoom } from '@material-ui/core';
 import { Add as AddIcon } from '@material-ui/icons';
 
 import { RefreshButton } from '@lucifer/react-basics';
 import { Table, TableBody, TableRow, TableSortCell } from '@lucifer/react-table';
-import { IApiKey } from '@lucifer/types';
+import { IApiKey, IApiKeyWithKey } from '@lucifer/types';
 
 import { PageActions } from '../../layout/PageActions';
 import { usePageTab } from '../../layout/page-tab.context';
@@ -40,6 +40,9 @@ export const ApiKeysTable: FC<ApiKeysTableProps> = (props) => {
   // API
   const { apiKeys = [], create, loading, reload } = useApiKeys(projectId);
 
+  // Memo
+  const asKey = useMemo(() => apiKeys.some(apk => 'key' in apk), [apiKeys]);
+
   // Render
   const styles = useStyles();
 
@@ -58,15 +61,17 @@ export const ApiKeysTable: FC<ApiKeysTableProps> = (props) => {
           <Table documents={apiKeys} toolbar={toolbar}>
             <TableHead>
               <TableRow>
-                <TableSortCell<IApiKey> field="id">Identifiant</TableSortCell>
                 <TableSortCell<IApiKey> field="label">Label</TableSortCell>
+                <TableSortCell<IApiKey> field="id">Identifiant</TableSortCell>
+                { asKey && <TableCell>Clé</TableCell> }
               </TableRow>
             </TableHead>
             <TableBody>
               { (apk: IApiKey) => (
                 <TableRow key={apk.id} doc={apk}>
-                  <TableCell>{ apk.id }</TableCell>
                   <TableCell>{ apk.label }</TableCell>
+                  <TableCell>{ apk.id }</TableCell>
+                  { asKey && <TableCell>{ (apk as IApiKeyWithKey).key }</TableCell> }
                 </TableRow>
               ) }
             </TableBody>
