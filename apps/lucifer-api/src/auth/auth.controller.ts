@@ -5,7 +5,7 @@ import { Context, Ctx } from '../context';
 
 // Controller
 @Controller('/auth')
-@UseGuards(AuthGuard('jwt'))
+@UseGuards(AuthGuard(['jwt', 'api-key']))
 export class AuthController {
   // Routes
   @Get('/permissions')

@@ -65,6 +65,12 @@ export class ApiKeyService {
   }
 
   async check(id: string, key: string): Promise<ApiKey> {
+    // Check id
+    if (!id.match(/[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}/i)) {
+      this.logger.debug(`Use of key ${id} refused (invalid key)`);
+      throw new UnauthorizedException();
+    }
+
     // Get api key
     const apk = await this.repository.findOne({
       where: { id }
