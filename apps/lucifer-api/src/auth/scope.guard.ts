@@ -6,10 +6,10 @@ import type { Permission } from '@lucifer/types';
 import { ProjectMemberService } from '../projects/project-member.service';
 import { Context } from '../context';
 
-import type { AuthUser } from './user.model';
+import type { AuthInfo } from './auth-info.model';
 
 // Types
-export type AllowIfCallback = (req: Request, user: AuthUser) => boolean;
+export type AllowIfCallback = (req: Request, user: AuthInfo) => boolean;
 
 // Constants
 const METADATA_KEYS = {
@@ -77,31 +77,46 @@ export class ScopeGuard implements CanActivate {
     const request = exc.switchToHttp().getRequest() as Request;
     const ctx = Context.fromRequest(request);
 
-    if (!ctx.user) {
+    if (!ctx.info) {
       this._logger.debug('Not logged: no user found');
       return false;
     }
 
     // Compute permissions
-    const permissions = new Set(ctx.user.permissions);
+    const permissions = new Set(ctx.info.permissions);
 
     if (projectParam) {
       const projectId = request.params[projectParam];
-      const mmb = await this.projectMembers.find(ctx.user.id, projectId);
+      let toAdd: Permission[] = [];
 
-      if (mmb) {
-        for (const perm of mmb.admin ? PROJECT_ADMIN_PERMISSIONS : PROJECT_MEMBER_PERMISSIONS) {
-          permissions.add(perm);
+      switch (ctx.info.kind) {
+        case 'user': {
+          const mmb = await this.projectMembers.find(ctx.info.userId, projectId);
+
+          if (mmb) {
+            toAdd = mmb.admin ? PROJECT_ADMIN_PERMISSIONS : PROJECT_MEMBER_PERMISSIONS;
+          }
+
+          break;
         }
+
+        case 'api-key':
+          if (ctx.info.apiKey.projectId === projectId) {
+            toAdd = ['read:projects', 'read:variables'];
+          }
+      }
+
+      for (const perm of toAdd) {
+        permissions.add(perm);
       }
     }
 
     // Match
-    if (allow && allow(request, ctx.user)) return true;
+    if (allow && allow(request, ctx.info)) return true;
     const allowed = scopes.every(scope => permissions.has(scope));
 
     if (!allowed) {
-      this._logger.debug(`Access refused: ${ctx.user.id} miss ${scopes} scopes`);
+      this._logger.debug(`Access refused: ${ctx.clientLog} miss ${scopes} scopes`);
     }
 
     return allowed;

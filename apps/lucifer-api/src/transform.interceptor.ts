@@ -13,7 +13,7 @@ export class TransformInterceptor<T> implements NestInterceptor<T> {
 
     return next.handle()
       .pipe(
-        map(data => classToPlain(data, { groups: ctx.user?.permissions }))
+        map(data => classToPlain(data, { groups: ctx.info?.permissions }))
       );
   }
 }

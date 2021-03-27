@@ -197,9 +197,11 @@ describe('GET /projects', () => {
       .expect(200)
       .expect('Content-Type', /json/);
 
-    expect(rep.body).toEqual(projects.map(prj => expect.objectContaining({
-      id: prj.id
-    })));
+    expect(rep.body).toEqual(
+      expect.arrayContaining(projects.map(prj => expect.objectContaining({
+        id: prj.id
+      })))
+    );
   });
 
   it('should return 401 (not authenticated)', async () => {

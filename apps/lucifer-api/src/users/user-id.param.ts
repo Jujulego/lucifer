@@ -5,7 +5,7 @@ import { Context } from '../context';
 
 // Function
 export function parseUsersId(ctx: Context, id: string, parseMe = true) {
-  return (id === 'me' && parseMe) ? ctx.user.id : id
+  return (ctx.info.kind === 'user' && id === 'me' && parseMe) ? ctx.info.userId : id
 }
 
 // Type

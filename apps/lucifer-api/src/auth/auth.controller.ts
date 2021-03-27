@@ -10,6 +10,6 @@ export class AuthController {
   // Routes
   @Get('/permissions')
   getPermissions(@Ctx() ctx: Context): string[] {
-    return ctx.user.permissions;
+    return ctx.info.permissions;
   }
 }

@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 
@@ -31,6 +31,8 @@ export class ProjectsService {
   }
 
   async create(ctx: Context, data: ICreateProject): Promise<Project> {
+    if (ctx.info.kind !== 'user') throw new ForbiddenException();
+
     // Check if id does not exists
     let prj = await this._get(data.id);
     if (prj) {
@@ -44,16 +46,18 @@ export class ProjectsService {
 
     // Add current user as admin
     prj.members = [
-      await this.members.add(prj.id, ctx.user.id, true)
+      await this.members.add(prj.id, ctx.info.userId, true)
     ];
 
     return prj;
   }
 
   async list(ctx: Context, filters: IProjectFilters): Promise<Project[]> {
+    if (ctx.info.kind !== 'user') throw new ForbiddenException();
+
     // Filters
     if (filters.member === 'me') {
-      filters.member = ctx.user.id;
+      filters.member = ctx.info.userId;
     }
 
     // Query builder
@@ -64,7 +68,7 @@ export class ProjectsService {
     if (!ctx.has('read:projects')) {
       qb.innerJoin(ProjectMember, 'mmb1',
         'project.id = mmb1.projectId and mmb1.userId = :self',
-        { self: ctx.user.id }
+        { self: ctx.info.userId }
       );
     }
 

@@ -2,14 +2,14 @@ import { createParamDecorator, ExecutionContext, ForbiddenException } from '@nes
 import { Request } from 'express';
 
 import type { Permission } from '@lucifer/types';
-import type { AuthUser } from './auth/user.model';
+import type { AuthInfo } from './auth/auth-info.model';
 
 // Class
 export class Context {
   // Constructor
   constructor(
     readonly token: string,
-    readonly user: AuthUser
+    readonly info: AuthInfo
   ) {}
 
   // Statics
@@ -20,7 +20,7 @@ export class Context {
   static fromRequest(req: Request): Context {
     return new Context(
       req.headers.authorization?.replace('Bearer ', '') || '',
-      req.user as AuthUser
+      req.user as AuthInfo
     )
   }
 
@@ -40,13 +40,24 @@ export class Context {
     }
 
     // Test if has scopes
-    return scopes.some(scope => this.user.permissions.includes(scope));
+    return scopes.some(scope => this.info.permissions.includes(scope));
   }
 
   need(scopes: Permission | Permission[]) {
     // Assert if has scopes
     if (!this.has(scopes)) {
       throw new ForbiddenException();
+    }
+  }
+
+  // Property
+  get clientLog(): string {
+    switch (this.info.kind) {
+      case 'user':
+        return `user:${this.info.userId}`;
+
+      case 'api-key':
+        return `api-key:${this.info.apiKey.id}`;
     }
   }
 }

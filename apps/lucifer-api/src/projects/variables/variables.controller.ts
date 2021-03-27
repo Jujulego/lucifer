@@ -11,7 +11,7 @@ import { VariablesService } from './variables.service';
 
 // Controller
 @Controller('/projects/:projectId/variables')
-@UseGuards(AuthGuard('jwt'), ScopeGuard)
+@UseGuards(AuthGuard(['jwt', 'api-key']), ScopeGuard)
 @ProjectIdParam('projectId')
 export class VariablesController {
   // Constructor

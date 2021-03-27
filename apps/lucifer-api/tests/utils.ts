@@ -7,7 +7,7 @@ import { Permission } from '@lucifer/types';
 import { Context } from '../src/context';
 import { env } from '../src/env';
 import { JWT_KEY } from '../src/auth/jwt.strategy';
-import { AuthUser, JwtToken } from '../src/auth/user.model';
+import { AuthUser } from '../src/auth/auth-info.model';
 import { AppModule } from '../src/app.module';
 
 import { ManagementClientMock } from '../mocks/management-client.mock';
@@ -27,7 +27,8 @@ export async function initTestingApp(): Promise<INestApplication> {
 }
 
 export const generateTestUser = (user: string, permissions: Permission[] = []): AuthUser => ({
-  id: user,
+  kind: 'user',
+  userId: user,
   permissions,
 })
 
@@ -38,7 +39,7 @@ export async function generateTestToken(user: string, permissions?: Permission[]
   const usr = generateTestUser(user, permissions);
 
   return jwt.sign({
-    sub: usr.id,
+    sub: usr.userId,
     permissions: usr.permissions,
     iss: `https://${env.AUTH0_DOMAIN}/`,
     aud: env.AUTH0_AUDIENCE,

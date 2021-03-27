@@ -17,6 +17,9 @@ import { ProjectsDataModule } from '../projects-data.module';
   ],
   controllers: [
     ApiKeyController
+  ],
+  exports: [
+    ApiKeyService
   ]
 })
 export class ApiKeyModule {}
