@@ -3,19 +3,23 @@ import { ManagementClient } from 'auth0';
 import { Connection, In } from 'typeorm';
 import supertest from 'supertest';
 
-import { ICreateVariable, IUpdateVariable } from '@lucifer/types';
+import { IApiKeyWithKey, ICreateVariable, IUpdateVariable } from '@lucifer/types';
+import { should } from '@lucifer/utils';
+
 import { LocalUser } from '../../src/users/local-user.entity';
 import { Project } from '../../src/projects/project.entity';
+import { ApiKeyService } from '../../src/projects/api-keys/api-key.service';
 import { Variable } from '../../src/projects/variables/variable.entity';
+import { VariablesService } from '../../src/projects/variables/variables.service';
 
 import { generateTestToken, initTestingApp } from '../utils';
 import { ManagementClientMock } from '../../mocks/management-client.mock';
-import { VariablesService } from '../../src/projects/variables/variables.service';
-import { should } from '@lucifer/utils';
+import { ApiKeyServiceMock } from '../../mocks/api-key-service.mock';
 
 // Server setup
 let app: INestApplication;
 let mgmtClient: ManagementClientMock;
+let apkMock: ApiKeyServiceMock;
 let database: Connection;
 let service: VariablesService;
 let request: ReturnType<typeof supertest>;
@@ -28,6 +32,7 @@ beforeAll(async () => {
   request = supertest(app.getHttpServer());
   database = app.get(Connection);
   service = app.get(VariablesService);
+  apkMock = app.get(ApiKeyService);
 });
 
 afterAll(async () => {
@@ -37,6 +42,8 @@ afterAll(async () => {
 // Setup data
 let adminToken: string;
 let basicToken: string;
+let projectApk: IApiKeyWithKey;
+let basicApk: IApiKeyWithKey;
 let lcu: LocalUser;
 let projects: Project[];
 let variables: Variable[];
@@ -85,6 +92,12 @@ beforeEach(async () => {
       repoVrb.create({ projectId: projects[1].id, id: 'test-1', name: 'TEST1', value: '1' }),
     ]);
   });
+
+  // Get api-key
+  apkMock.mockReset();
+  projectApk = apkMock.mockApiKey('mock-key', projects[0].id);
+  basicApk = apkMock.mockApiKey('mock-key', 'mock-project');
+
 });
 
 afterEach(async () => {
@@ -117,7 +130,7 @@ describe('POST /projects/:projectId/variables', () => {
   // Tests
   it('should return created variable', async () => {
     const rep = await request.post(`/projects/${projects[1].id}/variables`)
-      .set('Authorization', `Bearer ${adminToken}`)
+      .auth(adminToken, { type: 'bearer' })
       .send(data)
       .expect(201)
       .expect('Content-Type', /json/);
@@ -133,7 +146,7 @@ describe('POST /projects/:projectId/variables', () => {
 
   it('should return 400 (missing parameters)', async () => {
     const rep = await request.post(`/projects/${projects[1].id}/variables`)
-      .set('Authorization', `Bearer ${adminToken}`)
+      .auth(adminToken, { type: 'bearer' })
       .send({})
       .expect(400)
       .expect('Content-Type', /json/);
@@ -148,7 +161,7 @@ describe('POST /projects/:projectId/variables', () => {
 
   it('should return 400 (too long id & name)', async () => {
     const rep = await request.post(`/projects/${projects[1].id}/variables`)
-      .set('Authorization', `Bearer ${adminToken}`)
+      .auth(adminToken, { type: 'bearer' })
       .send({
         id:   'this-is-a-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-too-long-id',
         name: 'This as a very very very very very very very very very very very very very very very very very too long name'
@@ -165,7 +178,7 @@ describe('POST /projects/:projectId/variables', () => {
 
   it('should return 400 (invalid id)', async () => {
     const rep = await request.post(`/projects/${projects[1].id}/variables`)
-      .set('Authorization', `Bearer ${adminToken}`)
+      .auth(adminToken, { type: 'bearer' })
       .send({ ...data,
         id:   '!:;,?%*'
       })
@@ -187,7 +200,15 @@ describe('POST /projects/:projectId/variables', () => {
 
   it('should return 403 (missing permissions)', async () => {
     await request.post(`/projects/${projects[1].id}/variables`)
-      .set('Authorization', `Bearer ${basicToken}`)
+      .auth(basicToken, { type: 'bearer' })
+      .expect(403);
+
+    expect(service.create).not.toBeCalled();
+  });
+
+  it('should return 403 (not allowed to api-keys)', async () => {
+    await request.post(`/projects/${projects[1].id}/variables`)
+      .auth(basicApk.id, basicApk.key)
       .expect(403);
 
     expect(service.create).not.toBeCalled();
@@ -195,7 +216,7 @@ describe('POST /projects/:projectId/variables', () => {
 
   it('should return 404 (unknown project)', async () => {
     await request.post(`/projects/wrong-project/variables`)
-      .set('Authorization', `Bearer ${adminToken}`)
+      .auth(adminToken, { type: 'bearer' })
       .send(data)
       .expect(404);
 
@@ -207,7 +228,7 @@ describe('POST /projects/:projectId/variables', () => {
     const data = { id: vrb.id, name: vrb.name, value: vrb.value };
 
     const rep = await request.post(`/projects/${vrb.projectId}/variables`)
-      .set('Authorization', `Bearer ${adminToken}`)
+      .auth(adminToken, { type: 'bearer' })
       .send(data)
       .expect(409);
 
@@ -219,7 +240,21 @@ describe('POST /projects/:projectId/variables', () => {
 describe('GET /projects/:projectId/variables', () => {
   it('should return all project\'s variables', async () => {
     const rep = await request.get(`/projects/${projects[0].id}/variables`)
-      .set('Authorization', `Bearer ${adminToken}`)
+      .auth(adminToken, { type: 'bearer' })
+      .expect(200)
+      .expect('Content-Type', /json/);
+
+    expect(rep.body).toEqual(
+      variables.filter(vrb => vrb.projectId === projects[0].id)
+        .map(vrb => expect.objectContaining({
+          id: vrb.id
+        }))
+    );
+  });
+
+  it('should return all project\'s variables (api-key access)', async () => {
+    const rep = await request.get(`/projects/${projects[0].id}/variables`)
+      .auth(projectApk.id, projectApk.key)
       .expect(200)
       .expect('Content-Type', /json/);
 
@@ -238,7 +273,13 @@ describe('GET /projects/:projectId/variables', () => {
 
   it('should return 403 (missing permissions)', async () => {
     await request.get(`/projects/${projects[0].id}/variables`)
-      .set('Authorization', `Bearer ${basicToken}`)
+      .auth(basicToken, { type: 'bearer' })
+      .expect(403);
+  });
+
+  it('should return 403 (api-key miss permissions)', async () => {
+    await request.get(`/projects/${projects[0].id}/variables`)
+      .auth(basicApk.id, basicApk.key)
       .expect(403);
   });
 });
@@ -258,7 +299,7 @@ describe('PUT /projects/:projectId/variables/:id', () => {
     const vrb = variables[0];
 
     const rep = await request.put(`/projects/${vrb.projectId}/variables/${vrb.id}`)
-      .set('Authorization', `Bearer ${adminToken}`)
+      .auth(adminToken, { type: 'bearer' })
       .send(data)
       .expect(200)
       .expect('Content-Type', /json/);
@@ -271,7 +312,7 @@ describe('PUT /projects/:projectId/variables/:id', () => {
     const vrb = variables[0];
 
     const rep = await request.put(`/projects/${vrb.projectId}/variables/${vrb.id}`)
-      .set('Authorization', `Bearer ${adminToken}`)
+      .auth(adminToken, { type: 'bearer' })
       .send({
         name: 'This as a very very very very very very very very very very very very very very very very very too long name'
       })
@@ -297,7 +338,17 @@ describe('PUT /projects/:projectId/variables/:id', () => {
     const vrb = variables[0];
 
     await request.put(`/projects/${vrb.projectId}/variables/${vrb.id}`)
-      .set('Authorization', `Bearer ${basicToken}`)
+      .auth(basicToken, { type: 'bearer' })
+      .expect(403);
+
+    expect(service.update).not.toBeCalled();
+  });
+
+  it('should return 403 (api-key miss permissions)', async () => {
+    const vrb = variables[0];
+
+    await request.put(`/projects/${vrb.projectId}/variables/${vrb.id}`)
+      .auth(projectApk.id, projectApk.key)
       .expect(403);
 
     expect(service.update).not.toBeCalled();
@@ -307,7 +358,7 @@ describe('PUT /projects/:projectId/variables/:id', () => {
     const vrb = variables[0];
 
     await request.put(`/projects/${vrb.projectId}/variables/not-a-variable-id/`)
-      .set('Authorization', `Bearer ${adminToken}`)
+      .auth(adminToken, { type: 'bearer' })
       .expect(404);
 
     expect(service.update).toBeCalledWith(vrb.projectId, 'not-a-variable-id', {});
@@ -317,7 +368,7 @@ describe('PUT /projects/:projectId/variables/:id', () => {
     const vrb = variables[0];
 
     await request.put(`/projects/not-a-project-id/variables/${vrb.id}`)
-      .set('Authorization', `Bearer ${adminToken}`)
+      .auth(adminToken, { type: 'bearer' })
       .expect(404);
 
     expect(service.update).toBeCalledWith('not-a-project-id', vrb.id, {});
@@ -334,7 +385,7 @@ describe('DELETE /projects/:projectsId/variables/:id', () => {
     const vrb = variables[0];
 
     await request.delete(`/projects/${vrb.projectId}/variables/${vrb.id}`)
-      .set('Authorization', `Bearer ${adminToken}`)
+      .auth(adminToken, { type: 'bearer' })
       .expect(200);
 
     expect(service.delete)
@@ -354,7 +405,17 @@ describe('DELETE /projects/:projectsId/variables/:id', () => {
     const vrb = variables[0];
 
     await request.delete(`/projects/${vrb.projectId}/variables/${vrb.id}`)
-      .set('Authorization', `Bearer ${basicToken}`)
+      .auth(basicToken, { type: 'bearer' })
+      .expect(403);
+
+    expect(service.delete).not.toBeCalled();
+  });
+
+  it('should return 403 (api-key miss permissions)', async () => {
+    const vrb = variables[0];
+
+    await request.delete(`/projects/${vrb.projectId}/variables/${vrb.id}`)
+      .auth(projectApk.id, projectApk.key)
       .expect(403);
 
     expect(service.delete).not.toBeCalled();
@@ -377,7 +438,7 @@ describe('DELETE /projects/:projectsId/variables', () => {
   it('should delete variable', async () => {
     await request.delete(`/projects/${prj.id}/variables`)
       .query({ ids: ids })
-      .set('Authorization', `Bearer ${adminToken}`)
+      .auth(adminToken, { type: 'bearer' })
       .expect(200);
 
     expect(service.delete)
@@ -393,7 +454,15 @@ describe('DELETE /projects/:projectsId/variables', () => {
 
   it('should return 403 (missing permissions)', async () => {
     await request.delete(`/projects/${prj.id}/variables`)
-      .set('Authorization', `Bearer ${basicToken}`)
+      .auth(basicToken, { type: 'bearer' })
+      .expect(403);
+
+    expect(service.delete).not.toBeCalled();
+  });
+
+  it('should return 403 (api-key miss permissions)', async () => {
+    await request.delete(`/projects/${prj.id}/variables`)
+      .auth(projectApk.id, projectApk.key)
       .expect(403);
 
     expect(service.delete).not.toBeCalled();

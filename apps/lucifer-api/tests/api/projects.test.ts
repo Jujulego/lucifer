@@ -3,20 +3,23 @@ import { ManagementClient } from 'auth0';
 import { Connection } from 'typeorm';
 import supertest from 'supertest';
 
-import { ICreateProject, IUpdateProject } from '@lucifer/types';
+import { IApiKeyWithKey, ICreateProject, IUpdateProject } from '@lucifer/types';
 import { should } from '@lucifer/utils';
 
 import { LocalUser } from '../../src/users/local-user.entity';
 import { Project } from '../../src/projects/project.entity';
+import { ApiKeyService } from '../../src/projects/api-keys/api-key.service';
 import { ProjectMember } from '../../src/projects/project-member.entity';
 import { ProjectsService } from '../../src/projects/projects.service';
 
 import { generateTestToken, initTestingApp } from '../utils';
 import { ManagementClientMock } from '../../mocks/management-client.mock';
+import { ApiKeyServiceMock } from '../../mocks/api-key-service.mock';
 
 // Server setup
 let app: INestApplication;
 let mgmtClient: ManagementClientMock;
+let apkMock: ApiKeyServiceMock;
 let database: Connection;
 let service: ProjectsService;
 let request: ReturnType<typeof supertest>;
@@ -29,6 +32,7 @@ beforeAll(async () => {
   request = supertest(app.getHttpServer());
   database = app.get(Connection);
   service = app.get(ProjectsService);
+  apkMock = app.get(ApiKeyService);
 });
 
 afterAll(async () => {
@@ -38,6 +42,7 @@ afterAll(async () => {
 // Setup data
 let adminToken: string;
 let basicToken: string;
+let testApk: IApiKeyWithKey;
 let lcu: LocalUser;
 let projects: Project[];
 
@@ -60,6 +65,10 @@ beforeEach(async () => {
   // Get tokens
   adminToken = await generateTestToken(admin.user_id, ['create:projects', 'read:projects', 'update:projects', 'delete:projects']);
   basicToken = await generateTestToken(basic.user_id, []);
+
+  // Get api-key
+  apkMock.mockReset();
+  testApk = apkMock.mockApiKey('mock-key', 'mock-project');
 
   // Mocks
   mgmtClient.mockSetUsers([admin, basic]);
@@ -108,7 +117,7 @@ describe('POST /projects', () => {
   // Tests
   it('should return created project', async () => {
     const rep = await request.post('/projects')
-      .set('Authorization', `Bearer ${adminToken}`)
+      .auth(adminToken, { type: 'bearer' })
       .send(data)
       .expect(201)
       .expect('Content-Type', /json/);
@@ -125,7 +134,7 @@ describe('POST /projects', () => {
 
   it('should return 400 (missing parameters)', async () => {
     const rep = await request.post('/projects')
-      .set('Authorization', `Bearer ${adminToken}`)
+      .auth(adminToken, { type: 'bearer' })
       .send({})
       .expect(400)
       .expect('Content-Type', /json/);
@@ -138,7 +147,7 @@ describe('POST /projects', () => {
 
   it('should return 400 (too long id & name)', async () => {
     const rep = await request.post('/projects')
-      .set('Authorization', `Bearer ${adminToken}`)
+      .auth(adminToken, { type: 'bearer' })
       .send({
         id:   'this-is-a-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-too-long-id',
         name: 'This as a very very very very very very very very very very very very very very very very very too long name'
@@ -154,7 +163,7 @@ describe('POST /projects', () => {
 
   it('should return 400 (invalid id)', async () => {
     const rep = await request.post('/projects')
-      .set('Authorization', `Bearer ${adminToken}`)
+      .auth(adminToken, { type: 'bearer' })
       .send({
         id:   '!:;,?%*',
         name: 'Project name'
@@ -172,9 +181,15 @@ describe('POST /projects', () => {
       .expect(401);
   });
 
+  it('should return 401 (not allowed to api keys)', async () => {
+    await request.post('/projects')
+      .auth(testApk.id, testApk.key)
+      .expect(401);
+  });
+
   it('should return 403 (missing permissions)', async () => {
     await request.post('/projects')
-      .set('Authorization', `Bearer ${basicToken}`)
+      .auth(basicToken, { type: 'bearer' })
       .expect(403);
   });
 
@@ -182,7 +197,7 @@ describe('POST /projects', () => {
     const prj = projects[0];
 
     const rep = await request.post('/projects')
-      .set('Authorization', `Bearer ${adminToken}`)
+      .auth(adminToken, { type: 'bearer' })
       .send({ id: prj.id, name: prj.name })
       .expect(409);
 
@@ -193,7 +208,7 @@ describe('POST /projects', () => {
 describe('GET /projects', () => {
   it('should return all projects', async () => {
     const rep = await request.get('/projects')
-      .set('Authorization', `Bearer ${adminToken}`)
+      .auth(adminToken, { type: 'bearer' })
       .expect(200)
       .expect('Content-Type', /json/);
 
@@ -208,6 +223,12 @@ describe('GET /projects', () => {
     await request.get('/projects')
       .expect(401);
   });
+
+  it('should return 401 (not allowed to api keys)', async () => {
+    await request.get('/projects')
+      .auth(testApk.id, testApk.key)
+      .expect(401);
+  });
 });
 
 describe('GET /projects/:id', () => {
@@ -215,7 +236,7 @@ describe('GET /projects/:id', () => {
     const prj = projects[0];
 
     const rep = await request.get(`/projects/${prj.id}`)
-      .set('Authorization', `Bearer ${adminToken}`)
+      .auth(adminToken, { type: 'bearer' })
       .expect(200)
       .expect('Content-Type', /json/);
 
@@ -234,17 +255,25 @@ describe('GET /projects/:id', () => {
       .expect(401);
   });
 
+  it('should return 401 (not allowed to api keys)', async () => {
+    const prj = projects[0];
+
+    await request.get(`/projects/${prj.id}`)
+      .auth(testApk.id, testApk.key)
+      .expect(401);
+  });
+
   it('should return 403 (missing permissions)', async () => {
     const prj = projects[0];
 
     await request.get(`/projects/${prj.id}`)
-      .set('Authorization', `Bearer ${basicToken}`)
+      .auth(basicToken, { type: 'bearer' })
       .expect(403);
   });
 
   it('should return 404 (unknown project)', async () => {
     await request.get('/projects/not-a-project-id')
-      .set('Authorization', `Bearer ${adminToken}`)
+      .auth(adminToken, { type: 'bearer' })
       .expect(404);
   });
 });
@@ -264,7 +293,7 @@ describe('PUT /projects/:id', () => {
     const prj = projects[0];
 
     const rep = await request.put(`/projects/${prj.id}`)
-      .set('Authorization', `Bearer ${adminToken}`)
+      .auth(adminToken, { type: 'bearer' })
       .send(data)
       .expect(200)
       .expect('Content-Type', /json/);
@@ -277,7 +306,7 @@ describe('PUT /projects/:id', () => {
     const prj = projects[0];
 
     const rep = await request.put(`/projects/${prj.id}`)
-      .set('Authorization', `Bearer ${adminToken}`)
+      .auth(adminToken, { type: 'bearer' })
       .send({
         name: 'This as a very very very very very very very very very very very very very very very very very too long name'
       })
@@ -299,11 +328,19 @@ describe('PUT /projects/:id', () => {
     expect(service.update).not.toBeCalled();
   });
 
+  it('should return 401 (not allowed to api keys)', async () => {
+    const prj = projects[0];
+
+    await request.put(`/projects/${prj.id}`)
+      .auth(testApk.id, testApk.key)
+      .expect(401);
+  });
+
   it('should return 403 (missing permissions)', async () => {
     const prj = projects[0];
 
     await request.put(`/projects/${prj.id}`)
-      .set('Authorization', `Bearer ${basicToken}`)
+      .auth(basicToken, { type: 'bearer' })
       .expect(403);
 
     expect(service.update).not.toBeCalled();
@@ -311,7 +348,7 @@ describe('PUT /projects/:id', () => {
 
   it('should return 404 (unknown project)', async () => {
     await request.put('/projects/not-a-project-id')
-      .set('Authorization', `Bearer ${adminToken}`)
+      .auth(adminToken, { type: 'bearer' })
       .expect(404);
 
     expect(service.update).toBeCalledWith('not-a-project-id', {});
@@ -328,7 +365,7 @@ describe('DELETE /projects/:id', () => {
     const prj = projects[0];
 
     await request.delete(`/projects/${prj.id}`)
-      .set('Authorization', `Bearer ${adminToken}`)
+      .auth(adminToken, { type: 'bearer' })
       .expect(200);
 
     expect(service.delete)
@@ -344,11 +381,19 @@ describe('DELETE /projects/:id', () => {
     expect(service.delete).not.toBeCalled();
   });
 
+  it('should return 401 (not allowed to api keys)', async () => {
+    const prj = projects[0];
+
+    await request.delete(`/projects/${prj.id}`)
+      .auth(testApk.id, testApk.key)
+      .expect(401);
+  });
+
   it('should return 403 (missing permissions)', async () => {
     const prj = projects[0];
 
     await request.delete(`/projects/${prj.id}`)
-      .set('Authorization', `Bearer ${basicToken}`)
+      .auth(basicToken, { type: 'bearer' })
       .expect(403);
 
     expect(service.delete).not.toBeCalled();
@@ -367,7 +412,7 @@ describe('DELETE /projects', () => {
   it('should delete project', async () => {
     await request.delete('/projects')
       .query({ ids: ids })
-      .set('Authorization', `Bearer ${adminToken}`)
+      .auth(adminToken, { type: 'bearer' })
       .expect(200);
 
     expect(service.delete)
@@ -381,9 +426,15 @@ describe('DELETE /projects', () => {
     expect(service.delete).not.toBeCalled();
   });
 
+  it('should return 401 (not allowed to api keys)', async () => {
+    await request.delete('/projects')
+      .auth(testApk.id, testApk.key)
+      .expect(401);
+  });
+
   it('should return 403 (missing permissions)', async () => {
     await request.delete('/projects')
-      .set('Authorization', `Bearer ${basicToken}`)
+      .auth(basicToken, { type: 'bearer' })
       .expect(403);
 
     expect(service.delete).not.toBeCalled();

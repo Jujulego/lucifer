@@ -4,12 +4,15 @@ import { ManagementClient } from 'auth0';
 import * as jwt from 'jsonwebtoken';
 
 import { Permission } from '@lucifer/types';
+
+import { AppModule } from '../src/app.module';
 import { Context } from '../src/context';
 import { env } from '../src/env';
 import { JWT_KEY } from '../src/auth/jwt.strategy';
 import { AuthUser } from '../src/auth/auth-info.model';
-import { AppModule } from '../src/app.module';
+import { ApiKeyService } from '../src/projects/api-keys/api-key.service';
 
+import { ApiKeyServiceMock } from '../mocks/api-key-service.mock';
 import { ManagementClientMock } from '../mocks/management-client.mock';
 
 // Utils
@@ -18,6 +21,7 @@ export async function initTestingApp(): Promise<INestApplication> {
     imports: [AppModule]
   })
     .overrideProvider(ManagementClient).useClass(ManagementClientMock)
+    .overrideProvider(ApiKeyService).useClass(ApiKeyServiceMock)
     .compile();
 
   const app = module.createNestApplication();
@@ -30,7 +34,7 @@ export const generateTestUser = (user: string, permissions: Permission[] = []): 
   kind: 'user',
   userId: user,
   permissions,
-})
+});
 
 export async function generateTestToken(user: string, permissions?: Permission[]): Promise<string> {
   const iat = Math.floor(Date.now() / 1000);
