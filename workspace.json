@@ -96,6 +96,9 @@
           },
           "outputs": ["coverage/apps/lucifer-api"]
         },
+        "db-create": {
+          "builder": ".:db-create"
+        },
         "db-migrate": {
           "builder": ".:db-migrate"
         },

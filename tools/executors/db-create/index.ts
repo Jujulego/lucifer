@@ -6,7 +6,11 @@ import path from 'path';
 
 import { createConnection, getConnectionOptions, OraLogger } from '../../utils/typeorm';
 
-// Options
+// Types
+interface PGDatabase {
+  datname: string;
+}
+
 interface Options extends json.JsonObject {
   database: string;
 }
@@ -15,7 +19,7 @@ interface Options extends json.JsonObject {
 export default createBuilder(async (options: Options, ctx: BuilderContext) => {
   const spinner = ora({
     prefixText: chalk`{grey [${options.database}]}`,
-    text: `Migrating database ...`
+    text: `Creating database ...`
   }).start();
 
   // Setup
@@ -34,21 +38,26 @@ export default createBuilder(async (options: Options, ctx: BuilderContext) => {
     // Read typeorm config
     const config = await getConnectionOptions(projectRoot, options.database);
 
-    // Run migrations
+    if (config.type !== 'postgres') {
+      spinner.fail(`Unsupported database type ${config.type}`);
+      return { success: false };
+    }
+
+    // Connect to database
     const connection = await createConnection({
       ...config,
-      logger: new OraLogger(spinner, true)
+      database: 'postgres',
+      logger: new OraLogger(spinner, config.logging)
     });
-    const migrations = await connection.runMigrations({ transaction: 'each' });
 
-    if (migrations.length > 0) {
-      spinner.succeed(`${migrations.length} migrations executed:`);
+    // Create database if missing
+    const [{ count }] = await connection.query(`select count(distinct datname) as count from pg_database where datname=$1`, [config.database]);
 
-      for (const mig of migrations) {
-        spinner.succeed(`- ${mig.name}`);
-      }
+    if (count === '0') {
+      await connection.query(`create database ${config.database}`);
+      spinner.succeed(`Database ${config.database} created`);
     } else {
-      spinner.info('Nothing to do !');
+      spinner.info(`Database ${config.database} already exists`);
     }
 
     return { success: true };

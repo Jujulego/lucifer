@@ -2,7 +2,7 @@
   "type": "postgres",
   "host": "localhost",
   "port": 5432,
-  "database": "postgres",
+  "database": "tests",
   "username": "root",
   "password": "root",
   "logging": false,
