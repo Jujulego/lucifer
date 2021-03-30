@@ -9,7 +9,9 @@
       "architect": {
         "build": {
           "builder": ".:tsc-build",
-          "outputs": ["res/rules"],
+          "outputs": [
+            "res/rules"
+          ],
           "options": {
             "tsConfig": "apps/lucifer-auth0/tsconfig.app.json"
           }
@@ -17,12 +19,16 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/lucifer-auth0/**/*.ts"]
+            "lintFilePatterns": [
+              "apps/lucifer-auth0/**/*.ts"
+            ]
           }
         },
         "test": {
           "builder": "@angular-devkit/architect:concat",
-          "outputs": ["coverage/apps/lucifer-auth0"],
+          "outputs": [
+            "coverage/apps/lucifer-auth0"
+          ],
           "options": {
             "builders": [
               {
@@ -69,7 +75,9 @@
               "webpackConfig": "apps/lucifer-api/webpack-e2e.config.js"
             }
           },
-          "outputs": ["{options.outputPath}"]
+          "outputs": [
+            "{options.outputPath}"
+          ]
         },
         "serve": {
           "builder": "@nrwl/node:execute",
@@ -85,7 +93,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/lucifer-api/**/*.ts"]
+            "lintFilePatterns": [
+              "apps/lucifer-api/**/*.ts"
+            ]
           }
         },
         "test": {
@@ -94,7 +104,9 @@
             "jestConfig": "apps/lucifer-api/jest.config.js",
             "passWithNoTests": true
           },
-          "outputs": ["coverage/apps/lucifer-api"]
+          "outputs": [
+            "coverage/apps/lucifer-api"
+          ]
         },
         "db-create": {
           "builder": ".:db-create"
@@ -114,7 +126,9 @@
         "wait": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "commands": ["wait-on http://localhost:3333/"]
+            "commands": [
+              "wait-on http://localhost:3333/"
+            ]
           }
         }
       }
@@ -127,7 +141,9 @@
       "architect": {
         "build": {
           "builder": "@nrwl/node:build",
-          "outputs": ["{options.outputPath}"],
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
             "outputPath": "dist/apps/lucifer-cli",
             "main": "apps/lucifer-cli/src/main.ts",
@@ -151,12 +167,16 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/lucifer-cli/**/*.ts"]
+            "lintFilePatterns": [
+              "apps/lucifer-cli/**/*.ts"
+            ]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/lucifer-cli"],
+          "outputs": [
+            "coverage/apps/lucifer-cli"
+          ],
           "options": {
             "jestConfig": "apps/lucifer-cli/jest.config.js",
             "passWithNoTests": true
@@ -182,7 +202,9 @@
               "apps/lucifer-front/src/favicon.ico",
               "apps/lucifer-front/src/assets"
             ],
-            "styles": ["apps/lucifer-front/src/styles.scss"],
+            "styles": [
+              "apps/lucifer-front/src/styles.scss"
+            ],
             "scripts": [],
             "webpackConfig": "@nrwl/react/plugins/webpack"
           },
@@ -219,7 +241,9 @@
               ]
             }
           },
-          "outputs": ["{options.outputPath}"]
+          "outputs": [
+            "{options.outputPath}"
+          ]
         },
         "serve": {
           "builder": "@nrwl/web:dev-server",
@@ -239,7 +263,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/lucifer-front/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": [
+              "apps/lucifer-front/**/*.{ts,tsx,js,jsx}"
+            ]
           }
         },
         "test": {
@@ -248,7 +274,9 @@
             "jestConfig": "apps/lucifer-front/jest.config.js",
             "passWithNoTests": true
           },
-          "outputs": ["coverage/apps/lucifer-front"]
+          "outputs": [
+            "coverage/apps/lucifer-front"
+          ]
         }
       }
     },
@@ -273,7 +301,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/lucifer-e2e/**/*.{js,ts}"]
+            "lintFilePatterns": [
+              "apps/lucifer-e2e/**/*.{js,ts}"
+            ]
           }
         }
       }
@@ -287,7 +317,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/react/api/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": [
+              "libs/react/api/**/*.{ts,tsx,js,jsx}"
+            ]
           }
         },
         "test": {
@@ -296,7 +328,9 @@
             "jestConfig": "libs/react/api/jest.config.js",
             "passWithNoTests": true
           },
-          "outputs": ["coverage/libs/react/api"]
+          "outputs": [
+            "coverage/libs/react/api"
+          ]
         }
       }
     },
@@ -309,7 +343,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/react/basics/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": [
+              "libs/react/basics/**/*.{ts,tsx,js,jsx}"
+            ]
           }
         },
         "test": {
@@ -318,7 +354,9 @@
             "jestConfig": "libs/react/basics/jest.config.js",
             "passWithNoTests": true
           },
-          "outputs": ["coverage/libs/react/basics"]
+          "outputs": [
+            "coverage/libs/react/basics"
+          ]
         },
         "storybook": {
           "builder": "@nrwl/storybook:storybook",
@@ -349,7 +387,9 @@
               "quiet": true
             }
           },
-          "outputs": ["{options.outputPath}"]
+          "outputs": [
+            "{options.outputPath}"
+          ]
         }
       }
     },
@@ -362,7 +402,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/react/fields/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": [
+              "libs/react/fields/**/*.{ts,tsx,js,jsx}"
+            ]
           }
         },
         "test": {
@@ -371,7 +413,9 @@
             "jestConfig": "libs/react/fields/jest.config.js",
             "passWithNoTests": true
           },
-          "outputs": ["coverage/libs/react/fields"]
+          "outputs": [
+            "coverage/libs/react/fields"
+          ]
         },
         "storybook": {
           "builder": "@nrwl/storybook:storybook",
@@ -402,7 +446,9 @@
               "quiet": true
             }
           },
-          "outputs": ["{options.outputPath}"]
+          "outputs": [
+            "{options.outputPath}"
+          ]
         }
       }
     },
@@ -415,7 +461,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/react/table/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": [
+              "libs/react/table/**/*.{ts,tsx,js,jsx}"
+            ]
           }
         },
         "test": {
@@ -424,7 +472,9 @@
             "jestConfig": "libs/react/table/jest.config.js",
             "passWithNoTests": true
           },
-          "outputs": ["coverage/libs/react/table"]
+          "outputs": [
+            "coverage/libs/react/table"
+          ]
         }
       }
     },
@@ -437,7 +487,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/react/utils/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": [
+              "libs/react/utils/**/*.{ts,tsx,js,jsx}"
+            ]
           }
         },
         "test": {
@@ -446,7 +498,9 @@
             "jestConfig": "libs/react/utils/jest.config.js",
             "passWithNoTests": true
           },
-          "outputs": ["coverage/libs/react/utils"]
+          "outputs": [
+            "coverage/libs/react/utils"
+          ]
         }
       }
     },
@@ -485,7 +539,9 @@
               "quiet": true
             }
           },
-          "outputs": ["{options.outputPath}"]
+          "outputs": [
+            "{options.outputPath}"
+          ]
         }
       }
     },
@@ -498,7 +554,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/types/**/*.ts"]
+            "lintFilePatterns": [
+              "libs/types/**/*.ts"
+            ]
           }
         },
         "test": {
@@ -507,7 +565,9 @@
             "jestConfig": "libs/types/jest.config.js",
             "passWithNoTests": true
           },
-          "outputs": ["coverage/libs/types"]
+          "outputs": [
+            "coverage/libs/types"
+          ]
         }
       }
     },
@@ -520,7 +580,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/utils/**/*.ts"]
+            "lintFilePatterns": [
+              "libs/utils/**/*.ts"
+            ]
           }
         },
         "test": {
@@ -529,7 +591,9 @@
             "jestConfig": "libs/utils/jest.config.js",
             "passWithNoTests": true
           },
-          "outputs": ["coverage/libs/utils"]
+          "outputs": [
+            "coverage/libs/utils"
+          ]
         }
       }
     }
