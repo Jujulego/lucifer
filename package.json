@@ -81,7 +81,7 @@
   "devDependencies": {
     "@angular-devkit/architect": "^0.1102.6",
     "@angular-devkit/core": "^11.2.6",
-    "@angular-devkit/schematics": "^11.2.6",
+    "@angular-devkit/schematics": "^11.2.7",
     "@babel/core": "^7.13.14",
     "@babel/preset-env": "^7.13.12",
     "@babel/preset-react": "^7.13.13",
@@ -102,7 +102,7 @@
     "@nrwl/web": "11.6.1",
     "@nrwl/workspace": "11.6.1",
     "@storybook/addon-essentials": "^6.2.1",
-    "@storybook/addons": "^6.1.17",
+    "@storybook/addons": "^6.2.2",
     "@storybook/react": "^6.2.1",
     "@storybook/theming": "^6.2.2",
     "@svgr/webpack": "^5.4.0",
