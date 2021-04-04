@@ -1,15 +1,5 @@
 {
   "builders": {
-    "db-create": {
-      "implementation": "./db-create",
-      "schema": "./db-create/schema.json",
-      "description": "Create project's database."
-    },
-    "db-migrate": {
-      "implementation": "./db-migrate",
-      "schema": "./db-migrate/schema.json",
-      "description": "Runs typeorm's migrations."
-    },
     "tsc-build": {
       "implementation": "./tsc-build",
       "schema": "./tsc-build/schema.json",

@@ -1,8 +1,0 @@
-/* This file is generated do not edit */
-<% for (const { name, number } of migrations) { %>import { <%= classify(name + '-' + number) %>Migration } from './<%= number %>-<%= dasherize(name) %>.migration';
-<% } %>import { <%= classify(name + '-' + number) %>Migration } from './<%= number %>-<%= dasherize(name) %>.migration';
-
-export const MIGRATIONS = [
-  <% for (const { name, number } of migrations) { %><%= classify(name + '-' + number) %>Migration,
-  <% } %><%= classify(name + '-' + number) %>Migration,
-];

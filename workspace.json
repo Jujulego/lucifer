@@ -109,10 +109,10 @@
           ]
         },
         "db-create": {
-          "builder": ".:db-create"
+          "builder": "@jujulego/nx-typeorm-plugin:db-create"
         },
         "db-migrate": {
-          "builder": ".:db-migrate"
+          "builder": "@jujulego/nx-typeorm-plugin:db-migrate"
         },
         "seed": {
           "builder": "@nrwl/workspace:run-commands",
