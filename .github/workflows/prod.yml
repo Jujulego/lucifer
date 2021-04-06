@@ -102,7 +102,7 @@ jobs:
         run: yarn run nx run-many --all --target=test --scan --codeCoverage --coverageReporters=clover,lcovonly,json
 
       - name: Codecov
-        uses: codecov/codecov-action@v1.3.1
+        uses: codecov/codecov-action@v1.3.2
         with:
           flags: unit
 
@@ -318,7 +318,7 @@ jobs:
           CYPRESS_Auth0ClientSecret: ${{ secrets.E2E_AUTH0_CLIENT_SECRET }}
 
       - name: Codecov
-        uses: codecov/codecov-action@v1.3.1
+        uses: codecov/codecov-action@v1.3.2
         with:
           flags: e2e
 
