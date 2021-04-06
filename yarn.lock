@@ -21,10 +21,21 @@
     rxjs "6.6.3"
     source-map "0.7.3"
 
-"@angular-devkit/core@11.2.6", "@angular-devkit/core@^11.2.6", "@angular-devkit/core@~11.2.0":
+"@angular-devkit/core@11.2.6":
   version "11.2.6"
   resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-11.2.6.tgz#f90dfcc7204cdc58dfcb9901ce265c5c9c0a5dfa"
   integrity sha512-3dA0Z6sIIxCDjZS/DucgmIKti7EZ/LgHoHgCO72Q50H5ZXbUSNBz5wGl5hVq2+gzrnFgU/0u40MIs6eptk30ZA==
+  dependencies:
+    ajv "6.12.6"
+    fast-json-stable-stringify "2.1.0"
+    magic-string "0.25.7"
+    rxjs "6.6.3"
+    source-map "0.7.3"
+
+"@angular-devkit/core@11.2.7", "@angular-devkit/core@^11.2.6", "@angular-devkit/core@~11.2.0":
+  version "11.2.7"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-11.2.7.tgz#65963736fae633f5b77af62b0637f422ff5c410b"
+  integrity sha512-oflo+LsUob5nF0PknivtRdkHH/iMbVNIPRnv/c52Nk7+FUlEx53pkLWBc2rdhTrEptBFMmrpNaa30P+TQrFNkQ==
   dependencies:
     ajv "6.12.6"
     fast-json-stable-stringify "2.1.0"
@@ -41,12 +52,12 @@
     ora "5.3.0"
     rxjs "6.6.3"
 
-"@angular-devkit/schematics@^11.2.6", "@angular-devkit/schematics@~11.2.0":
-  version "11.2.6"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-11.2.6.tgz#5908daef60af2e5d98fd75ac3fe77c02ab144fa3"
-  integrity sha512-bhi2+5xtVAjtr3bsXKT8pnoBamQrArd/Y20ueA4Od7cd38YT97nzTA1wyHBFG0vWd0HMyg42ZS0aycNBuOebaA==
+"@angular-devkit/schematics@^11.2.7", "@angular-devkit/schematics@~11.2.0":
+  version "11.2.7"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-11.2.7.tgz#a78730a6d7d4242c69e1b87fef5d880a016b8748"
+  integrity sha512-cnORKnyVtsdVZ180ZZyrmCMeSH1IGK2apfgGGW3UaUZvTAtolQPrqT0RQUK8qLF/RC85xy9QYXApiAaLDUixIw==
   dependencies:
-    "@angular-devkit/core" "11.2.6"
+    "@angular-devkit/core" "11.2.7"
     ora "5.3.0"
     rxjs "6.6.3"
 
@@ -3587,10 +3598,10 @@
     lodash "^4.17.15"
     redent "^3.0.0"
 
-"@testing-library/react@^11.2.5":
-  version "11.2.5"
-  resolved "https://registry.yarnpkg.com/@testing-library/react/-/react-11.2.5.tgz#ae1c36a66c7790ddb6662c416c27863d87818eb9"
-  integrity sha512-yEx7oIa/UWLe2F2dqK0FtMF9sJWNXD+2PPtp39BvE0Kh9MJ9Kl0HrZAgEuhUJR+Lx8Di6Xz+rKwSdEPY2UV8ZQ==
+"@testing-library/react@^11.2.6":
+  version "11.2.6"
+  resolved "https://registry.yarnpkg.com/@testing-library/react/-/react-11.2.6.tgz#586a23adc63615985d85be0c903f374dab19200b"
+  integrity sha512-TXMCg0jT8xmuU8BkKMtp8l7Z50Ykew5WNX8UoIKTaLFwKkP2+1YDhOLA2Ga3wY4x29jyntk7EWfum0kjlYiSjQ==
   dependencies:
     "@babel/runtime" "^7.12.5"
     "@testing-library/dom" "^7.28.1"
@@ -4141,10 +4152,10 @@
     "@types/cookiejar" "*"
     "@types/node" "*"
 
-"@types/supertest@^2.0.10":
-  version "2.0.10"
-  resolved "https://registry.yarnpkg.com/@types/supertest/-/supertest-2.0.10.tgz#630d79b4d82c73e043e43ff777a9ca98d457cab7"
-  integrity sha512-Xt8TbEyZTnD5Xulw95GLMOkmjGICrOQyJ2jqgkSjAUR3mm7pAIzSR0NFBaMcwlzVvlpCjNwbATcWWwjNiZiFrQ==
+"@types/supertest@^2.0.11":
+  version "2.0.11"
+  resolved "https://registry.yarnpkg.com/@types/supertest/-/supertest-2.0.11.tgz#2e70f69f220bc77b4f660d72c2e1a4231f44a77d"
+  integrity sha512-uci4Esokrw9qGb9bvhhSVEjd6rkny/dk5PK/Qz4yxKiyppEI+dOPlNrZBahE3i+PoKFYyDxChVXZ/ysS/nrm1Q==
   dependencies:
     "@types/superagent" "*"
 
@@ -5192,16 +5203,16 @@ atob@^2.1.2:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-auth0@^2.34.0:
-  version "2.34.0"
-  resolved "https://registry.yarnpkg.com/auth0/-/auth0-2.34.0.tgz#08780ea96a026c1f97ed33d19fb7437d48a9900e"
-  integrity sha512-IiA3BxMTY48ffv2Tn/E3sAByC08xLz6om4AbXB8RSToe02alwK+h0feoy6+krazdcTN+UrI7fbk96y1HI3NkDg==
+auth0@^2.34.1:
+  version "2.34.1"
+  resolved "https://registry.yarnpkg.com/auth0/-/auth0-2.34.1.tgz#9f7d55e1996897e7ebdef9013f505121c46d59c1"
+  integrity sha512-b/rEooH6IcQ1sGLIh/4KqvofC2cIzZ1wgtjCeqSmLxSGq1u4HP2+DlaxsBOxIvdgotlwx5FqHqr+lkvgHTAgBQ==
   dependencies:
     axios "^0.21.1"
     es6-promisify "^6.1.1"
     form-data "^3.0.0"
     jsonwebtoken "^8.5.1"
-    jwks-rsa "^1.10.0"
+    jwks-rsa "^1.12.1"
     lru-memoizer "^2.1.0"
     rest-facade "^1.13.0"
     retry "^0.12.0"
@@ -7463,10 +7474,10 @@ cyclist@^1.0.1:
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
   integrity sha1-WW6WmP0MgOEgOMK4LW6xs1tiJNk=
 
-cypress@^6.7.1:
-  version "6.8.0"
-  resolved "https://registry.yarnpkg.com/cypress/-/cypress-6.8.0.tgz#8338f39212a8f71e91ff8c017a1b6e22d823d8c1"
-  integrity sha512-W2e9Oqi7DmF48QtOD0LfsOLVq6ef2hcXZvJXI/E3PgFNmZXEVwBefhAxVCW9yTPortjYA2XkM20KyC4HRkOm9w==
+cypress@^6.9.1:
+  version "6.9.1"
+  resolved "https://registry.yarnpkg.com/cypress/-/cypress-6.9.1.tgz#ce1106bfdc47f8d76381dba63f943447883f864c"
+  integrity sha512-/RVx6sOhsyTR9sd9v0BHI4tnDZAhsH9rNat7CIKCUEr5VPWxyfGH0EzK4IHhAqAH8vjFcD4U14tPiJXshoUrmQ==
   dependencies:
     "@cypress/listr-verbose-renderer" "^0.4.1"
     "@cypress/request" "^2.88.5"
@@ -7550,7 +7561,7 @@ dayjs@1.10.4, dayjs@^1.10.4, dayjs@^1.9.3:
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.10.4.tgz#8e544a9b8683f61783f570980a8a80eaf54ab1e2"
   integrity sha512-RI/Hh4kqRc1UKLOAf/T5zdMMX5DQIlDxwUe3wSyMMnEbGunnpENCdbUgM+dW7kXidZqCttBrmw7BhN4TMddkCw==
 
-debug@*, debug@4, debug@4.3.2, debug@^4.0.0, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1:
+debug@*, debug@4, debug@4.3.2, debug@^4.0.0, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1, debug@^4.3.1:
   version "4.3.2"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.2.tgz#f0a49c18ac8779e31d4a0c6029dfb76873c7428b"
   integrity sha512-mOp8wKcvj7XxC78zLgw/ZA+6TSgkoE2C/ienthhRD298T7UNwAg9diBpLRxC0mOezLl4B0xV7M0cCO6P/O0Xhw==
@@ -7571,7 +7582,7 @@ debug@4.1.1:
   dependencies:
     ms "^2.1.1"
 
-debug@4.3.1, debug@^4.3.1:
+debug@4.3.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.1.tgz#f0d229c505e0c6d8c49ac553d1b13dc183f6b2ee"
   integrity sha512-doEwdvm4PCeK4K3RQN2ZC2BYUBaxwLARCqZmMjtF8a51J2Rb0xpVloFRnCODwqjpwnAoao4pelN8l3RJdv3gRQ==
@@ -11962,7 +11973,7 @@ jwa@^1.4.1:
     ecdsa-sig-formatter "1.0.11"
     safe-buffer "^5.0.1"
 
-jwks-rsa@^1.10.0:
+jwks-rsa@^1.12.1:
   version "1.12.3"
   resolved "https://registry.yarnpkg.com/jwks-rsa/-/jwks-rsa-1.12.3.tgz#40232f85d16734cb82837f38bb3e350a34435400"
   integrity sha512-cFipFDeYYaO9FhhYJcZWX/IyZgc0+g316rcHnDpT2dNRNIE/lMOmWKKqp09TkJoYlNFzrEVODsR4GgXJMgWhnA==
@@ -12389,14 +12400,7 @@ log-symbols@^1.0.2:
   dependencies:
     chalk "^1.0.0"
 
-log-symbols@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/log-symbols/-/log-symbols-4.0.0.tgz#69b3cc46d20f448eccdb75ea1fa733d9e821c920"
-  integrity sha512-FN8JBzLx6CzeMrB0tg6pqlGU1wCrXW+ZXGH481kfsBqer0hToTIiHdjH4Mq8xJUbvATujKCvaREGWpGUionraA==
-  dependencies:
-    chalk "^4.0.0"
-
-log-symbols@^4.1.0:
+log-symbols@^4.0.0, log-symbols@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/log-symbols/-/log-symbols-4.1.0.tgz#3fbdbb95b4683ac9fc785111e792e558d4abd503"
   integrity sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==
