@@ -5192,16 +5192,16 @@ atob@^2.1.2:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-auth0@^2.34.0:
-  version "2.34.0"
-  resolved "https://registry.yarnpkg.com/auth0/-/auth0-2.34.0.tgz#08780ea96a026c1f97ed33d19fb7437d48a9900e"
-  integrity sha512-IiA3BxMTY48ffv2Tn/E3sAByC08xLz6om4AbXB8RSToe02alwK+h0feoy6+krazdcTN+UrI7fbk96y1HI3NkDg==
+auth0@^2.34.1:
+  version "2.34.1"
+  resolved "https://registry.yarnpkg.com/auth0/-/auth0-2.34.1.tgz#9f7d55e1996897e7ebdef9013f505121c46d59c1"
+  integrity sha512-b/rEooH6IcQ1sGLIh/4KqvofC2cIzZ1wgtjCeqSmLxSGq1u4HP2+DlaxsBOxIvdgotlwx5FqHqr+lkvgHTAgBQ==
   dependencies:
     axios "^0.21.1"
     es6-promisify "^6.1.1"
     form-data "^3.0.0"
     jsonwebtoken "^8.5.1"
-    jwks-rsa "^1.10.0"
+    jwks-rsa "^1.12.1"
     lru-memoizer "^2.1.0"
     rest-facade "^1.13.0"
     retry "^0.12.0"
@@ -11962,7 +11962,7 @@ jwa@^1.4.1:
     ecdsa-sig-formatter "1.0.11"
     safe-buffer "^5.0.1"
 
-jwks-rsa@^1.10.0:
+jwks-rsa@^1.12.1:
   version "1.12.3"
   resolved "https://registry.yarnpkg.com/jwks-rsa/-/jwks-rsa-1.12.3.tgz#40232f85d16734cb82837f38bb3e350a34435400"
   integrity sha512-cFipFDeYYaO9FhhYJcZWX/IyZgc0+g316rcHnDpT2dNRNIE/lMOmWKKqp09TkJoYlNFzrEVODsR4GgXJMgWhnA==
