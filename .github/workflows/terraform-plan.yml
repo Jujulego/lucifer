@@ -91,7 +91,7 @@ jobs:
         continue-on-error: true
 
       - name: Update Pull Request
-        uses: actions/github-script@v3
+        uses: actions/github-script@v4.0.2
         env:
           PLAN_OUTPUT: "${{ steps.plan.outputs.stdout }}"
         with:
