@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
 
       - name: Use Node.js 14.x
         uses: actions/setup-node@v2.1.5
@@ -63,7 +63,7 @@ jobs:
       AUTH0_CLIENT_SECRET: 'test'
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
 
       - name: Use Node.js 14.x
         uses: actions/setup-node@v2.1.5
@@ -111,7 +111,7 @@ jobs:
     needs: lint
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
 
       - name: Use Node.js 14.x
         uses: actions/setup-node@v2.1.5
@@ -155,7 +155,7 @@ jobs:
     needs: [build, tests]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
 
       - name: Download rules artifacts
         uses: actions/download-artifact@v2
@@ -185,7 +185,7 @@ jobs:
     needs: build
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
 
       - name: Download build artifacts
         uses: actions/download-artifact@v2
@@ -262,7 +262,7 @@ jobs:
           - 5432:5432
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
 
       - name: Use Node.js 14.x
         uses: actions/setup-node@v2.1.5
