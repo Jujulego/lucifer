@@ -24,7 +24,7 @@ jobs:
         id: setup-cache
         run: echo "::set-output name=yarn-cache::$(yarn cache dir)"
 
-      - uses: actions/cache@v2.1.5
+      - uses: actions/cache@v2.1.7
         with:
           path: |
             ${{ steps.setup-cache.outputs.yarn-cache }}
@@ -82,7 +82,7 @@ jobs:
           db-username: 'root'
           db-password: 'root'
 
-      - uses: actions/cache@v2.1.5
+      - uses: actions/cache@v2.1.7
         with:
           path: |
             ${{ steps.setup-cache.outputs.yarn-cache }}
@@ -122,7 +122,7 @@ jobs:
         id: setup-cache
         run: echo "::set-output name=yarn-cache::$(yarn cache dir)"
 
-      - uses: actions/cache@v2.1.5
+      - uses: actions/cache@v2.1.7
         with:
           path: |
             ${{ steps.setup-cache.outputs.yarn-cache }}
@@ -281,7 +281,7 @@ jobs:
           db-username: 'root'
           db-password: 'root'
 
-      - uses: actions/cache@v2.1.5
+      - uses: actions/cache@v2.1.7
         with:
           path: |
             ${{ steps.setup-cache.outputs.yarn-cache }}
