@@ -1961,16 +1961,17 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@jujulego/nx-typeorm-plugin@^1.0.0-alpha.1":
-  version "1.0.0-alpha.1"
-  resolved "https://registry.yarnpkg.com/@jujulego/nx-typeorm-plugin/-/nx-typeorm-plugin-1.0.0-alpha.1.tgz#5f211851590b9eb5c1f5820ddee7277d2d7ab628"
-  integrity sha512-kclEEeDxlWmUTllbN6KeACnA+p+Hw605MeT7cTLH2NhhxuIpdApNDBnjr1tI0ehx5XM+edwoD9/0Qk9akuojTw==
+"@jujulego/nx-typeorm-plugin@1.0.0-alpha.7":
+  version "1.0.0-alpha.7"
+  resolved "https://registry.yarnpkg.com/@jujulego/nx-typeorm-plugin/-/nx-typeorm-plugin-1.0.0-alpha.7.tgz#aa3bcab7d2391c49d4104e8e2c8f923518010dc0"
+  integrity sha512-pl4GNV191U4RFUtqUHlBi3sY2W2BiBCtY1r0oJTQpzDYaTpbyLi8du/4zxJS3gL6N5m5ONwtiv2vbMVlIckIZw==
   dependencies:
     "@nrwl/devkit" "11.6.1"
     chalk "^4.1.0"
     log-symbols "^4.1.0"
     ora "^5.4.0"
     ts-node "~9.1.1"
+    tsconfig-paths "^3.9.0"
     typeorm "^0.2.32"
 
 "@material-ui/core@^4.11.3":
