@@ -62,7 +62,7 @@
     "jwks-rsa": "^2.0.2",
     "lodash.isequal": "^4.5.0",
     "morgan": "^1.10.0",
-    "passport": "^0.4.1",
+    "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "pg": "^8.5.1",
     "react": "^16.14.0",
