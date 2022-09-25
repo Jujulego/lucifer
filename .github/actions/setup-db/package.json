@@ -6,6 +6,6 @@
   "private": true,
   "dependencies": {
     "@actions/core": "^1.2.6",
-    "fs-extra": "^9.0.1"
+    "fs-extra": "9.0.1"
   }
 }
